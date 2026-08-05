@@ -55,6 +55,7 @@ function Game() {
     if (!canvas) return;
     const engine = new GameEngine(canvas, setHud);
     engineRef.current = engine;
+    (window as unknown as { __tomEngine?: GameEngine }).__tomEngine = engine;
     engine.emitHud(true);
     engine.start();
     const onResize = () => engine.resize();
