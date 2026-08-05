@@ -8,16 +8,16 @@ import { Dock, type TabId } from "@/components/game/Dock";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tomlandia — Cozy Pixel Idle RPG" },
+      { title: "Tomlandia" },
       {
         name: "description",
         content:
-          "Wander Peaceful Fields in Tomlandia: mine copper, chop oak, befriend-or-fight mischievous goblins, and level up in a cozy pixel world.",
+          "Tomlandia MMORPG",
       },
-      { property: "og:title", content: "Tomlandia — Cozy Pixel Idle RPG" },
+      { property: "og:title", content: "Tomlandia" },
       {
         property: "og:description",
-        content: "A cozy mobile idle RPG: gather, fight, and level up in a soft pastel pixel world.",
+        content: "Tomlandia MMORPG",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
