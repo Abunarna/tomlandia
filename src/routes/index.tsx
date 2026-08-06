@@ -1,23 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Backpack, Hammer } from "lucide-react";
 import { GameEngine } from "@/game/engine";
-import type { HudSnapshot } from "@/game/types";
+import type { NpcRole } from "@/game/data";
+import type { HudSnapshot, ItemId } from "@/game/types";
 import { Hud } from "@/components/game/Hud";
-import { Dock, type TabId } from "@/components/game/Dock";
+import { Panel, type PanelId } from "@/components/game/Panel";
+import { NpcDialog } from "@/components/game/NpcDialog";
+import { Joystick } from "@/components/game/Joystick";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tomlandia" },
+      { title: "Tomlandia — Cozy Pixel Idle RPG" },
       {
         name: "description",
         content:
-          "Tomlandia MMORPG",
+          "Explore the Peaceful Fields, mine copper, chop oak, battle goblins and take on quests from the folk of Grand Haven in Tomlandia.",
       },
-      { property: "og:title", content: "Tomlandia" },
+      { property: "og:title", content: "Tomlandia — Cozy Pixel Idle RPG" },
       {
         property: "og:description",
-        content: "Tomlandia MMORPG",
+        content: "Gather, fight and quest your way through a cozy pixel world on your phone.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -42,19 +46,28 @@ const EMPTY: HudSnapshot = {
   armor: "cloth_tunic",
   activity: "Wandering",
   activityProgress: 0,
+  quest: null,
+  completed: [],
+  attack: 6,
+  defense: 2,
 };
 
 function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<GameEngine | null>(null);
   const [hud, setHud] = useState<HudSnapshot>(EMPTY);
-  const [tab, setTab] = useState<TabId>("world");
+  const [panel, setPanel] = useState<PanelId | null>(null);
+  const [npc, setNpc] = useState<NpcRole | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const engine = new GameEngine(canvas, setHud);
     engineRef.current = engine;
+    engine.onInteract = (id) => {
+      setPanel(null);
+      setNpc(id);
+    };
     engine.emitHud(true);
     engine.start();
     const onResize = () => engine.resize();
@@ -73,26 +86,93 @@ function Game() {
   }, []);
 
   return (
-    <main className="flex h-[100dvh] w-full flex-col overflow-hidden bg-background">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-background">
       <h1 className="sr-only">Tomlandia — a cozy pixel idle RPG</h1>
-      <Hud hud={hud} />
-      <div className="relative mt-2 flex-[3] px-3">
-        <canvas
-          ref={canvasRef}
-          onPointerDown={(e) => engineRef.current?.tapWorld(e.clientX, e.clientY)}
-          className="size-full touch-none rounded-3xl border border-border/60 shadow-soft"
-        />
+
+      <canvas
+        ref={canvasRef}
+        onPointerDown={(e) => engineRef.current?.tapWorld(e.clientX, e.clientY)}
+        className="absolute inset-0 size-full touch-none"
+      />
+
+      {/* overlays */}
+      <div className="pointer-events-none absolute inset-0 flex flex-col">
+        <Hud hud={hud} />
+
+        <div className="flex-1" />
+
+        <div className="pointer-events-none flex items-end justify-between gap-3 p-3">
+          <div className="pointer-events-auto">
+            <Joystick onChange={onJoystick} />
+          </div>
+          <div className="pointer-events-auto flex flex-col gap-2">
+            <OverlayButton
+              label="Bag"
+              active={panel === "inventory"}
+              onClick={() => setPanel((p) => (p === "inventory" ? null : "inventory"))}
+            >
+              <Backpack className="size-5" />
+            </OverlayButton>
+            <OverlayButton
+              label="Skills"
+              active={panel === "skills"}
+              onClick={() => setPanel((p) => (p === "skills" ? null : "skills"))}
+            >
+              <Hammer className="size-5" />
+            </OverlayButton>
+          </div>
+        </div>
+
+        {panel && (
+          <Panel
+            panel={panel}
+            hud={hud}
+            onClose={() => setPanel(null)}
+            onEquip={(i) => engineRef.current?.equipSlot(i)}
+            onSell={(i) => engineRef.current?.sellSlot(i)}
+            onUse={(i) => engineRef.current?.useSlot(i)}
+          />
+        )}
       </div>
-      <div className="mt-2 flex flex-[2] min-h-0 flex-col">
-        <Dock
-          tab={tab}
-          setTab={setTab}
+
+      {npc && (
+        <NpcDialog
+          npc={npc}
           hud={hud}
-          onJoystick={onJoystick}
-          onEquip={(i) => engineRef.current?.equipSlot(i)}
-          onSell={(i) => engineRef.current?.sellSlot(i)}
+          onClose={() => setNpc(null)}
+          onBuy={(id: ItemId) => engineRef.current?.buyItem(id)}
+          onSellAll={() => engineRef.current?.sellAllResources()}
+          onAccept={(id) => engineRef.current?.acceptQuest(id)}
+          onClaim={() => {
+            engineRef.current?.claimQuest();
+          }}
+          onAbandon={() => engineRef.current?.abandonQuest()}
         />
-      </div>
+      )}
     </main>
+  );
+}
+
+function OverlayButton({
+  children,
+  label,
+  active,
+  onClick,
+}: {
+  children: React.ReactNode;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={label}
+      className={`grid size-12 place-items-center rounded-2xl border border-border/60 shadow-soft backdrop-blur-md active:scale-95 ${
+        active ? "bg-primary text-primary-foreground" : "bg-card/85 text-foreground"
+      }`}
+    >
+      {children}
+    </button>
   );
 }

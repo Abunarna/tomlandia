@@ -1,11 +1,11 @@
-import { Heart, Coins, Sparkles, MapPin } from "lucide-react";
+import { Heart, Coins, Sparkles, MapPin, Swords, Shield, ScrollText } from "lucide-react";
 import type { HudSnapshot } from "@/game/types";
 
 export function Hud({ hud }: { hud: HudSnapshot }) {
   const skill = hud.skills.combat;
   return (
-    <div className="pointer-events-none px-3 pt-3">
-      <div className="rounded-2xl border border-border/60 bg-card/85 px-3 py-2 shadow-soft backdrop-blur">
+    <div className="pointer-events-none space-y-2 px-3 pt-3">
+      <div className="rounded-2xl border border-border/60 bg-card/80 px-3 py-2 shadow-soft backdrop-blur-md">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
           <div className="flex min-w-0 items-center gap-2">
             <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-primary/15 text-sm font-black text-primary">
@@ -41,6 +41,12 @@ export function Hud({ hud }: { hud: HudSnapshot }) {
         </div>
 
         <div className="mt-2 flex items-center gap-2">
+          <span className="flex items-center gap-1 text-[11px] font-bold text-muted-foreground">
+            <Swords className="size-3 text-primary" />
+            {hud.attack}
+            <Shield className="ml-1 size-3 text-accent" />
+            {hud.defense}
+          </span>
           <span className="truncate text-[11px] font-semibold text-muted-foreground">{hud.activity}</span>
           <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted">
             <div
@@ -50,6 +56,18 @@ export function Hud({ hud }: { hud: HudSnapshot }) {
           </div>
         </div>
       </div>
+
+      {hud.quest && (
+        <div className="w-fit max-w-full rounded-2xl border border-border/60 bg-card/80 px-3 py-1.5 shadow-soft backdrop-blur-md">
+          <p className="flex items-center gap-1.5 text-[11px] font-bold text-foreground">
+            <ScrollText className="size-3.5 text-primary" />
+            {hud.quest.name}
+            <span className={hud.quest.ready ? "text-xp" : "text-muted-foreground"}>
+              {hud.quest.ready ? "— ready to hand in" : `${hud.quest.progress}/${hud.quest.count}`}
+            </span>
+          </p>
+        </div>
+      )}
     </div>
   );
 }
