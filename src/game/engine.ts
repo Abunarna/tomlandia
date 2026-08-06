@@ -1,5 +1,8 @@
 import {
   BUILDINGS,
+  NPCS,
+  QUESTS,
+  SHOP_STOCK,
   ITEMS,
   MONSTER_DEFS,
   MONSTER_SPAWNS,
@@ -10,7 +13,8 @@ import {
   WORLD_W,
 } from "./data";
 import { levelFromXp } from "./progression";
-import type { HudSnapshot, InvSlot, ItemId, SaveState, SkillId } from "./types";
+import type { HudSnapshot, InvSlot, ItemId, QuestState, SaveState, SkillId } from "./types";
+import type { NpcRole } from "./data";
 
 const SAVE_KEY = "tomlandia.save.v1";
 const INV_SIZE = 20;
@@ -68,7 +72,8 @@ type Target =
   | { type: "none" }
   | { type: "point"; x: number; y: number }
   | { type: "node"; id: number }
-  | { type: "monster"; id: number };
+  | { type: "monster"; id: number }
+  | { type: "npc"; id: NpcRole };
 
 export class GameEngine {
   private ctx: CanvasRenderingContext2D;
@@ -105,6 +110,10 @@ export class GameEngine {
   private regenCd = 0;
   private activity = "Wandering";
   private activityProgress = 0;
+
+  quest: QuestState | null = null;
+  completed: string[] = [];
+  onInteract: ((id: NpcRole) => void) | null = null;
 
   joystick = { active: false, dx: 0, dy: 0 };
   private onHud: (s: HudSnapshot) => void;
@@ -167,6 +176,8 @@ export class GameEngine {
       skills: this.skills,
       weapon: this.weapon,
       armor: this.armor,
+      quest: this.quest,
+      completed: this.completed,
     };
   }
 
@@ -192,6 +203,8 @@ export class GameEngine {
       if (s.skills) this.skills = { ...this.skills, ...s.skills };
       this.weapon = s.weapon ?? null;
       this.armor = s.armor ?? null;
+      this.quest = s.quest ?? null;
+      this.completed = Array.isArray(s.completed) ? s.completed : [];
       this.hp = Math.min(s.hp ?? this.maxHp, this.maxHp);
     } catch {
       /* ignore */
@@ -301,6 +314,10 @@ export class GameEngine {
       const d = Math.hypot(n.x - wx, n.y - wy - 10);
       if (d < 38 && (!best || d < best.d)) best = { d, t: { type: "node", id: n.id } };
     }
+    for (const npc of NPCS) {
+      const d = Math.hypot(npc.x - wx, npc.y - wy - 8);
+      if (d < 40 && (!best || d < best.d)) best = { d, t: { type: "npc", id: npc.id } };
+    }
     if (best) {
       this.target = best.t;
     } else {
@@ -395,6 +412,7 @@ export class GameEngine {
           if (this.gatherProgress >= 1) {
             this.gatherProgress = 0;
             this.addItem(def.item, 1);
+            this.questTick("gather", def.item);
             this.grantXp(def.skill, def.xp);
             this.pushText(n.x, n.y - 20, `+1 ${ITEMS[def.item].name}`, "#dff6c9");
             n.depleted = true;
@@ -433,6 +451,7 @@ export class GameEngine {
                 this.addItem(md.drop, 1);
                 this.pushText(m.x + 16, m.y - 56, `+1 ${ITEMS[md.drop].name}`, "#dff6c9");
               }
+              this.questTick("kill", m.kind);
               this.grantXp("combat", md.xp);
               for (let i = 0; i < 12; i++) {
                 this.parts.push({
@@ -464,6 +483,15 @@ export class GameEngine {
           this.activity = "Approaching";
           this.activityProgress = 0;
         }
+      }
+    } else if (this.target.type === "npc") {
+      const npc = NPCS.find((n) => n.id === (this.target as { id: NpcRole }).id)!;
+      const d = this.moveToward(npc.x, npc.y + 16, dt);
+      this.activity = `Visiting ${npc.name}`;
+      this.activityProgress = 0;
+      if (d <= 44) {
+        this.target = { type: "none" };
+        this.onInteract?.(npc.id);
       }
     } else {
       this.activity = "Wandering";
@@ -546,6 +574,83 @@ export class GameEngine {
     }
   }
 
+  /* ---------- quests, shop & food ---------- */
+
+  private questTick(kind: "kill" | "gather", key: string) {
+    if (!this.quest) return;
+    const def = QUESTS.find((q) => q.id === this.quest!.id);
+    if (!def || def.kind !== kind || def.key !== key) return;
+    if (this.quest.progress >= def.count) return;
+    this.quest.progress += 1;
+    if (this.quest.progress >= def.count) {
+      this.pushText(this.px, this.py - 60, "Quest ready!", "#ffd98e");
+    }
+    this.emitHud(true);
+  }
+
+  acceptQuest(id: string) {
+    if (this.quest) return;
+    if (!QUESTS.some((q) => q.id === id) || this.completed.includes(id)) return;
+    this.quest = { id, progress: 0 };
+    this.emitHud(true);
+  }
+
+  abandonQuest() {
+    this.quest = null;
+    this.emitHud(true);
+  }
+
+  claimQuest() {
+    if (!this.quest) return;
+    const def = QUESTS.find((q) => q.id === this.quest!.id);
+    if (!def || this.quest.progress < def.count) return;
+    this.gold += def.gold;
+    this.grantXp(def.xpSkill, def.xp);
+    if (def.reward) this.addItem(def.reward, 1);
+    this.completed.push(def.id);
+    this.quest = null;
+    this.pushText(this.px, this.py - 70, `+${def.gold}g quest reward`, "#ffe08a");
+    this.save();
+    this.emitHud(true);
+  }
+
+  buyItem(id: ItemId): boolean {
+    const entry = SHOP_STOCK.find((s) => s.id === id);
+    if (!entry || this.gold < entry.price) return false;
+    if (!this.addItem(id, 1)) return false;
+    this.gold -= entry.price;
+    this.pushText(this.px, this.py - 50, `-${entry.price}g`, "#ffd0a8");
+    this.emitHud(true);
+    return true;
+  }
+
+  sellAllResources(): number {
+    let earned = 0;
+    this.inv.forEach((slot, i) => {
+      if (!slot) return;
+      if (ITEMS[slot.id].kind !== "resource") return;
+      earned += ITEMS[slot.id].value * slot.qty;
+      this.inv[i] = null;
+    });
+    this.gold += earned;
+    if (earned > 0) this.pushText(this.px, this.py - 50, `+${earned}g`, "#ffe08a");
+    this.emitHud(true);
+    return earned;
+  }
+
+  useSlot(index: number) {
+    const slot = this.inv[index];
+    if (!slot) return;
+    const def = ITEMS[slot.id];
+    if (def.kind !== "food" || !def.heal) return;
+    if (this.hp >= this.maxHp) return;
+    this.hp = Math.min(this.maxHp, this.hp + def.heal);
+    slot.qty -= 1;
+    if (slot.qty <= 0) this.inv[index] = null;
+    this.pushText(this.px, this.py - 40, `+${def.heal} hp`, "#9fe6a0");
+    this.emitHud(true);
+  }
+
   emitHud(force = false) {
     if (force) this.hudCd = 0.12;
     const mk = (id: SkillId) => {
@@ -564,6 +669,22 @@ export class GameEngine {
       armor: this.armor,
       activity: this.activity,
       activityProgress: this.activityProgress,
+      quest: this.quest
+        ? (() => {
+            const d = QUESTS.find((q) => q.id === this.quest!.id)!;
+            return {
+              id: d.id,
+              name: d.name,
+              desc: d.desc,
+              progress: Math.min(this.quest!.progress, d.count),
+              count: d.count,
+              ready: this.quest!.progress >= d.count,
+            };
+          })()
+        : null,
+      completed: [...this.completed],
+      attack: this.attack,
+      defense: this.defense,
     });
   }
 
@@ -593,6 +714,7 @@ export class GameEngine {
     const drawables: { y: number; fn: () => void }[] = [];
     for (const n of this.nodes) drawables.push({ y: n.y, fn: () => this.drawNode(ctx, n) });
     for (const m of this.monsters) if (!m.dead) drawables.push({ y: m.y, fn: () => this.drawMonster(ctx, m) });
+    for (const npc of NPCS) drawables.push({ y: npc.y, fn: () => this.drawNpc(ctx, npc) });
     drawables.push({ y: this.py, fn: () => this.drawPlayer(ctx) });
     drawables.sort((a, b) => a.y - b.y);
     for (const d of drawables) d.fn();
@@ -798,6 +920,52 @@ export class GameEngine {
       ctx.fillStyle = "#8fd98a";
       ctx.fillRect(m.x - 16, m.y - 40, 32 * (m.hp / m.maxHp), 5);
     }
+  }
+
+  private drawNpc(ctx: CanvasRenderingContext2D, npc: (typeof NPCS)[number]) {
+    const bob = Math.sin(this.time * 2 + npc.x) * 1.6;
+    const x = npc.x;
+    const y = npc.y - bob;
+    this.shadow(ctx, npc.x, npc.y + 16, 15);
+    ctx.fillStyle = npc.robe;
+    ctx.beginPath();
+    ctx.roundRect(x - 11, y - 6, 22, 22, 7);
+    ctx.fill();
+    ctx.fillStyle = "#ffe0c2";
+    ctx.beginPath();
+    ctx.arc(x, y - 18, 14, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = npc.hair;
+    ctx.beginPath();
+    ctx.arc(x, y - 22, 14, Math.PI, 0);
+    ctx.fill();
+    ctx.fillStyle = "#4a3b52";
+    ctx.fillRect(x - 5, y - 19, 3, 4);
+    ctx.fillRect(x + 3, y - 19, 3, 4);
+    // floating "!" marker when a quest is available or ready to hand in
+    const marker =
+      npc.id === "elder"
+        ? this.quest
+          ? this.quest.progress >= (QUESTS.find((q) => q.id === this.quest!.id)?.count ?? 99)
+            ? "?"
+            : ""
+          : QUESTS.some((q) => !this.completed.includes(q.id))
+            ? "!"
+            : ""
+        : "";
+    if (marker) {
+      const f = Math.sin(this.time * 4) * 3;
+      ctx.font = "bold 20px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillStyle = "rgba(70,55,70,0.3)";
+      ctx.fillText(marker, x, y - 40 + f + 2);
+      ctx.fillStyle = "#ffd764";
+      ctx.fillText(marker, x, y - 40 + f);
+    }
+    ctx.font = "bold 11px ui-rounded, system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgba(70,55,70,0.7)";
+    ctx.fillText(npc.name, x, y + 30);
   }
 
   private drawPlayer(ctx: CanvasRenderingContext2D) {
