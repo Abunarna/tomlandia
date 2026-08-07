@@ -903,7 +903,9 @@ export class GameEngine {
     if (!r || !this.canCraft(r.id)) return false;
     for (const i of r.inputs) this.removeItem(i.id, i.qty);
     this.addItem(r.out, r.outQty);
+    sfx.play("craft");
     this.grantXp(r.skill, r.xp);
+
     this.pushText(this.px, this.py - 56, `+${r.outQty} ${item(r.out).name}`, "#dff6c9");
     this.emitHud(true);
     return true;
