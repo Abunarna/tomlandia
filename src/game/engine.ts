@@ -1693,9 +1693,12 @@ export class GameEngine {
     ctx.fillRect(m.x - 6 * s, m.y - 18 * s + bob, 3, 3);
     ctx.fillRect(m.x + 3 * s, m.y - 18 * s + bob, 3, 3);
     if (m.hp < m.maxHp) {
+      // Shared health pool. Amber bar = another player tagged it first, so the
+      // loot is theirs.
+      const mine = !m.taggedBy || m.taggedBy === this.userId;
       ctx.fillStyle = "rgba(70,55,70,0.3)";
       ctx.fillRect(m.x - 16, m.y - 40 * s, 32, 5);
-      ctx.fillStyle = "#8fd98a";
+      ctx.fillStyle = mine ? "#8fd98a" : "#e8b26a";
       ctx.fillRect(m.x - 16, m.y - 40 * s, 32 * (m.hp / m.maxHp), 5);
     }
   }
