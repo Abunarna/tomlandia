@@ -41,11 +41,27 @@ export function WorldMap({ position, onClose }: Props) {
   // "fit" scale maps the whole world into the viewport at zoom 1.
   const fit = Math.min(size.w / WORLD_W, size.h / WORLD_H);
   const scale = fit * zoom;
+  // Never zoom out past the point where the world covers the viewport:
+  // no empty space around the map.
+  const minZoom = Math.max(size.w / WORLD_W, size.h / WORLD_H) / fit;
 
   const target = useRef({ zoom: 1, x: 0, y: 0 });
   const viewRef = useRef(view);
   viewRef.current = view;
+  const limits = useRef({ w: size.w, h: size.h, fit, minZoom });
+  limits.current = { w: size.w, h: size.h, fit, minZoom };
   const raf = useRef<number | null>(null);
+
+  /** Clamp zoom + pan so the world always fills the viewport. */
+  const clampView = useCallback((v: { zoom: number; x: number; y: number }) => {
+    const L = limits.current;
+    const z = clamp(v.zoom, L.minZoom, MAX_ZOOM);
+    const s = L.fit * z;
+    const mx = Math.max(0, (WORLD_W * s - L.w) / 2);
+    const my = Math.max(0, (WORLD_H * s - L.h) / 2);
+    return { zoom: z, x: clamp(v.x, -mx, mx), y: clamp(v.y, -my, my) };
+  }, []);
+
 
   /** Ease the rendered view toward the target (frame-rate independent). */
   const animate = useCallback(() => {
