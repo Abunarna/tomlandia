@@ -889,46 +889,113 @@ function nearClearZone(x: number, y: number) {
   return false;
 }
 
+/**
+ * Barriers run along the shared borders between two regions, so rivers, rocky
+ * ridges and treelines sit exactly on the seam where the biomes meet.
+ */
 function buildBarriers(): Barrier[] {
   const out: Barrier[] = [];
-  const kinds: BarrierKind[] = ["river", "rocks", "woodland"];
-  // Region 0 is the world-wide base layer and has no real border.
-  for (let i = 1; i < BIOMES.length; i++) {
-    const b = BIOMES[i]!;
-    const poly = b.poly;
-    const arcLen = 7;
-    const arcs = Math.floor(poly.length / arcLen);
-    for (let a = 0; a < arcs; a++) {
-      const roll = rand01(i * 91.3 + a * 13.7);
-      // roughly 40% of every border stretch ends up walled off once the
-      // keep-clear zones around towns, traders and spawns are honoured
-      if (roll > 0.92) continue;
-      const pts: [number, number][] = [];
-      for (let k = 0; k <= arcLen; k++) {
-        const p = poly[(a * arcLen + k) % poly.length]!;
-        pts.push([p[0], p[1]]);
+  // group border segments by the pair of regions they separate
+  const groups = new Map<string, { a: number; b: number; segs: [number, number, number, number][] }>();
+  const push = (a: number, b: number, seg: [number, number, number, number]) => {
+    const lo = Math.min(a, b);
+    const hi = Math.max(a, b);
+    const k = `${lo}|${hi}`;
+    let g = groups.get(k);
+    if (!g) groups.set(k, (g = { a: lo, b: hi, segs: [] }));
+    g.segs.push(seg);
+  };
+  for (let gy = 0; gy < GY; gy++) {
+    for (let gx = 0; gx < GX; gx++) {
+      const me = owner(gx, gy);
+      const right = owner(gx + 1, gy);
+      if (right >= 0 && right !== me) push(me, right, [gx + 1, gy, gx + 1, gy + 1]);
+      const below = owner(gx, gy + 1);
+      if (below >= 0 && below !== me) push(me, below, [gx, gy + 1, gx + 1, gy + 1]);
+    }
+  }
+
+  let n = 0;
+  for (const g of groups.values()) {
+    // chain the segments of this border into continuous polylines
+    const adj = new Map<string, string[]>();
+    const k = (x: number, y: number) => `${x},${y}`;
+    const remaining = new Set<string>();
+    for (const [ax, ay, bx, by] of g.segs) {
+      const ka = k(ax, ay);
+      const kb = k(bx, by);
+      remaining.add(`${ka}>${kb}`);
+      (adj.get(ka) ?? adj.set(ka, []).get(ka)!).push(kb);
+      (adj.get(kb) ?? adj.set(kb, []).get(kb)!).push(ka);
+    }
+    const chains: string[][] = [];
+    const starts = [...adj.keys()].sort();
+    for (const s of starts) {
+      let cur = s;
+      let chain: string[] = [];
+      // walk as far as possible from this vertex through unused segments
+      for (;;) {
+        const next = (adj.get(cur) ?? []).find(
+          (v) => remaining.has(`${cur}>${v}`) || remaining.has(`${v}>${cur}`),
+        );
+        if (!next) break;
+        remaining.delete(`${cur}>${next}`);
+        remaining.delete(`${next}>${cur}`);
+        if (!chain.length) chain.push(cur);
+        chain.push(next);
+        cur = next;
       }
-      if (pts.some(([x, y]) => nearClearZone(x, y))) continue;
-      const kind =
-        b.id === "desert"
-          ? kinds[Math.floor(rand01(i * 7.1 + a) * 2) + 1]! // deserts get rocks/woodland
-          : kinds[Math.floor(rand01(i * 7.1 + a) * 3)]!;
-      const xs = pts.map((p) => p[0]);
-      const ys = pts.map((p) => p[1]);
-      out.push({
-        id: `${b.key}-${a}`,
-        kind,
-        pts,
-        width: BARRIER_WIDTH[kind],
-        minX: Math.min(...xs),
-        minY: Math.min(...ys),
-        maxX: Math.max(...xs),
-        maxY: Math.max(...ys),
-      });
+      if (chain.length > 2) chains.push(chain);
+      chain = [];
+    }
+
+    const idA = REGION_SPECS[g.a]!.id;
+    const idB = REGION_SPECS[g.b]!.id;
+    for (const chain of chains) {
+      const arcLen = 6;
+      for (let a = 0; a * arcLen < chain.length - 2; a++) {
+        // roughly 40% of each border is walled off
+        if (rand01(g.a * 91.3 + g.b * 31.7 + a * 13.7) > 0.42) continue;
+        const slice = chain.slice(a * arcLen, a * arcLen + arcLen + 1);
+        if (slice.length < 3) continue;
+        const pts = slice.map((s) => {
+          const [vx, vy] = s.split(",").map(Number) as [number, number];
+          return vertex(vx, vy);
+        });
+        if (pts.some(([x, y]) => nearClearZone(x, y))) continue;
+        const roll = rand01(g.a * 7.1 + g.b * 3.3 + a);
+        const kind: BarrierKind =
+          idA === "winter" || idB === "winter"
+            ? roll > 0.35
+              ? "rocks"
+              : "river"
+            : idA === "desert" || idB === "desert"
+              ? roll > 0.45
+                ? "rocks"
+                : "woodland"
+              : roll > 0.6
+                ? "river"
+                : roll > 0.3
+                  ? "woodland"
+                  : "rocks";
+        const xs = pts.map((p) => p[0]);
+        const ys = pts.map((p) => p[1]);
+        out.push({
+          id: `bar-${n++}`,
+          kind,
+          pts,
+          width: BARRIER_WIDTH[kind],
+          minX: Math.min(...xs),
+          minY: Math.min(...ys),
+          maxX: Math.max(...xs),
+          maxY: Math.max(...ys),
+        });
+      }
     }
   }
   return out;
 }
+
 
 export const BARRIERS: Barrier[] = buildBarriers();
 
