@@ -192,35 +192,52 @@ export function WorldMap({ position, onClose }: Props) {
         onPointerLeave={endPointer}
         className="relative flex-1 touch-none overflow-hidden bg-muted/40"
       >
-        {BIOMES.map((b) => (
+        <svg
+          className="pointer-events-none absolute left-0 top-0"
+          width={size.w}
+          height={size.h}
+          style={{ overflow: "visible" }}
+        >
+          <defs>
+            {BIOMES.map((b) => (
+              <linearGradient key={`g-${b.key}`} id={`bg-${b.key}`} x1="0" y1="0" x2="0.6" y2="1">
+                <stop offset="0%" stopColor={b.top} />
+                <stop offset="100%" stopColor={b.bottom} />
+              </linearGradient>
+            ))}
+          </defs>
+          {BIOMES.map((b) => (
+            <path
+              key={b.key}
+              d={`${b.poly.map(([x, y], i) => `${i === 0 ? "M" : "L"}${sx(x)},${sy(y)}`).join(" ")} Z`}
+              fill={`url(#bg-${b.key})`}
+              stroke="rgba(70,55,70,0.20)"
+              strokeWidth={1}
+            />
+          ))}
+        </svg>
+
+        {BIOMES.filter((b) => b.label).map((b) => (
           <div
-            key={b.id}
-            className="absolute overflow-hidden"
-            style={{
-              left: sx(b.x),
-              top: sy(b.y),
-              width: b.w * scale,
-              height: b.h * scale,
-              background: `linear-gradient(160deg, ${b.top}, ${b.bottom})`,
-              boxShadow: "inset 0 0 0 1px rgba(70,55,70,0.18)",
-            }}
+            key={`label-${b.key}`}
+            className="pointer-events-none absolute px-2 py-1"
+            style={{ left: sx(b.x + b.w / 2), top: sy(b.y + b.h * 0.32), transform: "translate(-50%,-50%)" }}
           >
-            <div className="pointer-events-none px-2 py-1">
-              <div
-                className="font-display font-bold leading-tight text-[rgba(60,48,60,0.85)]"
-                style={{ fontSize: Math.max(9, Math.min(20, 13 * zoom)) }}
-              >
-                {b.name}
-              </div>
-              <div
-                className="leading-tight text-[rgba(60,48,60,0.6)]"
-                style={{ fontSize: Math.max(8, Math.min(15, 10 * zoom)) }}
-              >
-                {b.levels}
-              </div>
+            <div
+              className="text-center font-display font-bold leading-tight text-[rgba(60,48,60,0.85)]"
+              style={{ fontSize: Math.max(9, Math.min(20, 13 * zoom)) }}
+            >
+              {b.name}
+            </div>
+            <div
+              className="text-center leading-tight text-[rgba(60,48,60,0.6)]"
+              style={{ fontSize: Math.max(8, Math.min(15, 10 * zoom)) }}
+            >
+              {b.levels}
             </div>
           </div>
         ))}
+
 
         {BUILDINGS.map((b) => (
           <div

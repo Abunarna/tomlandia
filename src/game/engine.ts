@@ -1682,21 +1682,36 @@ export class GameEngine {
     return x > view.x - 120 && x < view.x + view.w + 120 && y > view.y - 160 && y < view.y + view.h + 160;
   }
 
+  private biomePath(b: BiomeDef) {
+    const p = new Path2D();
+    const pts = b.poly;
+    p.moveTo(pts[0]![0], pts[0]![1]);
+    for (let i = 1; i < pts.length; i++) {
+      const cur = pts[i]!;
+      const next = pts[(i + 1) % pts.length]!;
+      p.quadraticCurveTo(cur[0], cur[1], (cur[0] + next[0]) / 2, (cur[1] + next[1]) / 2);
+    }
+    p.closePath();
+    return p;
+  }
+
   private drawBiome(ctx: CanvasRenderingContext2D, b: BiomeDef) {
+    const path = this.biomePath(b);
+    ctx.save();
+    ctx.clip(path);
+
     const g = ctx.createLinearGradient(0, b.y, 0, b.y + b.h);
     g.addColorStop(0, b.top);
     g.addColorStop(1, b.bottom);
     ctx.fillStyle = g;
-    ctx.fillRect(b.x, b.y, b.w, b.h);
+    ctx.fillRect(b.x - 40, b.y - 40, b.w + 80, b.h + 80);
 
     // town plaza
-    if (b.id === "fields" || b.id === "desert" || b.id === "forest" || b.id === "winter") {
+    if (b.plaza) {
       ctx.fillStyle = b.detail;
       ctx.globalAlpha = 0.75;
       ctx.beginPath();
-      const px = b.id === "fields" ? b.x + 500 : b.id === "desert" ? b.x + 440 : b.id === "forest" ? b.x + 580 : b.x + 560;
-      const py = b.id === "fields" ? 120 : b.id === "desert" ? 150 : b.id === "forest" ? 420 : b.y + 180;
-      ctx.roundRect(px, py, 430, 400, 40);
+      ctx.roundRect(b.plaza.x, b.plaza.y, b.plaza.w, b.plaza.h, 40);
       ctx.fill();
       ctx.globalAlpha = 1;
     }
@@ -1716,18 +1731,31 @@ export class GameEngine {
       ctx.fillRect(x, y, 18, 4);
     }
 
-    // water feature per biome
-    if (b.id === "fields") this.pond(ctx, 300, 640, 110, 62, "#9fd8ee");
-    if (b.id === "forest") this.pond(ctx, b.x + 1000, 180, 130, 70, "#7fc9c1");
-    if (b.id === "winter") this.pond(ctx, 400, b.y + 560, 150, 74, "#cfeaf5");
-    if (b.id === "evil") this.pond(ctx, b.x + 1500, b.y + 800, 160, 80, "#5b4a86");
+    // water feature
+    if (b.pond) {
+      const water =
+        b.id === "winter" ? "#cfeaf5" : b.id === "evil" ? "#5b4a86" : b.id === "forest" ? "#7fc9c1" : "#9fd8ee";
+      this.pond(ctx, b.pond.x, b.pond.y, b.pond.rx, b.pond.ry, water);
+    }
+
+    ctx.restore();
+
+    // soft shoreline so edges read as organic, not cut out
+    ctx.save();
+    ctx.strokeStyle = "rgba(255,255,255,0.22)";
+    ctx.lineWidth = 6;
+    ctx.stroke(path);
+    ctx.restore();
 
     // biome label
-    ctx.font = "bold 26px ui-rounded, 'Baloo 2', system-ui, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillStyle = "rgba(255,255,255,0.35)";
-    ctx.fillText(b.name.toUpperCase(), b.x + b.w / 2, b.y + 60);
+    if (b.label) {
+      ctx.font = "bold 26px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillStyle = "rgba(255,255,255,0.35)";
+      ctx.fillText(b.name.toUpperCase(), b.x + b.w / 2, b.y + 70);
+    }
   }
+
 
   private pond(ctx: CanvasRenderingContext2D, x: number, y: number, rx: number, ry: number, color: string) {
     ctx.fillStyle = color;
