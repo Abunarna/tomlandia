@@ -28,11 +28,11 @@ import { sfx } from "./audio";
 import {
   MARKET_FEE,
   feeFor,
-  makePlayerListing,
-  seedListings,
-  simulate,
   suggestedPrice,
+  tradeText,
+  type BrowseRes,
   type Listing,
+  type MarketRes,
   type TradeLog,
 } from "./market";
 import { STALE_MS, type PresencePacket } from "./presence";
@@ -343,7 +343,6 @@ export class GameEngine {
     this.spawnVillagers();
 
     this.load(opts?.initialSave ?? null);
-    if (!this.listings.length) this.listings = seedListings();
     this.biome = biomeAt(this.px, this.py);
     this.resize();
   }
@@ -520,11 +519,19 @@ export class GameEngine {
       quest: this.quest,
       completed: this.completed,
       discovered: this.discovered,
-      listings: this.listings,
       clock: this.clock,
     };
   }
 
+
+  /** Persist without the "Saved" toast — used after local gold changes. */
+  private syncNow() {
+    try {
+      this.persist?.(this.toSave());
+    } catch {
+      /* ignore */
+    }
+  }
 
   save() {
     if (!this.persist) return;
@@ -569,7 +576,6 @@ export class GameEngine {
       this.quest = s.quest ?? null;
       this.completed = Array.isArray(s.completed) ? s.completed : [];
       this.discovered = Array.isArray(s.discovered) && s.discovered.length ? s.discovered : ["fields"];
-      if (Array.isArray(s.listings)) this.listings = s.listings as Listing[];
       if (typeof s.clock === "number") this.clock = s.clock;
 
       this.hp = Math.min(s.hp ?? this.maxHp, this.maxHp);
@@ -625,6 +631,7 @@ export class GameEngine {
     if (!slot) return;
     this.gold += item(slot.id).value * slot.qty;
     this.inv[index] = null;
+    this.syncNow();
     this.emitHud(true);
   }
 
@@ -1138,19 +1145,11 @@ export class GameEngine {
     // world clock
     this.clock += dt;
 
-    // simulated marketplace
+    // shared marketplace — refresh the shared order book periodically
     this.marketCd -= dt;
     if (this.marketCd <= 0) {
-      this.marketCd = 3 + Math.random() * 4;
-      const res = simulate(this.listings, now);
-      this.listings = res.listings;
-      if (res.earned > 0) {
-        this.gold += res.earned;
-        sfx.play("coin");
-        this.pushText(this.px, this.py - 64, `+${res.earned}g market sale`, "#ffe08a");
-      }
-      if (res.logs.length) this.tradeLog = [...res.logs, ...this.tradeLog].slice(0, 12);
-      this.emitHud(true);
+      this.marketCd = 12;
+      void this.refreshMarket();
     }
 
 
@@ -1220,6 +1219,7 @@ export class GameEngine {
     if (!this.addItem(id, 1)) return false;
     this.gold -= entry.price;
     this.pushText(this.px, this.py - 50, `-${entry.price}g`, "#ffd0a8");
+    this.syncNow();
     this.emitHud(true);
     return true;
   }
@@ -1234,6 +1234,7 @@ export class GameEngine {
     });
     this.gold += earned;
     if (earned > 0) this.pushText(this.px, this.py - 50, `+${earned}g`, "#ffe08a");
+    this.syncNow();
     this.emitHud(true);
     return earned;
   }
@@ -1294,6 +1295,7 @@ export class GameEngine {
     const cost = this.upgradeCostFor(which);
     if (!eq || cost === null || this.gold < cost) return false;
     this.gold -= cost;
+    this.syncNow();
     eq.plus += 1;
     this.pushText(this.px, this.py - 60, `${item(eq.id).name} +${eq.plus}!`, "#ffd98e");
     for (let i = 0; i < 16; i++) {
@@ -1351,49 +1353,118 @@ export class GameEngine {
     return suggestedPrice(id);
   }
 
-  /** List a stack (or part of it) from the bag on the global market. */
-  listSlot(index: number, qty: number, price: number): boolean {
+  /* ---------- Phase 10: shared order book ---------- */
+
+  /** Server hooks — the client only ever asks; the server moves items and gold. */
+  onMarketBrowse: (() => Promise<BrowseRes>) | null = null;
+  onMarketList: ((item: ItemId, qty: number, price: number) => Promise<MarketRes>) | null = null;
+  onMarketBuy: ((id: string) => Promise<MarketRes>) | null = null;
+  onMarketCancel: ((id: string) => Promise<MarketRes>) | null = null;
+
+  private marketBusy = false;
+
+  /** Pull the live order book and trade feed from the server. */
+  async refreshMarket(): Promise<void> {
+    if (!this.onMarketBrowse || this.marketBusy) return;
+    this.marketBusy = true;
+    try {
+      const res = await this.onMarketBrowse();
+      if (!res.ok) return;
+      this.applyServerState(res.state);
+      this.listings = (res.listings ?? []).map((l) => ({
+        id: l.id,
+        item: l.item,
+        qty: l.qty,
+        price: l.price,
+        seller: l.mine ? "You" : l.seller,
+        mine: l.mine,
+        npc: l.npc,
+      }));
+      this.tradeLog = (res.trades ?? []).map((t) => ({
+        id: t.id,
+        text: tradeText(t),
+        at: Date.parse(t.at) || Date.now(),
+      }));
+      this.emitHud(true);
+    } finally {
+      this.marketBusy = false;
+    }
+  }
+
+  /** List a stack (or part of it) from the bag on the shared market. */
+  async listSlot(index: number, qty: number, price: number): Promise<boolean> {
     const slot = this.inv[index];
-    if (!slot) return false;
-    const amount = Math.max(1, Math.min(qty, slot.qty));
+    if (!slot || !this.onMarketList) return false;
+    const amount = Math.max(1, Math.min(Math.round(qty), slot.qty));
     const unit = Math.max(1, Math.round(price));
-    if (!this.removeItem(slot.id, amount)) return false;
-    this.listings = [makePlayerListing(slot.id, amount, unit), ...this.listings];
+    const res = await this.onMarketList(slot.id, amount, unit);
+    if (!res.ok) {
+      sfx.play("error");
+      this.pushText(this.px, this.py - 50, this.marketReason(res.reason), "#f4b0b0");
+      return false;
+    }
+    this.applyServerState(res.state);
     sfx.play("craft");
     this.pushText(this.px, this.py - 56, `Listed ${amount}× ${item(slot.id).name}`, "#c9e8ff");
     this.emitHud(true);
+    await this.refreshMarket();
     return true;
   }
 
-  buyListing(id: string): boolean {
-    const idx = this.listings.findIndex((l) => l.id === id);
-    if (idx === -1) return false;
-    const l = this.listings[idx]!;
-    if (l.mine) return this.cancelListing(id);
-    const total = l.price * l.qty;
-    if (this.gold < total) {
+  /** Buy another player's (or a shopkeeper's) listing. */
+  async buyListing(id: string): Promise<boolean> {
+    const l = this.listings.find((x) => x.id === id);
+    if (l?.mine) return this.cancelListing(id);
+    if (!this.onMarketBuy) return false;
+    const res = await this.onMarketBuy(id);
+    if (!res.ok) {
       sfx.play("error");
-      this.pushText(this.px, this.py - 50, "Not enough gold", "#f4b0b0");
+      this.pushText(this.px, this.py - 50, this.marketReason(res.reason), "#f4b0b0");
+      await this.refreshMarket();
       return false;
     }
-    if (!this.addItem(l.item, l.qty)) return false;
-    this.gold -= total;
-    this.listings.splice(idx, 1);
+    this.applyServerState(res.state);
     sfx.play("coin");
-    this.pushText(this.px, this.py - 50, `-${total}g`, "#ffd0a8");
+    this.pushText(this.px, this.py - 50, `-${res.spent ?? 0}g`, "#ffd0a8");
     this.emitHud(true);
+    await this.refreshMarket();
     return true;
   }
 
   /** Pull your own listing back into the bag. */
-  cancelListing(id: string): boolean {
-    const idx = this.listings.findIndex((l) => l.id === id && l.mine);
-    if (idx === -1) return false;
-    const l = this.listings[idx]!;
-    if (!this.addItem(l.item, l.qty)) return false;
-    this.listings.splice(idx, 1);
+  async cancelListing(id: string): Promise<boolean> {
+    if (!this.onMarketCancel) return false;
+    const res = await this.onMarketCancel(id);
+    if (!res.ok) {
+      sfx.play("error");
+      this.pushText(this.px, this.py - 50, this.marketReason(res.reason), "#f4b0b0");
+      return false;
+    }
+    this.applyServerState(res.state);
     this.emitHud(true);
+    await this.refreshMarket();
     return true;
+  }
+
+  private marketReason(reason?: string): string {
+    switch (reason) {
+      case "poor":
+        return "Not enough gold";
+      case "bag_full":
+        return "Bag is full";
+      case "gone":
+        return "Already sold";
+      case "own_listing":
+        return "That's your listing";
+      case "too_many_listings":
+        return "Too many listings";
+      case "missing_items":
+        return "You don't have those";
+      case "too_fast":
+        return "Slow down";
+      default:
+        return "Trade failed";
+    }
   }
 
   toggleSound(): boolean {

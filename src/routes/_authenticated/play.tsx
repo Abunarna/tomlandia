@@ -6,6 +6,7 @@ import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
 import { attackMonster, craftItem, harvestNode } from "@/lib/world.functions";
+import { browseMarket, buyFromMarket, cancelMarketListing, listOnMarket } from "@/lib/market.functions";
 import type { NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
 import type { Json } from "@/integrations/supabase/types";
@@ -131,6 +132,12 @@ function Game() {
       engine.onHarvest = (id, x, y) => harvestNode({ data: { id, x, y } });
       engine.onAttack = (id, x, y) => attackMonster({ data: { id, x, y } });
       engine.onCraft = (recipe) => craftItem({ data: { recipe } });
+      // Phase 10 — the marketplace is a real shared order book.
+      engine.onMarketBrowse = () => browseMarket();
+      engine.onMarketList = (item, qty, price) => listOnMarket({ data: { item, qty, price } });
+      engine.onMarketBuy = (id) => buyFromMarket({ data: { id } });
+      engine.onMarketCancel = (id) => cancelMarketListing({ data: { id } });
+      void engine.refreshMarket();
       // The server writes rewards into the save row, so it has to exist first.
       if (!cloudSave) engine.save();
       engine.onInteract = (id) => {
@@ -172,6 +179,28 @@ function Game() {
       document.removeEventListener("visibilitychange", onVisible);
     };
   }, []);
+
+  // Phase 10 — shared marketplace: listings and trades update live for everyone.
+  useEffect(() => {
+    if (!ready) return;
+    let queued = false;
+    const bump = () => {
+      if (queued) return;
+      queued = true;
+      window.setTimeout(() => {
+        queued = false;
+        void engineRef.current?.refreshMarket();
+      }, 400);
+    };
+    const channel = supabase
+      .channel("market")
+      .on("postgres_changes", { event: "*", schema: "public", table: "market_listings" }, bump)
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "market_trades" }, bump)
+      .subscribe();
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }, [ready]);
 
   // Phase 8 — shared world state: follow node/monster changes in nearby cells.
   useEffect(() => {
@@ -282,7 +311,10 @@ function Game() {
             <OverlayButton
               label="Market"
               active={panel === "market"}
-              onClick={() => setPanel((p) => (p === "market" ? null : "market"))}
+              onClick={() => {
+                setPanel((p) => (p === "market" ? null : "market"));
+                void engineRef.current?.refreshMarket();
+              }}
             >
               <Store className="size-5" />
             </OverlayButton>
@@ -312,13 +344,13 @@ function Game() {
             onSell={(i) => engineRef.current?.sellSlot(i)}
             onUse={(i) => engineRef.current?.useSlot(i)}
             onBuyListing={(id) => {
-              engineRef.current?.buyListing(id);
+              void engineRef.current?.buyListing(id);
             }}
             onCancelListing={(id) => {
-              engineRef.current?.cancelListing(id);
+              void engineRef.current?.cancelListing(id);
             }}
             onList={(i, qty, price) => {
-              engineRef.current?.listSlot(i, qty, price);
+              void engineRef.current?.listSlot(i, qty, price);
             }}
             suggestPrice={(id) => engineRef.current?.suggestPrice(id) ?? 1}
           />
