@@ -607,7 +607,9 @@ export class GameEngine {
     } catch {
       /* ignore */
     }
+    this.unstick();
   }
+
 
   reset() {
     this.persist = null;
