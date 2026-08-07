@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Backpack, Hammer, LogOut, Store, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
+import { PresenceNet } from "@/game/presence";
 import type { NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
 import type { Json } from "@/integrations/supabase/types";
@@ -66,6 +67,8 @@ const EMPTY: HudSnapshot = {
   phase: "Day",
   market: { listings: [], log: [], fee: 0.05 },
   soundOn: true,
+  name: "Adventurer",
+  nearby: 0,
 };
 
 
@@ -158,6 +161,29 @@ function Game() {
       document.removeEventListener("visibilitychange", onVisible);
     };
   }, []);
+
+  // Phase 7 — shared presence: broadcast to our map cell, listen to neighbours.
+  useEffect(() => {
+    if (!ready || !username) return;
+    const engine = engineRef.current;
+    if (!engine) return;
+    engine.playerName = username;
+    const net = new PresenceNet(
+      user.id,
+      () => engine.presenceState(),
+      (p) => engine.applyPresence(p),
+      (id) => engine.removeRemote(id),
+    );
+    net.start();
+    const bye = () => net.farewell();
+    window.addEventListener("pagehide", bye);
+    return () => {
+      window.removeEventListener("pagehide", bye);
+      net.farewell();
+      net.stop();
+      engine.remotes.clear();
+    };
+  }, [ready, username, user.id]);
 
   useEffect(() => {
     let alive = true;
