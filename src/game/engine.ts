@@ -560,8 +560,29 @@ export class GameEngine {
     return { id: v.id, plus: v.plus ?? 0 };
   }
 
+  /** nudge the hero out of a barrier (old saves, or a ridge grown over them) */
+  private unstick() {
+    if (!blockedAt(this.px, this.py, 12)) return;
+    for (let r = 24; r <= 400; r += 24) {
+      for (let a = 0; a < 12; a++) {
+        const ang = (a / 12) * Math.PI * 2;
+        const x = this.px + Math.cos(ang) * r;
+        const y = this.py + Math.sin(ang) * r;
+        if (x < 20 || y < 20 || x > WORLD_W - 20 || y > WORLD_H - 20) continue;
+        if (!blockedAt(x, y, 12)) {
+          this.px = x;
+          this.py = y;
+          return;
+        }
+      }
+    }
+  }
+
   private load(s: SaveState | null) {
-    if (!s) return;
+    if (!s) {
+      this.unstick();
+      return;
+    }
     try {
       this.px = s.px ?? this.px;
       this.py = s.py ?? this.py;
