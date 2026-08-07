@@ -178,6 +178,80 @@ export type Database = {
         }
         Relationships: []
       }
+      market_listings: {
+        Row: {
+          created_at: string
+          id: string
+          is_npc: boolean
+          item_id: string
+          price: number
+          qty: number
+          seller_id: string | null
+          seller_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_npc?: boolean
+          item_id: string
+          price: number
+          qty: number
+          seller_id?: string | null
+          seller_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_npc?: boolean
+          item_id?: string
+          price?: number
+          qty?: number
+          seller_id?: string | null
+          seller_name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "market_listings_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "game_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      market_trades: {
+        Row: {
+          buyer_name: string
+          created_at: string
+          id: string
+          item_id: string
+          price: number
+          qty: number
+          seller_name: string
+        }
+        Insert: {
+          buyer_name: string
+          created_at?: string
+          id?: string
+          item_id: string
+          price: number
+          qty: number
+          seller_name: string
+        }
+        Update: {
+          buyer_name?: string
+          created_at?: string
+          id?: string
+          item_id?: string
+          price?: number
+          qty?: number
+          seller_name?: string
+        }
+        Relationships: []
+      }
       player_positions: {
         Row: {
           updated_at: string
@@ -371,6 +445,15 @@ export type Database = {
         Args: { _inv: Json; _item: string; _qty: number }
         Returns: Json
       }
+      market_browse: { Args: never; Returns: Json }
+      market_buy: { Args: { _id: string }; Returns: Json }
+      market_cancel: { Args: { _id: string }; Returns: Json }
+      market_list: {
+        Args: { _item: string; _price: number; _qty: number }
+        Returns: Json
+      }
+      market_player_name: { Args: { _uid: string }; Returns: string }
+      market_top_up_npc: { Args: never; Returns: undefined }
       skill_xp: { Args: { _data: Json; _skill: string }; Returns: number }
       track_position: {
         Args: { _uid: string; _x: number; _y: number }
