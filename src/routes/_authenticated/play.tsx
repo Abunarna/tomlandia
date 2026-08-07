@@ -77,26 +77,74 @@ function Game() {
   const [hud, setHud] = useState<HudSnapshot>(EMPTY);
   const [panel, setPanel] = useState<PanelId | null>(null);
   const [npc, setNpc] = useState<NpcRole | null>(null);
+  const [ready, setReady] = useState(false);
+  const [claimable, setClaimable] = useState<SaveState | null>(null);
 
+  const persist = useCallback(
+    (s: SaveState) => {
+      void supabase
+        .from("player_saves")
+        .upsert({ user_id: user.id, data: s as unknown as Json, updated_at: new Date().toISOString() });
+    },
+    [user.id],
+  );
+
+  // Load the cloud save first, then boot the engine with it.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const engine = new GameEngine(canvas, setHud, user.id);
-    engineRef.current = engine;
-    engine.onInteract = (id) => {
-      setPanel(null);
-      setNpc(id);
-    };
-    engine.emitHud(true);
-    engine.start();
-    const onResize = () => engine.resize();
-    window.addEventListener("resize", onResize);
+    let engine: GameEngine | null = null;
+    let cancelled = false;
+    const onResize = () => engine?.resize();
+
+    void (async () => {
+      const { data } = await supabase
+        .from("player_saves")
+        .select("data")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (cancelled) return;
+
+      const cloudSave = (data?.data as unknown as SaveState | undefined) ?? null;
+      engine = new GameEngine(canvas, setHud, { initialSave: cloudSave, onPersist: persist });
+      engineRef.current = engine;
+      engine.onInteract = (id) => {
+        setPanel(null);
+        setNpc(id);
+      };
+      engine.emitHud(true);
+      engine.start();
+      window.addEventListener("resize", onResize);
+      setReady(true);
+
+      // First login with no cloud save: offer to claim pre-account local progress.
+      const legacy = readLegacySave();
+      if (!cloudSave && legacy) setClaimable(legacy);
+      else if (legacy) clearLegacySave();
+    })();
+
     return () => {
+      cancelled = true;
       window.removeEventListener("resize", onResize);
-      engine.stop();
+      engine?.save();
+      engine?.stop();
       engineRef.current = null;
     };
-  }, [user.id]);
+  }, [user.id, persist]);
+
+  // Never lose progress when the tab closes or is backgrounded.
+  useEffect(() => {
+    const flush = () => engineRef.current?.save();
+    const onVisible = () => {
+      if (document.visibilityState === "hidden") flush();
+    };
+    window.addEventListener("pagehide", flush);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -124,6 +172,7 @@ function Game() {
     if (!e) return;
     e.joystick = { active, dx, dy };
   }, []);
+
 
   return (
     <main className="relative h-[100dvh] w-full overflow-hidden bg-background">
