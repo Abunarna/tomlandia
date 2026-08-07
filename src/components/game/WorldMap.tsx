@@ -4,6 +4,7 @@ import {
   BARRIERS,
   BIOMES,
   BUILDINGS,
+  STREETS,
   NPCS,
   NPC_ICONS,
   WORLD_H,
@@ -258,7 +259,22 @@ export function WorldMap({ position, onClose }: Props) {
         ))}
 
 
+        {STREETS.map((s, i) => (
+          <div
+            key={`street-${i}`}
+            className="absolute"
+            style={{
+              left: sx(s.x),
+              top: sy(s.y),
+              width: Math.max(2, s.w * scale),
+              height: Math.max(2, s.h * scale),
+              background: "rgba(196,166,124,0.65)",
+            }}
+          />
+        ))}
+
         {BUILDINGS.map((b) => (
+
           <div
             key={`${b.name}-${b.x}-${b.y}`}
             className="absolute rounded-[3px]"

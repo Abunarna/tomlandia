@@ -478,32 +478,196 @@ export const MONSTER_SPAWNS: MonsterSpawn[] = [
 /* Towns & buildings                                                   */
 /* ------------------------------------------------------------------ */
 
+export type BuildingKind = "house" | "inn" | "forge" | "tower" | "stall" | "chapel" | "barn";
+
 export interface BuildingDef {
   name: string;
+  kind: BuildingKind;
   x: number;
   y: number;
   w: number;
   h: number;
   roof: string;
   wall: string;
+  /** timber-frame beam colour */
+  beam: string;
 }
 
-export const BUILDINGS: BuildingDef[] = [
-  // Grand Haven (Peaceful Fields)
-  { name: "Forge", x: 560, y: 300, w: 130, h: 100, roof: "#d98b6a", wall: "#f0d9c0" },
-  { name: "Market Stall", x: 720, y: 330, w: 120, h: 90, roof: "#8fbfd9", wall: "#fdf1dd" },
-  { name: "Grand Haven Inn", x: 640, y: 170, w: 150, h: 110, roof: "#c9a7e0", wall: "#fdf1dd" },
-  // Sunspire (Sunscorch Desert)
-  { name: "Sunspire Spire", x: TILE_W * 2 + 660, y: 200, w: 150, h: 130, roof: "#f0c268", wall: "#fdf0d4" },
-  { name: "Arcane Loom", x: TILE_W * 2 + 840, y: 300, w: 130, h: 100, roof: "#e8b3d8", wall: "#fdf0d4" },
-  { name: "Golden Bank", x: TILE_W * 2 + 500, y: 320, w: 130, h: 100, roof: "#d9a95f", wall: "#fdf0d4" },
-  // Willowbrook village (Lush Forest)
-  { name: "Willowbrook Inn", x: TILE_W + 490, y: 420, w: 140, h: 105, roof: "#7fbd93", wall: "#f5f0da" },
-  { name: "Trapper's Hut", x: TILE_W + 670, y: 480, w: 115, h: 90, roof: "#b98a5c", wall: "#f5f0da" },
-  // Hearthspur camp (Winter Mountain)
-  { name: "Hearthspur Lodge", x: 620, y: TILE_H + 390, w: 150, h: 110, roof: "#8fb6d9", wall: "#f2f7fd" },
-  { name: "Frostforge", x: 820, y: TILE_H + 450, w: 125, h: 95, roof: "#a9c6e6", wall: "#f2f7fd" },
+/** dirt roads laid between the building blocks of a town */
+export interface StreetDef {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+const LOT_W = 118;
+const LOT_H = 92;
+/** left edges of the four building columns, relative to the town crossroads */
+const COL_X = [-330, -196, 70, 204];
+/** top edges of the four building rows */
+const ROW_Y = [-278, -168, 58, 168];
+
+interface TownSpec {
+  cx: number;
+  cy: number;
+  count: number;
+  wall: string;
+  beam: string;
+  roofs: string[];
+  anchors: { role: string; name: string; kind: BuildingKind }[];
+  fill: { name: string; kind: BuildingKind }[];
+}
+
+const TOWN_SPECS: TownSpec[] = [
+  {
+    cx: 715,
+    cy: 310,
+    count: 10,
+    wall: "#fdf1dd",
+    beam: "#8b6b52",
+    roofs: ["#d98b6a", "#c9a7e0", "#8fbfd9", "#c08d68", "#b7906d"],
+    anchors: [
+      { role: "smith", name: "Haven Forge", kind: "forge" },
+      { role: "merchant", name: "Market Stall", kind: "stall" },
+      { role: "elder", name: "Moot Hall", kind: "chapel" },
+    ],
+    fill: [
+      { name: "Grand Haven Inn", kind: "inn" },
+      { name: "Watchtower", kind: "tower" },
+      { name: "Bakehouse", kind: "house" },
+      { name: "Cooper's Cottage", kind: "house" },
+      { name: "Granary", kind: "barn" },
+      { name: "Stables", kind: "barn" },
+      { name: "Chandler's House", kind: "house" },
+    ],
+  },
+  {
+    cx: TILE_W * 2 + 660,
+    cy: 325,
+    count: 10,
+    wall: "#fdf0d4",
+    beam: "#a8834e",
+    roofs: ["#f0c268", "#e8b3d8", "#d9a95f", "#e0b070", "#caa063"],
+    anchors: [
+      { role: "sun_smith", name: "Sunspire Forge", kind: "forge" },
+      { role: "weaver", name: "Arcane Loom", kind: "tower" },
+      { role: "banker", name: "Golden Bank", kind: "chapel" },
+    ],
+    fill: [
+      { name: "Sunspire Spire", kind: "tower" },
+      { name: "Caravan Inn", kind: "inn" },
+      { name: "Spice Stall", kind: "stall" },
+      { name: "Sun Temple", kind: "chapel" },
+      { name: "Dune Stables", kind: "barn" },
+      { name: "Potter's House", kind: "house" },
+      { name: "Water House", kind: "house" },
+    ],
+  },
+  {
+    cx: TILE_W + 620,
+    cy: 500,
+    count: 5,
+    wall: "#f5f0da",
+    beam: "#6f5636",
+    roofs: ["#7fbd93", "#b98a5c", "#95c9a4", "#8aa86d"],
+    anchors: [
+      { role: "innkeeper", name: "Willowbrook Inn", kind: "inn" },
+      { role: "trapper", name: "Trapper's Hut", kind: "house" },
+    ],
+    fill: [
+      { name: "Woodcutter's Lodge", kind: "barn" },
+      { name: "Herb Stall", kind: "stall" },
+      { name: "Willow Shrine", kind: "chapel" },
+    ],
+  },
+  {
+    cx: 800,
+    cy: TILE_H + 500,
+    count: 5,
+    wall: "#f2f7fd",
+    beam: "#6d7f92",
+    roofs: ["#8fb6d9", "#a9c6e6", "#9fb6cc", "#87a7c4"],
+    anchors: [{ role: "frost_smith", name: "Frostforge", kind: "forge" }],
+    fill: [
+      { name: "Hearthspur Lodge", kind: "inn" },
+      { name: "Ice Cellar", kind: "barn" },
+      { name: "Furrier's Stall", kind: "stall" },
+      { name: "Snow Chapel", kind: "chapel" },
+    ],
+  },
 ];
+
+/** a lot is only usable when it does not swallow a resource node or spawn */
+function lotFree(x: number, y: number) {
+  const pad = 34;
+  const hit = (px: number, py: number) =>
+    px > x - pad && px < x + LOT_W + pad && py > y - pad && py < y + LOT_H + pad;
+  return (
+    !NODE_SPAWNS.some((n) => hit(n.x, n.y)) && !MONSTER_SPAWNS.some((m) => hit(m.x, m.y))
+  );
+}
+
+const buildings: BuildingDef[] = [];
+const streets: StreetDef[] = [];
+const npcSpots: Record<string, { x: number; y: number }> = {};
+
+for (const t of TOWN_SPECS) {
+  streets.push({ x: t.cx - 360, y: t.cy - 76, w: 720, h: 140 });
+  streets.push({ x: t.cx - 80, y: t.cy - 300, w: 152, h: 580 });
+
+  const lots: { x: number; y: number }[] = [];
+  for (const ox of COL_X) for (const oy of ROW_Y) lots.push({ x: t.cx + ox, y: t.cy + oy });
+  // build outwards from the crossroads so the traders sit on the main street
+  lots.sort(
+    (a, b) =>
+      Math.hypot(a.x + LOT_W / 2 - t.cx, a.y + LOT_H / 2 - t.cy) -
+      Math.hypot(b.x + LOT_W / 2 - t.cx, b.y + LOT_H / 2 - t.cy),
+  );
+  const chosen = lots.filter((l) => lotFree(l.x, l.y)).slice(0, t.count);
+  const plan = [...t.anchors, ...t.fill];
+
+  chosen.forEach((lot, i) => {
+    const p = plan[i];
+    if (!p) return;
+    const kind = p.kind;
+    const w = kind === "tower" ? 96 : kind === "stall" ? 104 : LOT_W;
+    const h = kind === "tower" ? 118 : kind === "stall" ? 74 : LOT_H;
+    const x = lot.x + (LOT_W - w) / 2;
+    const y = lot.y + (LOT_H - h) / 2;
+    buildings.push({
+      name: p.name,
+      kind,
+      x,
+      y,
+      w,
+      h,
+      roof: t.roofs[i % t.roofs.length]!,
+      wall: t.wall,
+      beam: t.beam,
+    });
+    const role = (p as { role?: string }).role;
+    if (role) {
+      // traders stand out on the main street, in front of their building
+      const above = y + h / 2 < t.cy;
+      let sx = x + w / 2;
+      const sy = above ? t.cy - 44 : t.cy + 36;
+      while (Object.values(npcSpots).some((s) => Math.abs(s.x - sx) < 52 && Math.abs(s.y - sy) < 40)) {
+        sx += 56;
+      }
+      npcSpots[role] = { x: sx, y: sy };
+    }
+
+
+
+  });
+}
+
+export const BUILDINGS: BuildingDef[] = buildings;
+export const STREETS: StreetDef[] = streets;
+const NPC_SPOTS: Record<string, { x: number; y: number }> = npcSpots;
+const spot = (role: string, fx: number, fy: number) => NPC_SPOTS[role] ?? { x: fx, y: fy };
+
 
 export type NpcRole =
   | "smith"
@@ -530,16 +694,17 @@ export interface NpcDef {
 }
 
 export const NPCS: NpcDef[] = [
-  { id: "smith", name: "Bruna", title: "Blacksmith", x: 625, y: 420, robe: "#d98b6a", hair: "#5c3a2e", greeting: "Fresh off the anvil. Gold first, hero.", services: ["shop", "smith", "upgrade"] },
-  { id: "merchant", name: "Pip", title: "Market Trader", x: 782, y: 442, robe: "#8fbfd9", hair: "#3f5f78", greeting: "Ore, logs, feathers — I'll take the lot.", services: ["sell", "shop"] },
-  { id: "elder", name: "Elder Maren", title: "Village Elder", x: 712, y: 300, robe: "#c9a7e0", hair: "#e6e0ef", greeting: "Grand Haven could use a hand today.", services: ["quests"] },
-  { id: "sun_smith", name: "Master Alric", title: "Sunspire Smith", x: TILE_W * 2 + 735, y: 350, robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings when it's shaped right.", services: ["smith", "upgrade"] },
-  { id: "weaver", name: "Lira", title: "Arcane Weaver", x: TILE_W * 2 + 905, y: 420, robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["tailor"] },
-  { id: "banker", name: "Coinmaster Odo", title: "Golden Bank", x: TILE_W * 2 + 565, y: 440, robe: "#d9a95f", hair: "#4a3b2e", greeting: "Every scrap has a price, friend.", services: ["sell"] },
-  { id: "trapper", name: "Rook", title: "Trapper", x: TILE_W + 728, y: 590, robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin", "sell"] },
-  { id: "innkeeper", name: "Mabel", title: "Willowbrook Inn", x: TILE_W + 560, y: 540, robe: "#7fbd93", hair: "#a86f45", greeting: "A warm meal keeps a hero standing.", services: ["shop"] },
-  { id: "frost_smith", name: "Sigrid", title: "Frostforge Smith", x: 882, y: TILE_H + 560, robe: "#a9c6e6", hair: "#e6eef7", greeting: "Only runite holds an edge up here.", services: ["smith", "upgrade", "shop"] },
+  { id: "smith", name: "Bruna", title: "Blacksmith", ...spot("smith", 625, 420), robe: "#d98b6a", hair: "#5c3a2e", greeting: "Fresh off the anvil. Gold first, hero.", services: ["shop", "smith", "upgrade"] },
+  { id: "merchant", name: "Pip", title: "Market Trader", ...spot("merchant", 782, 442), robe: "#8fbfd9", hair: "#3f5f78", greeting: "Ore, logs, feathers — I'll take the lot.", services: ["sell", "shop"] },
+  { id: "elder", name: "Elder Maren", title: "Village Elder", ...spot("elder", 712, 300), robe: "#c9a7e0", hair: "#e6e0ef", greeting: "Grand Haven could use a hand today.", services: ["quests"] },
+  { id: "sun_smith", name: "Master Alric", title: "Sunspire Smith", ...spot("sun_smith", TILE_W * 2 + 735, 350), robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings when it's shaped right.", services: ["smith", "upgrade"] },
+  { id: "weaver", name: "Lira", title: "Arcane Weaver", ...spot("weaver", TILE_W * 2 + 905, 420), robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["tailor"] },
+  { id: "banker", name: "Coinmaster Odo", title: "Golden Bank", ...spot("banker", TILE_W * 2 + 565, 440), robe: "#d9a95f", hair: "#4a3b2e", greeting: "Every scrap has a price, friend.", services: ["sell"] },
+  { id: "trapper", name: "Rook", title: "Trapper", ...spot("trapper", TILE_W + 728, 590), robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin", "sell"] },
+  { id: "innkeeper", name: "Mabel", title: "Willowbrook Inn", ...spot("innkeeper", TILE_W + 560, 540), robe: "#7fbd93", hair: "#a86f45", greeting: "A warm meal keeps a hero standing.", services: ["shop"] },
+  { id: "frost_smith", name: "Sigrid", title: "Frostforge Smith", ...spot("frost_smith", 882, TILE_H + 560), robe: "#a9c6e6", hair: "#e6eef7", greeting: "Only runite holds an edge up here.", services: ["smith", "upgrade", "shop"] },
 ];
+
 
 export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
   // Gear is never sold by NPCs — weapons and armour must be crafted by players
@@ -755,7 +920,22 @@ function distToSeg(px: number, py: number, ax: number, ay: number, bx: number, b
   return Math.hypot(px - (ax + dx * t), py - (ay + dy * t));
 }
 
-/** true when the world point is inside a river / rock ridge / dense woodland */
+/** solid footprints: building walls (the lower part, so roofs overlap freely) */
+const SOLID_RECTS = BUILDINGS.map((b) => ({
+  x: b.x + 2,
+  y: b.y + b.h * 0.32,
+  w: b.w - 4,
+  h: b.h * 0.68 + 6,
+}));
+
+/** solid trunks / boulders / bushes — small enough to still harvest from any side */
+const SOLID_DISCS = NODE_SPAWNS.map((n) => ({
+  x: n.x,
+  y: n.y + (NODE_DEFS[n.kind].shape === "tree" ? 8 : 2),
+  r: NODE_DEFS[n.kind].shape === "bush" ? 11 : 14,
+}));
+
+/** true when the world point is inside a barrier, a building or a resource node */
 export function blockedAt(x: number, y: number, pad = 10): boolean {
   for (const bar of BARRIERS) {
     const r = bar.width / 2 + pad;
@@ -766,8 +946,16 @@ export function blockedAt(x: number, y: number, pad = 10): boolean {
       if (distToSeg(x, y, a[0], a[1], b[0], b[1]) < r) return true;
     }
   }
+  for (const s of SOLID_RECTS) {
+    if (x > s.x - pad && x < s.x + s.w + pad && y > s.y - pad && y < s.y + s.h + pad) return true;
+  }
+  for (const d of SOLID_DISCS) {
+    const r = d.r + pad;
+    if (Math.abs(x - d.x) < r && Math.abs(y - d.y) < r && Math.hypot(x - d.x, y - d.y) < r) return true;
+  }
   return false;
 }
+
 
 export const BARRIER_LABEL: Record<BarrierKind, string> = {
   river: "River",
