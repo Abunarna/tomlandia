@@ -4,6 +4,7 @@ import {
   BARRIERS,
   BIOMES,
   BUILDINGS,
+  STREETS,
   NPCS,
   NPC_ICONS,
   WORLD_H,
