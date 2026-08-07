@@ -38,23 +38,66 @@ import {
 import { STALE_MS, type PresencePacket } from "./presence";
 import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
 
+/**
+ * Phase 9 — the server owns progression. Every action routine returns the
+ * player's authoritative inventory / gold / skill XP, which replaces whatever
+ * the client thought it had.
+ */
+export interface ServerState {
+  inv?: InvSlot[] | null;
+  gold?: number | null;
+  skills?: Partial<Record<SkillId, { xp: number }>> | null;
+}
+
 /** Authoritative reply from the shared-world harvest routine. */
 export interface HarvestRes {
   ok: boolean;
   reason?: string;
   charges?: number;
   respawn_at?: string | null;
+  item?: ItemId;
+  qty?: number;
+  skill?: SkillId;
+  xp?: number;
+  leveled?: boolean;
+  req?: number;
+  state?: ServerState;
 }
 
-/** Authoritative reply from the shared-world damage routine. */
+/** Authoritative reply from the shared-world combat routine. */
 export interface DamageRes {
   ok: boolean;
   reason?: string;
+  /** Damage the server decided we dealt. */
+  dmg?: number;
+  /** Damage the server decided the monster dealt back. */
+  taken?: number;
   hp?: number;
+  max_hp?: number;
   killed?: boolean;
   credited?: boolean;
+  kind?: string;
+  gold?: number;
+  loot?: { item: ItemId; qty: number }[];
+  xp?: number;
+  leveled?: boolean;
   tagged_by?: string | null;
   respawn_at?: string | null;
+  state?: ServerState;
+}
+
+/** Authoritative reply from the crafting routine. */
+export interface CraftRes {
+  ok: boolean;
+  reason?: string;
+  out?: ItemId;
+  out_qty?: number;
+  skill?: SkillId;
+  xp?: number;
+  leveled?: boolean;
+  req?: number;
+  item?: ItemId;
+  state?: ServerState;
 }
 
 /** Another real player, mirrored from realtime presence broadcasts. */
@@ -309,10 +352,12 @@ export class GameEngine {
 
   /** Our own user id, so we can tell whether we own a monster's kill credit. */
   userId = "";
-  /** Server-side harvest. Resolves with the authoritative node state. */
-  onHarvest: ((id: number) => Promise<HarvestRes>) | null = null;
-  /** Server-side monster damage. Resolves with the authoritative monster state. */
-  onDamage: ((id: number, dmg: number) => Promise<DamageRes>) | null = null;
+  /** Server-side harvest. Position is sent so the server can verify range. */
+  onHarvest: ((id: number, x: number, y: number) => Promise<HarvestRes>) | null = null;
+  /** Server-side attack. The server decides the damage — we never send it. */
+  onAttack: ((id: number, x: number, y: number) => Promise<DamageRes>) | null = null;
+  /** Server-side crafting. The server checks materials and grants the result. */
+  onCraft: ((recipe: string) => Promise<CraftRes>) | null = null;
 
   /** Mirror authoritative node rows (snapshot or realtime) into the world. */
   applyNodeRows(rows: { id: number; charges: number; respawn_at: string | null }[]) {
@@ -719,39 +764,67 @@ export class GameEngine {
     return d;
   }
 
+  /**
+   * Phase 9 — adopt the server's view of our progression. The action routines
+   * return the whole inventory / gold / skill block after they applied the
+   * reward, so the client never invents a number.
+   */
+  applyServerState(state: ServerState | undefined | null) {
+    if (!state) return;
+    if (Array.isArray(state.inv)) {
+      this.inv = state.inv.slice(0, INV_SIZE).map((s) => (s ? { ...s } : null));
+      while (this.inv.length < INV_SIZE) this.inv.push(null);
+    }
+    if (typeof state.gold === "number") this.gold = state.gold;
+    if (state.skills) {
+      for (const id of SKILL_IDS) {
+        const xp = state.skills[id]?.xp;
+        if (typeof xp === "number") this.skills[id] = { xp };
+      }
+      this.hp = Math.min(this.hp, this.maxHp);
+    }
+  }
 
-  /** Loot + XP for a kill we own (we tagged the monster first). */
-  private rewardKill(m: Monster, md: (typeof MONSTER_DEFS)[MonsterKind]) {
+  /** Level-up fanfare, fired when the server reports a new level. */
+  private celebrateLevel(skill: SkillId) {
+    sfx.play("level");
+    this.pushText(this.px, this.py - 70, `${skill.toUpperCase()} LV ${this.lvl(skill)}!`, "#ffd98e");
+    for (let i = 0; i < 18; i++) {
+      this.parts.push({
+        x: this.px,
+        y: this.py - 10,
+        vx: (Math.random() - 0.5) * 120,
+        vy: -Math.random() * 130,
+        life: 1,
+        color: "#ffe6a7",
+        size: 2 + Math.random() * 2,
+      });
+    }
+  }
 
-              
-              
-              const gold = md.gold[0] + Math.floor(Math.random() * (md.gold[1] - md.gold[0] + 1));
-              this.gold += gold;
-              sfx.play("coin");
-              this.pushText(m.x, m.y - 40, `+${gold}g`, "#ffe08a");
-
-              if (Math.random() < md.dropChance) {
-                this.addItem(md.drop, 1);
-                this.pushText(m.x + 16, m.y - 56, `+1 ${item(md.drop).name}`, "#dff6c9");
-              }
-              if (md.hide) {
-                this.addItem(md.hide, 1);
-                this.grantXp("skinning", md.hideXp);
-                this.pushText(m.x - 16, m.y - 68, `+1 ${item(md.hide).name}`, "#f0d3b0");
-              }
-              this.questTick("kill", m.kind);
-              this.grantXp("combat", md.xp);
-              for (let i = 0; i < 12; i++) {
-                this.parts.push({
-                  x: m.x,
-                  y: m.y,
-                  vx: (Math.random() - 0.5) * 100,
-                  vy: -Math.random() * 90,
-                  life: 0.7,
-                  color: md.body,
-                  size: 2 + Math.random() * 2,
-                });
-              }
+  /** Kill feedback for a kill the server credited to us. */
+  private rewardKill(m: Monster, md: (typeof MONSTER_DEFS)[MonsterKind], res: DamageRes) {
+    if (res.gold) {
+      sfx.play("coin");
+      this.pushText(m.x, m.y - 40, `+${res.gold}g`, "#ffe08a");
+    }
+    (res.loot ?? []).forEach((l, i) => {
+      this.pushText(m.x + (i % 2 ? 16 : -16), m.y - 56 - i * 12, `+${l.qty} ${item(l.item).name}`, "#dff6c9");
+    });
+    this.questTick("kill", m.kind);
+    this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
+    if (res.leveled) this.celebrateLevel("combat");
+    for (let i = 0; i < 12; i++) {
+      this.parts.push({
+        x: m.x,
+        y: m.y,
+        vx: (Math.random() - 0.5) * 100,
+        vy: -Math.random() * 90,
+        life: 0.7,
+        color: md.body,
+        size: 2 + Math.random() * 2,
+      });
+    }
   }
 
   private autoEat() {
@@ -813,28 +886,38 @@ export class GameEngine {
           }
           if (this.gatherProgress >= 1 && !n.pending) {
             this.gatherProgress = 0;
-            // Shared node: the server decides whether this swing yields a
-            // resource. Several players can mine the same rock at once; it
-            // depletes for everyone when the shared charges run out.
+            // Phase 9 — the server checks range, level, cooldown and node
+            // charges, then writes the yield and XP straight into our save.
             n.pending = true;
             const claim: Promise<HarvestRes> = this.onHarvest
-              ? this.onHarvest(n.id)
-              : Promise.resolve({ ok: true, charges: n.charges - 1, respawn_at: null });
+              ? this.onHarvest(n.id, this.px, this.py)
+              : Promise.resolve({ ok: false, reason: "offline" });
             void claim
               .then((res) => {
                 n.pending = false;
                 if (typeof res.charges === "number") n.charges = res.charges;
-                n.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : 0;
-                n.depleted = n.respawnAt > Date.now();
+                if (res.respawn_at !== undefined) {
+                  n.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : 0;
+                  n.depleted = n.respawnAt > Date.now();
+                }
                 if (res.ok) {
-                  this.addItem(def.item, 1);
-                  this.questTick("gather", def.item);
-                  this.grantXp(def.skill, def.xp);
+                  this.applyServerState(res.state);
+                  if (res.item) {
+                    this.questTick("gather", res.item);
+                    this.pushText(n.x, n.y - 20, `+${res.qty ?? 1} ${item(res.item).name}`, "#dff6c9");
+                  }
+                  this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
+                  if (res.leveled && res.skill) this.celebrateLevel(res.skill);
                   sfx.play("gather");
-                  this.pushText(n.x, n.y - 20, `+1 ${item(def.item).name}`, "#dff6c9");
                 } else if (res.reason === "depleted") {
                   this.pushText(n.x, n.y - 20, "Depleted", "#cbb9a4");
+                } else if (res.reason === "bag_full") {
+                  this.pushText(n.x, n.y - 20, "Bag is full", "#f4b0b0");
+                } else if (res.reason === "low_level") {
+                  this.pushText(n.x, n.y - 20, `Needs ${res.skill} ${res.req}`, "#f4b0b0");
+                  this.target = { type: "none" };
                 }
+                this.emitHud(true);
                 if (n.depleted && this.target.type === "node" && this.target.id === n.id) {
                   this.target = { type: "none" };
                 }
@@ -861,19 +944,14 @@ export class GameEngine {
           this.activityProgress = 1 - Math.max(0, this.combatCd);
           if (this.combatCd <= 0) {
             this.combatCd = 1;
-            const dmg = Math.max(1, Math.round(this.attack - md.defense / 2));
-            m.hitFlash = 0.2;
-            sfx.play("hit");
-            this.pushText(m.x, m.y - 24, `${dmg}`, "#fff0c9");
 
-            // Shared monster: the server owns its health pool and decides who
-            // gets the kill. First player to land a hit is tagged as owner and
-            // takes the loot and XP.
+            // Phase 9 — the server resolves the swing: it reads our stats from
+            // the stored save, decides damage both ways, and awards the kill.
             if (!m.pending) {
               m.pending = true;
-              const swing: Promise<DamageRes> = this.onDamage
-                ? this.onDamage(m.id, dmg)
-                : Promise.resolve({ ok: true, hp: Math.max(0, m.hp - dmg), killed: m.hp - dmg <= 0, credited: true });
+              const swing: Promise<DamageRes> = this.onAttack
+                ? this.onAttack(m.id, this.px, this.py)
+                : Promise.resolve({ ok: false, reason: "offline" });
               void swing
                 .then((res) => {
                   m.pending = false;
@@ -884,34 +962,39 @@ export class GameEngine {
                     }
                     return;
                   }
+
+                  m.hitFlash = 0.2;
+                  sfx.play("hit");
+                  this.pushText(m.x, m.y - 24, `${res.dmg ?? 0}`, "#fff0c9");
                   if (typeof res.hp === "number") m.hp = res.hp;
                   if (res.tagged_by !== undefined) m.taggedBy = res.tagged_by ?? null;
+                  this.applyServerState(res.state);
+
                   if (res.killed) {
                     m.dead = true;
                     m.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : Date.now() + 12000;
-                    if (res.credited) this.rewardKill(m, md);
+                    if (res.credited) this.rewardKill(m, md, res);
                     else this.pushText(m.x, m.y - 40, "Tagged by another player", "#cbb9a4");
                     if (this.target.type === "monster" && this.target.id === m.id) this.target = { type: "none" };
+                  } else {
+                    // Damage taken is the server's number too.
+                    this.hp -= Math.max(0, res.taken ?? 0);
+                    if (res.taken) this.pushText(this.px, this.py - 34, `-${res.taken}`, "#f4b0b0");
+                    this.autoEat();
+                    if (this.hp <= 0) {
+                      this.hp = Math.ceil(this.maxHp * 0.5);
+                      this.px = 700;
+                      this.py = 620;
+                      this.gold = Math.max(0, Math.floor(this.gold * 0.9));
+                      this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
+                      this.target = { type: "none" };
+                    }
                   }
+                  this.emitHud(true);
                 })
                 .catch(() => {
                   m.pending = false;
                 });
-            }
-
-            if (!m.dead) {
-              const taken = Math.max(1, Math.round(md.attack - this.defense / 2));
-              this.hp -= taken;
-              this.pushText(this.px, this.py - 34, `-${taken}`, "#f4b0b0");
-              this.autoEat();
-              if (this.hp <= 0) {
-                this.hp = Math.ceil(this.maxHp * 0.5);
-                this.px = 700;
-                this.py = 620;
-                this.gold = Math.max(0, Math.floor(this.gold * 0.9));
-                this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
-                this.target = { type: "none" };
-              }
             }
           }
         } else {
@@ -1162,18 +1245,42 @@ export class GameEngine {
     return r.inputs.every((i) => this.countItem(i.id) >= i.qty);
   }
 
+  /** Phase 9 — the server consumes the materials and grants the result. */
   craft(recipeId: string): boolean {
     const r = RECIPES.find((x) => x.id === recipeId);
-    if (!r || !this.canCraft(r.id)) return false;
-    for (const i of r.inputs) this.removeItem(i.id, i.qty);
-    this.addItem(r.out, r.outQty);
-    sfx.play("craft");
-    this.grantXp(r.skill, r.xp);
-
-    this.pushText(this.px, this.py - 56, `+${r.outQty} ${item(r.out).name}`, "#dff6c9");
-    this.emitHud(true);
+    if (!r || !this.onCraft) return false;
+    if (this.craftPending) return false;
+    this.craftPending = true;
+    void this.onCraft(r.id)
+      .then((res) => {
+        this.craftPending = false;
+        if (!res.ok) {
+          const why =
+            res.reason === "bag_full"
+              ? "Bag is full"
+              : res.reason === "low_level"
+                ? `Needs ${res.skill} ${res.req}`
+                : res.reason === "missing_materials"
+                  ? "Missing materials"
+                  : "Not right now";
+          this.pushText(this.px, this.py - 56, why, "#f4b0b0");
+          this.emitHud(true);
+          return;
+        }
+        this.applyServerState(res.state);
+        sfx.play("craft");
+        this.pushText(this.px, this.py - 56, `+${res.out_qty ?? 1} ${item(r.out).name}`, "#dff6c9");
+        this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
+        if (res.leveled) this.celebrateLevel(r.skill);
+        this.emitHud(true);
+      })
+      .catch(() => {
+        this.craftPending = false;
+      });
     return true;
   }
+
+  private craftPending = false;
 
   upgradeCostFor(which: "weapon" | "armor"): number | null {
     const eq = which === "weapon" ? this.weapon : this.armor;
