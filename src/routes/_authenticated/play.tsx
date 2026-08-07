@@ -4,6 +4,8 @@ import { Backpack, Hammer, LogOut, Store, Volume2, VolumeX } from "lucide-react"
 import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
+import { WorldNet } from "@/game/world";
+import { damageMonster, harvestNode } from "@/lib/world.functions";
 import type { NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
 import type { Json } from "@/integrations/supabase/types";
@@ -124,6 +126,10 @@ function Game() {
       const cloudSave = (data?.data as unknown as SaveState | undefined) ?? null;
       engine = new GameEngine(canvas, setHud, { initialSave: cloudSave, onPersist: persist });
       engineRef.current = engine;
+      // Phase 8 — shared world: every node/monster mutation goes to the server.
+      engine.userId = user.id;
+      engine.onHarvest = (id) => harvestNode({ data: { id } });
+      engine.onDamage = (id, dmg) => damageMonster({ data: { id, dmg } });
       engine.onInteract = (id) => {
         setPanel(null);
         setNpc(id);
@@ -163,6 +169,20 @@ function Game() {
       document.removeEventListener("visibilitychange", onVisible);
     };
   }, []);
+
+  // Phase 8 — shared world state: follow node/monster changes in nearby cells.
+  useEffect(() => {
+    if (!ready) return;
+    const engine = engineRef.current;
+    if (!engine) return;
+    const net = new WorldNet({
+      position: () => ({ x: engine.px, y: engine.py }),
+      onNodes: (rows) => engine.applyNodeRows(rows),
+      onMonsters: (rows) => engine.applyMonsterRows(rows),
+    });
+    void net.start();
+    return () => net.stop();
+  }, [ready]);
 
   // Phase 7 — shared presence: broadcast to our map cell, listen to neighbours.
   useEffect(() => {

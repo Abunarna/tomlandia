@@ -53,12 +53,115 @@ export type Database = {
         }
         Relationships: []
       }
+      world_cooldowns: {
+        Row: {
+          key: string
+          next_at: string
+          user_id: string
+        }
+        Insert: {
+          key: string
+          next_at: string
+          user_id: string
+        }
+        Update: {
+          key?: string
+          next_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      world_monsters: {
+        Row: {
+          cell: string
+          hp: number
+          id: number
+          kind: string
+          max_hp: number
+          respawn_at: string | null
+          tagged_at: string | null
+          tagged_by: string | null
+          updated_at: string
+          x: number
+          y: number
+        }
+        Insert: {
+          cell: string
+          hp: number
+          id: number
+          kind: string
+          max_hp: number
+          respawn_at?: string | null
+          tagged_at?: string | null
+          tagged_by?: string | null
+          updated_at?: string
+          x: number
+          y: number
+        }
+        Update: {
+          cell?: string
+          hp?: number
+          id?: number
+          kind?: string
+          max_hp?: number
+          respawn_at?: string | null
+          tagged_at?: string | null
+          tagged_by?: string | null
+          updated_at?: string
+          x?: number
+          y?: number
+        }
+        Relationships: []
+      }
+      world_nodes: {
+        Row: {
+          cell: string
+          charges: number
+          gather_s: number
+          id: number
+          kind: string
+          max_charges: number
+          respawn_at: string | null
+          respawn_s: number
+          updated_at: string
+          x: number
+          y: number
+        }
+        Insert: {
+          cell: string
+          charges: number
+          gather_s: number
+          id: number
+          kind: string
+          max_charges: number
+          respawn_at?: string | null
+          respawn_s: number
+          updated_at?: string
+          x: number
+          y: number
+        }
+        Update: {
+          cell?: string
+          charges?: number
+          gather_s?: number
+          id?: number
+          kind?: string
+          max_charges?: number
+          respawn_at?: string | null
+          respawn_s?: number
+          updated_at?: string
+          x?: number
+          y?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      damage_monster: { Args: { _dmg: number; _id: number }; Returns: Json }
+      harvest_node: { Args: { _id: number }; Returns: Json }
     }
     Enums: {
       [_ in never]: never
