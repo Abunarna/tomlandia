@@ -554,13 +554,13 @@ export interface NpcIcon {
 }
 
 export const NPC_ICONS: Record<NpcRole, NpcIcon> = {
-  smith: { glyph: "⚒", color: "#d98b6a", label: "Blacksmith" },
-  merchant: { glyph: "🪙", color: "#8fbfd9", label: "Market Trader" },
-  elder: { glyph: "📜", color: "#c9a7e0", label: "Quest Giver" },
-  sun_smith: { glyph: "⚔", color: "#f0c268", label: "Sunspire Smith" },
-  weaver: { glyph: "🧵", color: "#e8b3d8", label: "Arcane Weaver" },
-  banker: { glyph: "💰", color: "#d9a95f", label: "Banker" },
-  trapper: { glyph: "🪤", color: "#b98a5c", label: "Trapper" },
-  innkeeper: { glyph: "🍲", color: "#7fbd93", label: "Innkeeper" },
-  frost_smith: { glyph: "❄", color: "#a9c6e6", label: "Frostforge Smith" },
+  smith: { glyph: "\u2692\uFE0E", color: "#d98b6a", label: "Blacksmith" },
+  merchant: { glyph: "$", color: "#8fbfd9", label: "Market Trader" },
+  elder: { glyph: "?", color: "#c9a7e0", label: "Quest Giver" },
+  sun_smith: { glyph: "\u2694\uFE0E", color: "#f0c268", label: "Sunspire Smith" },
+  weaver: { glyph: "\u2702\uFE0E", color: "#e8b3d8", label: "Arcane Weaver" },
+  banker: { glyph: "\u2605", color: "#d9a95f", label: "Banker" },
+  trapper: { glyph: "\u2691", color: "#b98a5c", label: "Trapper" },
+  innkeeper: { glyph: "\u2302", color: "#7fbd93", label: "Innkeeper" },
+  frost_smith: { glyph: "\u2744\uFE0E", color: "#a9c6e6", label: "Frostforge Smith" },
 };
