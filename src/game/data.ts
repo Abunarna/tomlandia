@@ -693,10 +693,10 @@ const CLEAR_ZONES: { x: number; y: number; r: number }[] = [
     y: b.plaza!.y + b.plaza!.h / 2,
     r: Math.max(b.plaza!.w, b.plaza!.h) * 0.9,
   })),
-  ...NPCS.map((n) => ({ x: n.x, y: n.y, r: 190 })),
-  ...BUILDINGS.map((b) => ({ x: b.x + b.w / 2, y: b.y + b.h / 2, r: 180 })),
-  ...NODE_SPAWNS.map((n) => ({ x: n.x, y: n.y, r: 90 })),
-  ...MONSTER_SPAWNS.map((m) => ({ x: m.x, y: m.y, r: 90 })),
+  ...NPCS.map((n) => ({ x: n.x, y: n.y, r: 150 })),
+  ...BUILDINGS.map((b) => ({ x: b.x + b.w / 2, y: b.y + b.h / 2, r: 140 })),
+  ...NODE_SPAWNS.map((n) => ({ x: n.x, y: n.y, r: 62 })),
+  ...MONSTER_SPAWNS.map((m) => ({ x: m.x, y: m.y, r: 62 })),
 ];
 
 function nearClearZone(x: number, y: number) {
@@ -716,7 +716,7 @@ function buildBarriers(): Barrier[] {
     for (let a = 0; a < arcs; a++) {
       const roll = rand01(i * 91.3 + a * 13.7);
       // ~40% of each border is walled off; the rest stays open
-      if (roll > 0.4) continue;
+      if (roll > 0.55) continue;
       const pts: [number, number][] = [];
       for (let k = 0; k <= arcLen; k++) {
         const p = poly[(a * arcLen + k) % poly.length]!;
