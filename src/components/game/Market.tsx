@@ -3,6 +3,18 @@ import { Coins, Store, Tag, Undo2 } from "lucide-react";
 import { ITEMS } from "@/game/data";
 import type { HudSnapshot } from "@/game/types";
 
+type FilterKey = "all" | "weapon" | "armor" | "material" | "food";
+
+const FILTERS: { key: FilterKey; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "weapon", label: "Weapons" },
+  { key: "armor", label: "Armour" },
+  { key: "material", label: "Materials" },
+  { key: "food", label: "Food" },
+];
+
+
+
 export function MarketTab({
   hud,
   onBuy,
