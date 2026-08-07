@@ -22,12 +22,50 @@ import {
   type NpcDef,
   type NpcRole,
 } from "./data";
+import { TILE_H, TILE_W } from "./data";
 import { levelFromXp } from "./progression";
+import { sfx } from "./audio";
+import {
+  MARKET_FEE,
+  feeFor,
+  makePlayerListing,
+  seedListings,
+  simulate,
+  suggestedPrice,
+  type Listing,
+  type TradeLog,
+} from "./market";
 import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
 
 const SAVE_KEY = "tomlandia.save.v1";
 const INV_SIZE = 20;
 const AUTO_EAT_AT = 0.3;
+/** length of one in-game day, in seconds */
+const DAY_LEN = 480;
+
+interface Villager {
+  x: number;
+  y: number;
+  hx: number;
+  hy: number;
+  tx: number;
+  ty: number;
+  wait: number;
+  robe: string;
+  hair: string;
+}
+
+interface Leaf {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  rot: number;
+  spin: number;
+  life: number;
+  color: string;
+}
+
 
 interface ResNode {
   id: number;
