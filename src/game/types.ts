@@ -1,17 +1,23 @@
-export type SkillId = "mining" | "woodcutting" | "combat";
+export type SkillId =
+  | "combat"
+  | "mining"
+  | "woodcutting"
+  | "gathering"
+  | "smithing"
+  | "skinning"
+  | "tailoring";
 
-export type ItemId =
-  | "copper_ore"
-  | "oak_logs"
-  | "feather"
-  | "goblin_charm"
-  | "bronze_dagger"
-  | "wooden_club"
-  | "cloth_tunic"
-  | "leather_vest"
-  | "steel_sword"
-  | "iron_mail"
-  | "honey_bun";
+export const SKILL_IDS: SkillId[] = [
+  "combat",
+  "mining",
+  "woodcutting",
+  "gathering",
+  "smithing",
+  "skinning",
+  "tailoring",
+];
+
+export type ItemId = string;
 
 export interface ItemDef {
   id: ItemId;
@@ -19,7 +25,7 @@ export interface ItemDef {
   stackable: boolean;
   value: number;
   color: string;
-  kind: "resource" | "weapon" | "armor" | "food";
+  kind: "resource" | "weapon" | "armor" | "food" | "material";
   attack?: number;
   defense?: number;
   heal?: number;
@@ -28,6 +34,8 @@ export interface ItemDef {
 export interface InvSlot {
   id: ItemId;
   qty: number;
+  /** upgrade level 0..25, gear only */
+  plus?: number;
 }
 
 export interface Skill {
@@ -53,6 +61,11 @@ export interface QuestState {
   progress: number;
 }
 
+export interface EquipState {
+  id: ItemId;
+  plus: number;
+}
+
 export interface SaveState {
   v: number;
   px: number;
@@ -60,11 +73,13 @@ export interface SaveState {
   hp: number;
   gold: number;
   inv: (InvSlot | null)[];
-  skills: Record<SkillId, Skill>;
-  weapon: ItemId | null;
-  armor: ItemId | null;
+  skills: Record<string, Skill>;
+  weapon: EquipState | ItemId | null;
+  armor: EquipState | ItemId | null;
+  food?: ItemId | null;
   quest?: QuestState | null;
   completed?: string[];
+  discovered?: string[];
 }
 
 export interface HudQuest {
@@ -82,14 +97,17 @@ export interface HudSnapshot {
   gold: number;
   level: number;
   region: string;
+  regionLevel: string;
   skills: Record<SkillId, { level: number; xp: number; progress: number; into: number; need: number }>;
   inv: (InvSlot | null)[];
-  weapon: ItemId | null;
-  armor: ItemId | null;
+  weapon: EquipState | null;
+  armor: EquipState | null;
+  food: ItemId | null;
   activity: string;
   activityProgress: number;
   quest: HudQuest | null;
   completed: string[];
+  discovered: string[];
   attack: number;
   defense: number;
 }
