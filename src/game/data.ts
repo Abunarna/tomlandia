@@ -912,7 +912,22 @@ function distToSeg(px: number, py: number, ax: number, ay: number, bx: number, b
   return Math.hypot(px - (ax + dx * t), py - (ay + dy * t));
 }
 
-/** true when the world point is inside a river / rock ridge / dense woodland */
+/** solid footprints: building walls (the lower part, so roofs overlap freely) */
+const SOLID_RECTS = BUILDINGS.map((b) => ({
+  x: b.x + 2,
+  y: b.y + b.h * 0.32,
+  w: b.w - 4,
+  h: b.h * 0.68 + 6,
+}));
+
+/** solid trunks / boulders / bushes — small enough to still harvest from any side */
+const SOLID_DISCS = NODE_SPAWNS.map((n) => ({
+  x: n.x,
+  y: n.y + (NODE_DEFS[n.kind].shape === "tree" ? 8 : 2),
+  r: NODE_DEFS[n.kind].shape === "bush" ? 11 : 14,
+}));
+
+/** true when the world point is inside a barrier, a building or a resource node */
 export function blockedAt(x: number, y: number, pad = 10): boolean {
   for (const bar of BARRIERS) {
     const r = bar.width / 2 + pad;
@@ -923,8 +938,16 @@ export function blockedAt(x: number, y: number, pad = 10): boolean {
       if (distToSeg(x, y, a[0], a[1], b[0], b[1]) < r) return true;
     }
   }
+  for (const s of SOLID_RECTS) {
+    if (x > s.x - pad && x < s.x + s.w + pad && y > s.y - pad && y < s.y + s.h + pad) return true;
+  }
+  for (const d of SOLID_DISCS) {
+    const r = d.r + pad;
+    if (Math.abs(x - d.x) < r && Math.abs(y - d.y) < r && Math.hypot(x - d.x, y - d.y) < r) return true;
+  }
   return false;
 }
+
 
 export const BARRIER_LABEL: Record<BarrierKind, string> = {
   river: "River",
