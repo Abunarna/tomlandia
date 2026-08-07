@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import {
+  BARRIERS,
   BIOMES,
   BUILDINGS,
   NPCS,
@@ -213,6 +214,18 @@ export function WorldMap({ position, onClose }: Props) {
               fill={`url(#bg-${b.key})`}
               stroke="rgba(70,55,70,0.20)"
               strokeWidth={1}
+            />
+          ))}
+          {BARRIERS.map((bar) => (
+            <path
+              key={bar.id}
+              d={bar.pts.map(([x, y], i) => `${i === 0 ? "M" : "L"}${sx(x)},${sy(y)}`).join(" ")}
+              fill="none"
+              stroke={bar.kind === "river" ? "#79bbdb" : bar.kind === "rocks" ? "#94908b" : "#3f8f6a"}
+              strokeWidth={Math.max(2, bar.width * scale * 0.9)}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity={0.95}
             />
           ))}
         </svg>
