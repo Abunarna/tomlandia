@@ -1245,18 +1245,42 @@ export class GameEngine {
     return r.inputs.every((i) => this.countItem(i.id) >= i.qty);
   }
 
+  /** Phase 9 — the server consumes the materials and grants the result. */
   craft(recipeId: string): boolean {
     const r = RECIPES.find((x) => x.id === recipeId);
-    if (!r || !this.canCraft(r.id)) return false;
-    for (const i of r.inputs) this.removeItem(i.id, i.qty);
-    this.addItem(r.out, r.outQty);
-    sfx.play("craft");
-    this.grantXp(r.skill, r.xp);
-
-    this.pushText(this.px, this.py - 56, `+${r.outQty} ${item(r.out).name}`, "#dff6c9");
-    this.emitHud(true);
+    if (!r || !this.onCraft) return false;
+    if (this.craftPending) return false;
+    this.craftPending = true;
+    void this.onCraft(r.id)
+      .then((res) => {
+        this.craftPending = false;
+        if (!res.ok) {
+          const why =
+            res.reason === "bag_full"
+              ? "Bag is full"
+              : res.reason === "low_level"
+                ? `Needs ${res.skill} ${res.req}`
+                : res.reason === "missing_materials"
+                  ? "Missing materials"
+                  : "Not right now";
+          this.pushText(this.px, this.py - 56, why, "#f4b0b0");
+          this.emitHud(true);
+          return;
+        }
+        this.applyServerState(res.state);
+        sfx.play("craft");
+        this.pushText(this.px, this.py - 56, `+${res.out_qty ?? 1} ${item(r.out).name}`, "#dff6c9");
+        this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
+        if (res.leveled) this.celebrateLevel(r.skill);
+        this.emitHud(true);
+      })
+      .catch(() => {
+        this.craftPending = false;
+      });
     return true;
   }
+
+  private craftPending = false;
 
   upgradeCostFor(which: "weapon" | "armor"): number | null {
     const eq = which === "weapon" ? this.weapon : this.armor;
