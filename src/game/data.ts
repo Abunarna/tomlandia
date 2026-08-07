@@ -419,8 +419,8 @@ export const NPCS: NpcDef[] = [
   { id: "smith", name: "Bruna", title: "Blacksmith", x: 625, y: 420, robe: "#d98b6a", hair: "#5c3a2e", greeting: "Fresh off the anvil. Gold first, hero.", services: ["shop", "smith", "upgrade"] },
   { id: "merchant", name: "Pip", title: "Market Trader", x: 782, y: 442, robe: "#8fbfd9", hair: "#3f5f78", greeting: "Ore, logs, feathers — I'll take the lot.", services: ["sell", "shop"] },
   { id: "elder", name: "Elder Maren", title: "Village Elder", x: 712, y: 300, robe: "#c9a7e0", hair: "#e6e0ef", greeting: "Grand Haven could use a hand today.", services: ["quests"] },
-  { id: "sun_smith", name: "Master Alric", title: "Sunspire Smith", x: TILE_W * 2 + 735, y: 350, robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings when it's shaped right.", services: ["smith", "upgrade", "shop"] },
-  { id: "weaver", name: "Lira", title: "Arcane Weaver", x: TILE_W * 2 + 905, y: 420, robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["tailor", "shop"] },
+  { id: "sun_smith", name: "Master Alric", title: "Sunspire Smith", x: TILE_W * 2 + 735, y: 350, robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings when it's shaped right.", services: ["smith", "upgrade"] },
+  { id: "weaver", name: "Lira", title: "Arcane Weaver", x: TILE_W * 2 + 905, y: 420, robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["tailor"] },
   { id: "banker", name: "Coinmaster Odo", title: "Golden Bank", x: TILE_W * 2 + 565, y: 440, robe: "#d9a95f", hair: "#4a3b2e", greeting: "Every scrap has a price, friend.", services: ["sell"] },
   { id: "trapper", name: "Rook", title: "Trapper", x: TILE_W + 878, y: 650, robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin", "sell"] },
   { id: "innkeeper", name: "Mabel", title: "Willowbrook Inn", x: TILE_W + 710, y: 600, robe: "#7fbd93", hair: "#a86f45", greeting: "A warm meal keeps a hero standing.", services: ["shop"] },
@@ -428,40 +428,25 @@ export const NPCS: NpcDef[] = [
 ];
 
 export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
-  smith: [
-    { id: "honey_bun", price: 18 },
-    { id: "bronze_dagger", price: 60 },
-    { id: "leather_vest", price: 70 },
-    { id: "steel_sword", price: 220 },
-    { id: "iron_mail", price: 260 },
-  ],
+  // Gear is never sold by NPCs — weapons and armour must be crafted by players
+  // (or traded between players on the marketplace).
+  smith: [{ id: "honey_bun", price: 18 }],
   merchant: [
     { id: "honey_bun", price: 20 },
     { id: "berry_pie", price: 55 },
   ],
   elder: [],
-  sun_smith: [
-    { id: "mithril_blade", price: 620 },
-    { id: "mithril_plate", price: 680 },
-    { id: "sunspire_wand", price: 1100 },
-  ],
-  weaver: [
-    { id: "linen_robe", price: 150 },
-    { id: "mystic_robe", price: 980 },
-  ],
+  sun_smith: [],
+  weaver: [],
   banker: [],
   trapper: [{ id: "hearty_stew", price: 150 }],
   innkeeper: [
     { id: "berry_pie", price: 50 },
     { id: "hearty_stew", price: 140 },
   ],
-  frost_smith: [
-    { id: "runite_greatsword", price: 1400 },
-    { id: "runite_plate", price: 1500 },
-    { id: "frost_tonic", price: 280 },
-    { id: "tungsten_maul", price: 2400 },
-  ],
+  frost_smith: [{ id: "frost_tonic", price: 280 }],
 };
+
 
 /* ------------------------------------------------------------------ */
 /* Crafting                                                            */
