@@ -428,40 +428,25 @@ export const NPCS: NpcDef[] = [
 ];
 
 export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
-  smith: [
-    { id: "honey_bun", price: 18 },
-    { id: "bronze_dagger", price: 60 },
-    { id: "leather_vest", price: 70 },
-    { id: "steel_sword", price: 220 },
-    { id: "iron_mail", price: 260 },
-  ],
+  // Gear is never sold by NPCs — weapons and armour must be crafted by players
+  // (or traded between players on the marketplace).
+  smith: [{ id: "honey_bun", price: 18 }],
   merchant: [
     { id: "honey_bun", price: 20 },
     { id: "berry_pie", price: 55 },
   ],
   elder: [],
-  sun_smith: [
-    { id: "mithril_blade", price: 620 },
-    { id: "mithril_plate", price: 680 },
-    { id: "sunspire_wand", price: 1100 },
-  ],
-  weaver: [
-    { id: "linen_robe", price: 150 },
-    { id: "mystic_robe", price: 980 },
-  ],
+  sun_smith: [],
+  weaver: [],
   banker: [],
   trapper: [{ id: "hearty_stew", price: 150 }],
   innkeeper: [
     { id: "berry_pie", price: 50 },
     { id: "hearty_stew", price: 140 },
   ],
-  frost_smith: [
-    { id: "runite_greatsword", price: 1400 },
-    { id: "runite_plate", price: 1500 },
-    { id: "frost_tonic", price: 280 },
-    { id: "tungsten_maul", price: 2400 },
-  ],
+  frost_smith: [{ id: "frost_tonic", price: 280 }],
 };
+
 
 /* ------------------------------------------------------------------ */
 /* Crafting                                                            */
