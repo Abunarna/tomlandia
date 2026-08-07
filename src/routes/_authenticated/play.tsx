@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Backpack, Hammer, Store, Volume2, VolumeX } from "lucide-react";
+import { Backpack, Hammer, LogOut, Store, Volume2, VolumeX } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { GameEngine } from "@/game/engine";
 import type { NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId } from "@/game/types";
@@ -68,6 +69,9 @@ const EMPTY: HudSnapshot = {
 
 
 function Game() {
+  const { user } = Route.useRouteContext();
+  const navigate = useNavigate();
+  const [username, setUsername] = useState<string>("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<GameEngine | null>(null);
   const [hud, setHud] = useState<HudSnapshot>(EMPTY);
@@ -77,7 +81,7 @@ function Game() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const engine = new GameEngine(canvas, setHud);
+    const engine = new GameEngine(canvas, setHud, user.id);
     engineRef.current = engine;
     engine.onInteract = (id) => {
       setPanel(null);
@@ -92,7 +96,28 @@ function Game() {
       engine.stop();
       engineRef.current = null;
     };
-  }, []);
+  }, [user.id]);
+
+  useEffect(() => {
+    let alive = true;
+    void supabase
+      .from("profiles")
+      .select("username")
+      .eq("id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (alive && data?.username) setUsername(data.username);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [user.id]);
+
+  const signOut = async () => {
+    engineRef.current?.save();
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
+  };
 
   const onJoystick = useCallback((dx: number, dy: number, active: boolean) => {
     const e = engineRef.current;
@@ -103,6 +128,11 @@ function Game() {
   return (
     <main className="relative h-[100dvh] w-full overflow-hidden bg-background">
       <h1 className="sr-only">Tomlandia — a cozy pixel idle RPG</h1>
+      {username && (
+        <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full border border-border/60 bg-card/85 px-3 py-1 text-xs font-semibold text-foreground backdrop-blur-md">
+          {username}
+        </div>
+      )}
 
       <canvas
         ref={canvasRef}
@@ -124,6 +154,9 @@ function Game() {
             <Joystick onChange={onJoystick} />
           </div>
           <div className="pointer-events-auto flex flex-col gap-2">
+            <OverlayButton label={`Sign out of ${username || "your account"}`} active={false} onClick={signOut}>
+              <LogOut className="size-5" />
+            </OverlayButton>
             <OverlayButton
               label={hud.soundOn ? "Mute sound" : "Unmute sound"}
               active={hud.soundOn}
