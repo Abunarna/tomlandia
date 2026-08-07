@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://fhelsfnbvrmnxuynyoqu.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "tomlandia",
+      "version": "0.1.0",
+      "title": "Tomlandia"
+    },
+    "tools": [
+      {
+        "name": "get_character",
+        "title": "Get character",
+        "description": "Get the signed-in Tomlandia adventurer's character sheet: name, gold, health, equipment, skill levels and active quest.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_inventory",
+        "title": "List inventory",
+        "description": "List the items currently in the signed-in adventurer's 20-slot bag, with quantities and values.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "browse_market",
+        "title": "Browse marketplace",
+        "description": "Browse the shared Tomlandia marketplace order book: current listings (item, quantity, price, seller) and recent trades.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "item_id": {
+              "type": "string",
+              "description": "Optional item id to filter listings by, e.g. copper_ore."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_quests",
+        "title": "List quests",
+        "description": "List every quest available in Tomlandia, with its objective and rewards.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
