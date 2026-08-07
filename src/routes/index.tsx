@@ -149,13 +149,27 @@ function Game() {
           npc={npc}
           hud={hud}
           onClose={() => setNpc(null)}
-          onBuy={(id: ItemId) => engineRef.current?.buyItem(id)}
-          onSellAll={() => engineRef.current?.sellAllResources()}
+          onBuy={(who, id: ItemId) => {
+            engineRef.current?.buyItem(who, id);
+          }}
+          onSellAll={() => {
+            engineRef.current?.sellAllResources();
+          }}
           onAccept={(id) => engineRef.current?.acceptQuest(id)}
           onClaim={() => {
             engineRef.current?.claimQuest();
           }}
           onAbandon={() => engineRef.current?.abandonQuest()}
+          onCraft={(id) => {
+            engineRef.current?.craft(id);
+          }}
+          onUpgrade={(which) => {
+            engineRef.current?.upgradeEquipped(which);
+          }}
+          upgradeCosts={{
+            weapon: engineRef.current?.upgradeCostFor("weapon") ?? null,
+            armor: engineRef.current?.upgradeCostFor("armor") ?? null,
+          }}
         />
       )}
     </main>
