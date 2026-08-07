@@ -35,7 +35,25 @@ import {
   type Listing,
   type TradeLog,
 } from "./market";
+import { STALE_MS, type PresencePacket } from "./presence";
 import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
+
+/** Another real player, mirrored from realtime presence broadcasts. */
+export interface RemotePlayer {
+  id: string;
+  name: string;
+  level: number;
+  /** Rendered (interpolated) position. */
+  x: number;
+  y: number;
+  /** Latest received position, interpolated toward. */
+  tx: number;
+  ty: number;
+  f: number;
+  act: string;
+  seen: number;
+  bob: number;
+}
 
 /** Legacy pre-accounts local save. Read once so old progress can be claimed. */
 export const LEGACY_SAVE_KEY = "tomlandia.save.v1";
@@ -174,6 +192,9 @@ export class GameEngine {
   private parts: Particle[] = [];
   private butterflies: { x: number; y: number; p: number; s: number }[] = [];
   private villagers: Villager[] = [];
+  /** Phase 7 — nearby real players from the presence shards. */
+  remotes = new Map<string, RemotePlayer>();
+  playerName = "Adventurer";
   private leaves: Leaf[] = [];
 
   private target: Target = { type: "none" };
@@ -249,6 +270,74 @@ export class GameEngine {
     if (!this.listings.length) this.listings = seedListings();
     this.biome = biomeAt(this.px, this.py);
     this.resize();
+  }
+
+  /* ---------- phase 7: shared presence ---------- */
+
+  /** What we broadcast to our cell's neighbours. */
+  presenceState() {
+    return {
+      name: this.playerName,
+      level: this.lvl("combat"),
+      x: Math.round(this.px),
+      y: Math.round(this.py),
+      f: this.facing,
+      act: this.activity,
+    };
+  }
+
+  applyPresence(p: PresencePacket) {
+    const cur = this.remotes.get(p.id);
+    if (cur) {
+      cur.tx = p.x;
+      cur.ty = p.y;
+      cur.f = p.f;
+      cur.act = p.act;
+      cur.name = p.name;
+      cur.level = p.level;
+      cur.seen = Date.now();
+    } else {
+      this.remotes.set(p.id, {
+        id: p.id,
+        name: p.name,
+        level: p.level,
+        x: p.x,
+        y: p.y,
+        tx: p.x,
+        ty: p.y,
+        f: p.f,
+        act: p.act,
+        seen: Date.now(),
+        bob: Math.random() * 6,
+      });
+    }
+  }
+
+  removeRemote(id: string) {
+    this.remotes.delete(id);
+  }
+
+  /** Smoothly ease remote avatars toward their last reported position. */
+  private tickRemotes(dt: number) {
+    const now = Date.now();
+    for (const [id, r] of this.remotes) {
+      if (now - r.seen > STALE_MS) {
+        this.remotes.delete(id);
+        continue;
+      }
+      const k = Math.min(1, dt * 7);
+      const dx = r.tx - r.x;
+      const dy = r.ty - r.y;
+      // Teleport on huge jumps (respawn / fast travel) instead of sliding.
+      if (Math.abs(dx) > 600 || Math.abs(dy) > 600) {
+        r.x = r.tx;
+        r.y = r.ty;
+      } else {
+        r.x += dx * k;
+        r.y += dy * k;
+      }
+      if (Math.abs(dx) + Math.abs(dy) > 1.5) r.bob += dt * 9;
+    }
   }
 
   private spawnVillagers() {
@@ -562,6 +651,7 @@ export class GameEngine {
 
   private update(dt: number) {
     const now = this.time;
+    this.tickRemotes(dt);
 
     // joystick overrides target
     if (this.joystick.active && (this.joystick.dx || this.joystick.dy)) {
@@ -1208,6 +1298,10 @@ export class GameEngine {
       if (!this.inView(npc.x, npc.y, view)) continue;
       drawables.push({ y: npc.y, fn: () => this.drawNpc(ctx, npc) });
     }
+    for (const r of this.remotes.values()) {
+      if (!this.inView(r.x, r.y, view)) continue;
+      drawables.push({ y: r.y, fn: () => this.drawRemote(ctx, r) });
+    }
     drawables.push({ y: this.py, fn: () => this.drawPlayer(ctx) });
     drawables.sort((a, b) => a.y - b.y);
     for (const d of drawables) d.fn();
@@ -1511,6 +1605,44 @@ export class GameEngine {
     ctx.textAlign = "center";
     ctx.fillStyle = "rgba(70,55,70,0.7)";
     ctx.fillText(npc.name, x, y + 32);
+  }
+
+  private drawRemote(ctx: CanvasRenderingContext2D, r: RemotePlayer) {
+    const moving = Math.abs(r.tx - r.x) + Math.abs(r.ty - r.y) > 1.5;
+    const bob = moving ? Math.abs(Math.sin(r.bob)) * 3 : Math.sin(this.time * 2) * 1.2;
+    const x = r.x;
+    const y = r.y;
+    this.shadow(ctx, x, y + 16, 15);
+    ctx.globalAlpha = 0.96;
+    // body — cool tone so other players read as distinct from you
+    ctx.fillStyle = "#b7d4f5";
+    ctx.beginPath();
+    ctx.roundRect(x - 11, y - 8 - bob, 22, 24, 7);
+    ctx.fill();
+    ctx.fillStyle = "#ffe0c2";
+    ctx.beginPath();
+    ctx.arc(x, y - 20 - bob, 15, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#43506b";
+    ctx.beginPath();
+    ctx.arc(x, y - 24 - bob, 15, Math.PI, 0);
+    ctx.fill();
+    ctx.fillStyle = "#4a3b52";
+    ctx.fillRect(x - 6 * r.f, y - 21 - bob, 3, 4);
+    ctx.fillRect(x + 2 * r.f, y - 21 - bob, 3, 4);
+    ctx.globalAlpha = 1;
+
+    // nameplate
+    const label = `${r.name} · Lv ${r.level}`;
+    ctx.font = "bold 11px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+    ctx.textAlign = "center";
+    const w = ctx.measureText(label).width + 12;
+    ctx.fillStyle = "rgba(52,40,64,0.55)";
+    ctx.beginPath();
+    ctx.roundRect(x - w / 2, y - 54 - bob, w, 16, 8);
+    ctx.fill();
+    ctx.fillStyle = "#f6f2ff";
+    ctx.fillText(label, x, y - 43 - bob);
   }
 
   private drawPlayer(ctx: CanvasRenderingContext2D) {
