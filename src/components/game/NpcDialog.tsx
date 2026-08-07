@@ -1,6 +1,8 @@
-import { Coins, Check, X, Hammer, ArrowUpCircle } from "lucide-react";
+import { useState } from "react";
+import { Coins, Check, X, Hammer, ArrowUpCircle, ChevronDown } from "lucide-react";
 import { MAX_PLUS, NPCS, QUESTS, RECIPES, SHOP_STOCK, item, type NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId } from "@/game/types";
+
 
 export function NpcDialog({
   npc,
