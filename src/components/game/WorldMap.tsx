@@ -204,13 +204,13 @@ export function WorldMap({ position, onClose }: Props) {
       const cy = (a.y + b.y) / 2;
       const g = gesture.current;
       if (g && g.dist > 0 && dist > 0) {
-        // pinch scale + two-finger drag in one step (gain > 1 = snappier pinch)
-        const cur = target.current;
+        // Anchor on the *rendered* view so the world point under the pinch
+        // midpoint stays exactly under the fingers (no easing lag drift).
+        const cur = viewRef.current;
         const ratio = Math.pow(dist / g.dist, PINCH_GAIN);
-        const zoomTo = clamp(cur.zoom * ratio, MIN_ZOOM, MAX_ZOOM);
+        const zoomTo = clamp(cur.zoom * ratio, limits.current.minZoom, MAX_ZOOM);
         const k = zoomTo / cur.zoom;
-        // target updates every pointermove; the rAF loop eases the view to it
-        glide({
+        jump({
           zoom: zoomTo,
           x: cx - (cx - cur.x) * k + (cx - g.cx),
           y: cy - (cy - cur.y) * k + (cy - g.cy),
@@ -229,10 +229,11 @@ export function WorldMap({ position, onClose }: Props) {
     gesture.current = null;
   };
 
-  const reset = () => glide({ zoom: 1, x: 0, y: 0 });
+  const reset = () => glide({ zoom: minZoom, x: 0, y: 0 });
 
   const focusPlayer = () => {
-    const z = clamp(3, MIN_ZOOM, MAX_ZOOM);
+    const z = clamp(3, minZoom, MAX_ZOOM);
+
     const s = fit * z;
     glide({
       zoom: z,
