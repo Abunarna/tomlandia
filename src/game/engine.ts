@@ -764,39 +764,67 @@ export class GameEngine {
     return d;
   }
 
+  /**
+   * Phase 9 — adopt the server's view of our progression. The action routines
+   * return the whole inventory / gold / skill block after they applied the
+   * reward, so the client never invents a number.
+   */
+  applyServerState(state: ServerState | undefined | null) {
+    if (!state) return;
+    if (Array.isArray(state.inv)) {
+      this.inv = state.inv.slice(0, INV_SIZE).map((s) => (s ? { ...s } : null));
+      while (this.inv.length < INV_SIZE) this.inv.push(null);
+    }
+    if (typeof state.gold === "number") this.gold = state.gold;
+    if (state.skills) {
+      for (const id of SKILL_IDS) {
+        const xp = state.skills[id]?.xp;
+        if (typeof xp === "number") this.skills[id] = { xp };
+      }
+      this.hp = Math.min(this.hp, this.maxHp);
+    }
+  }
 
-  /** Loot + XP for a kill we own (we tagged the monster first). */
-  private rewardKill(m: Monster, md: (typeof MONSTER_DEFS)[MonsterKind]) {
+  /** Level-up fanfare, fired when the server reports a new level. */
+  private celebrateLevel(skill: SkillId) {
+    sfx.play("level");
+    this.pushText(this.px, this.py - 70, `${skill.toUpperCase()} LV ${this.lvl(skill)}!`, "#ffd98e");
+    for (let i = 0; i < 18; i++) {
+      this.parts.push({
+        x: this.px,
+        y: this.py - 10,
+        vx: (Math.random() - 0.5) * 120,
+        vy: -Math.random() * 130,
+        life: 1,
+        color: "#ffe6a7",
+        size: 2 + Math.random() * 2,
+      });
+    }
+  }
 
-              
-              
-              const gold = md.gold[0] + Math.floor(Math.random() * (md.gold[1] - md.gold[0] + 1));
-              this.gold += gold;
-              sfx.play("coin");
-              this.pushText(m.x, m.y - 40, `+${gold}g`, "#ffe08a");
-
-              if (Math.random() < md.dropChance) {
-                this.addItem(md.drop, 1);
-                this.pushText(m.x + 16, m.y - 56, `+1 ${item(md.drop).name}`, "#dff6c9");
-              }
-              if (md.hide) {
-                this.addItem(md.hide, 1);
-                this.grantXp("skinning", md.hideXp);
-                this.pushText(m.x - 16, m.y - 68, `+1 ${item(md.hide).name}`, "#f0d3b0");
-              }
-              this.questTick("kill", m.kind);
-              this.grantXp("combat", md.xp);
-              for (let i = 0; i < 12; i++) {
-                this.parts.push({
-                  x: m.x,
-                  y: m.y,
-                  vx: (Math.random() - 0.5) * 100,
-                  vy: -Math.random() * 90,
-                  life: 0.7,
-                  color: md.body,
-                  size: 2 + Math.random() * 2,
-                });
-              }
+  /** Kill feedback for a kill the server credited to us. */
+  private rewardKill(m: Monster, md: (typeof MONSTER_DEFS)[MonsterKind], res: DamageRes) {
+    if (res.gold) {
+      sfx.play("coin");
+      this.pushText(m.x, m.y - 40, `+${res.gold}g`, "#ffe08a");
+    }
+    (res.loot ?? []).forEach((l, i) => {
+      this.pushText(m.x + (i % 2 ? 16 : -16), m.y - 56 - i * 12, `+${l.qty} ${item(l.item).name}`, "#dff6c9");
+    });
+    this.questTick("kill", m.kind);
+    this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
+    if (res.leveled) this.celebrateLevel("combat");
+    for (let i = 0; i < 12; i++) {
+      this.parts.push({
+        x: m.x,
+        y: m.y,
+        vx: (Math.random() - 0.5) * 100,
+        vy: -Math.random() * 90,
+        life: 0.7,
+        color: md.body,
+        size: 2 + Math.random() * 2,
+      });
+    }
   }
 
   private autoEat() {
