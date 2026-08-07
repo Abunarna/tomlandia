@@ -38,23 +38,66 @@ import {
 import { STALE_MS, type PresencePacket } from "./presence";
 import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
 
+/**
+ * Phase 9 — the server owns progression. Every action routine returns the
+ * player's authoritative inventory / gold / skill XP, which replaces whatever
+ * the client thought it had.
+ */
+export interface ServerState {
+  inv?: InvSlot[] | null;
+  gold?: number | null;
+  skills?: Partial<Record<SkillId, { xp: number }>> | null;
+}
+
 /** Authoritative reply from the shared-world harvest routine. */
 export interface HarvestRes {
   ok: boolean;
   reason?: string;
   charges?: number;
   respawn_at?: string | null;
+  item?: ItemId;
+  qty?: number;
+  skill?: SkillId;
+  xp?: number;
+  leveled?: boolean;
+  req?: number;
+  state?: ServerState;
 }
 
-/** Authoritative reply from the shared-world damage routine. */
+/** Authoritative reply from the shared-world combat routine. */
 export interface DamageRes {
   ok: boolean;
   reason?: string;
+  /** Damage the server decided we dealt. */
+  dmg?: number;
+  /** Damage the server decided the monster dealt back. */
+  taken?: number;
   hp?: number;
+  max_hp?: number;
   killed?: boolean;
   credited?: boolean;
+  kind?: string;
+  gold?: number;
+  loot?: { item: ItemId; qty: number }[];
+  xp?: number;
+  leveled?: boolean;
   tagged_by?: string | null;
   respawn_at?: string | null;
+  state?: ServerState;
+}
+
+/** Authoritative reply from the crafting routine. */
+export interface CraftRes {
+  ok: boolean;
+  reason?: string;
+  out?: ItemId;
+  out_qty?: number;
+  skill?: SkillId;
+  xp?: number;
+  leveled?: boolean;
+  req?: number;
+  item?: ItemId;
+  state?: ServerState;
 }
 
 /** Another real player, mirrored from realtime presence broadcasts. */
