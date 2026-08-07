@@ -1661,8 +1661,9 @@ export class GameEngine {
       if (b.x > view.x + w || b.x + b.w < view.x || b.y > view.y + h || b.y + b.h < view.y) continue;
       this.drawBiome(ctx, b);
     }
+    this.drawStreets(ctx, view);
     this.drawBarriers(ctx, view);
-    for (const b of BUILDINGS) this.drawBuilding(ctx, b);
+
     this.drawButterflies(ctx);
     for (const v of this.villagers) {
       if (!this.inView(v.x, v.y, view)) continue;
