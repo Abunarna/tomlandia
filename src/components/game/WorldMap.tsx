@@ -31,16 +31,73 @@ interface Props {
 export function WorldMap({ position, onClose }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 360, h: 640 });
-  const [zoom, setZoom] = useState(1);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  // Rendered view (eased) and the target the gestures write to.
+  const [view, setView] = useState({ zoom: 1, x: 0, y: 0 });
   const [player, setPlayer] = useState(() => position());
+
+  const zoom = view.zoom;
+  const offset = { x: view.x, y: view.y };
 
   // "fit" scale maps the whole world into the viewport at zoom 1.
   const fit = Math.min(size.w / WORLD_W, size.h / WORLD_H);
   const scale = fit * zoom;
 
-  const stateRef = useRef({ zoom, offset, scale, size });
-  stateRef.current = { zoom, offset, scale, size };
+  const target = useRef({ zoom: 1, x: 0, y: 0 });
+  const viewRef = useRef(view);
+  viewRef.current = view;
+  const raf = useRef<number | null>(null);
+
+  /** Ease the rendered view toward the target (frame-rate independent). */
+  const animate = useCallback(() => {
+    if (raf.current !== null) return;
+    let last = performance.now();
+    const step = (now: number) => {
+      const dt = Math.min(64, now - last);
+      last = now;
+      const cur = viewRef.current;
+      const t = target.current;
+      // ~90ms time constant: quick to respond, still smooth to follow
+      const k = 1 - Math.exp(-dt / 90);
+      const next = {
+        // zoom eases in log space so it feels even at every scale
+        zoom: cur.zoom * Math.exp(Math.log(t.zoom / cur.zoom) * k),
+        x: cur.x + (t.x - cur.x) * k,
+        y: cur.y + (t.y - cur.y) * k,
+      };
+      const done =
+        Math.abs(next.zoom / t.zoom - 1) < 0.001 &&
+        Math.abs(next.x - t.x) < 0.3 &&
+        Math.abs(next.y - t.y) < 0.3;
+      viewRef.current = done ? { ...t } : next;
+      setView(viewRef.current);
+      if (done) {
+        raf.current = null;
+        return;
+      }
+      raf.current = requestAnimationFrame(step);
+    };
+    raf.current = requestAnimationFrame(step);
+  }, []);
+
+  useEffect(() => () => {
+    if (raf.current !== null) cancelAnimationFrame(raf.current);
+  }, []);
+
+  /** Set the eased target. */
+  const glide = useCallback(
+    (v: { zoom: number; x: number; y: number }) => {
+      target.current = v;
+      animate();
+    },
+    [animate],
+  );
+
+  /** Move now, with no easing (used for one-finger panning). */
+  const jump = useCallback((v: { zoom: number; x: number; y: number }) => {
+    target.current = v;
+    viewRef.current = v;
+    setView(v);
+  }, []);
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -59,16 +116,19 @@ export function WorldMap({ position, onClose }: Props) {
   }, [position]);
 
   /** Zoom about a screen point so the world point under it stays put. */
-  const zoomAt = useCallback((px: number, py: number, next: number) => {
-    const cur = stateRef.current;
-    const clamped = clamp(next, MIN_ZOOM, MAX_ZOOM);
-    const k = clamped / cur.zoom;
-    setOffset({
-      x: px - (px - cur.offset.x) * k,
-      y: py - (py - cur.offset.y) * k,
-    });
-    setZoom(clamped);
-  }, []);
+  const zoomAt = useCallback(
+    (px: number, py: number, next: number) => {
+      const cur = target.current;
+      const clamped = clamp(next, MIN_ZOOM, MAX_ZOOM);
+      const k = clamped / cur.zoom;
+      glide({
+        zoom: clamped,
+        x: px - (px - cur.x) * k,
+        y: py - (py - cur.y) * k,
+      });
+    },
+    [glide],
+  );
 
   // Non-passive wheel/trackpad-pinch handling (React's onWheel is passive).
   useEffect(() => {
@@ -81,7 +141,7 @@ export function WorldMap({ position, onClose }: Props) {
       zoomAt(
         e.clientX - rect.left,
         e.clientY - rect.top,
-        stateRef.current.zoom * Math.exp(-dy * (e.ctrlKey ? 0.012 : 0.0045)),
+        target.current.zoom * Math.exp(-dy * (e.ctrlKey ? 0.012 : 0.0045)),
       );
     };
     el.addEventListener("wheel", onWheel, { passive: false });
@@ -118,24 +178,23 @@ export function WorldMap({ position, onClose }: Props) {
       const g = gesture.current;
       if (g && g.dist > 0 && dist > 0) {
         // pinch scale + two-finger drag in one step (gain > 1 = snappier pinch)
-        const cur = stateRef.current;
+        const cur = target.current;
         const ratio = Math.pow(dist / g.dist, PINCH_GAIN);
-        const target = clamp(cur.zoom * ratio, MIN_ZOOM, MAX_ZOOM);
-        const k = target / cur.zoom;
-        const nextOffset = {
-          x: cx - (cx - cur.offset.x) * k + (cx - g.cx),
-          y: cy - (cy - cur.offset.y) * k + (cy - g.cy),
-        };
-        // keep the ref fresh: several pointermove events can fire per frame
-        stateRef.current = { ...cur, zoom: target, offset: nextOffset };
-        setOffset(nextOffset);
-        setZoom(target);
+        const zoomTo = clamp(cur.zoom * ratio, MIN_ZOOM, MAX_ZOOM);
+        const k = zoomTo / cur.zoom;
+        // target updates every pointermove; the rAF loop eases the view to it
+        glide({
+          zoom: zoomTo,
+          x: cx - (cx - cur.x) * k + (cx - g.cx),
+          y: cy - (cy - cur.y) * k + (cy - g.cy),
+        });
       }
       gesture.current = { dist, cx, cy };
       return;
     }
 
-    setOffset((o) => ({ x: o.x + (next.x - prev.x), y: o.y + (next.y - prev.y) }));
+    const cur = target.current;
+    jump({ ...cur, x: cur.x + (next.x - prev.x), y: cur.y + (next.y - prev.y) });
   };
 
   const endPointer = (e: React.PointerEvent) => {
@@ -143,20 +202,18 @@ export function WorldMap({ position, onClose }: Props) {
     gesture.current = null;
   };
 
-  const reset = () => {
-    setZoom(1);
-    setOffset({ x: 0, y: 0 });
-  };
+  const reset = () => glide({ zoom: 1, x: 0, y: 0 });
 
   const focusPlayer = () => {
     const z = clamp(3, MIN_ZOOM, MAX_ZOOM);
     const s = fit * z;
-    setZoom(z);
-    setOffset({
+    glide({
+      zoom: z,
       x: (WORLD_W * s) / 2 - player.x * s,
       y: (WORLD_H * s) / 2 - player.y * s,
     });
   };
+
 
   // World -> screen. The world is centred in the viewport before pan/zoom.
   const baseX = (size.w - WORLD_W * scale) / 2;
