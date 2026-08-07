@@ -32,6 +32,8 @@ export function NpcDialog({
   const def = NPCS.find((n) => n.id === npc)!;
   const stock = SHOP_STOCK[npc] ?? [];
   const services = def.services;
+  const [openRecipe, setOpenRecipe] = useState<string | null>(null);
+
   const resourceValue = hud.inv.reduce((sum, s) => {
     if (!s) return sum;
     const d = item(s.id);
