@@ -99,8 +99,8 @@ function InventoryTab({
   );
 }
 
-function EquipSlot({ icon, id, label }: { icon: React.ReactNode; id: string | null; label: string }) {
-  const def = id ? ITEMS[id as keyof typeof ITEMS] : null;
+function EquipSlot({ icon, eq, label }: { icon: React.ReactNode; eq: { id: string; plus: number } | null; label: string }) {
+  const def = eq ? ITEMS[eq.id] : null;
   return (
     <div className="flex flex-1 items-center gap-2 rounded-2xl border border-border/70 bg-muted/50 p-2">
       <span
@@ -110,7 +110,9 @@ function EquipSlot({ icon, id, label }: { icon: React.ReactNode; id: string | nu
         {icon}
       </span>
       <div className="min-w-0">
-        <p className="truncate text-[11px] font-bold text-foreground">{def?.name ?? "Empty"}</p>
+        <p className="truncate text-[11px] font-bold text-foreground">
+          {def ? `${def.name}${eq && eq.plus > 0 ? ` +${eq.plus}` : ""}` : "Empty"}
+        </p>
         <p className="text-[10px] text-muted-foreground">{label}</p>
       </div>
     </div>
@@ -122,6 +124,10 @@ function SkillsTab({ hud }: { hud: HudSnapshot }) {
     { id: "combat", name: "Combat" },
     { id: "mining", name: "Mining" },
     { id: "woodcutting", name: "Woodcutting" },
+    { id: "gathering", name: "Gathering" },
+    { id: "smithing", name: "Smithing" },
+    { id: "skinning", name: "Skinning" },
+    { id: "tailoring", name: "Tailoring" },
   ];
   return (
     <div className="space-y-2">
