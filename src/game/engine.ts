@@ -38,6 +38,25 @@ import {
 import { STALE_MS, type PresencePacket } from "./presence";
 import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
 
+/** Authoritative reply from the shared-world harvest routine. */
+export interface HarvestRes {
+  ok: boolean;
+  reason?: string;
+  charges?: number;
+  respawn_at?: string | null;
+}
+
+/** Authoritative reply from the shared-world damage routine. */
+export interface DamageRes {
+  ok: boolean;
+  reason?: string;
+  hp?: number;
+  killed?: boolean;
+  credited?: boolean;
+  tagged_by?: string | null;
+  respawn_at?: string | null;
+}
+
 /** Another real player, mirrored from realtime presence broadcasts. */
 export interface RemotePlayer {
   id: string;
@@ -291,19 +310,9 @@ export class GameEngine {
   /** Our own user id, so we can tell whether we own a monster's kill credit. */
   userId = "";
   /** Server-side harvest. Resolves with the authoritative node state. */
-  onHarvest: ((id: number) => Promise<{ ok: boolean; reason?: string; charges?: number; respawn_at?: string | null }>) | null = null;
+  onHarvest: ((id: number) => Promise<HarvestRes>) | null = null;
   /** Server-side monster damage. Resolves with the authoritative monster state. */
-  onDamage:
-    | ((id: number, dmg: number) => Promise<{
-        ok: boolean;
-        reason?: string;
-        hp?: number;
-        killed?: boolean;
-        credited?: boolean;
-        tagged_by?: string | null;
-        respawn_at?: string | null;
-      }>)
-    | null = null;
+  onDamage: ((id: number, dmg: number) => Promise<DamageRes>) | null = null;
 
   /** Mirror authoritative node rows (snapshot or realtime) into the world. */
   applyNodeRows(rows: { id: number; charges: number; respawn_at: string | null }[]) {
@@ -808,7 +817,7 @@ export class GameEngine {
             // resource. Several players can mine the same rock at once; it
             // depletes for everyone when the shared charges run out.
             n.pending = true;
-            const claim = this.onHarvest
+            const claim: Promise<HarvestRes> = this.onHarvest
               ? this.onHarvest(n.id)
               : Promise.resolve({ ok: true, charges: n.charges - 1, respawn_at: null });
             void claim
@@ -862,7 +871,7 @@ export class GameEngine {
             // takes the loot and XP.
             if (!m.pending) {
               m.pending = true;
-              const swing = this.onDamage
+              const swing: Promise<DamageRes> = this.onDamage
                 ? this.onDamage(m.id, dmg)
                 : Promise.resolve({ ok: true, hp: Math.max(0, m.hp - dmg), killed: m.hp - dmg <= 0, credited: true });
               void swing
