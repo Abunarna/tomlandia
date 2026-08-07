@@ -81,14 +81,26 @@ function Game() {
   const [ready, setReady] = useState(false);
   const [claimable, setClaimable] = useState<SaveState | null>(null);
 
+  const pendingSave = useRef<Promise<unknown> | null>(null);
+
   const persist = useCallback(
     (s: SaveState) => {
-      void supabase
+      const req = supabase
         .from("player_saves")
-        .upsert({ user_id: user.id, data: s as unknown as Json, updated_at: new Date().toISOString() });
+        .upsert({ user_id: user.id, data: s as unknown as Json, updated_at: new Date().toISOString() })
+        .then(({ error }) => {
+          if (error) console.error("Save failed", error.message);
+        });
+      pendingSave.current = req;
     },
     [user.id],
   );
+
+  /** Write current progress and wait for the round-trip (used before leaving). */
+  const flushSave = useCallback(async () => {
+    engineRef.current?.save();
+    await pendingSave.current;
+  }, []);
 
   // Load the cloud save first, then boot the engine with it.
   useEffect(() => {
@@ -163,7 +175,7 @@ function Game() {
   }, [user.id]);
 
   const signOut = async () => {
-    engineRef.current?.save();
+    await flushSave();
     await supabase.auth.signOut();
     navigate({ to: "/auth", replace: true });
   };
