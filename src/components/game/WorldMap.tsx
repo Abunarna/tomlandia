@@ -121,12 +121,14 @@ export function WorldMap({ position, onClose }: Props) {
         const ratio = Math.pow(dist / g.dist, PINCH_GAIN);
         const target = clamp(cur.zoom * ratio, MIN_ZOOM, MAX_ZOOM);
         const k = target / cur.zoom;
-        setOffset({
+        const nextOffset = {
           x: cx - (cx - cur.offset.x) * k + (cx - g.cx),
           y: cy - (cy - cur.offset.y) * k + (cy - g.cy),
-        });
+        };
+        // keep the ref fresh: several pointermove events can fire per frame
+        stateRef.current = { ...cur, zoom: target, offset: nextOffset };
+        setOffset(nextOffset);
         setZoom(target);
-      }
       gesture.current = { dist, cx, cy };
       return;
     }
