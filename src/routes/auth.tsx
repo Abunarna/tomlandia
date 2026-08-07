@@ -23,13 +23,27 @@ export const Route = createFileRoute("/auth")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  validateSearch: (s: Record<string, unknown>): { next?: string } =>
+    typeof s['next'] === "string" ? { next: s['next'] as string } : {},
   component: AuthPage,
 });
+
+/** Only allow same-origin relative paths as a post-login destination. */
+function safeNext(next: string | undefined): string | null {
+  if (!next || !next.startsWith("/") || next.startsWith("//")) return null;
+  return next;
+}
 
 type Mode = "signin" | "signup-form" | "signup-warning";
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
+  const dest = safeNext(next);
+  const goHome = () => {
+    if (dest) window.location.href = dest;
+    else navigate({ to: "/play", replace: true });
+  };
   const [mode, setMode] = useState<Mode>("signin");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -40,8 +54,12 @@ function AuthPage() {
 
   useEffect(() => {
     void supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/play", replace: true });
+      if (data.session) {
+        if (dest) window.location.href = dest;
+        else navigate({ to: "/play", replace: true });
+      }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   const signIn = async () => {
@@ -56,7 +74,7 @@ function AuthPage() {
       setError("Wrong username or password.");
       return;
     }
-    navigate({ to: "/play", replace: true });
+    goHome();
   };
 
   const goToWarning = () => {
@@ -87,7 +105,7 @@ function AuthPage() {
         password,
       });
       if (e) throw new Error("Account made, but sign in failed. Try signing in.");
-      navigate({ to: "/play", replace: true });
+      goHome();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not create that account.");
       setMode("signup-form");
