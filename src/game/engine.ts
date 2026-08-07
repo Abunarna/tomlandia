@@ -38,6 +38,10 @@ import {
 import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
 
 const SAVE_KEY = "tomlandia.save.v1";
+/** Saves are namespaced per account so two players on one device stay distinct. */
+export function saveKeyFor(accountId?: string | null) {
+  return accountId ? `${SAVE_KEY}.${accountId}` : SAVE_KEY;
+}
 const INV_SIZE = 20;
 const AUTO_EAT_AT = 0.3;
 /** length of one in-game day, in seconds */
@@ -183,7 +187,10 @@ export class GameEngine {
   private saveCd = 30;
 
 
-  constructor(canvas: HTMLCanvasElement, onHud: (s: HudSnapshot) => void) {
+  private saveKey = SAVE_KEY;
+
+  constructor(canvas: HTMLCanvasElement, onHud: (s: HudSnapshot) => void, accountId?: string | null) {
+    this.saveKey = saveKeyFor(accountId);
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d")!;
     this.onHud = onHud;
@@ -287,7 +294,7 @@ export class GameEngine {
 
   save() {
     try {
-      localStorage.setItem(SAVE_KEY, JSON.stringify(this.toSave()));
+      localStorage.setItem(this.saveKey, JSON.stringify(this.toSave()));
       this.pushText(this.px, this.py - 40, "Saved", "#9fd6f5");
     } catch {
       /* ignore */
@@ -302,7 +309,7 @@ export class GameEngine {
 
   private load() {
     try {
-      const raw = localStorage.getItem(SAVE_KEY);
+      const raw = localStorage.getItem(this.saveKey);
       if (!raw) return;
       const s = JSON.parse(raw) as SaveState;
       this.px = s.px ?? this.px;
@@ -333,7 +340,7 @@ export class GameEngine {
 
   reset() {
     try {
-      localStorage.removeItem(SAVE_KEY);
+      localStorage.removeItem(this.saveKey);
     } catch {
       /* ignore */
     }
