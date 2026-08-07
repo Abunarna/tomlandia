@@ -113,4 +113,14 @@ export interface HudSnapshot {
   discovered: string[];
   attack: number;
   defense: number;
+  /** 0..1 through the in-game day */
+  timeOfDay: number;
+  phase: "Dawn" | "Day" | "Dusk" | "Night";
+  market: {
+    listings: import("./market").Listing[];
+    log: import("./market").TradeLog[];
+    fee: number;
+  };
+  soundOn: boolean;
 }
+
