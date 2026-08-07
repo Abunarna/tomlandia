@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
-import { damageMonster, harvestNode } from "@/lib/world.functions";
+import { attackMonster, craftItem, harvestNode } from "@/lib/world.functions";
 import type { NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
 import type { Json } from "@/integrations/supabase/types";
