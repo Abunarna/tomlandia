@@ -58,9 +58,27 @@ export function MarketTab({
         </span>
       </div>
 
+      <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-0.5">
+        {FILTERS.map((f) => (
+          <button
+            key={f.key}
+            onClick={() => setFilter(f.key)}
+            aria-pressed={filter === f.key}
+            className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold active:scale-95 ${
+              filter === f.key
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground"
+            }`}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
       {tab === "browse" ? (
         <div className="space-y-1.5">
-          {hud.market.listings.slice(0, 30).map((l) => {
+          {listings.slice(0, 30).map((l) => {
+
             const def = ITEMS[l.item];
             const total = l.price * l.qty;
             return (
