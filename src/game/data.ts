@@ -715,7 +715,8 @@ function buildBarriers(): Barrier[] {
     const arcs = Math.floor(poly.length / arcLen);
     for (let a = 0; a < arcs; a++) {
       const roll = rand01(i * 91.3 + a * 13.7);
-      // ~40% of each border is walled off; the rest stays open
+      // roughly 40% of every border stretch ends up walled off once the
+      // keep-clear zones around towns, traders and spawns are honoured
       if (roll > 0.92) continue;
       const pts: [number, number][] = [];
       for (let k = 0; k <= arcLen; k++) {
