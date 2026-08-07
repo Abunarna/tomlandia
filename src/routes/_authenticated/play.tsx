@@ -264,11 +264,6 @@ function Game() {
     navigate({ to: "/auth", replace: true });
   };
 
-  const onJoystick = useCallback((dx: number, dy: number, active: boolean) => {
-    const e = engineRef.current;
-    if (!e) return;
-    e.joystick = { active, dx, dy };
-  }, []);
 
 
   return (
