@@ -109,7 +109,12 @@ interface ResNode {
   x: number;
   y: number;
   depleted: boolean;
+  /** Shared charges left before the node depletes for everyone. */
+  charges: number;
+  /** Epoch ms; authoritative respawn time from the server. */
   respawnAt: number;
+  /** A harvest request is in flight. */
+  pending: boolean;
   sway: number;
 }
 
@@ -123,7 +128,12 @@ interface Monster {
   hp: number;
   maxHp: number;
   dead: boolean;
+  /** Epoch ms; authoritative respawn time from the server. */
   respawnAt: number;
+  /** First player to hit it — they own the kill credit and loot. */
+  taggedBy: string | null;
+  /** A damage request is in flight. */
+  pending: boolean;
   wanderAt: number;
   hitFlash: number;
 }
@@ -241,7 +251,9 @@ export class GameEngine {
       x: n.x,
       y: n.y,
       depleted: false,
+      charges: 4,
       respawnAt: 0,
+      pending: false,
       sway: Math.random() * 6,
     }));
     this.monsters = MONSTER_SPAWNS.map((m, i) => {
@@ -257,6 +269,8 @@ export class GameEngine {
         maxHp: d.hp,
         dead: false,
         respawnAt: 0,
+        taggedBy: null,
+        pending: false,
         wanderAt: 0,
         hitFlash: 0,
       };
@@ -270,6 +284,64 @@ export class GameEngine {
     if (!this.listings.length) this.listings = seedListings();
     this.biome = biomeAt(this.px, this.py);
     this.resize();
+  }
+
+  /* ---------- phase 8: shared world state ---------- */
+
+  /** Our own user id, so we can tell whether we own a monster's kill credit. */
+  userId = "";
+  /** Server-side harvest. Resolves with the authoritative node state. */
+  onHarvest: ((id: number) => Promise<{ ok: boolean; reason?: string; charges?: number; respawn_at?: string | null }>) | null = null;
+  /** Server-side monster damage. Resolves with the authoritative monster state. */
+  onDamage:
+    | ((id: number, dmg: number) => Promise<{
+        ok: boolean;
+        reason?: string;
+        hp?: number;
+        killed?: boolean;
+        credited?: boolean;
+        tagged_by?: string | null;
+        respawn_at?: string | null;
+      }>)
+    | null = null;
+
+  /** Mirror authoritative node rows (snapshot or realtime) into the world. */
+  applyNodeRows(rows: { id: number; charges: number; respawn_at: string | null }[]) {
+    for (const row of rows) {
+      const n = this.nodes[row.id];
+      if (!n) continue;
+      n.charges = row.charges;
+      n.respawnAt = row.respawn_at ? Date.parse(row.respawn_at) : 0;
+      n.depleted = n.respawnAt > Date.now();
+      if (n.depleted && this.target.type === "node" && this.target.id === n.id) {
+        this.target = { type: "none" };
+        this.gatherProgress = 0;
+      }
+    }
+  }
+
+  /** Mirror authoritative monster rows (snapshot or realtime) into the world. */
+  applyMonsterRows(rows: { id: number; hp: number; tagged_by: string | null; respawn_at: string | null }[]) {
+    for (const row of rows) {
+      const m = this.monsters[row.id];
+      if (!m) continue;
+      const prevHp = m.hp;
+      m.hp = row.hp;
+      m.taggedBy = row.tagged_by;
+      m.respawnAt = row.respawn_at ? Date.parse(row.respawn_at) : 0;
+      const dead = m.respawnAt > Date.now();
+      if (dead && !m.dead) m.dead = true;
+      if (!dead && m.dead) {
+        m.dead = false;
+        m.hp = row.hp;
+        m.x = m.hx;
+        m.y = m.hy;
+      }
+      if (row.hp < prevHp) m.hitFlash = 0.2;
+      if (m.dead && this.target.type === "monster" && this.target.id === m.id) {
+        this.target = { type: "none" };
+      }
+    }
   }
 
   /* ---------- phase 7: shared presence ---------- */
@@ -638,6 +710,41 @@ export class GameEngine {
     return d;
   }
 
+
+  /** Loot + XP for a kill we own (we tagged the monster first). */
+  private rewardKill(m: Monster, md: (typeof MONSTER_DEFS)[MonsterKind]) {
+
+              
+              
+              const gold = md.gold[0] + Math.floor(Math.random() * (md.gold[1] - md.gold[0] + 1));
+              this.gold += gold;
+              sfx.play("coin");
+              this.pushText(m.x, m.y - 40, `+${gold}g`, "#ffe08a");
+
+              if (Math.random() < md.dropChance) {
+                this.addItem(md.drop, 1);
+                this.pushText(m.x + 16, m.y - 56, `+1 ${item(md.drop).name}`, "#dff6c9");
+              }
+              if (md.hide) {
+                this.addItem(md.hide, 1);
+                this.grantXp("skinning", md.hideXp);
+                this.pushText(m.x - 16, m.y - 68, `+1 ${item(md.hide).name}`, "#f0d3b0");
+              }
+              this.questTick("kill", m.kind);
+              this.grantXp("combat", md.xp);
+              for (let i = 0; i < 12; i++) {
+                this.parts.push({
+                  x: m.x,
+                  y: m.y,
+                  vx: (Math.random() - 0.5) * 100,
+                  vy: -Math.random() * 90,
+                  life: 0.7,
+                  color: md.body,
+                  size: 2 + Math.random() * 2,
+                });
+              }
+  }
+
   private autoEat() {
     if (this.hp / this.maxHp >= AUTO_EAT_AT) return;
     const id = this.food;
@@ -695,17 +802,37 @@ export class GameEngine {
               size: 2,
             });
           }
-          if (this.gatherProgress >= 1) {
+          if (this.gatherProgress >= 1 && !n.pending) {
             this.gatherProgress = 0;
-            this.addItem(def.item, 1);
-            this.questTick("gather", def.item);
-            this.grantXp(def.skill, def.xp);
-            sfx.play("gather");
-            this.pushText(n.x, n.y - 20, `+1 ${item(def.item).name}`, "#dff6c9");
-
-            n.depleted = true;
-            n.respawnAt = now + def.respawn;
-            this.target = { type: "none" };
+            // Shared node: the server decides whether this swing yields a
+            // resource. Several players can mine the same rock at once; it
+            // depletes for everyone when the shared charges run out.
+            n.pending = true;
+            const claim = this.onHarvest
+              ? this.onHarvest(n.id)
+              : Promise.resolve({ ok: true, charges: n.charges - 1, respawn_at: null });
+            void claim
+              .then((res) => {
+                n.pending = false;
+                if (typeof res.charges === "number") n.charges = res.charges;
+                n.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : 0;
+                n.depleted = n.respawnAt > Date.now();
+                if (res.ok) {
+                  this.addItem(def.item, 1);
+                  this.questTick("gather", def.item);
+                  this.grantXp(def.skill, def.xp);
+                  sfx.play("gather");
+                  this.pushText(n.x, n.y - 20, `+1 ${item(def.item).name}`, "#dff6c9");
+                } else if (res.reason === "depleted") {
+                  this.pushText(n.x, n.y - 20, "Depleted", "#cbb9a4");
+                }
+                if (n.depleted && this.target.type === "node" && this.target.id === n.id) {
+                  this.target = { type: "none" };
+                }
+              })
+              .catch(() => {
+                n.pending = false;
+              });
           }
         } else {
           this.activity = "Walking";
@@ -726,43 +853,46 @@ export class GameEngine {
           if (this.combatCd <= 0) {
             this.combatCd = 1;
             const dmg = Math.max(1, Math.round(this.attack - md.defense / 2));
-            m.hp -= dmg;
             m.hitFlash = 0.2;
             sfx.play("hit");
             this.pushText(m.x, m.y - 24, `${dmg}`, "#fff0c9");
 
-            if (m.hp <= 0) {
-              m.dead = true;
-              m.respawnAt = now + 12;
-              const gold = md.gold[0] + Math.floor(Math.random() * (md.gold[1] - md.gold[0] + 1));
-              this.gold += gold;
-              sfx.play("coin");
-              this.pushText(m.x, m.y - 40, `+${gold}g`, "#ffe08a");
-
-              if (Math.random() < md.dropChance) {
-                this.addItem(md.drop, 1);
-                this.pushText(m.x + 16, m.y - 56, `+1 ${item(md.drop).name}`, "#dff6c9");
-              }
-              if (md.hide) {
-                this.addItem(md.hide, 1);
-                this.grantXp("skinning", md.hideXp);
-                this.pushText(m.x - 16, m.y - 68, `+1 ${item(md.hide).name}`, "#f0d3b0");
-              }
-              this.questTick("kill", m.kind);
-              this.grantXp("combat", md.xp);
-              for (let i = 0; i < 12; i++) {
-                this.parts.push({
-                  x: m.x,
-                  y: m.y,
-                  vx: (Math.random() - 0.5) * 100,
-                  vy: -Math.random() * 90,
-                  life: 0.7,
-                  color: md.body,
-                  size: 2 + Math.random() * 2,
+            // Shared monster: the server owns its health pool and decides who
+            // gets the kill. First player to land a hit is tagged as owner and
+            // takes the loot and XP.
+            if (!m.pending) {
+              m.pending = true;
+              const swing = this.onDamage
+                ? this.onDamage(m.id, dmg)
+                : Promise.resolve({ ok: true, hp: Math.max(0, m.hp - dmg), killed: m.hp - dmg <= 0, credited: true });
+              void swing
+                .then((res) => {
+                  m.pending = false;
+                  if (!res.ok) {
+                    if (res.reason === "dead") {
+                      m.dead = true;
+                      if (this.target.type === "monster" && this.target.id === m.id) this.target = { type: "none" };
+                    }
+                    return;
+                  }
+                  if (typeof res.hp === "number") m.hp = res.hp;
+                  if (res.tagged_by !== undefined) m.taggedBy = res.tagged_by ?? null;
+                  if (res.killed) {
+                    m.dead = true;
+                    m.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : Date.now() + 12000;
+                    if (res.credited) this.rewardKill(m, md);
+                    else this.pushText(m.x, m.y - 40, "Tagged by another player", "#cbb9a4");
+                    if (this.target.type === "monster" && this.target.id === m.id) this.target = { type: "none" };
+                  }
+                })
+                .catch(() => {
+                  m.pending = false;
                 });
-              }
-              this.target = { type: "none" };
-            } else {
+            }
+
+            {
+            }
+            if (!m.dead) {
               const taken = Math.max(1, Math.round(md.attack - this.defense / 2));
               this.hp -= taken;
               this.pushText(this.px, this.py - 34, `-${taken}`, "#f4b0b0");
@@ -823,12 +953,21 @@ export class GameEngine {
     }
 
     // respawns
-    for (const n of this.nodes) if (n.depleted && now >= n.respawnAt) n.depleted = false;
+    const wall = Date.now();
+    for (const n of this.nodes) {
+      if (n.depleted && n.respawnAt && wall >= n.respawnAt) {
+        n.depleted = false;
+        n.charges = 4;
+        n.respawnAt = 0;
+      }
+    }
     for (const m of this.monsters) {
       if (m.dead) {
-        if (now >= m.respawnAt) {
+        if (m.respawnAt && wall >= m.respawnAt) {
           m.dead = false;
           m.hp = m.maxHp;
+          m.taggedBy = null;
+          m.respawnAt = 0;
           m.x = m.hx;
           m.y = m.hy;
         }
