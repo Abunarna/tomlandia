@@ -247,8 +247,68 @@ const CELL_OWNER: number[] = (() => {
       out[gy * GX + gx] = best;
     }
   }
+
+  // Keep every region a single solid blob: any island of cells that isn't
+  // connected to its own seed is handed to the neighbouring region, so no
+  // patch of ground is ever left unpainted.
+  const seedCell = REGION_SPECS.map((r) => {
+    const gx = Math.max(0, Math.min(GX - 1, Math.floor(r.x / CELL)));
+    const gy = Math.max(0, Math.min(GY - 1, Math.floor(r.y / CELL)));
+    return gy * GX + gx;
+  });
+  for (let pass = 0; pass < 4; pass++) {
+    const seen = new Uint8Array(GX * GY);
+    let changed = false;
+    for (let start = 0; start < out.length; start++) {
+      if (seen[start]) continue;
+      const id = out[start]!;
+      const comp: number[] = [start];
+      const queue = [start];
+      seen[start] = 1;
+      let hasSeed = seedCell[id] === start;
+      while (queue.length) {
+        const c = queue.pop()!;
+        const cx = c % GX;
+        const cy = (c - cx) / GX;
+        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as const) {
+          const nx = cx + dx;
+          const ny = cy + dy;
+          if (nx < 0 || ny < 0 || nx >= GX || ny >= GY) continue;
+          const ni = ny * GX + nx;
+          if (seen[ni] || out[ni] !== id) continue;
+          seen[ni] = 1;
+          if (seedCell[id] === ni) hasSeed = true;
+          comp.push(ni);
+          queue.push(ni);
+        }
+      }
+      if (hasSeed) continue;
+      // orphan island: give it to whichever region surrounds it most
+      const votes = new Map<number, number>();
+      for (const c of comp) {
+        const cx = c % GX;
+        const cy = (c - cx) / GX;
+        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as const) {
+          const nx = cx + dx;
+          const ny = cy + dy;
+          if (nx < 0 || ny < 0 || nx >= GX || ny >= GY) continue;
+          const o = out[ny * GX + nx]!;
+          if (o !== id) votes.set(o, (votes.get(o) ?? 0) + 1);
+        }
+      }
+      let win = id;
+      let bestVotes = 0;
+      for (const [o, v] of votes) if (v > bestVotes) [win, bestVotes] = [o, v];
+      if (win !== id) {
+        for (const c of comp) out[c] = win;
+        changed = true;
+      }
+    }
+    if (!changed) break;
+  }
   return out;
 })();
+
 
 /** grid vertex -> world point, nudged so borders are jagged, edges pinned */
 function vertex(gx: number, gy: number): [number, number] {
