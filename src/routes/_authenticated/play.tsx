@@ -13,7 +13,6 @@ import type { Json } from "@/integrations/supabase/types";
 import { Hud } from "@/components/game/Hud";
 import { Panel, type PanelId } from "@/components/game/Panel";
 import { NpcDialog } from "@/components/game/NpcDialog";
-import { Joystick } from "@/components/game/Joystick";
 import { WorldMap } from "@/components/game/WorldMap";
 
 
