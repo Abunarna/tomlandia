@@ -906,19 +906,14 @@ export class GameEngine {
           this.activityProgress = 1 - Math.max(0, this.combatCd);
           if (this.combatCd <= 0) {
             this.combatCd = 1;
-            const dmg = Math.max(1, Math.round(this.attack - md.defense / 2));
-            m.hitFlash = 0.2;
-            sfx.play("hit");
-            this.pushText(m.x, m.y - 24, `${dmg}`, "#fff0c9");
 
-            // Shared monster: the server owns its health pool and decides who
-            // gets the kill. First player to land a hit is tagged as owner and
-            // takes the loot and XP.
+            // Phase 9 — the server resolves the swing: it reads our stats from
+            // the stored save, decides damage both ways, and awards the kill.
             if (!m.pending) {
               m.pending = true;
-              const swing: Promise<DamageRes> = this.onDamage
-                ? this.onDamage(m.id, dmg)
-                : Promise.resolve({ ok: true, hp: Math.max(0, m.hp - dmg), killed: m.hp - dmg <= 0, credited: true });
+              const swing: Promise<DamageRes> = this.onAttack
+                ? this.onAttack(m.id, this.px, this.py)
+                : Promise.resolve({ ok: false, reason: "offline" });
               void swing
                 .then((res) => {
                   m.pending = false;
@@ -929,34 +924,39 @@ export class GameEngine {
                     }
                     return;
                   }
+
+                  m.hitFlash = 0.2;
+                  sfx.play("hit");
+                  this.pushText(m.x, m.y - 24, `${res.dmg ?? 0}`, "#fff0c9");
                   if (typeof res.hp === "number") m.hp = res.hp;
                   if (res.tagged_by !== undefined) m.taggedBy = res.tagged_by ?? null;
+                  this.applyServerState(res.state);
+
                   if (res.killed) {
                     m.dead = true;
                     m.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : Date.now() + 12000;
-                    if (res.credited) this.rewardKill(m, md);
+                    if (res.credited) this.rewardKill(m, md, res);
                     else this.pushText(m.x, m.y - 40, "Tagged by another player", "#cbb9a4");
                     if (this.target.type === "monster" && this.target.id === m.id) this.target = { type: "none" };
+                  } else {
+                    // Damage taken is the server's number too.
+                    this.hp -= Math.max(0, res.taken ?? 0);
+                    if (res.taken) this.pushText(this.px, this.py - 34, `-${res.taken}`, "#f4b0b0");
+                    this.autoEat();
+                    if (this.hp <= 0) {
+                      this.hp = Math.ceil(this.maxHp * 0.5);
+                      this.px = 700;
+                      this.py = 620;
+                      this.gold = Math.max(0, Math.floor(this.gold * 0.9));
+                      this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
+                      this.target = { type: "none" };
+                    }
                   }
+                  this.emitHud(true);
                 })
                 .catch(() => {
                   m.pending = false;
                 });
-            }
-
-            if (!m.dead) {
-              const taken = Math.max(1, Math.round(md.attack - this.defense / 2));
-              this.hp -= taken;
-              this.pushText(this.px, this.py - 34, `-${taken}`, "#f4b0b0");
-              this.autoEat();
-              if (this.hp <= 0) {
-                this.hp = Math.ceil(this.maxHp * 0.5);
-                this.px = 700;
-                this.py = 620;
-                this.gold = Math.max(0, Math.floor(this.gold * 0.9));
-                this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
-                this.target = { type: "none" };
-              }
             }
           }
         } else {
