@@ -1,4 +1,5 @@
 import {
+  BARRIERS,
   BIOMES,
   BUILDINGS,
   MAX_PLUS,
@@ -13,6 +14,7 @@ import {
   WORLD_H,
   WORLD_W,
   biomeAt,
+  blockedAt,
   item,
   statWithPlus,
   upgradeCost,
@@ -277,6 +279,7 @@ export class GameEngine {
   private activity = "Wandering";
   private activityProgress = 0;
   private biome: BiomeDef = BIOMES[0]!;
+  private blockedFor = 0;
 
   quest: QuestState | null = null;
   completed: string[] = [];
@@ -557,8 +560,29 @@ export class GameEngine {
     return { id: v.id, plus: v.plus ?? 0 };
   }
 
+  /** nudge the hero out of a barrier (old saves, or a ridge grown over them) */
+  private unstick() {
+    if (!blockedAt(this.px, this.py, 12)) return;
+    for (let r = 24; r <= 400; r += 24) {
+      for (let a = 0; a < 12; a++) {
+        const ang = (a / 12) * Math.PI * 2;
+        const x = this.px + Math.cos(ang) * r;
+        const y = this.py + Math.sin(ang) * r;
+        if (x < 20 || y < 20 || x > WORLD_W - 20 || y > WORLD_H - 20) continue;
+        if (!blockedAt(x, y, 12)) {
+          this.px = x;
+          this.py = y;
+          return;
+        }
+      }
+    }
+  }
+
   private load(s: SaveState | null) {
-    if (!s) return;
+    if (!s) {
+      this.unstick();
+      return;
+    }
     try {
       this.px = s.px ?? this.px;
       this.py = s.py ?? this.py;
@@ -583,7 +607,9 @@ export class GameEngine {
     } catch {
       /* ignore */
     }
+    this.unstick();
   }
+
 
   reset() {
     this.persist = null;
@@ -758,19 +784,47 @@ export class GameEngine {
     this.ctx.imageSmoothingEnabled = false;
   }
 
+  /** move, but never walk into a river, rocky ridge or dense woodland */
+  private tryStep(nx: number, ny: number) {
+    if (!blockedAt(nx, ny, 12)) {
+      this.px = nx;
+      this.py = ny;
+      return true;
+    }
+    if (!blockedAt(nx, this.py, 12)) {
+      this.px = nx;
+      return true;
+    }
+    if (!blockedAt(this.px, ny, 12)) {
+      this.py = ny;
+      return true;
+    }
+    return false;
+  }
+
   private moveToward(tx: number, ty: number, dt: number, speed = 130): number {
     const dx = tx - this.px;
     const dy = ty - this.py;
     const d = Math.hypot(dx, dy);
     if (d > 1) {
       const step = Math.min(d, speed * dt);
-      this.px += (dx / d) * step;
-      this.py += (dy / d) * step;
+      const moved = this.tryStep(this.px + (dx / d) * step, this.py + (dy / d) * step);
+      if (!moved) {
+        this.blockedFor += dt;
+        if (this.blockedFor > 0.6 && this.target.type === "point") {
+          this.target = { type: "none" };
+          this.blockedFor = 0;
+          this.pushText(this.px, this.py - 40, "Blocked!", "#e0a5a5");
+        }
+        return d;
+      }
+      this.blockedFor = 0;
       if (Math.abs(dx) > 2) this.facing = dx > 0 ? 1 : -1;
       this.moveT += dt * 10;
     }
     return d;
   }
+
 
   /**
    * Phase 9 — adopt the server's view of our progression. The action routines
@@ -853,8 +907,10 @@ export class GameEngine {
     // joystick overrides target
     if (this.joystick.active && (this.joystick.dx || this.joystick.dy)) {
       this.target = { type: "none" };
-      this.px = Math.max(20, Math.min(WORLD_W - 20, this.px + this.joystick.dx * 160 * dt));
-      this.py = Math.max(20, Math.min(WORLD_H - 20, this.py + this.joystick.dy * 160 * dt));
+      this.tryStep(
+        Math.max(20, Math.min(WORLD_W - 20, this.px + this.joystick.dx * 160 * dt)),
+        Math.max(20, Math.min(WORLD_H - 20, this.py + this.joystick.dy * 160 * dt)),
+      );
       if (Math.abs(this.joystick.dx) > 0.05) this.facing = this.joystick.dx > 0 ? 1 : -1;
       this.moveT += dt * 10;
       this.activity = "Wandering";
@@ -1604,6 +1660,7 @@ export class GameEngine {
       if (b.x > view.x + w || b.x + b.w < view.x || b.y > view.y + h || b.y + b.h < view.y) continue;
       this.drawBiome(ctx, b);
     }
+    this.drawBarriers(ctx, view);
     for (const b of BUILDINGS) this.drawBuilding(ctx, b);
     this.drawButterflies(ctx);
     for (const v of this.villagers) {
@@ -1693,6 +1750,72 @@ export class GameEngine {
     }
     p.closePath();
     return p;
+  }
+
+  private drawBarriers(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
+    for (const bar of BARRIERS) {
+      if (bar.minX > view.x + view.w + 80 || bar.maxX < view.x - 80) continue;
+      if (bar.minY > view.y + view.h + 80 || bar.maxY < view.y - 80) continue;
+
+      const path = new Path2D();
+      path.moveTo(bar.pts[0]![0], bar.pts[0]![1]);
+      for (let i = 1; i < bar.pts.length; i++) {
+        const cur = bar.pts[i]!;
+        const prev = bar.pts[i - 1]!;
+        path.quadraticCurveTo(prev[0], prev[1], (prev[0] + cur[0]) / 2, (prev[1] + cur[1]) / 2);
+      }
+
+      if (bar.kind === "river") {
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = "#6fa9c9";
+        ctx.lineWidth = bar.width;
+        ctx.stroke(path);
+        ctx.strokeStyle = "#9fd8ee";
+        ctx.lineWidth = bar.width * 0.66;
+        ctx.stroke(path);
+        ctx.strokeStyle = "rgba(255,255,255,0.5)";
+        ctx.lineWidth = bar.width * 0.16;
+        ctx.stroke(path);
+      } else if (bar.kind === "rocks") {
+        for (let i = 0; i < bar.pts.length; i++) {
+          const [x, y] = bar.pts[i]!;
+          const r = bar.width * (0.42 + ((i * 37) % 11) / 40);
+          ctx.fillStyle = "#8f8a85";
+          ctx.beginPath();
+          ctx.ellipse(x, y + 6, r, r * 0.72, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#b3ada6";
+          ctx.beginPath();
+          ctx.ellipse(x - r * 0.15, y - r * 0.15, r * 0.7, r * 0.5, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "rgba(255,255,255,0.5)";
+          ctx.beginPath();
+          ctx.ellipse(x - r * 0.3, y - r * 0.35, r * 0.28, r * 0.18, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else {
+        for (let i = 0; i < bar.pts.length; i++) {
+          const [x, y] = bar.pts[i]!;
+          const r = bar.width * (0.4 + ((i * 53) % 9) / 36);
+          ctx.fillStyle = "rgba(60,80,60,0.18)";
+          ctx.beginPath();
+          ctx.ellipse(x, y + r * 0.7, r * 0.85, r * 0.3, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#6b4a30";
+          ctx.fillRect(x - 4, y, 8, r * 0.7);
+          ctx.fillStyle = "#3f8f6a";
+          ctx.beginPath();
+          ctx.arc(x, y - r * 0.1, r * 0.72, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#54ab7f";
+          ctx.beginPath();
+          ctx.arc(x - r * 0.2, y - r * 0.3, r * 0.45, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+    ctx.lineWidth = 1;
   }
 
   private drawBiome(ctx: CanvasRenderingContext2D, b: BiomeDef) {
