@@ -290,11 +290,9 @@ function Game() {
 
         <div className="flex-1" />
 
-        <div className="pointer-events-none flex items-end justify-between gap-3 p-3">
-          <div className="pointer-events-auto">
-            <Joystick onChange={onJoystick} />
-          </div>
+        <div className="pointer-events-none flex items-end justify-end gap-3 p-3">
           <div className="pointer-events-auto flex flex-col gap-2">
+
             <OverlayButton label={`Sign out of ${username || "your account"}`} active={false} onClick={signOut}>
               <LogOut className="size-5" />
             </OverlayButton>
