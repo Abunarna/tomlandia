@@ -1256,6 +1256,8 @@ export class GameEngine {
         fee: MARKET_FEE,
       },
       soundOn: sfx.enabled,
+      name: this.playerName,
+      nearby: this.remotes.size,
 
     });
   }
