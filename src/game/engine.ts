@@ -1672,6 +1672,11 @@ export class GameEngine {
 
 
     const drawables: { y: number; fn: () => void }[] = [];
+    for (const b of BUILDINGS) {
+      if (b.x > view.x + w || b.x + b.w < view.x || b.y > view.y + h || b.y + b.h < view.y) continue;
+      drawables.push({ y: b.y + b.h, fn: () => this.drawBuilding(ctx, b) });
+    }
+
     for (const n of this.nodes) {
       if (!this.inView(n.x, n.y, view)) continue;
       drawables.push({ y: n.y, fn: () => this.drawNode(ctx, n) });
