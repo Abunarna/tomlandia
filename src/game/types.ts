@@ -80,7 +80,10 @@ export interface SaveState {
   quest?: QuestState | null;
   completed?: string[];
   discovered?: string[];
+  listings?: unknown[];
+  clock?: number;
 }
+
 
 export interface HudQuest {
   id: string;
