@@ -498,11 +498,11 @@ export const BUILDINGS: BuildingDef[] = [
   { name: "Arcane Loom", x: TILE_W * 2 + 840, y: 300, w: 130, h: 100, roof: "#e8b3d8", wall: "#fdf0d4" },
   { name: "Golden Bank", x: TILE_W * 2 + 500, y: 320, w: 130, h: 100, roof: "#d9a95f", wall: "#fdf0d4" },
   // Willowbrook village (Lush Forest)
-  { name: "Willowbrook Inn", x: TILE_W + 640, y: 480, w: 140, h: 105, roof: "#7fbd93", wall: "#f5f0da" },
-  { name: "Trapper's Hut", x: TILE_W + 820, y: 540, w: 115, h: 90, roof: "#b98a5c", wall: "#f5f0da" },
+  { name: "Willowbrook Inn", x: TILE_W + 490, y: 420, w: 140, h: 105, roof: "#7fbd93", wall: "#f5f0da" },
+  { name: "Trapper's Hut", x: TILE_W + 670, y: 480, w: 115, h: 90, roof: "#b98a5c", wall: "#f5f0da" },
   // Hearthspur camp (Winter Mountain)
-  { name: "Hearthspur Lodge", x: 620, y: TILE_H + 240, w: 150, h: 110, roof: "#8fb6d9", wall: "#f2f7fd" },
-  { name: "Frostforge", x: 820, y: TILE_H + 300, w: 125, h: 95, roof: "#a9c6e6", wall: "#f2f7fd" },
+  { name: "Hearthspur Lodge", x: 620, y: TILE_H + 390, w: 150, h: 110, roof: "#8fb6d9", wall: "#f2f7fd" },
+  { name: "Frostforge", x: 820, y: TILE_H + 450, w: 125, h: 95, roof: "#a9c6e6", wall: "#f2f7fd" },
 ];
 
 export type NpcRole =
@@ -536,9 +536,9 @@ export const NPCS: NpcDef[] = [
   { id: "sun_smith", name: "Master Alric", title: "Sunspire Smith", x: TILE_W * 2 + 735, y: 350, robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings when it's shaped right.", services: ["smith", "upgrade"] },
   { id: "weaver", name: "Lira", title: "Arcane Weaver", x: TILE_W * 2 + 905, y: 420, robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["tailor"] },
   { id: "banker", name: "Coinmaster Odo", title: "Golden Bank", x: TILE_W * 2 + 565, y: 440, robe: "#d9a95f", hair: "#4a3b2e", greeting: "Every scrap has a price, friend.", services: ["sell"] },
-  { id: "trapper", name: "Rook", title: "Trapper", x: TILE_W + 878, y: 650, robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin", "sell"] },
-  { id: "innkeeper", name: "Mabel", title: "Willowbrook Inn", x: TILE_W + 710, y: 600, robe: "#7fbd93", hair: "#a86f45", greeting: "A warm meal keeps a hero standing.", services: ["shop"] },
-  { id: "frost_smith", name: "Sigrid", title: "Frostforge Smith", x: 882, y: TILE_H + 410, robe: "#a9c6e6", hair: "#e6eef7", greeting: "Only runite holds an edge up here.", services: ["smith", "upgrade", "shop"] },
+  { id: "trapper", name: "Rook", title: "Trapper", x: TILE_W + 728, y: 590, robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin", "sell"] },
+  { id: "innkeeper", name: "Mabel", title: "Willowbrook Inn", x: TILE_W + 560, y: 540, robe: "#7fbd93", hair: "#a86f45", greeting: "A warm meal keeps a hero standing.", services: ["shop"] },
+  { id: "frost_smith", name: "Sigrid", title: "Frostforge Smith", x: 882, y: TILE_H + 560, robe: "#a9c6e6", hair: "#e6eef7", greeting: "Only runite holds an edge up here.", services: ["smith", "upgrade", "shop"] },
 ];
 
 export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
