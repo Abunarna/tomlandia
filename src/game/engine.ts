@@ -2200,3 +2200,21 @@ export class GameEngine {
     }
   }
 }
+
+/** Resample a polyline so consecutive points are at most `step` apart. */
+function densify(pts: [number, number][], step: number): [number, number][] {
+  const out: [number, number][] = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i]!;
+    const b = pts[i + 1]!;
+    const d = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    const n = Math.max(1, Math.ceil(d / step));
+    for (let k = 0; k < n; k++) {
+      const t = k / n;
+      out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]);
+    }
+  }
+  const last = pts[pts.length - 1];
+  if (last) out.push([last[0], last[1]]);
+  return out;
+}
