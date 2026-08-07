@@ -758,19 +758,47 @@ export class GameEngine {
     this.ctx.imageSmoothingEnabled = false;
   }
 
+  /** move, but never walk into a river, rocky ridge or dense woodland */
+  private tryStep(nx: number, ny: number) {
+    if (!blockedAt(nx, ny, 12)) {
+      this.px = nx;
+      this.py = ny;
+      return true;
+    }
+    if (!blockedAt(nx, this.py, 12)) {
+      this.px = nx;
+      return true;
+    }
+    if (!blockedAt(this.px, ny, 12)) {
+      this.py = ny;
+      return true;
+    }
+    return false;
+  }
+
   private moveToward(tx: number, ty: number, dt: number, speed = 130): number {
     const dx = tx - this.px;
     const dy = ty - this.py;
     const d = Math.hypot(dx, dy);
     if (d > 1) {
       const step = Math.min(d, speed * dt);
-      this.px += (dx / d) * step;
-      this.py += (dy / d) * step;
+      const moved = this.tryStep(this.px + (dx / d) * step, this.py + (dy / d) * step);
+      if (!moved) {
+        this.blockedFor += dt;
+        if (this.blockedFor > 0.6 && this.target.type === "point") {
+          this.target = { type: "none" };
+          this.blockedFor = 0;
+          this.pushText("Blocked!", this.px, this.py - 40, "#e0a5a5");
+        }
+        return d;
+      }
+      this.blockedFor = 0;
       if (Math.abs(dx) > 2) this.facing = dx > 0 ? 1 : -1;
       this.moveT += dt * 10;
     }
     return d;
   }
+
 
   /**
    * Phase 9 — adopt the server's view of our progression. The action routines
