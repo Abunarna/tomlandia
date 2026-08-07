@@ -858,28 +858,38 @@ export class GameEngine {
           }
           if (this.gatherProgress >= 1 && !n.pending) {
             this.gatherProgress = 0;
-            // Shared node: the server decides whether this swing yields a
-            // resource. Several players can mine the same rock at once; it
-            // depletes for everyone when the shared charges run out.
+            // Phase 9 — the server checks range, level, cooldown and node
+            // charges, then writes the yield and XP straight into our save.
             n.pending = true;
             const claim: Promise<HarvestRes> = this.onHarvest
-              ? this.onHarvest(n.id)
-              : Promise.resolve({ ok: true, charges: n.charges - 1, respawn_at: null });
+              ? this.onHarvest(n.id, this.px, this.py)
+              : Promise.resolve({ ok: false, reason: "offline" });
             void claim
               .then((res) => {
                 n.pending = false;
                 if (typeof res.charges === "number") n.charges = res.charges;
-                n.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : 0;
-                n.depleted = n.respawnAt > Date.now();
+                if (res.respawn_at !== undefined) {
+                  n.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : 0;
+                  n.depleted = n.respawnAt > Date.now();
+                }
                 if (res.ok) {
-                  this.addItem(def.item, 1);
-                  this.questTick("gather", def.item);
-                  this.grantXp(def.skill, def.xp);
+                  this.applyServerState(res.state);
+                  if (res.item) {
+                    this.questTick("gather", res.item);
+                    this.pushText(n.x, n.y - 20, `+${res.qty ?? 1} ${item(res.item).name}`, "#dff6c9");
+                  }
+                  this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
+                  if (res.leveled && res.skill) this.celebrateLevel(res.skill);
                   sfx.play("gather");
-                  this.pushText(n.x, n.y - 20, `+1 ${item(def.item).name}`, "#dff6c9");
                 } else if (res.reason === "depleted") {
                   this.pushText(n.x, n.y - 20, "Depleted", "#cbb9a4");
+                } else if (res.reason === "bag_full") {
+                  this.pushText(n.x, n.y - 20, "Bag is full", "#f4b0b0");
+                } else if (res.reason === "low_level") {
+                  this.pushText(n.x, n.y - 20, `Needs ${res.skill} ${res.req}`, "#f4b0b0");
+                  this.target = { type: "none" };
                 }
+                this.emitHud(true);
                 if (n.depleted && this.target.type === "node" && this.target.id === n.id) {
                   this.target = { type: "none" };
                 }
