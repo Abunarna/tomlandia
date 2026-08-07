@@ -890,8 +890,6 @@ export class GameEngine {
                 });
             }
 
-            {
-            }
             if (!m.dead) {
               const taken = Math.max(1, Math.round(md.attack - this.defense / 2));
               this.hp -= taken;
