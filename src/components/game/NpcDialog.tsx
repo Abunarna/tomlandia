@@ -1,6 +1,8 @@
-import { Coins, Check, X, Hammer, ArrowUpCircle } from "lucide-react";
+import { useState } from "react";
+import { Coins, Check, X, Hammer, ArrowUpCircle, ChevronDown } from "lucide-react";
 import { MAX_PLUS, NPCS, QUESTS, RECIPES, SHOP_STOCK, item, type NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId } from "@/game/types";
+
 
 export function NpcDialog({
   npc,
@@ -30,6 +32,8 @@ export function NpcDialog({
   const def = NPCS.find((n) => n.id === npc)!;
   const stock = SHOP_STOCK[npc] ?? [];
   const services = def.services;
+  const [openRecipe, setOpenRecipe] = useState<string | null>(null);
+
   const resourceValue = hud.inv.reduce((sum, s) => {
     if (!s) return sum;
     const d = item(s.id);
@@ -118,28 +122,85 @@ export function NpcDialog({
               {list.map((r) => {
                 const ok = lvl >= r.req && r.inputs.every((i) => count(i.id) >= i.qty);
                 const out = item(r.out);
+                const open = openRecipe === r.id;
                 return (
-                  <div key={r.id} className="flex items-center gap-2.5 rounded-2xl border border-border/70 bg-muted/40 p-2">
-                    <span className="size-9 shrink-0 rounded-xl" style={{ backgroundColor: out.color }} />
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-bold text-foreground">
-                        {out.name} {r.outQty > 1 && `x${r.outQty}`}
-                      </p>
-                      <p className="truncate text-[10px] text-muted-foreground">
-                        Lv {r.req} · {r.inputs.map((i) => `${count(i.id)}/${i.qty} ${item(i.id).name}`).join(", ")}
-                      </p>
+                  <div key={r.id} className="rounded-2xl border border-border/70 bg-muted/40 p-2">
+                    <div className="flex items-center gap-2.5">
+                      <button
+                        onClick={() => setOpenRecipe(open ? null : r.id)}
+                        aria-expanded={open}
+                        className="flex min-w-0 flex-1 items-center gap-2.5 text-left active:scale-[0.99]"
+                      >
+                        <span className="size-9 shrink-0 rounded-xl" style={{ backgroundColor: out.color }} />
+                        <span className="min-w-0 flex-1">
+                          <span className="flex items-center gap-1">
+                            <span className="truncate text-xs font-bold text-foreground">
+                              {out.name} {r.outQty > 1 && `x${r.outQty}`}
+                            </span>
+                            <ChevronDown
+                              className={`size-3.5 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+                            />
+                          </span>
+                          <span className="block truncate text-[10px] text-muted-foreground">
+                            Lv {r.req} · {r.inputs.map((i) => `${count(i.id)}/${i.qty} ${item(i.id).name}`).join(", ")}
+                          </span>
+                        </span>
+                      </button>
+                      <button
+                        disabled={!ok}
+                        onClick={() => onCraft(r.id)}
+                        className="flex shrink-0 items-center gap-1 rounded-xl bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+                      >
+                        <Hammer className="size-3.5" />
+                        Make
+                      </button>
                     </div>
-                    <button
-                      disabled={!ok}
-                      onClick={() => onCraft(r.id)}
-                      className="flex shrink-0 items-center gap-1 rounded-xl bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
-                    >
-                      <Hammer className="size-3.5" />
-                      Make
-                    </button>
+
+                    {open && (
+                      <div className="mt-2 space-y-2 rounded-xl bg-card/70 p-2.5">
+                        <p className="text-[10px] text-muted-foreground">
+                          {out.attack
+                            ? `+${out.attack} attack`
+                            : out.defense
+                              ? `+${out.defense} defense`
+                              : out.heal
+                                ? `Heals ${out.heal} hp`
+                                : "Crafting material"}
+                          {" · "}
+                          {r.xp} {skill} xp · {r.time}s
+                          {lvl < r.req && ` · needs Lv ${r.req}`}
+                        </p>
+                        <div className="space-y-1">
+                          {r.inputs.map((i) => {
+                            const mat = item(i.id);
+                            const have = count(i.id);
+                            const sub = RECIPES.find((x) => x.out === i.id);
+                            return (
+                              <div key={i.id}>
+                                <div className="flex items-center gap-2">
+                                  <span className="size-4 shrink-0 rounded" style={{ backgroundColor: mat.color }} />
+                                  <span className="min-w-0 flex-1 truncate text-[11px] text-foreground">{mat.name}</span>
+                                  <span
+                                    className={`text-[11px] font-bold ${have >= i.qty ? "text-primary" : "text-destructive"}`}
+                                  >
+                                    {have}/{i.qty}
+                                  </span>
+                                </div>
+                                {sub && have < i.qty && (
+                                  <p className="ml-6 text-[10px] text-muted-foreground">
+                                    Craft from {sub.inputs.map((s) => `${s.qty}x ${item(s.id).name}`).join(" + ")}
+                                  </p>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
+
             </Section>
           );
         })}
