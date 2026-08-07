@@ -11,10 +11,10 @@ import {
   WORLD_W,
 } from "@/game/data";
 
-const MIN_ZOOM = 0.6;
 const MAX_ZOOM = 10;
 /** >1 makes pinch zoom move faster than the raw finger distance ratio. */
 const PINCH_GAIN = 2.2;
+
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
@@ -41,11 +41,27 @@ export function WorldMap({ position, onClose }: Props) {
   // "fit" scale maps the whole world into the viewport at zoom 1.
   const fit = Math.min(size.w / WORLD_W, size.h / WORLD_H);
   const scale = fit * zoom;
+  // Never zoom out past the point where the world covers the viewport:
+  // no empty space around the map.
+  const minZoom = Math.max(size.w / WORLD_W, size.h / WORLD_H) / fit;
 
   const target = useRef({ zoom: 1, x: 0, y: 0 });
   const viewRef = useRef(view);
   viewRef.current = view;
+  const limits = useRef({ w: size.w, h: size.h, fit, minZoom });
+  limits.current = { w: size.w, h: size.h, fit, minZoom };
   const raf = useRef<number | null>(null);
+
+  /** Clamp zoom + pan so the world always fills the viewport. */
+  const clampView = useCallback((v: { zoom: number; x: number; y: number }) => {
+    const L = limits.current;
+    const z = clamp(v.zoom, L.minZoom, MAX_ZOOM);
+    const s = L.fit * z;
+    const mx = Math.max(0, (WORLD_W * s - L.w) / 2);
+    const my = Math.max(0, (WORLD_H * s - L.h) / 2);
+    return { zoom: z, x: clamp(v.x, -mx, mx), y: clamp(v.y, -my, my) };
+  }, []);
+
 
   /** Ease the rendered view toward the target (frame-rate independent). */
   const animate = useCallback(() => {
@@ -86,18 +102,22 @@ export function WorldMap({ position, onClose }: Props) {
   /** Set the eased target. */
   const glide = useCallback(
     (v: { zoom: number; x: number; y: number }) => {
-      target.current = v;
+      target.current = clampView(v);
       animate();
     },
-    [animate],
+    [animate, clampView],
   );
 
-  /** Move now, with no easing (used for one-finger panning). */
-  const jump = useCallback((v: { zoom: number; x: number; y: number }) => {
-    target.current = v;
-    viewRef.current = v;
-    setView(v);
-  }, []);
+  /** Move now, with no easing (used for panning and pinch tracking). */
+  const jump = useCallback(
+    (v: { zoom: number; x: number; y: number }) => {
+      const c = clampView(v);
+      target.current = c;
+      viewRef.current = c;
+      setView(c);
+    },
+    [clampView],
+  );
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -109,6 +129,12 @@ export function WorldMap({ position, onClose }: Props) {
     return () => ro.disconnect();
   }, []);
 
+  // Keep the view legal when the viewport resizes.
+  useEffect(() => {
+    jump(viewRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [size.w, size.h]);
+
   // Track the player's live position while the map is open.
   useEffect(() => {
     const t = window.setInterval(() => setPlayer(position()), 250);
@@ -119,7 +145,7 @@ export function WorldMap({ position, onClose }: Props) {
   const zoomAt = useCallback(
     (px: number, py: number, next: number) => {
       const cur = target.current;
-      const clamped = clamp(next, MIN_ZOOM, MAX_ZOOM);
+      const clamped = clamp(next, limits.current.minZoom, MAX_ZOOM);
       const k = clamped / cur.zoom;
       glide({
         zoom: clamped,
@@ -127,6 +153,7 @@ export function WorldMap({ position, onClose }: Props) {
         y: py - (py - cur.y) * k,
       });
     },
+
     [glide],
   );
 
@@ -177,13 +204,13 @@ export function WorldMap({ position, onClose }: Props) {
       const cy = (a.y + b.y) / 2;
       const g = gesture.current;
       if (g && g.dist > 0 && dist > 0) {
-        // pinch scale + two-finger drag in one step (gain > 1 = snappier pinch)
-        const cur = target.current;
+        // Anchor on the *rendered* view so the world point under the pinch
+        // midpoint stays exactly under the fingers (no easing lag drift).
+        const cur = viewRef.current;
         const ratio = Math.pow(dist / g.dist, PINCH_GAIN);
-        const zoomTo = clamp(cur.zoom * ratio, MIN_ZOOM, MAX_ZOOM);
+        const zoomTo = clamp(cur.zoom * ratio, limits.current.minZoom, MAX_ZOOM);
         const k = zoomTo / cur.zoom;
-        // target updates every pointermove; the rAF loop eases the view to it
-        glide({
+        jump({
           zoom: zoomTo,
           x: cx - (cx - cur.x) * k + (cx - g.cx),
           y: cy - (cy - cur.y) * k + (cy - g.cy),
@@ -202,10 +229,11 @@ export function WorldMap({ position, onClose }: Props) {
     gesture.current = null;
   };
 
-  const reset = () => glide({ zoom: 1, x: 0, y: 0 });
+  const reset = () => glide({ zoom: minZoom, x: 0, y: 0 });
 
   const focusPlayer = () => {
-    const z = clamp(3, MIN_ZOOM, MAX_ZOOM);
+    const z = clamp(3, minZoom, MAX_ZOOM);
+
     const s = fit * z;
     glide({
       zoom: z,
