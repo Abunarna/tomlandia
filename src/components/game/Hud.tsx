@@ -1,4 +1,4 @@
-import { Heart, Coins, Sparkles, MapPin, Swords, Shield, ScrollText } from "lucide-react";
+import { Heart, Coins, Sparkles, MapPin, Swords, Shield, ScrollText, Sun, Moon } from "lucide-react";
 import type { HudSnapshot } from "@/game/types";
 
 export function Hud({ hud }: { hud: HudSnapshot }) {
@@ -19,10 +19,17 @@ export function Hud({ hud }: { hud: HudSnapshot }) {
               </p>
             </div>
           </div>
-          <div className="flex shrink-0 items-center gap-1 rounded-xl bg-gold/15 px-2 py-1 text-sm font-bold text-gold-foreground">
-            <Coins className="size-4 text-gold" />
-            {hud.gold}
+          <div className="flex shrink-0 items-center gap-1.5">
+            <span className="flex items-center gap-1 rounded-xl bg-muted px-2 py-1 text-[11px] font-bold text-muted-foreground">
+              {hud.phase === "Night" ? <Moon className="size-3.5" /> : <Sun className="size-3.5 text-gold" />}
+              {hud.phase}
+            </span>
+            <span className="flex items-center gap-1 rounded-xl bg-gold/15 px-2 py-1 text-sm font-bold text-gold-foreground">
+              <Coins className="size-4 text-gold" />
+              {hud.gold}
+            </span>
           </div>
+
         </div>
 
         <div className="mt-2 space-y-1.5">
