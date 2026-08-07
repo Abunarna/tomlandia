@@ -1778,8 +1778,15 @@ export class GameEngine {
         ctx.lineWidth = bar.width * 0.16;
         ctx.stroke(path);
       } else if (bar.kind === "rocks") {
-        for (let i = 0; i < bar.pts.length; i++) {
-          const [x, y] = bar.pts[i]!;
+        // solid rubble band so the ridge reads as continuous
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = "#7e7974";
+        ctx.lineWidth = bar.width * 0.9;
+        ctx.stroke(path);
+        const pts = densify(bar.pts, bar.width * 0.34);
+        for (let i = 0; i < pts.length; i++) {
+          const [x, y] = pts[i]!;
           const r = bar.width * (0.42 + ((i * 37) % 11) / 40);
           ctx.fillStyle = "#8f8a85";
           ctx.beginPath();
@@ -1795,8 +1802,15 @@ export class GameEngine {
           ctx.fill();
         }
       } else {
-        for (let i = 0; i < bar.pts.length; i++) {
-          const [x, y] = bar.pts[i]!;
+        // shaded undergrowth band beneath the trunks
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = "rgba(52,86,62,0.55)";
+        ctx.lineWidth = bar.width * 0.85;
+        ctx.stroke(path);
+        const pts = densify(bar.pts, bar.width * 0.32);
+        for (let i = 0; i < pts.length; i++) {
+          const [x, y] = pts[i]!;
           const r = bar.width * (0.4 + ((i * 53) % 9) / 36);
           ctx.fillStyle = "rgba(60,80,60,0.18)";
           ctx.beginPath();
@@ -1817,6 +1831,7 @@ export class GameEngine {
     }
     ctx.lineWidth = 1;
   }
+
 
   private drawBiome(ctx: CanvasRenderingContext2D, b: BiomeDef) {
     const path = this.biomePath(b);
