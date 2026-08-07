@@ -960,6 +960,132 @@ export class GameEngine {
     this.emitHud(true);
   }
 
+  /* ---------- marketplace (Phase 3) ---------- */
+
+  get timeOfDay() {
+    return (this.clock % DAY_LEN) / DAY_LEN;
+  }
+
+  get dayPhase(): HudSnapshot["phase"] {
+    const t = this.timeOfDay;
+    if (t < 0.2 || t >= 0.85) return "Night";
+    if (t < 0.3) return "Dawn";
+    if (t < 0.72) return "Day";
+    return "Dusk";
+  }
+
+  suggestPrice(id: ItemId) {
+    return suggestedPrice(id);
+  }
+
+  /** List a stack (or part of it) from the bag on the global market. */
+  listSlot(index: number, qty: number, price: number): boolean {
+    const slot = this.inv[index];
+    if (!slot) return false;
+    const amount = Math.max(1, Math.min(qty, slot.qty));
+    const unit = Math.max(1, Math.round(price));
+    if (!this.removeItem(slot.id, amount)) return false;
+    this.listings = [makePlayerListing(slot.id, amount, unit), ...this.listings];
+    sfx.play("craft");
+    this.pushText(this.px, this.py - 56, `Listed ${amount}× ${item(slot.id).name}`, "#c9e8ff");
+    this.emitHud(true);
+    return true;
+  }
+
+  buyListing(id: string): boolean {
+    const idx = this.listings.findIndex((l) => l.id === id);
+    if (idx === -1) return false;
+    const l = this.listings[idx]!;
+    if (l.mine) return this.cancelListing(id);
+    const total = l.price * l.qty;
+    if (this.gold < total) {
+      sfx.play("error");
+      this.pushText(this.px, this.py - 50, "Not enough gold", "#f4b0b0");
+      return false;
+    }
+    if (!this.addItem(l.item, l.qty)) return false;
+    this.gold -= total;
+    this.listings.splice(idx, 1);
+    sfx.play("coin");
+    this.pushText(this.px, this.py - 50, `-${total}g`, "#ffd0a8");
+    this.emitHud(true);
+    return true;
+  }
+
+  /** Pull your own listing back into the bag. */
+  cancelListing(id: string): boolean {
+    const idx = this.listings.findIndex((l) => l.id === id && l.mine);
+    if (idx === -1) return false;
+    const l = this.listings[idx]!;
+    if (!this.addItem(l.item, l.qty)) return false;
+    this.listings.splice(idx, 1);
+    this.emitHud(true);
+    return true;
+  }
+
+  toggleSound(): boolean {
+    sfx.unlock();
+    sfx.enabled = !sfx.enabled;
+    if (sfx.enabled) sfx.play("coin");
+    this.emitHud(true);
+    return sfx.enabled;
+  }
+
+  unlockAudio() {
+    sfx.unlock();
+  }
+
+  /* ---------- ambient rendering helpers ---------- */
+
+  private drawLeaves(ctx: CanvasRenderingContext2D) {
+    for (const l of this.leaves) {
+      ctx.save();
+      ctx.globalAlpha = Math.min(0.7, l.life / 3);
+      ctx.translate(l.x, l.y);
+      ctx.rotate(l.rot);
+      ctx.fillStyle = l.color;
+      ctx.fillRect(-3, -2, 6, 4);
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  private drawVillager(ctx: CanvasRenderingContext2D, v: Villager) {
+    const bob = Math.sin(this.time * 5 + v.hx + v.x * 0.05) * 1.6;
+    this.shadow(ctx, v.x, v.y + 13, 11);
+    ctx.fillStyle = v.robe;
+    ctx.beginPath();
+    ctx.roundRect(v.x - 8, v.y - 5 - bob, 16, 17, 5);
+    ctx.fill();
+    ctx.fillStyle = "#ffe0c2";
+    ctx.beginPath();
+    ctx.arc(v.x, v.y - 14 - bob, 10, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = v.hair;
+    ctx.beginPath();
+    ctx.arc(v.x, v.y - 17 - bob, 10, Math.PI, 0);
+    ctx.fill();
+    ctx.fillStyle = "#4a3b52";
+    ctx.fillRect(v.x - 4, v.y - 15 - bob, 2, 3);
+    ctx.fillRect(v.x + 2, v.y - 15 - bob, 2, 3);
+  }
+
+  private drawDayNight(ctx: CanvasRenderingContext2D, w: number, h: number) {
+    const t = this.timeOfDay;
+    const brightness = 0.5 - 0.5 * Math.cos(t * Math.PI * 2);
+    const dark = (1 - brightness) * 0.42;
+    if (dark > 0.01) {
+      ctx.fillStyle = `rgba(46,54,110,${dark.toFixed(3)})`;
+      ctx.fillRect(0, 0, w, h);
+    }
+    const warm = Math.max(0, 1 - Math.abs(brightness - 0.5) * 5) * 0.18;
+    if (warm > 0.01) {
+      ctx.fillStyle = `rgba(255,150,90,${warm.toFixed(3)})`;
+      ctx.fillRect(0, 0, w, h);
+    }
+  }
+
+
   emitHud(force = false) {
     if (force) this.hudCd = 0.12;
     const mk = (id: SkillId) => {
@@ -1002,6 +1128,15 @@ export class GameEngine {
       discovered: [...this.discovered],
       attack: this.attack,
       defense: this.defense,
+      timeOfDay: this.timeOfDay,
+      phase: this.dayPhase,
+      market: {
+        listings: this.listings.map((l) => ({ ...l })),
+        log: this.tradeLog.map((l) => ({ ...l })),
+        fee: MARKET_FEE,
+      },
+      soundOn: sfx.enabled,
+
     });
   }
 
@@ -1024,6 +1159,11 @@ export class GameEngine {
     }
     for (const b of BUILDINGS) this.drawBuilding(ctx, b);
     this.drawButterflies(ctx);
+    for (const v of this.villagers) {
+      if (!this.inView(v.x, v.y, view)) continue;
+      this.drawVillager(ctx, v);
+    }
+
 
     const drawables: { y: number; fn: () => void }[] = [];
     for (const n of this.nodes) {
@@ -1072,16 +1212,19 @@ export class GameEngine {
       ctx.fillText(t.text, t.x, t.y);
     }
     ctx.globalAlpha = 1;
+    this.drawLeaves(ctx);
     ctx.restore();
 
-    // biome tint + soft vignette
+    // biome tint + day/night + soft vignette
     ctx.fillStyle = this.biome.tint;
     ctx.fillRect(0, 0, w, h);
+    this.drawDayNight(ctx, w, h);
     const v = ctx.createRadialGradient(w / 2, h / 2, h * 0.3, w / 2, h / 2, h * 0.85);
     v.addColorStop(0, "rgba(255,255,235,0)");
     v.addColorStop(1, "rgba(120,100,150,0.16)");
     ctx.fillStyle = v;
     ctx.fillRect(0, 0, w, h);
+
   }
 
   private inView(x: number, y: number, view: { x: number; y: number; w: number; h: number }) {
