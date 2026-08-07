@@ -180,130 +180,150 @@ function rand01(seed: number) {
   return s - Math.floor(s);
 }
 
-/**
- * Builds a wobbly blob outline around a rectangle: points are walked around the
- * perimeter and pushed in/out by a deterministic jitter so edges never look
- * like straight square borders.
- */
-function jitterPoly(x: number, y: number, w: number, h: number, seed: number): [number, number][] {
-  const pts: [number, number][] = [];
-  const steps = 14; // per side
-  const amp = Math.min(w, h) * 0.09;
-  const push = (px: number, py: number, i: number, nx: number, ny: number) => {
-    const j = (rand01(seed + i * 3.7) - 0.35) * amp * 2;
-    const wob = Math.sin(i * 1.7 + seed) * amp * 0.45;
-    pts.push([px + nx * (j + wob), py + ny * (j + wob)]);
-  };
-  for (let i = 0; i < steps; i++) push(x + (w * i) / steps, y, i, 0, -1);
-  for (let i = 0; i < steps; i++) push(x + w, y + (h * i) / steps, i + 20, 1, 0);
-  for (let i = 0; i < steps; i++) push(x + w - (w * i) / steps, y + h, i + 40, 0, 1);
-  for (let i = 0; i < steps; i++) push(x, y + h - (h * i) / steps, i + 60, -1, 0);
-  // clamp inside the world
-  return pts.map(([px, py]) => [
-    Math.max(0, Math.min(WORLD_W, px)),
-    Math.max(0, Math.min(WORLD_H, py)),
-  ]) as [number, number][];
-}
-
 interface RegionSpec {
   id: BiomeId;
+  /** seed centre in world coords — the region grows around this point */
   x: number;
   y: number;
-  w: number;
-  h: number;
+  /** relative pull: bigger regions claim more ground */
+  size: number;
   label?: boolean;
   plaza?: { x: number; y: number; w: number; h: number };
   pond?: { x: number; y: number; rx: number; ry: number };
 }
 
 /**
- * Painted in order — later regions sit on top of earlier ones, so the town
- * regions are listed last to guarantee they own their ground.
+ * The world is partitioned: every point on the map belongs to exactly one
+ * region, so biomes butt right up against each other and never overlap.
+ * Each spec is a seed; ground is awarded to the nearest seed (weighted by
+ * size, with a wobble so borders are organic rather than straight).
  */
 const REGION_SPECS: RegionSpec[] = [
-  // base layer: rolling fields underneath everything
-  { id: "fields", x: -40, y: -40, w: WORLD_W + 80, h: WORLD_H + 80 },
-  // scattered patches
-  { id: "forest", x: 150, y: 1010, w: 980, h: 790, label: true, pond: { x: 520, y: 1520, rx: 120, ry: 62 } },
-  { id: "desert", x: 1120, y: 1380, w: 940, h: 660, label: true },
-  { id: "evil", x: 1930, y: 760, w: 1080, h: 790, label: true, pond: { x: 2480, y: 1180, rx: 160, ry: 80 } },
-  { id: "evil", x: 2740, y: 1440, w: 960, h: 600 },
-  { id: "winter", x: 3280, y: 1400, w: 920, h: 620, label: true },
-  { id: "desert", x: 3340, y: 660, w: 880, h: 760 },
-  { id: "forest", x: 2380, y: 250, w: 720, h: 640 },
-  { id: "winter", x: -60, y: 1480, w: 700, h: 560 },
-  { id: "fields", x: 1580, y: 1120, w: 780, h: 560, label: true },
-  { id: "desert", x: 640, y: 620, w: 560, h: 430 },
-  // town regions (drawn last so nothing overlaps their ground)
-  {
-    id: "forest",
-    x: 1290,
-    y: -40,
-    w: 1010,
-    h: 760,
-    plaza: { x: 1800, y: 340, w: 440, h: 380 },
-    pond: { x: 1420, y: 180, rx: 130, ry: 70 },
-  },
-  {
-    id: "desert",
-    x: 2860,
-    y: -40,
-    w: 1380,
-    h: 680,
-    plaza: { x: 3230, y: 130, w: 460, h: 390 },
-  },
-  {
-    id: "fields",
-    x: -60,
-    y: -40,
-    w: 1290,
-    h: 960,
-    plaza: { x: 500, y: 110, w: 430, h: 400 },
-    pond: { x: 300, y: 700, rx: 120, ry: 64 },
-  },
-  {
-    id: "winter",
-    x: 380,
-    y: 1120,
-    w: 960,
-    h: 800,
-    plaza: { x: 560, y: 1330, w: 440, h: 380 },
-    pond: { x: 1150, y: 1720, rx: 140, ry: 70 },
-  },
+  // towns first — their seeds sit on the plaza so a town always owns its ground
+  { id: "fields", x: 715, y: 310, size: 1.35, plaza: { x: 500, y: 110, w: 430, h: 400 }, pond: { x: 300, y: 700, rx: 120, ry: 64 } },
+  { id: "forest", x: 2020, y: 530, size: 1.3, plaza: { x: 1800, y: 340, w: 440, h: 380 }, pond: { x: 1520, y: 250, rx: 130, ry: 70 } },
+  { id: "desert", x: 3460, y: 325, size: 1.35, plaza: { x: 3230, y: 130, w: 460, h: 390 } },
+  { id: "winter", x: 780, y: 1520, size: 1.3, plaza: { x: 560, y: 1330, w: 440, h: 380 }, pond: { x: 1150, y: 1720, rx: 140, ry: 70 } },
+  // wilderness patches
+  { id: "forest", x: 520, y: 1080, size: 0.85, label: true },
+  { id: "desert", x: 1560, y: 1720, size: 1.0, label: true },
+  { id: "evil", x: 2500, y: 1160, size: 1.15, label: true, pond: { x: 2480, y: 1180, rx: 160, ry: 80 } },
+  { id: "evil", x: 3240, y: 1780, size: 0.95 },
+  { id: "winter", x: 3900, y: 1700, size: 1.0, label: true },
+  { id: "desert", x: 3820, y: 1040, size: 0.95 },
+  { id: "forest", x: 2760, y: 200, size: 0.9 },
+  { id: "winter", x: 220, y: 1840, size: 0.75 },
+  { id: "fields", x: 1900, y: 1420, size: 0.9, label: true },
+  { id: "fields", x: 1180, y: 760, size: 0.8 },
+  { id: "evil", x: 2960, y: 780, size: 0.85 },
+  { id: "forest", x: 1120, y: 1900, size: 0.7 },
+  { id: "fields", x: 2280, y: 1900, size: 0.7 },
 ];
 
-export const BIOMES: BiomeDef[] = REGION_SPECS.map((r, i) => ({
-  ...PALETTES[r.id],
-  id: r.id,
-  key: `${r.id}-${i}`,
-  x: r.x,
-  y: r.y,
-  w: r.w,
-  h: r.h,
-  poly: i === 0 ? [[r.x, r.y], [r.x + r.w, r.y], [r.x + r.w, r.y + r.h], [r.x, r.y + r.h]] : jitterPoly(r.x, r.y, r.w, r.h, i * 17 + 5),
-  label: r.label ?? Boolean(r.plaza),
-  ...(r.plaza ? { plaza: r.plaza } : {}),
-  ...(r.pond ? { pond: r.pond } : {}),
-}));
+/* --- grid partition ------------------------------------------------- */
 
-function pointInPoly(x: number, y: number, poly: [number, number][]) {
-  let inside = false;
-  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-    const [xi, yi] = poly[i]!;
-    const [xj, yj] = poly[j]!;
-    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+const CELL = 100;
+const GX = Math.round(WORLD_W / CELL);
+const GY = Math.round(WORLD_H / CELL);
+
+/** which region owns each grid cell */
+const CELL_OWNER: number[] = (() => {
+  const out = new Array<number>(GX * GY);
+  for (let gy = 0; gy < GY; gy++) {
+    for (let gx = 0; gx < GX; gx++) {
+      // wobble the sample point (shared by all seeds, so regions stay solid)
+      const sx = (gx + 0.5) * CELL + (rand01(gx * 3.1 + gy * 7.7) - 0.5) * 150;
+      const sy = (gy + 0.5) * CELL + (rand01(gx * 5.3 + gy * 2.9 + 11) - 0.5) * 150;
+      let best = 0;
+      let bestD = Infinity;
+      for (let i = 0; i < REGION_SPECS.length; i++) {
+        const r = REGION_SPECS[i]!;
+        const d = Math.hypot(sx - r.x, sy - r.y) / r.size;
+        if (d < bestD) {
+          bestD = d;
+          best = i;
+        }
+      }
+      out[gy * GX + gx] = best;
+    }
   }
-  return inside;
+  return out;
+})();
+
+/** grid vertex -> world point, nudged so borders are jagged, edges pinned */
+function vertex(gx: number, gy: number): [number, number] {
+  const amp = 34;
+  const x = gx === 0 ? 0 : gx === GX ? WORLD_W : gx * CELL + (rand01(gx * 12.9 + gy * 4.3) - 0.5) * 2 * amp;
+  const y = gy === 0 ? 0 : gy === GY ? WORLD_H : gy * CELL + (rand01(gx * 6.7 + gy * 19.1 + 3) - 0.5) * 2 * amp;
+  return [x, y];
 }
+
+const owner = (gx: number, gy: number) =>
+  gx < 0 || gy < 0 || gx >= GX || gy >= GY ? -1 : CELL_OWNER[gy * GX + gx]!;
+
+/** trace the outline of every cell belonging to one region into a loop */
+function traceRegion(idx: number): [number, number][] {
+  // directed boundary edges, clockwise around owned cells
+  const edges = new Map<string, [number, number, number, number]>();
+  const key = (a: number, b: number) => `${a},${b}`;
+  const add = (ax: number, ay: number, bx: number, by: number) => {
+    edges.set(key(ax, ay), [ax, ay, bx, by]);
+  };
+  for (let gy = 0; gy < GY; gy++) {
+    for (let gx = 0; gx < GX; gx++) {
+      if (owner(gx, gy) !== idx) continue;
+      if (owner(gx, gy - 1) !== idx) add(gx, gy, gx + 1, gy);
+      if (owner(gx + 1, gy) !== idx) add(gx + 1, gy, gx + 1, gy + 1);
+      if (owner(gx, gy + 1) !== idx) add(gx + 1, gy + 1, gx, gy + 1);
+      if (owner(gx - 1, gy) !== idx) add(gx, gy + 1, gx, gy);
+    }
+  }
+  // walk the longest closed loop (ignores tiny detached specks)
+  let best: [number, number][] = [];
+  const used = new Set<string>();
+  for (const [startKey, first] of edges) {
+    if (used.has(startKey)) continue;
+    const loop: [number, number][] = [];
+    let cur = first;
+    let k = startKey;
+    while (cur && !used.has(k)) {
+      used.add(k);
+      loop.push(vertex(cur[0], cur[1]));
+      k = key(cur[2], cur[3]);
+      cur = edges.get(k)!;
+    }
+    if (loop.length > best.length) best = loop;
+  }
+  return best.length ? best : [[0, 0]];
+}
+
+export const BIOMES: BiomeDef[] = REGION_SPECS.map((r, i) => {
+  const poly = traceRegion(i);
+  const xs = poly.map((p) => p[0]);
+  const ys = poly.map((p) => p[1]);
+  const minX = Math.min(...xs);
+  const minY = Math.min(...ys);
+  return {
+    ...PALETTES[r.id],
+    id: r.id,
+    key: `${r.id}-${i}`,
+    x: minX,
+    y: minY,
+    w: Math.max(...xs) - minX,
+    h: Math.max(...ys) - minY,
+    poly,
+    label: r.label ?? Boolean(r.plaza),
+    ...(r.plaza ? { plaza: r.plaza } : {}),
+    ...(r.pond ? { pond: r.pond } : {}),
+  };
+});
 
 export function biomeAt(x: number, y: number): BiomeDef {
-  for (let i = BIOMES.length - 1; i > 0; i--) {
-    const b = BIOMES[i]!;
-    if (x < b.x || x > b.x + b.w || y < b.y || y > b.y + b.h) continue;
-    if (pointInPoly(x, y, b.poly)) return b;
-  }
-  return BIOMES[0]!;
+  const gx = Math.max(0, Math.min(GX - 1, Math.floor(x / CELL)));
+  const gy = Math.max(0, Math.min(GY - 1, Math.floor(y / CELL)));
+  return BIOMES[CELL_OWNER[gy * GX + gx]!]!;
 }
+
 
 
 export const REGION_NAME = "Peaceful Fields";
