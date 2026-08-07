@@ -13,7 +13,6 @@ import type { Json } from "@/integrations/supabase/types";
 import { Hud } from "@/components/game/Hud";
 import { Panel, type PanelId } from "@/components/game/Panel";
 import { NpcDialog } from "@/components/game/NpcDialog";
-import { Joystick } from "@/components/game/Joystick";
 import { WorldMap } from "@/components/game/WorldMap";
 
 
@@ -264,11 +263,6 @@ function Game() {
     navigate({ to: "/auth", replace: true });
   };
 
-  const onJoystick = useCallback((dx: number, dy: number, active: boolean) => {
-    const e = engineRef.current;
-    if (!e) return;
-    e.joystick = { active, dx, dy };
-  }, []);
 
 
   return (
@@ -295,11 +289,9 @@ function Game() {
 
         <div className="flex-1" />
 
-        <div className="pointer-events-none flex items-end justify-between gap-3 p-3">
-          <div className="pointer-events-auto">
-            <Joystick onChange={onJoystick} />
-          </div>
+        <div className="pointer-events-none flex items-end justify-end gap-3 p-3">
           <div className="pointer-events-auto flex flex-col gap-2">
+
             <OverlayButton label={`Sign out of ${username || "your account"}`} active={false} onClick={signOut}>
               <LogOut className="size-5" />
             </OverlayButton>
