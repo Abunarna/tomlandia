@@ -663,3 +663,111 @@ export const NPC_ICONS: Record<NpcRole, NpcIcon> = {
   innkeeper: { glyph: "\u2302", color: "#7fbd93", label: "Innkeeper" },
   frost_smith: { glyph: "\u2744\uFE0E", color: "#a9c6e6", label: "Frostforge Smith" },
 };
+
+/* ------------------------------------------------------------------ */
+/* Border barriers — impassable rivers, rocky ridges & woodland strips */
+/* ------------------------------------------------------------------ */
+
+export type BarrierKind = "river" | "rocks" | "woodland";
+
+export interface Barrier {
+  id: string;
+  kind: BarrierKind;
+  /** polyline running along a stretch of biome border */
+  pts: [number, number][];
+  /** total blocked width in world px */
+  width: number;
+  /** bounding box for cheap culling */
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+}
+
+const BARRIER_WIDTH: Record<BarrierKind, number> = { river: 54, rocks: 46, woodland: 58 };
+
+/** keep-clear zones so towns and traders are never walled off */
+const CLEAR_ZONES: { x: number; y: number; r: number }[] = [
+  ...BIOMES.filter((b) => b.plaza).map((b) => ({
+    x: b.plaza!.x + b.plaza!.w / 2,
+    y: b.plaza!.y + b.plaza!.h / 2,
+    r: Math.max(b.plaza!.w, b.plaza!.h) * 0.9,
+  })),
+  ...NPCS.map((n) => ({ x: n.x, y: n.y, r: 190 })),
+  ...BUILDINGS.map((b) => ({ x: b.x + b.w / 2, y: b.y + b.h / 2, r: 180 })),
+];
+
+function nearClearZone(x: number, y: number) {
+  for (const z of CLEAR_ZONES) if (Math.hypot(x - z.x, y - z.y) < z.r) return true;
+  return false;
+}
+
+function buildBarriers(): Barrier[] {
+  const out: Barrier[] = [];
+  const kinds: BarrierKind[] = ["river", "rocks", "woodland"];
+  // Region 0 is the world-wide base layer and has no real border.
+  for (let i = 1; i < BIOMES.length; i++) {
+    const b = BIOMES[i]!;
+    const poly = b.poly;
+    const arcLen = 7;
+    const arcs = Math.floor(poly.length / arcLen);
+    for (let a = 0; a < arcs; a++) {
+      const roll = rand01(i * 91.3 + a * 13.7);
+      // ~40% of each border is walled off; the rest stays open
+      if (roll > 0.4) continue;
+      const pts: [number, number][] = [];
+      for (let k = 0; k <= arcLen; k++) {
+        const p = poly[(a * arcLen + k) % poly.length]!;
+        pts.push([p[0], p[1]]);
+      }
+      if (pts.some(([x, y]) => nearClearZone(x, y))) continue;
+      const kind =
+        b.id === "desert"
+          ? kinds[Math.floor(rand01(i * 7.1 + a) * 2) + 1]! // deserts get rocks/woodland
+          : kinds[Math.floor(rand01(i * 7.1 + a) * 3)]!;
+      const xs = pts.map((p) => p[0]);
+      const ys = pts.map((p) => p[1]);
+      out.push({
+        id: `${b.key}-${a}`,
+        kind,
+        pts,
+        width: BARRIER_WIDTH[kind],
+        minX: Math.min(...xs),
+        minY: Math.min(...ys),
+        maxX: Math.max(...xs),
+        maxY: Math.max(...ys),
+      });
+    }
+  }
+  return out;
+}
+
+export const BARRIERS: Barrier[] = buildBarriers();
+
+function distToSeg(px: number, py: number, ax: number, ay: number, bx: number, by: number) {
+  const dx = bx - ax;
+  const dy = by - ay;
+  const len2 = dx * dx + dy * dy;
+  const t = len2 === 0 ? 0 : Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / len2));
+  return Math.hypot(px - (ax + dx * t), py - (ay + dy * t));
+}
+
+/** true when the world point is inside a river / rock ridge / dense woodland */
+export function blockedAt(x: number, y: number, pad = 10): boolean {
+  for (const bar of BARRIERS) {
+    const r = bar.width / 2 + pad;
+    if (x < bar.minX - r || x > bar.maxX + r || y < bar.minY - r || y > bar.maxY + r) continue;
+    for (let i = 0; i < bar.pts.length - 1; i++) {
+      const a = bar.pts[i]!;
+      const b = bar.pts[i + 1]!;
+      if (distToSeg(x, y, a[0], a[1], b[0], b[1]) < r) return true;
+    }
+  }
+  return false;
+}
+
+export const BARRIER_LABEL: Record<BarrierKind, string> = {
+  river: "River",
+  rocks: "Rocky Ridge",
+  woodland: "Dense Woodland",
+};
