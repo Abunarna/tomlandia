@@ -17,7 +17,19 @@ export function MarketTab({
   suggestPrice: (itemId: string) => number;
 }) {
   const [tab, setTab] = useState<"browse" | "sell">("browse");
+  const [filter, setFilter] = useState<FilterKey>("all");
   const fee = Math.round(hud.market.fee * 100);
+
+  const matches = (itemId: string) => {
+    if (filter === "all") return true;
+    const kind = ITEMS[itemId]?.kind;
+    if (!kind) return false;
+    if (filter === "material") return kind === "material" || kind === "resource";
+    return kind === filter;
+  };
+
+  const listings = hud.market.listings.filter((l) => matches(l.item));
+
 
   return (
     <div className="space-y-3">
