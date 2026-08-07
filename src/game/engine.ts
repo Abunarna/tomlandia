@@ -1,4 +1,5 @@
 import {
+  BARRIERS,
   BIOMES,
   BUILDINGS,
   MAX_PLUS,
@@ -13,6 +14,7 @@ import {
   WORLD_H,
   WORLD_W,
   biomeAt,
+  blockedAt,
   item,
   statWithPlus,
   upgradeCost,
@@ -277,6 +279,7 @@ export class GameEngine {
   private activity = "Wandering";
   private activityProgress = 0;
   private biome: BiomeDef = BIOMES[0]!;
+  private blockedFor = 0;
 
   quest: QuestState | null = null;
   completed: string[] = [];
@@ -788,7 +791,7 @@ export class GameEngine {
         if (this.blockedFor > 0.6 && this.target.type === "point") {
           this.target = { type: "none" };
           this.blockedFor = 0;
-          this.pushText("Blocked!", this.px, this.py - 40, "#e0a5a5");
+          this.pushText(this.px, this.py - 40, "Blocked!", "#e0a5a5");
         }
         return d;
       }
