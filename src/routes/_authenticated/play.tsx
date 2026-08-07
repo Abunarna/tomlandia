@@ -81,7 +81,7 @@ function Game() {
   const [ready, setReady] = useState(false);
   const [claimable, setClaimable] = useState<SaveState | null>(null);
 
-  const pendingSave = useRef<Promise<unknown> | null>(null);
+  const pendingSave = useRef<PromiseLike<unknown> | null>(null);
 
   const persist = useCallback(
     (s: SaveState) => {
