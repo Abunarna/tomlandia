@@ -916,7 +916,6 @@ function buildBarriers(): Barrier[] {
   }
 
   let n = 0;
-  let arcs=0, rejRand=0, rejClear=0, chainCount=0;
   for (const g of groups.values()) {
     // chain the segments of this border into continuous polylines
     const adj = new Map<string, string[]>();
@@ -946,26 +945,24 @@ function buildBarriers(): Barrier[] {
         chain.push(next);
         cur = next;
       }
-      if (chain.length > 2) { chains.push(chain); }
+      if (chain.length > 2) chains.push(chain);
       chain = [];
     }
 
     const idA = REGION_SPECS[g.a]!.id;
     const idB = REGION_SPECS[g.b]!.id;
-    chainCount += chains.length;
     for (const chain of chains) {
-      const arcLen = 6;
+      const arcLen = 3;
       for (let a = 0; a * arcLen < chain.length - 2; a++) {
         // roughly 40% of each border is walled off
-        arcs++;
-        if (rand01(g.a * 91.3 + g.b * 31.7 + a * 13.7) > 0.42) { rejRand++; continue; }
+        if (rand01(g.a * 91.3 + g.b * 31.7 + a * 13.7) > 0.55) continue;
         const slice = chain.slice(a * arcLen, a * arcLen + arcLen + 1);
         if (slice.length < 3) continue;
         const pts = slice.map((s) => {
           const [vx, vy] = s.split(",").map(Number) as [number, number];
           return vertex(vx, vy);
         });
-        if (pts.some(([x, y]) => nearClearZone(x, y))) { rejClear++; continue; }
+        if (pts.some(([x, y]) => nearClearZone(x, y))) continue;
         const roll = rand01(g.a * 7.1 + g.b * 3.3 + a);
         const kind: BarrierKind =
           idA === "winter" || idB === "winter"
@@ -996,7 +993,6 @@ function buildBarriers(): Barrier[] {
       }
     }
   }
-  console.log('DBG groups', groups.size, 'chains', chainCount, 'arcs', arcs, 'rejRand', rejRand, 'rejClear', rejClear);
   return out;
 }
 
