@@ -650,8 +650,14 @@ for (const t of TOWN_SPECS) {
     if (role) {
       // traders stand out on the main street, in front of their building
       const above = y + h / 2 < t.cy;
-      npcSpots[role] = { x: x + w / 2, y: above ? t.cy - 44 : t.cy + 36 };
+      let sx = x + w / 2;
+      const sy = above ? t.cy - 44 : t.cy + 36;
+      while (Object.values(npcSpots).some((s) => Math.abs(s.x - sx) < 52 && Math.abs(s.y - sy) < 40)) {
+        sx += 56;
+      }
+      npcSpots[role] = { x: sx, y: sy };
     }
+
 
 
   });
