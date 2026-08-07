@@ -128,6 +128,8 @@ function Game() {
         setPanel(null);
         setNpc(id);
       };
+      // Dev-only handle for debugging/automated checks.
+      if (import.meta.env.DEV) (window as unknown as { __tom?: GameEngine }).__tom = engine;
       engine.emitHud(true);
       engine.start();
       window.addEventListener("resize", onResize);
