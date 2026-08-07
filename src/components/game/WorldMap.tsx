@@ -129,6 +129,7 @@ export function WorldMap({ position, onClose }: Props) {
         stateRef.current = { ...cur, zoom: target, offset: nextOffset };
         setOffset(nextOffset);
         setZoom(target);
+      }
       gesture.current = { dist, cx, cy };
       return;
     }
