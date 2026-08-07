@@ -102,18 +102,22 @@ export function WorldMap({ position, onClose }: Props) {
   /** Set the eased target. */
   const glide = useCallback(
     (v: { zoom: number; x: number; y: number }) => {
-      target.current = v;
+      target.current = clampView(v);
       animate();
     },
-    [animate],
+    [animate, clampView],
   );
 
-  /** Move now, with no easing (used for one-finger panning). */
-  const jump = useCallback((v: { zoom: number; x: number; y: number }) => {
-    target.current = v;
-    viewRef.current = v;
-    setView(v);
-  }, []);
+  /** Move now, with no easing (used for panning and pinch tracking). */
+  const jump = useCallback(
+    (v: { zoom: number; x: number; y: number }) => {
+      const c = clampView(v);
+      target.current = c;
+      viewRef.current = c;
+      setView(c);
+    },
+    [clampView],
+  );
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -125,6 +129,12 @@ export function WorldMap({ position, onClose }: Props) {
     return () => ro.disconnect();
   }, []);
 
+  // Keep the view legal when the viewport resizes.
+  useEffect(() => {
+    jump(viewRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [size.w, size.h]);
+
   // Track the player's live position while the map is open.
   useEffect(() => {
     const t = window.setInterval(() => setPlayer(position()), 250);
@@ -135,7 +145,7 @@ export function WorldMap({ position, onClose }: Props) {
   const zoomAt = useCallback(
     (px: number, py: number, next: number) => {
       const cur = target.current;
-      const clamped = clamp(next, MIN_ZOOM, MAX_ZOOM);
+      const clamped = clamp(next, limits.current.minZoom, MAX_ZOOM);
       const k = clamped / cur.zoom;
       glide({
         zoom: clamped,
@@ -143,6 +153,7 @@ export function WorldMap({ position, onClose }: Props) {
         y: py - (py - cur.y) * k,
       });
     },
+
     [glide],
   );
 
