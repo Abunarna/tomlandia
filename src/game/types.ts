@@ -122,5 +122,8 @@ export interface HudSnapshot {
     fee: number;
   };
   soundOn: boolean;
+  /** Phase 7 — your display name and how many real players are nearby. */
+  name: string;
+  nearby: number;
 }
 

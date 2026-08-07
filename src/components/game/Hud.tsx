@@ -1,4 +1,4 @@
-import { Heart, Coins, Sparkles, MapPin, Swords, Shield, ScrollText, Sun, Moon } from "lucide-react";
+import { Heart, Coins, Sparkles, MapPin, Swords, Shield, ScrollText, Sun, Moon, Users } from "lucide-react";
 import type { HudSnapshot } from "@/game/types";
 
 export function Hud({ hud }: { hud: HudSnapshot }) {
@@ -12,7 +12,7 @@ export function Hud({ hud }: { hud: HudSnapshot }) {
               {hud.level}
             </span>
             <div className="min-w-0">
-              <p className="truncate text-sm font-bold leading-tight text-foreground">Tom</p>
+              <p className="truncate text-sm font-bold leading-tight text-foreground">{hud.name}</p>
               <p className="flex items-center gap-1 truncate text-[11px] leading-tight text-muted-foreground">
                 <MapPin className="size-3 shrink-0" />
                 {hud.region}
@@ -20,6 +20,13 @@ export function Hud({ hud }: { hud: HudSnapshot }) {
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-1.5">
+            <span
+              className="flex items-center gap-1 rounded-xl bg-muted px-2 py-1 text-[11px] font-bold text-muted-foreground"
+              title={`${hud.nearby} player${hud.nearby === 1 ? "" : "s"} nearby`}
+            >
+              <Users className="size-3.5" />
+              {hud.nearby}
+            </span>
             <span className="flex items-center gap-1 rounded-xl bg-muted px-2 py-1 text-[11px] font-bold text-muted-foreground">
               {hud.phase === "Night" ? <Moon className="size-3.5" /> : <Sun className="size-3.5 text-gold" />}
               {hud.phase}
