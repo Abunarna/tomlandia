@@ -3,6 +3,18 @@ import { Coins, Store, Tag, Undo2 } from "lucide-react";
 import { ITEMS } from "@/game/data";
 import type { HudSnapshot } from "@/game/types";
 
+type FilterKey = "all" | "weapon" | "armor" | "material" | "food";
+
+const FILTERS: { key: FilterKey; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "weapon", label: "Weapons" },
+  { key: "armor", label: "Armour" },
+  { key: "material", label: "Materials" },
+  { key: "food", label: "Food" },
+];
+
+
+
 export function MarketTab({
   hud,
   onBuy,
@@ -17,7 +29,19 @@ export function MarketTab({
   suggestPrice: (itemId: string) => number;
 }) {
   const [tab, setTab] = useState<"browse" | "sell">("browse");
+  const [filter, setFilter] = useState<FilterKey>("all");
   const fee = Math.round(hud.market.fee * 100);
+
+  const matches = (itemId: string) => {
+    if (filter === "all") return true;
+    const kind = ITEMS[itemId]?.kind;
+    if (!kind) return false;
+    if (filter === "material") return kind === "material" || kind === "resource";
+    return kind === filter;
+  };
+
+  const listings = hud.market.listings.filter((l) => matches(l.item));
+
 
   return (
     <div className="space-y-3">
@@ -34,9 +58,27 @@ export function MarketTab({
         </span>
       </div>
 
+      <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-0.5">
+        {FILTERS.map((f) => (
+          <button
+            key={f.key}
+            onClick={() => setFilter(f.key)}
+            aria-pressed={filter === f.key}
+            className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold active:scale-95 ${
+              filter === f.key
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground"
+            }`}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
       {tab === "browse" ? (
         <div className="space-y-1.5">
-          {hud.market.listings.slice(0, 30).map((l) => {
+          {listings.slice(0, 30).map((l) => {
+
             const def = ITEMS[l.item];
             const total = l.price * l.qty;
             return (
@@ -78,11 +120,14 @@ export function MarketTab({
               </div>
             );
           })}
+          {!listings.length && (
+            <p className="text-[11px] text-muted-foreground">No listings in this category right now.</p>
+          )}
         </div>
       ) : (
         <div className="space-y-1.5">
           {hud.inv.map((slot, i) => {
-            if (!slot) return null;
+            if (!slot || !matches(slot.id)) return null;
             const def = ITEMS[slot.id];
             const price = suggestPrice(slot.id);
             const net = Math.round(price * slot.qty * (1 - hud.market.fee));
@@ -112,11 +157,14 @@ export function MarketTab({
               </div>
             );
           })}
-          {hud.inv.every((s) => !s) && (
-            <p className="text-[11px] text-muted-foreground">Your bag is empty — go gather something to trade.</p>
+          {hud.inv.every((s) => !s || !matches(s.id)) && (
+            <p className="text-[11px] text-muted-foreground">
+              {hud.inv.some((s) => s) ? "Nothing in this category in your bag." : "Your bag is empty — go gather something to trade."}
+            </p>
           )}
         </div>
       )}
+
 
       <div className="rounded-2xl border border-border/70 bg-muted/30 p-2">
         <p className="flex items-center gap-1.5 text-[11px] font-bold text-foreground">
