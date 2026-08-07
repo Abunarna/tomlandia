@@ -19,6 +19,7 @@ import {
   type BiomeDef,
   type MonsterKind,
   type NodeKind,
+  NPC_ICONS,
   type NpcDef,
   type NpcRole,
 } from "./data";
@@ -1930,6 +1931,29 @@ export class GameEngine {
       ctx.fillStyle = "#ffd764";
       ctx.fillText(marker, x, y - 40 + f);
     }
+    // Merchant-type badge floating above the head.
+    const icon = NPC_ICONS[npc.id];
+    if (icon) {
+      const iy = y - (marker ? 62 : 44) + Math.sin(this.time * 2 + npc.x) * 1.5;
+      ctx.fillStyle = "rgba(70,55,70,0.22)";
+      ctx.beginPath();
+      ctx.roundRect(x - 13, iy - 12 + 2, 26, 24, 9);
+      ctx.fill();
+      ctx.fillStyle = icon.color;
+      ctx.beginPath();
+      ctx.roundRect(x - 13, iy - 12, 26, 24, 9);
+      ctx.fill();
+      ctx.strokeStyle = "rgba(255,255,255,0.75)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.font = "14px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#3d2f45";
+      ctx.fillText(icon.glyph, x, iy + 1);
+      ctx.textBaseline = "alphabetic";
+    }
+
     ctx.font = "bold 11px ui-rounded, system-ui, sans-serif";
     ctx.textAlign = "center";
     ctx.fillStyle = "rgba(70,55,70,0.7)";
