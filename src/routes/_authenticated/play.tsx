@@ -2,9 +2,10 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Backpack, Hammer, LogOut, Store, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { GameEngine } from "@/game/engine";
+import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
 import type { NpcRole } from "@/game/data";
-import type { HudSnapshot, ItemId } from "@/game/types";
+import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
+import type { Json } from "@/integrations/supabase/types";
 import { Hud } from "@/components/game/Hud";
 import { Panel, type PanelId } from "@/components/game/Panel";
 import { NpcDialog } from "@/components/game/NpcDialog";
@@ -259,6 +260,46 @@ function Game() {
         )}
       </div>
 
+
+      {!ready && (
+        <div className="absolute inset-0 z-20 grid place-items-center bg-background">
+          <p className="text-sm text-muted-foreground">Loading your adventure…</p>
+        </div>
+      )}
+
+      {claimable && (
+        <div className="absolute inset-0 z-30 grid place-items-center bg-background/80 p-6 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-3xl border border-border/60 bg-card p-5 shadow-soft">
+            <h2 className="font-display text-lg font-bold text-foreground">Claim old progress?</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              We found progress saved on this device from before accounts existed
+              ({claimable.gold ?? 0} gold). Claim it for <strong>{username || "this account"}</strong>?
+              This is a one-time offer and will overwrite your fresh start.
+            </p>
+            <div className="mt-5 flex gap-2">
+              <button
+                onClick={() => {
+                  engineRef.current?.applySave(claimable);
+                  clearLegacySave();
+                  setClaimable(null);
+                }}
+                className="flex-1 rounded-2xl bg-primary px-4 py-3 font-semibold text-primary-foreground"
+              >
+                Claim it
+              </button>
+              <button
+                onClick={() => {
+                  clearLegacySave();
+                  setClaimable(null);
+                }}
+                className="flex-1 rounded-2xl border border-border/60 px-4 py-3 font-semibold text-foreground"
+              >
+                Start fresh
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {npc && (
         <NpcDialog
