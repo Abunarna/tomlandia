@@ -155,6 +155,8 @@ export class GameEngine {
   private orbs: Orb[] = [];
   private parts: Particle[] = [];
   private butterflies: { x: number; y: number; p: number; s: number }[] = [];
+  private villagers: Villager[] = [];
+  private leaves: Leaf[] = [];
 
   private target: Target = { type: "none" };
   private gatherProgress = 0;
@@ -169,10 +171,17 @@ export class GameEngine {
   discovered: string[] = ["fields"];
   onInteract: ((id: NpcRole) => void) | null = null;
 
+  /** Phase 3 — marketplace + world clock */
+  listings: Listing[] = [];
+  tradeLog: TradeLog[] = [];
+  private marketCd = 3;
+  private clock = DAY_LEN * 0.35;
+
   joystick = { active: false, dx: 0, dy: 0 };
   private onHud: (s: HudSnapshot) => void;
   private hudCd = 0;
   private saveCd = 30;
+
 
   constructor(canvas: HTMLCanvasElement, onHud: (s: HudSnapshot) => void) {
     this.canvas = canvas;
@@ -208,11 +217,42 @@ export class GameEngine {
     for (let i = 0; i < 20; i++) {
       this.butterflies.push({ x: Math.random() * WORLD_W, y: Math.random() * WORLD_H, p: Math.random() * 10, s: 0.4 + Math.random() * 0.6 });
     }
+    this.spawnVillagers();
 
     this.load();
+    if (!this.listings.length) this.listings = seedListings();
     this.biome = biomeAt(this.px, this.py);
     this.resize();
   }
+
+  private spawnVillagers() {
+    const towns: [number, number][] = [
+      [700, 300],
+      [TILE_W * 2 + 690, 320],
+      [TILE_W + 740, 570],
+      [740, TILE_H + 330],
+    ];
+    const robes = ["#f2c6d8", "#9fd6b8", "#f5d78a", "#bcd9ec", "#e0bff0", "#f6c9a8"];
+    const hairs = ["#5c3a2e", "#3f5f78", "#8a6a45", "#e6e0ef", "#6b4f7a"];
+    for (const [tx, ty] of towns) {
+      for (let i = 0; i < 4; i++) {
+        const x = tx + (Math.random() - 0.5) * 220;
+        const y = ty + (Math.random() - 0.5) * 160;
+        this.villagers.push({
+          x,
+          y,
+          hx: tx,
+          hy: ty,
+          tx: x,
+          ty: y,
+          wait: Math.random() * 3,
+          robe: robes[Math.floor(Math.random() * robes.length)]!,
+          hair: hairs[Math.floor(Math.random() * hairs.length)]!,
+        });
+      }
+    }
+  }
+
 
   /* ---------- persistence ---------- */
 
@@ -226,7 +266,7 @@ export class GameEngine {
 
   private toSave(): SaveState {
     return {
-      v: 2,
+      v: 3,
       px: this.px,
       py: this.py,
       hp: this.hp,
@@ -239,8 +279,11 @@ export class GameEngine {
       quest: this.quest,
       completed: this.completed,
       discovered: this.discovered,
+      listings: this.listings,
+      clock: this.clock,
     };
   }
+
 
   save() {
     try {
@@ -279,6 +322,9 @@ export class GameEngine {
       this.quest = s.quest ?? null;
       this.completed = Array.isArray(s.completed) ? s.completed : [];
       this.discovered = Array.isArray(s.discovered) && s.discovered.length ? s.discovered : ["fields"];
+      if (Array.isArray(s.listings)) this.listings = s.listings as Listing[];
+      if (typeof s.clock === "number") this.clock = s.clock;
+
       this.hp = Math.min(s.hp ?? this.maxHp, this.maxHp);
     } catch {
       /* ignore */
@@ -380,7 +426,9 @@ export class GameEngine {
     const after = this.lvl(skill);
     this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
     if (after > before) {
+      sfx.play("level");
       this.pushText(this.px, this.py - 70, `${skill.toUpperCase()} LV ${after}!`, "#ffd98e");
+
       for (let i = 0; i < 18; i++) {
         this.parts.push({
           x: this.px,
@@ -534,7 +582,9 @@ export class GameEngine {
             this.addItem(def.item, 1);
             this.questTick("gather", def.item);
             this.grantXp(def.skill, def.xp);
+            sfx.play("gather");
             this.pushText(n.x, n.y - 20, `+1 ${item(def.item).name}`, "#dff6c9");
+
             n.depleted = true;
             n.respawnAt = now + def.respawn;
             this.target = { type: "none" };
@@ -560,13 +610,17 @@ export class GameEngine {
             const dmg = Math.max(1, Math.round(this.attack - md.defense / 2));
             m.hp -= dmg;
             m.hitFlash = 0.2;
+            sfx.play("hit");
             this.pushText(m.x, m.y - 24, `${dmg}`, "#fff0c9");
+
             if (m.hp <= 0) {
               m.dead = true;
               m.respawnAt = now + 12;
               const gold = md.gold[0] + Math.floor(Math.random() * (md.gold[1] - md.gold[0] + 1));
               this.gold += gold;
+              sfx.play("coin");
               this.pushText(m.x, m.y - 40, `+${gold}g`, "#ffe08a");
+
               if (Math.random() < md.dropChance) {
                 this.addItem(md.drop, 1);
                 this.pushText(m.x + 16, m.y - 56, `+1 ${item(md.drop).name}`, "#dff6c9");
@@ -692,6 +746,66 @@ export class GameEngine {
       bf.x += Math.cos(bf.p * 0.8 + bf.s) * 22 * dt;
       bf.y += Math.sin(bf.p * 1.3) * 18 * dt;
     }
+
+    // ambient town life
+    for (const v of this.villagers) {
+      if (v.wait > 0) {
+        v.wait -= dt;
+        continue;
+      }
+      const dx = v.tx - v.x;
+      const dy = v.ty - v.y;
+      const d = Math.hypot(dx, dy);
+      if (d < 3) {
+        v.wait = 1 + Math.random() * 4;
+        v.tx = v.hx + (Math.random() - 0.5) * 240;
+        v.ty = v.hy + (Math.random() - 0.5) * 170;
+      } else {
+        const step = Math.min(d, 34 * dt);
+        v.x += (dx / d) * step;
+        v.y += (dy / d) * step;
+      }
+    }
+
+    // drifting leaves / motes
+    if (this.leaves.length < 30 && Math.random() < dt * 16) {
+      this.leaves.push({
+        x: this.px + (Math.random() - 0.5) * 900,
+        y: this.py - 420 - Math.random() * 120,
+        vx: -20 - Math.random() * 40,
+        vy: 24 + Math.random() * 34,
+        rot: Math.random() * Math.PI,
+        spin: (Math.random() - 0.5) * 3,
+        life: 8 + Math.random() * 6,
+        color: Math.random() < 0.5 ? this.biome.detail : this.biome.grass,
+      });
+    }
+    for (const lf of this.leaves) {
+      lf.x += (lf.vx + Math.sin(now * 1.6 + lf.rot) * 22) * dt;
+      lf.y += lf.vy * dt;
+      lf.rot += lf.spin * dt;
+      lf.life -= dt;
+    }
+    this.leaves = this.leaves.filter((l) => l.life > 0);
+
+    // world clock
+    this.clock += dt;
+
+    // simulated marketplace
+    this.marketCd -= dt;
+    if (this.marketCd <= 0) {
+      this.marketCd = 3 + Math.random() * 4;
+      const res = simulate(this.listings, now);
+      this.listings = res.listings;
+      if (res.earned > 0) {
+        this.gold += res.earned;
+        sfx.play("coin");
+        this.pushText(this.px, this.py - 64, `+${res.earned}g market sale`, "#ffe08a");
+      }
+      if (res.logs.length) this.tradeLog = [...res.logs, ...this.tradeLog].slice(0, 12);
+      this.emitHud(true);
+    }
+
 
     // camera
     const rect = this.canvas.getBoundingClientRect();
