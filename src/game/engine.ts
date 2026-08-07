@@ -1913,30 +1913,239 @@ export class GameEngine {
     ctx.fill();
   }
 
+  /** dirt roads and cobbled crossroads laid through each town */
+  private drawStreets(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
+    for (const s of STREETS) {
+      if (s.x > view.x + view.w || s.x + s.w < view.x || s.y > view.y + view.h || s.y + s.h < view.y) continue;
+      ctx.fillStyle = "rgba(196,166,124,0.55)";
+      ctx.fillRect(s.x, s.y, s.w, s.h);
+      ctx.fillStyle = "rgba(168,138,98,0.35)";
+      ctx.fillRect(s.x, s.y, s.w, 5);
+      ctx.fillRect(s.x, s.y + s.h - 5, s.w, 5);
+      // cobbles
+      ctx.fillStyle = "rgba(150,124,92,0.28)";
+      const step = 22;
+      for (let x = s.x + 8; x < s.x + s.w - 8; x += step) {
+        for (let y = s.y + 8; y < s.y + s.h - 8; y += step) {
+          const j = ((x * 13 + y * 7) % 9) - 4;
+          ctx.fillRect(x + j, y + ((x % 3) - 1) * 2, 6, 4);
+        }
+      }
+    }
+  }
+
   private drawBuilding(ctx: CanvasRenderingContext2D, b: (typeof BUILDINGS)[number]) {
-    ctx.fillStyle = "rgba(90,70,110,0.14)";
+    const wallTop = b.y + b.h * 0.38;
+    const wallH = b.h * 0.62;
+    ctx.fillStyle = "rgba(90,70,110,0.16)";
     ctx.beginPath();
-    ctx.ellipse(b.x + b.w / 2, b.y + b.h + 4, b.w * 0.5, 10, 0, 0, Math.PI * 2);
+    ctx.ellipse(b.x + b.w / 2, b.y + b.h + 4, b.w * 0.5, 9, 0, 0, Math.PI * 2);
     ctx.fill();
+
+    if (b.kind === "stall") {
+      this.drawStall(ctx, b);
+      this.buildingLabel(ctx, b);
+      return;
+    }
+    if (b.kind === "tower") {
+      this.drawTower(ctx, b);
+      this.buildingLabel(ctx, b);
+      return;
+    }
+
+    // ---- timber-framed body -------------------------------------------
     ctx.fillStyle = b.wall;
-    ctx.fillRect(b.x, b.y + b.h * 0.4, b.w, b.h * 0.6);
+    ctx.fillRect(b.x, wallTop, b.w, wallH);
+    // corner posts + sill and head beams
+    ctx.fillStyle = b.beam;
+    ctx.fillRect(b.x, wallTop, 7, wallH);
+    ctx.fillRect(b.x + b.w - 7, wallTop, 7, wallH);
+    ctx.fillRect(b.x, wallTop, b.w, 6);
+    ctx.fillRect(b.x, b.y + b.h - 7, b.w, 7);
+    // cross braces
+    ctx.strokeStyle = b.beam;
+    ctx.lineWidth = 5;
+    const bays = b.kind === "inn" || b.kind === "barn" ? 3 : 2;
+    for (let i = 1; i < bays; i++) {
+      const bx = b.x + (b.w / bays) * i;
+      ctx.beginPath();
+      ctx.moveTo(bx, wallTop + 6);
+      ctx.lineTo(bx, b.y + b.h - 7);
+      ctx.stroke();
+    }
+    for (let i = 0; i < bays; i++) {
+      const x0 = b.x + (b.w / bays) * i + 8;
+      const x1 = b.x + (b.w / bays) * (i + 1) - 8;
+      ctx.beginPath();
+      ctx.moveTo(x0, b.y + b.h - 10);
+      ctx.lineTo((x0 + x1) / 2, wallTop + 10);
+      ctx.lineTo(x1, b.y + b.h - 10);
+      ctx.stroke();
+    }
+    ctx.lineWidth = 1;
+
+    // ---- roof ----------------------------------------------------------
+    ctx.fillStyle = b.roof;
+    if (b.kind === "barn") {
+      // gambrel barn roof
+      ctx.beginPath();
+      ctx.moveTo(b.x - 9, wallTop + 2);
+      ctx.lineTo(b.x + b.w * 0.16, b.y + b.h * 0.12);
+      ctx.lineTo(b.x + b.w / 2, b.y - 4);
+      ctx.lineTo(b.x + b.w * 0.84, b.y + b.h * 0.12);
+      ctx.lineTo(b.x + b.w + 9, wallTop + 2);
+      ctx.closePath();
+      ctx.fill();
+    } else if (b.kind === "chapel") {
+      ctx.beginPath();
+      ctx.moveTo(b.x - 8, wallTop + 2);
+      ctx.lineTo(b.x + b.w / 2, b.y - 22);
+      ctx.lineTo(b.x + b.w + 8, wallTop + 2);
+      ctx.closePath();
+      ctx.fill();
+      // little belfry cross
+      ctx.fillStyle = b.beam;
+      ctx.fillRect(b.x + b.w / 2 - 2, b.y - 40, 4, 20);
+      ctx.fillRect(b.x + b.w / 2 - 9, b.y - 34, 18, 4);
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(b.x - 9, wallTop + 2);
+      ctx.lineTo(b.x + b.w / 2, b.y - 8);
+      ctx.lineTo(b.x + b.w + 9, wallTop + 2);
+      ctx.closePath();
+      ctx.fill();
+    }
+    // thatch/tile shading lines
+    ctx.strokeStyle = "rgba(0,0,0,0.10)";
+    for (let i = 1; i < 4; i++) {
+      const t = i / 4;
+      ctx.beginPath();
+      ctx.moveTo(b.x - 9 + (b.w / 2 + 9) * t, wallTop + 2 - (wallTop + 10 - b.y) * t);
+      ctx.lineTo(b.x + b.w + 9 - (b.w / 2 + 9) * t, wallTop + 2 - (wallTop + 10 - b.y) * t);
+      ctx.stroke();
+    }
+
+    // ---- door, windows, chimney ---------------------------------------
+    ctx.fillStyle = "#8b6b52";
+    ctx.fillRect(b.x + b.w / 2 - 14, b.y + b.h - 38, 28, 31);
+    ctx.fillStyle = "rgba(0,0,0,0.18)";
+    ctx.fillRect(b.x + b.w / 2 - 14, b.y + b.h - 38, 28, 5);
+    ctx.fillStyle = "#f0c268";
+    ctx.fillRect(b.x + b.w / 2 + 6, b.y + b.h - 24, 3, 3);
+
+    ctx.fillStyle = "#bfe6f5";
+    ctx.fillRect(b.x + 15, wallTop + 16, 18, 16);
+    ctx.fillRect(b.x + b.w - 33, wallTop + 16, 18, 16);
+    ctx.strokeStyle = b.beam;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(b.x + 15, wallTop + 16, 18, 16);
+    ctx.strokeRect(b.x + b.w - 33, wallTop + 16, 18, 16);
+    ctx.beginPath();
+    ctx.moveTo(b.x + 24, wallTop + 16);
+    ctx.lineTo(b.x + 24, wallTop + 32);
+    ctx.moveTo(b.x + b.w - 24, wallTop + 16);
+    ctx.lineTo(b.x + b.w - 24, wallTop + 32);
+    ctx.stroke();
+    ctx.lineWidth = 1;
+
+    if (b.kind === "forge" || b.kind === "inn") {
+      ctx.fillStyle = "#9a8478";
+      ctx.fillRect(b.x + b.w - 30, b.y - 24, 16, 34);
+      ctx.fillStyle = "rgba(230,225,235,0.55)";
+      const p = (Math.sin(this.time * 1.6) + 1) / 2;
+      ctx.beginPath();
+      ctx.arc(b.x + b.w - 22, b.y - 34 - p * 10, 6 + p * 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    if (b.kind === "forge") {
+      // glowing forge mouth
+      const g = 0.5 + 0.5 * Math.sin(this.time * 3);
+      ctx.fillStyle = `rgba(255,150,60,${0.45 + g * 0.4})`;
+      ctx.fillRect(b.x + b.w / 2 - 10, b.y + b.h - 26, 20, 17);
+    }
+    if (b.kind === "inn") {
+      // hanging sign
+      ctx.fillStyle = b.beam;
+      ctx.fillRect(b.x + b.w - 8, wallTop + 8, 22, 4);
+      ctx.fillStyle = "#e8c98f";
+      ctx.fillRect(b.x + b.w + 4, wallTop + 12, 16, 14);
+    }
+    this.buildingLabel(ctx, b);
+  }
+
+  private drawStall(ctx: CanvasRenderingContext2D, b: (typeof BUILDINGS)[number]) {
+    // counter
+    ctx.fillStyle = b.wall;
+    ctx.fillRect(b.x + 6, b.y + b.h * 0.55, b.w - 12, b.h * 0.45);
+    ctx.fillStyle = b.beam;
+    ctx.fillRect(b.x + 6, b.y + b.h * 0.55, b.w - 12, 6);
+    ctx.fillRect(b.x + 8, b.y + b.h * 0.55, 6, b.h * 0.45);
+    ctx.fillRect(b.x + b.w - 14, b.y + b.h * 0.55, 6, b.h * 0.45);
+    // striped awning
+    const aw = b.w + 10;
+    const ax = b.x - 5;
+    const ay = b.y + b.h * 0.28;
+    for (let i = 0; i < 6; i++) {
+      ctx.fillStyle = i % 2 ? b.roof : "#fdf5e6";
+      ctx.fillRect(ax + (aw / 6) * i, ay, aw / 6, 16);
+    }
+    ctx.fillStyle = b.beam;
+    ctx.fillRect(ax + 2, ay, 5, b.h * 0.3);
+    ctx.fillRect(ax + aw - 7, ay, 5, b.h * 0.3);
+    // crates on the counter
+    ctx.fillStyle = "#c79b64";
+    ctx.fillRect(b.x + 20, b.y + b.h * 0.42, 16, 14);
+    ctx.fillRect(b.x + b.w - 40, b.y + b.h * 0.44, 14, 12);
+  }
+
+  private drawTower(ctx: CanvasRenderingContext2D, b: (typeof BUILDINGS)[number]) {
+    const cx = b.x + b.w / 2;
+    ctx.fillStyle = b.wall;
+    ctx.fillRect(b.x + 10, b.y + b.h * 0.2, b.w - 20, b.h * 0.8);
+    // stone courses
+    ctx.strokeStyle = "rgba(0,0,0,0.10)";
+    for (let y = b.y + b.h * 0.3; y < b.y + b.h; y += 12) {
+      ctx.beginPath();
+      ctx.moveTo(b.x + 10, y);
+      ctx.lineTo(b.x + b.w - 10, y);
+      ctx.stroke();
+    }
+    // battlement
+    ctx.fillStyle = b.beam;
+    for (let i = 0; i < 4; i++) ctx.fillRect(b.x + 8 + i * ((b.w - 16) / 4), b.y + b.h * 0.14, (b.w - 16) / 8, 12);
+    // conical roof
     ctx.fillStyle = b.roof;
     ctx.beginPath();
-    ctx.moveTo(b.x - 8, b.y + b.h * 0.42);
-    ctx.lineTo(b.x + b.w / 2, b.y - 6);
-    ctx.lineTo(b.x + b.w + 8, b.y + b.h * 0.42);
+    ctx.moveTo(b.x + 4, b.y + b.h * 0.2);
+    ctx.lineTo(cx, b.y - 26);
+    ctx.lineTo(b.x + b.w - 4, b.y + b.h * 0.2);
     ctx.closePath();
     ctx.fill();
+    // banner
+    ctx.fillStyle = b.beam;
+    ctx.fillRect(cx - 1, b.y - 44, 2, 20);
+    ctx.fillStyle = b.roof;
+    const wave = Math.sin(this.time * 3) * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx + 1, b.y - 44);
+    ctx.lineTo(cx + 18 + wave, b.y - 39);
+    ctx.lineTo(cx + 1, b.y - 33);
+    ctx.closePath();
+    ctx.fill();
+    // arched window + door
+    ctx.fillStyle = "#3f3550";
+    ctx.fillRect(cx - 7, b.y + b.h * 0.38, 14, 16);
     ctx.fillStyle = "#8b6b52";
-    ctx.fillRect(b.x + b.w / 2 - 14, b.y + b.h * 0.62, 28, b.h * 0.38);
-    ctx.fillStyle = "#bfe6f5";
-    ctx.fillRect(b.x + 14, b.y + b.h * 0.55, 20, 18);
-    ctx.fillRect(b.x + b.w - 34, b.y + b.h * 0.55, 20, 18);
+    ctx.fillRect(cx - 12, b.y + b.h - 30, 24, 30);
+  }
+
+  private buildingLabel(ctx: CanvasRenderingContext2D, b: (typeof BUILDINGS)[number]) {
     ctx.font = "bold 12px ui-rounded, system-ui, sans-serif";
     ctx.textAlign = "center";
     ctx.fillStyle = "rgba(70,55,70,0.75)";
-    ctx.fillText(b.name, b.x + b.w / 2, b.y - 14);
+    ctx.fillText(b.name, b.x + b.w / 2, b.y - (b.kind === "tower" ? 54 : b.kind === "chapel" ? 48 : 20));
   }
+
 
   private drawButterflies(ctx: CanvasRenderingContext2D) {
     for (const b of this.butterflies) {
