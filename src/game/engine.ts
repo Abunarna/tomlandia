@@ -2,6 +2,7 @@ import {
   BARRIERS,
   BIOMES,
   BUILDINGS,
+  STREETS,
   MAX_PLUS,
   MONSTER_DEFS,
   MONSTER_SPAWNS,
@@ -926,7 +927,7 @@ export class GameEngine {
       if (!n || n.depleted) {
         this.target = { type: "none" };
       } else {
-        const d = this.moveToward(n.x, n.y + 18, dt);
+        const d = this.moveToward(n.x, n.y, dt);
         const def = NODE_DEFS[n.kind];
         if (d <= 34) {
           if (this.lvl(def.skill) < def.req) {
