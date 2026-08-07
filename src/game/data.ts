@@ -686,16 +686,17 @@ export interface NpcDef {
 }
 
 export const NPCS: NpcDef[] = [
-  { id: "smith", name: "Bruna", title: "Blacksmith", x: 625, y: 420, robe: "#d98b6a", hair: "#5c3a2e", greeting: "Fresh off the anvil. Gold first, hero.", services: ["shop", "smith", "upgrade"] },
-  { id: "merchant", name: "Pip", title: "Market Trader", x: 782, y: 442, robe: "#8fbfd9", hair: "#3f5f78", greeting: "Ore, logs, feathers — I'll take the lot.", services: ["sell", "shop"] },
-  { id: "elder", name: "Elder Maren", title: "Village Elder", x: 712, y: 300, robe: "#c9a7e0", hair: "#e6e0ef", greeting: "Grand Haven could use a hand today.", services: ["quests"] },
-  { id: "sun_smith", name: "Master Alric", title: "Sunspire Smith", x: TILE_W * 2 + 735, y: 350, robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings when it's shaped right.", services: ["smith", "upgrade"] },
-  { id: "weaver", name: "Lira", title: "Arcane Weaver", x: TILE_W * 2 + 905, y: 420, robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["tailor"] },
-  { id: "banker", name: "Coinmaster Odo", title: "Golden Bank", x: TILE_W * 2 + 565, y: 440, robe: "#d9a95f", hair: "#4a3b2e", greeting: "Every scrap has a price, friend.", services: ["sell"] },
-  { id: "trapper", name: "Rook", title: "Trapper", x: TILE_W + 728, y: 590, robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin", "sell"] },
-  { id: "innkeeper", name: "Mabel", title: "Willowbrook Inn", x: TILE_W + 560, y: 540, robe: "#7fbd93", hair: "#a86f45", greeting: "A warm meal keeps a hero standing.", services: ["shop"] },
-  { id: "frost_smith", name: "Sigrid", title: "Frostforge Smith", x: 882, y: TILE_H + 560, robe: "#a9c6e6", hair: "#e6eef7", greeting: "Only runite holds an edge up here.", services: ["smith", "upgrade", "shop"] },
+  { id: "smith", name: "Bruna", title: "Blacksmith", ...spot("smith", 625, 420), robe: "#d98b6a", hair: "#5c3a2e", greeting: "Fresh off the anvil. Gold first, hero.", services: ["shop", "smith", "upgrade"] },
+  { id: "merchant", name: "Pip", title: "Market Trader", ...spot("merchant", 782, 442), robe: "#8fbfd9", hair: "#3f5f78", greeting: "Ore, logs, feathers — I'll take the lot.", services: ["sell", "shop"] },
+  { id: "elder", name: "Elder Maren", title: "Village Elder", ...spot("elder", 712, 300), robe: "#c9a7e0", hair: "#e6e0ef", greeting: "Grand Haven could use a hand today.", services: ["quests"] },
+  { id: "sun_smith", name: "Master Alric", title: "Sunspire Smith", ...spot("sun_smith", TILE_W * 2 + 735, 350), robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings when it's shaped right.", services: ["smith", "upgrade"] },
+  { id: "weaver", name: "Lira", title: "Arcane Weaver", ...spot("weaver", TILE_W * 2 + 905, 420), robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["tailor"] },
+  { id: "banker", name: "Coinmaster Odo", title: "Golden Bank", ...spot("banker", TILE_W * 2 + 565, 440), robe: "#d9a95f", hair: "#4a3b2e", greeting: "Every scrap has a price, friend.", services: ["sell"] },
+  { id: "trapper", name: "Rook", title: "Trapper", ...spot("trapper", TILE_W + 728, 590), robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin", "sell"] },
+  { id: "innkeeper", name: "Mabel", title: "Willowbrook Inn", ...spot("innkeeper", TILE_W + 560, 540), robe: "#7fbd93", hair: "#a86f45", greeting: "A warm meal keeps a hero standing.", services: ["shop"] },
+  { id: "frost_smith", name: "Sigrid", title: "Frostforge Smith", ...spot("frost_smith", 882, TILE_H + 560), robe: "#a9c6e6", hair: "#e6eef7", greeting: "Only runite holds an edge up here.", services: ["smith", "upgrade", "shop"] },
 ];
+
 
 export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
   // Gear is never sold by NPCs — weapons and armour must be crafted by players
