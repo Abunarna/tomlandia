@@ -1,13 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-export const USERNAME_RE = /^[A-Za-z0-9_]{3,16}$/;
-export const INTERNAL_DOMAIN = "tomlandia.internal";
-
-/** Synthetic, player-invisible email derived from the username. */
-export function emailForUsername(username: string) {
-  return `${username.trim().toLowerCase()}@${INTERNAL_DOMAIN}`;
-}
+import { emailForUsername, USERNAME_RE } from "./account";
 
 const schema = z.object({
   username: z.string().trim().regex(USERNAME_RE, "3-16 letters, numbers or underscores"),

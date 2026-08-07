@@ -2,7 +2,8 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AlertTriangle, ArrowLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { createAccount, emailForUsername, USERNAME_RE } from "@/lib/account.functions";
+import { createAccount } from "@/lib/account.functions";
+import { emailForUsername, USERNAME_RE } from "@/lib/account";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
