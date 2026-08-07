@@ -126,10 +126,13 @@ function Game() {
       const cloudSave = (data?.data as unknown as SaveState | undefined) ?? null;
       engine = new GameEngine(canvas, setHud, { initialSave: cloudSave, onPersist: persist });
       engineRef.current = engine;
-      // Phase 8 — shared world: every node/monster mutation goes to the server.
+      // Phase 9 — the server resolves every world action and owns the rewards.
       engine.userId = user.id;
-      engine.onHarvest = (id) => harvestNode({ data: { id } });
-      engine.onDamage = (id, dmg) => damageMonster({ data: { id, dmg } });
+      engine.onHarvest = (id, x, y) => harvestNode({ data: { id, x, y } });
+      engine.onAttack = (id, x, y) => attackMonster({ data: { id, x, y } });
+      engine.onCraft = (recipe) => craftItem({ data: { recipe } });
+      // The server writes rewards into the save row, so it has to exist first.
+      if (!cloudSave) engine.save();
       engine.onInteract = (id) => {
         setPanel(null);
         setNpc(id);
