@@ -695,6 +695,8 @@ const CLEAR_ZONES: { x: number; y: number; r: number }[] = [
   })),
   ...NPCS.map((n) => ({ x: n.x, y: n.y, r: 190 })),
   ...BUILDINGS.map((b) => ({ x: b.x + b.w / 2, y: b.y + b.h / 2, r: 180 })),
+  ...NODE_SPAWNS.map((n) => ({ x: n.x, y: n.y, r: 90 })),
+  ...MONSTER_SPAWNS.map((m) => ({ x: m.x, y: m.y, r: 90 })),
 ];
 
 function nearClearZone(x: number, y: number) {
