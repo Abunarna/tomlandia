@@ -29,16 +29,27 @@ function Title() {
 
   useEffect(() => {
     mounted.current = true;
+    // Never let the splash hang: if the session check is slow, show Play anyway.
+    const fallback = window.setTimeout(() => {
+      if (mounted.current) setChecking(false);
+    }, 2500);
     void import("@/integrations/supabase/client").then(async ({ supabase }) => {
-      const { data } = await supabase.auth.getSession();
-      if (!mounted.current) return;
-      if (data.session) navigate({ to: "/play", replace: true });
-      else setChecking(false);
+      try {
+        const { data } = await supabase.auth.getSession();
+        if (!mounted.current) return;
+        if (data.session) navigate({ to: "/play", replace: true });
+      } catch {
+        /* fall through to the Play button */
+      } finally {
+        if (mounted.current) setChecking(false);
+      }
     });
     return () => {
       mounted.current = false;
+      window.clearTimeout(fallback);
     };
   }, [navigate]);
+
 
   const go = useCallback(() => navigate({ to: "/auth" }), [navigate]);
 
