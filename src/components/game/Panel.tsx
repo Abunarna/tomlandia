@@ -1,8 +1,9 @@
-import { Backpack, Hammer, Shield, Sword, X } from "lucide-react";
+import { Backpack, Hammer, Shield, Store, Sword, X } from "lucide-react";
 import { ITEMS } from "@/game/data";
 import type { HudSnapshot } from "@/game/types";
+import { MarketTab } from "./Market";
 
-export type PanelId = "inventory" | "skills";
+export type PanelId = "inventory" | "skills" | "market";
 
 export function Panel({
   panel,
@@ -11,6 +12,10 @@ export function Panel({
   onEquip,
   onSell,
   onUse,
+  onBuyListing,
+  onCancelListing,
+  onList,
+  suggestPrice,
 }: {
   panel: PanelId;
   onClose: () => void;
@@ -18,13 +23,24 @@ export function Panel({
   onEquip: (i: number) => void;
   onSell: (i: number) => void;
   onUse: (i: number) => void;
+  onBuyListing: (id: string) => void;
+  onCancelListing: (id: string) => void;
+  onList: (index: number, qty: number, price: number) => void;
+  suggestPrice: (itemId: string) => number;
 }) {
+  const title = panel === "inventory" ? "Bag" : panel === "skills" ? "Skills" : "Market";
   return (
     <div className="pointer-events-auto max-h-[52dvh] overflow-y-auto rounded-t-3xl border-t border-border/60 bg-card/95 p-3 shadow-soft backdrop-blur-md">
       <div className="mb-2 flex items-center justify-between">
         <p className="flex items-center gap-1.5 text-sm font-bold text-foreground">
-          {panel === "inventory" ? <Backpack className="size-4" /> : <Hammer className="size-4" />}
-          {panel === "inventory" ? "Bag" : "Skills"}
+          {panel === "inventory" ? (
+            <Backpack className="size-4" />
+          ) : panel === "skills" ? (
+            <Hammer className="size-4" />
+          ) : (
+            <Store className="size-4" />
+          )}
+          {title}
         </p>
         <button
           onClick={onClose}
@@ -36,12 +52,21 @@ export function Panel({
       </div>
       {panel === "inventory" ? (
         <InventoryTab hud={hud} onEquip={onEquip} onSell={onSell} onUse={onUse} />
-      ) : (
+      ) : panel === "skills" ? (
         <SkillsTab hud={hud} />
+      ) : (
+        <MarketTab
+          hud={hud}
+          onBuy={onBuyListing}
+          onCancel={onCancelListing}
+          onList={onList}
+          suggestPrice={suggestPrice}
+        />
       )}
     </div>
   );
 }
+
 
 function InventoryTab({
   hud,

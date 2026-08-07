@@ -22,12 +22,50 @@ import {
   type NpcDef,
   type NpcRole,
 } from "./data";
+import { TILE_H, TILE_W } from "./data";
 import { levelFromXp } from "./progression";
+import { sfx } from "./audio";
+import {
+  MARKET_FEE,
+  feeFor,
+  makePlayerListing,
+  seedListings,
+  simulate,
+  suggestedPrice,
+  type Listing,
+  type TradeLog,
+} from "./market";
 import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
 
 const SAVE_KEY = "tomlandia.save.v1";
 const INV_SIZE = 20;
 const AUTO_EAT_AT = 0.3;
+/** length of one in-game day, in seconds */
+const DAY_LEN = 480;
+
+interface Villager {
+  x: number;
+  y: number;
+  hx: number;
+  hy: number;
+  tx: number;
+  ty: number;
+  wait: number;
+  robe: string;
+  hair: string;
+}
+
+interface Leaf {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  rot: number;
+  spin: number;
+  life: number;
+  color: string;
+}
+
 
 interface ResNode {
   id: number;
@@ -117,6 +155,8 @@ export class GameEngine {
   private orbs: Orb[] = [];
   private parts: Particle[] = [];
   private butterflies: { x: number; y: number; p: number; s: number }[] = [];
+  private villagers: Villager[] = [];
+  private leaves: Leaf[] = [];
 
   private target: Target = { type: "none" };
   private gatherProgress = 0;
@@ -131,10 +171,17 @@ export class GameEngine {
   discovered: string[] = ["fields"];
   onInteract: ((id: NpcRole) => void) | null = null;
 
+  /** Phase 3 — marketplace + world clock */
+  listings: Listing[] = [];
+  tradeLog: TradeLog[] = [];
+  private marketCd = 3;
+  private clock = DAY_LEN * 0.35;
+
   joystick = { active: false, dx: 0, dy: 0 };
   private onHud: (s: HudSnapshot) => void;
   private hudCd = 0;
   private saveCd = 30;
+
 
   constructor(canvas: HTMLCanvasElement, onHud: (s: HudSnapshot) => void) {
     this.canvas = canvas;
@@ -170,11 +217,42 @@ export class GameEngine {
     for (let i = 0; i < 20; i++) {
       this.butterflies.push({ x: Math.random() * WORLD_W, y: Math.random() * WORLD_H, p: Math.random() * 10, s: 0.4 + Math.random() * 0.6 });
     }
+    this.spawnVillagers();
 
     this.load();
+    if (!this.listings.length) this.listings = seedListings();
     this.biome = biomeAt(this.px, this.py);
     this.resize();
   }
+
+  private spawnVillagers() {
+    const towns: [number, number][] = [
+      [700, 300],
+      [TILE_W * 2 + 690, 320],
+      [TILE_W + 740, 570],
+      [740, TILE_H + 330],
+    ];
+    const robes = ["#f2c6d8", "#9fd6b8", "#f5d78a", "#bcd9ec", "#e0bff0", "#f6c9a8"];
+    const hairs = ["#5c3a2e", "#3f5f78", "#8a6a45", "#e6e0ef", "#6b4f7a"];
+    for (const [tx, ty] of towns) {
+      for (let i = 0; i < 4; i++) {
+        const x = tx + (Math.random() - 0.5) * 220;
+        const y = ty + (Math.random() - 0.5) * 160;
+        this.villagers.push({
+          x,
+          y,
+          hx: tx,
+          hy: ty,
+          tx: x,
+          ty: y,
+          wait: Math.random() * 3,
+          robe: robes[Math.floor(Math.random() * robes.length)]!,
+          hair: hairs[Math.floor(Math.random() * hairs.length)]!,
+        });
+      }
+    }
+  }
+
 
   /* ---------- persistence ---------- */
 
@@ -188,7 +266,7 @@ export class GameEngine {
 
   private toSave(): SaveState {
     return {
-      v: 2,
+      v: 3,
       px: this.px,
       py: this.py,
       hp: this.hp,
@@ -201,8 +279,11 @@ export class GameEngine {
       quest: this.quest,
       completed: this.completed,
       discovered: this.discovered,
+      listings: this.listings,
+      clock: this.clock,
     };
   }
+
 
   save() {
     try {
@@ -241,6 +322,9 @@ export class GameEngine {
       this.quest = s.quest ?? null;
       this.completed = Array.isArray(s.completed) ? s.completed : [];
       this.discovered = Array.isArray(s.discovered) && s.discovered.length ? s.discovered : ["fields"];
+      if (Array.isArray(s.listings)) this.listings = s.listings as Listing[];
+      if (typeof s.clock === "number") this.clock = s.clock;
+
       this.hp = Math.min(s.hp ?? this.maxHp, this.maxHp);
     } catch {
       /* ignore */
@@ -342,7 +426,9 @@ export class GameEngine {
     const after = this.lvl(skill);
     this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
     if (after > before) {
+      sfx.play("level");
       this.pushText(this.px, this.py - 70, `${skill.toUpperCase()} LV ${after}!`, "#ffd98e");
+
       for (let i = 0; i < 18; i++) {
         this.parts.push({
           x: this.px,
@@ -496,7 +582,9 @@ export class GameEngine {
             this.addItem(def.item, 1);
             this.questTick("gather", def.item);
             this.grantXp(def.skill, def.xp);
+            sfx.play("gather");
             this.pushText(n.x, n.y - 20, `+1 ${item(def.item).name}`, "#dff6c9");
+
             n.depleted = true;
             n.respawnAt = now + def.respawn;
             this.target = { type: "none" };
@@ -522,13 +610,17 @@ export class GameEngine {
             const dmg = Math.max(1, Math.round(this.attack - md.defense / 2));
             m.hp -= dmg;
             m.hitFlash = 0.2;
+            sfx.play("hit");
             this.pushText(m.x, m.y - 24, `${dmg}`, "#fff0c9");
+
             if (m.hp <= 0) {
               m.dead = true;
               m.respawnAt = now + 12;
               const gold = md.gold[0] + Math.floor(Math.random() * (md.gold[1] - md.gold[0] + 1));
               this.gold += gold;
+              sfx.play("coin");
               this.pushText(m.x, m.y - 40, `+${gold}g`, "#ffe08a");
+
               if (Math.random() < md.dropChance) {
                 this.addItem(md.drop, 1);
                 this.pushText(m.x + 16, m.y - 56, `+1 ${item(md.drop).name}`, "#dff6c9");
@@ -655,6 +747,66 @@ export class GameEngine {
       bf.y += Math.sin(bf.p * 1.3) * 18 * dt;
     }
 
+    // ambient town life
+    for (const v of this.villagers) {
+      if (v.wait > 0) {
+        v.wait -= dt;
+        continue;
+      }
+      const dx = v.tx - v.x;
+      const dy = v.ty - v.y;
+      const d = Math.hypot(dx, dy);
+      if (d < 3) {
+        v.wait = 1 + Math.random() * 4;
+        v.tx = v.hx + (Math.random() - 0.5) * 240;
+        v.ty = v.hy + (Math.random() - 0.5) * 170;
+      } else {
+        const step = Math.min(d, 34 * dt);
+        v.x += (dx / d) * step;
+        v.y += (dy / d) * step;
+      }
+    }
+
+    // drifting leaves / motes
+    if (this.leaves.length < 30 && Math.random() < dt * 16) {
+      this.leaves.push({
+        x: this.px + (Math.random() - 0.5) * 900,
+        y: this.py - 420 - Math.random() * 120,
+        vx: -20 - Math.random() * 40,
+        vy: 24 + Math.random() * 34,
+        rot: Math.random() * Math.PI,
+        spin: (Math.random() - 0.5) * 3,
+        life: 8 + Math.random() * 6,
+        color: Math.random() < 0.5 ? this.biome.detail : this.biome.grass,
+      });
+    }
+    for (const lf of this.leaves) {
+      lf.x += (lf.vx + Math.sin(now * 1.6 + lf.rot) * 22) * dt;
+      lf.y += lf.vy * dt;
+      lf.rot += lf.spin * dt;
+      lf.life -= dt;
+    }
+    this.leaves = this.leaves.filter((l) => l.life > 0);
+
+    // world clock
+    this.clock += dt;
+
+    // simulated marketplace
+    this.marketCd -= dt;
+    if (this.marketCd <= 0) {
+      this.marketCd = 3 + Math.random() * 4;
+      const res = simulate(this.listings, now);
+      this.listings = res.listings;
+      if (res.earned > 0) {
+        this.gold += res.earned;
+        sfx.play("coin");
+        this.pushText(this.px, this.py - 64, `+${res.earned}g market sale`, "#ffe08a");
+      }
+      if (res.logs.length) this.tradeLog = [...res.logs, ...this.tradeLog].slice(0, 12);
+      this.emitHud(true);
+    }
+
+
     // camera
     const rect = this.canvas.getBoundingClientRect();
     const tx = Math.max(0, Math.min(WORLD_W - rect.width, this.px - rect.width / 2));
@@ -751,7 +903,9 @@ export class GameEngine {
     if (!r || !this.canCraft(r.id)) return false;
     for (const i of r.inputs) this.removeItem(i.id, i.qty);
     this.addItem(r.out, r.outQty);
+    sfx.play("craft");
     this.grantXp(r.skill, r.xp);
+
     this.pushText(this.px, this.py - 56, `+${r.outQty} ${item(r.out).name}`, "#dff6c9");
     this.emitHud(true);
     return true;
@@ -808,6 +962,132 @@ export class GameEngine {
     this.emitHud(true);
   }
 
+  /* ---------- marketplace (Phase 3) ---------- */
+
+  get timeOfDay() {
+    return (this.clock % DAY_LEN) / DAY_LEN;
+  }
+
+  get dayPhase(): HudSnapshot["phase"] {
+    const t = this.timeOfDay;
+    if (t < 0.2 || t >= 0.85) return "Night";
+    if (t < 0.3) return "Dawn";
+    if (t < 0.72) return "Day";
+    return "Dusk";
+  }
+
+  suggestPrice(id: ItemId) {
+    return suggestedPrice(id);
+  }
+
+  /** List a stack (or part of it) from the bag on the global market. */
+  listSlot(index: number, qty: number, price: number): boolean {
+    const slot = this.inv[index];
+    if (!slot) return false;
+    const amount = Math.max(1, Math.min(qty, slot.qty));
+    const unit = Math.max(1, Math.round(price));
+    if (!this.removeItem(slot.id, amount)) return false;
+    this.listings = [makePlayerListing(slot.id, amount, unit), ...this.listings];
+    sfx.play("craft");
+    this.pushText(this.px, this.py - 56, `Listed ${amount}× ${item(slot.id).name}`, "#c9e8ff");
+    this.emitHud(true);
+    return true;
+  }
+
+  buyListing(id: string): boolean {
+    const idx = this.listings.findIndex((l) => l.id === id);
+    if (idx === -1) return false;
+    const l = this.listings[idx]!;
+    if (l.mine) return this.cancelListing(id);
+    const total = l.price * l.qty;
+    if (this.gold < total) {
+      sfx.play("error");
+      this.pushText(this.px, this.py - 50, "Not enough gold", "#f4b0b0");
+      return false;
+    }
+    if (!this.addItem(l.item, l.qty)) return false;
+    this.gold -= total;
+    this.listings.splice(idx, 1);
+    sfx.play("coin");
+    this.pushText(this.px, this.py - 50, `-${total}g`, "#ffd0a8");
+    this.emitHud(true);
+    return true;
+  }
+
+  /** Pull your own listing back into the bag. */
+  cancelListing(id: string): boolean {
+    const idx = this.listings.findIndex((l) => l.id === id && l.mine);
+    if (idx === -1) return false;
+    const l = this.listings[idx]!;
+    if (!this.addItem(l.item, l.qty)) return false;
+    this.listings.splice(idx, 1);
+    this.emitHud(true);
+    return true;
+  }
+
+  toggleSound(): boolean {
+    sfx.unlock();
+    sfx.enabled = !sfx.enabled;
+    if (sfx.enabled) sfx.play("coin");
+    this.emitHud(true);
+    return sfx.enabled;
+  }
+
+  unlockAudio() {
+    sfx.unlock();
+  }
+
+  /* ---------- ambient rendering helpers ---------- */
+
+  private drawLeaves(ctx: CanvasRenderingContext2D) {
+    for (const l of this.leaves) {
+      ctx.save();
+      ctx.globalAlpha = Math.min(0.7, l.life / 3);
+      ctx.translate(l.x, l.y);
+      ctx.rotate(l.rot);
+      ctx.fillStyle = l.color;
+      ctx.fillRect(-3, -2, 6, 4);
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  private drawVillager(ctx: CanvasRenderingContext2D, v: Villager) {
+    const bob = Math.sin(this.time * 5 + v.hx + v.x * 0.05) * 1.6;
+    this.shadow(ctx, v.x, v.y + 13, 11);
+    ctx.fillStyle = v.robe;
+    ctx.beginPath();
+    ctx.roundRect(v.x - 8, v.y - 5 - bob, 16, 17, 5);
+    ctx.fill();
+    ctx.fillStyle = "#ffe0c2";
+    ctx.beginPath();
+    ctx.arc(v.x, v.y - 14 - bob, 10, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = v.hair;
+    ctx.beginPath();
+    ctx.arc(v.x, v.y - 17 - bob, 10, Math.PI, 0);
+    ctx.fill();
+    ctx.fillStyle = "#4a3b52";
+    ctx.fillRect(v.x - 4, v.y - 15 - bob, 2, 3);
+    ctx.fillRect(v.x + 2, v.y - 15 - bob, 2, 3);
+  }
+
+  private drawDayNight(ctx: CanvasRenderingContext2D, w: number, h: number) {
+    const t = this.timeOfDay;
+    const brightness = 0.5 - 0.5 * Math.cos(t * Math.PI * 2);
+    const dark = (1 - brightness) * 0.42;
+    if (dark > 0.01) {
+      ctx.fillStyle = `rgba(46,54,110,${dark.toFixed(3)})`;
+      ctx.fillRect(0, 0, w, h);
+    }
+    const warm = Math.max(0, 1 - Math.abs(brightness - 0.5) * 5) * 0.18;
+    if (warm > 0.01) {
+      ctx.fillStyle = `rgba(255,150,90,${warm.toFixed(3)})`;
+      ctx.fillRect(0, 0, w, h);
+    }
+  }
+
+
   emitHud(force = false) {
     if (force) this.hudCd = 0.12;
     const mk = (id: SkillId) => {
@@ -850,6 +1130,15 @@ export class GameEngine {
       discovered: [...this.discovered],
       attack: this.attack,
       defense: this.defense,
+      timeOfDay: this.timeOfDay,
+      phase: this.dayPhase,
+      market: {
+        listings: this.listings.map((l) => ({ ...l })),
+        log: this.tradeLog.map((l) => ({ ...l })),
+        fee: MARKET_FEE,
+      },
+      soundOn: sfx.enabled,
+
     });
   }
 
@@ -872,6 +1161,11 @@ export class GameEngine {
     }
     for (const b of BUILDINGS) this.drawBuilding(ctx, b);
     this.drawButterflies(ctx);
+    for (const v of this.villagers) {
+      if (!this.inView(v.x, v.y, view)) continue;
+      this.drawVillager(ctx, v);
+    }
+
 
     const drawables: { y: number; fn: () => void }[] = [];
     for (const n of this.nodes) {
@@ -920,16 +1214,19 @@ export class GameEngine {
       ctx.fillText(t.text, t.x, t.y);
     }
     ctx.globalAlpha = 1;
+    this.drawLeaves(ctx);
     ctx.restore();
 
-    // biome tint + soft vignette
+    // biome tint + day/night + soft vignette
     ctx.fillStyle = this.biome.tint;
     ctx.fillRect(0, 0, w, h);
+    this.drawDayNight(ctx, w, h);
     const v = ctx.createRadialGradient(w / 2, h / 2, h * 0.3, w / 2, h / 2, h * 0.85);
     v.addColorStop(0, "rgba(255,255,235,0)");
     v.addColorStop(1, "rgba(120,100,150,0.16)");
     ctx.fillStyle = v;
     ctx.fillRect(0, 0, w, h);
+
   }
 
   private inView(x: number, y: number, view: { x: number; y: number; w: number; h: number }) {
