@@ -1747,17 +1747,16 @@ export class GameEngine {
   }
 
   private biomePath(b: BiomeDef) {
+    // straight segments: regions tile the world exactly, so smoothing the
+    // outline would make neighbouring biomes overlap or leave gaps
     const p = new Path2D();
     const pts = b.poly;
     p.moveTo(pts[0]![0], pts[0]![1]);
-    for (let i = 1; i < pts.length; i++) {
-      const cur = pts[i]!;
-      const next = pts[(i + 1) % pts.length]!;
-      p.quadraticCurveTo(cur[0], cur[1], (cur[0] + next[0]) / 2, (cur[1] + next[1]) / 2);
-    }
+    for (let i = 1; i < pts.length; i++) p.lineTo(pts[i]![0], pts[i]![1]);
     p.closePath();
     return p;
   }
+
 
   private drawBarriers(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
     for (const bar of BARRIERS) {
