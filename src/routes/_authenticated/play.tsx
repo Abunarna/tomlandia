@@ -2,9 +2,10 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Backpack, Hammer, LogOut, Store, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { GameEngine } from "@/game/engine";
+import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
 import type { NpcRole } from "@/game/data";
-import type { HudSnapshot, ItemId } from "@/game/types";
+import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
+import type { Json } from "@/integrations/supabase/types";
 import { Hud } from "@/components/game/Hud";
 import { Panel, type PanelId } from "@/components/game/Panel";
 import { NpcDialog } from "@/components/game/NpcDialog";
@@ -77,26 +78,86 @@ function Game() {
   const [hud, setHud] = useState<HudSnapshot>(EMPTY);
   const [panel, setPanel] = useState<PanelId | null>(null);
   const [npc, setNpc] = useState<NpcRole | null>(null);
+  const [ready, setReady] = useState(false);
+  const [claimable, setClaimable] = useState<SaveState | null>(null);
 
+  const pendingSave = useRef<PromiseLike<unknown> | null>(null);
+
+  const persist = useCallback(
+    (s: SaveState) => {
+      const req = supabase
+        .from("player_saves")
+        .upsert({ user_id: user.id, data: s as unknown as Json, updated_at: new Date().toISOString() })
+        .then(({ error }) => {
+          if (error) console.error("Save failed", error.message);
+        });
+      pendingSave.current = req;
+    },
+    [user.id],
+  );
+
+  /** Write current progress and wait for the round-trip (used before leaving). */
+  const flushSave = useCallback(async () => {
+    engineRef.current?.save();
+    await pendingSave.current;
+  }, []);
+
+  // Load the cloud save first, then boot the engine with it.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const engine = new GameEngine(canvas, setHud, user.id);
-    engineRef.current = engine;
-    engine.onInteract = (id) => {
-      setPanel(null);
-      setNpc(id);
-    };
-    engine.emitHud(true);
-    engine.start();
-    const onResize = () => engine.resize();
-    window.addEventListener("resize", onResize);
+    let engine: GameEngine | null = null;
+    let cancelled = false;
+    const onResize = () => engine?.resize();
+
+    void (async () => {
+      const { data } = await supabase
+        .from("player_saves")
+        .select("data")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (cancelled) return;
+
+      const cloudSave = (data?.data as unknown as SaveState | undefined) ?? null;
+      engine = new GameEngine(canvas, setHud, { initialSave: cloudSave, onPersist: persist });
+      engineRef.current = engine;
+      engine.onInteract = (id) => {
+        setPanel(null);
+        setNpc(id);
+      };
+      engine.emitHud(true);
+      engine.start();
+      window.addEventListener("resize", onResize);
+      setReady(true);
+
+      // First login with no cloud save: offer to claim pre-account local progress.
+      const legacy = readLegacySave();
+      if (!cloudSave && legacy) setClaimable(legacy);
+      else if (legacy) clearLegacySave();
+    })();
+
     return () => {
+      cancelled = true;
       window.removeEventListener("resize", onResize);
-      engine.stop();
+      engine?.save();
+      engine?.stop();
       engineRef.current = null;
     };
-  }, [user.id]);
+  }, [user.id, persist]);
+
+  // Never lose progress when the tab closes or is backgrounded.
+  useEffect(() => {
+    const flush = () => engineRef.current?.save();
+    const onVisible = () => {
+      if (document.visibilityState === "hidden") flush();
+    };
+    window.addEventListener("pagehide", flush);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -114,7 +175,9 @@ function Game() {
   }, [user.id]);
 
   const signOut = async () => {
-    engineRef.current?.save();
+    await flushSave();
+    // Stop persisting before the session goes away, or later writes 401.
+    engineRef.current?.reset();
     await supabase.auth.signOut();
     navigate({ to: "/auth", replace: true });
   };
@@ -124,6 +187,7 @@ function Game() {
     if (!e) return;
     e.joystick = { active, dx, dy };
   }, []);
+
 
   return (
     <main className="relative h-[100dvh] w-full overflow-hidden bg-background">
@@ -210,6 +274,46 @@ function Game() {
         )}
       </div>
 
+
+      {!ready && (
+        <div className="absolute inset-0 z-20 grid place-items-center bg-background">
+          <p className="text-sm text-muted-foreground">Loading your adventure…</p>
+        </div>
+      )}
+
+      {claimable && (
+        <div className="absolute inset-0 z-30 grid place-items-center bg-background/80 p-6 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-3xl border border-border/60 bg-card p-5 shadow-soft">
+            <h2 className="font-display text-lg font-bold text-foreground">Claim old progress?</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              We found progress saved on this device from before accounts existed
+              ({claimable.gold ?? 0} gold). Claim it for <strong>{username || "this account"}</strong>?
+              This is a one-time offer and will overwrite your fresh start.
+            </p>
+            <div className="mt-5 flex gap-2">
+              <button
+                onClick={() => {
+                  engineRef.current?.applySave(claimable);
+                  clearLegacySave();
+                  setClaimable(null);
+                }}
+                className="flex-1 rounded-2xl bg-primary px-4 py-3 font-semibold text-primary-foreground"
+              >
+                Claim it
+              </button>
+              <button
+                onClick={() => {
+                  clearLegacySave();
+                  setClaimable(null);
+                }}
+                className="flex-1 rounded-2xl border border-border/60 px-4 py-3 font-semibold text-foreground"
+              >
+                Start fresh
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {npc && (
         <NpcDialog

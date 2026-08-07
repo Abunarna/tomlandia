@@ -37,10 +37,24 @@ import {
 } from "./market";
 import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
 
-const SAVE_KEY = "tomlandia.save.v1";
-/** Saves are namespaced per account so two players on one device stay distinct. */
-export function saveKeyFor(accountId?: string | null) {
-  return accountId ? `${SAVE_KEY}.${accountId}` : SAVE_KEY;
+/** Legacy pre-accounts local save. Read once so old progress can be claimed. */
+export const LEGACY_SAVE_KEY = "tomlandia.save.v1";
+
+export function readLegacySave(): SaveState | null {
+  try {
+    const raw = localStorage.getItem(LEGACY_SAVE_KEY);
+    return raw ? (JSON.parse(raw) as SaveState) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function clearLegacySave() {
+  try {
+    localStorage.removeItem(LEGACY_SAVE_KEY);
+  } catch {
+    /* ignore */
+  }
 }
 const INV_SIZE = 20;
 const AUTO_EAT_AT = 0.3;
@@ -187,10 +201,15 @@ export class GameEngine {
   private saveCd = 30;
 
 
-  private saveKey = SAVE_KEY;
+  /** Progress is persisted to the cloud by the host app, never to localStorage. */
+  private persist: ((s: SaveState) => void) | null = null;
 
-  constructor(canvas: HTMLCanvasElement, onHud: (s: HudSnapshot) => void, accountId?: string | null) {
-    this.saveKey = saveKeyFor(accountId);
+  constructor(
+    canvas: HTMLCanvasElement,
+    onHud: (s: HudSnapshot) => void,
+    opts?: { initialSave?: SaveState | null; onPersist?: (s: SaveState) => void },
+  ) {
+    this.persist = opts?.onPersist ?? null;
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d")!;
     this.onHud = onHud;
@@ -226,7 +245,7 @@ export class GameEngine {
     }
     this.spawnVillagers();
 
-    this.load();
+    this.load(opts?.initialSave ?? null);
     if (!this.listings.length) this.listings = seedListings();
     this.biome = biomeAt(this.px, this.py);
     this.resize();
@@ -293,12 +312,20 @@ export class GameEngine {
 
 
   save() {
+    if (!this.persist) return;
     try {
-      localStorage.setItem(this.saveKey, JSON.stringify(this.toSave()));
+      this.persist(this.toSave());
       this.pushText(this.px, this.py - 40, "Saved", "#9fd6f5");
     } catch {
       /* ignore */
     }
+  }
+
+  /** Replace the live state with a save (used for claiming old local progress). */
+  applySave(s: SaveState) {
+    this.load(s);
+    this.emitHud(true);
+    this.save();
   }
 
   private static toEquip(v: EquipState | ItemId | null | undefined): EquipState | null {
@@ -307,11 +334,9 @@ export class GameEngine {
     return { id: v.id, plus: v.plus ?? 0 };
   }
 
-  private load() {
+  private load(s: SaveState | null) {
+    if (!s) return;
     try {
-      const raw = localStorage.getItem(this.saveKey);
-      if (!raw) return;
-      const s = JSON.parse(raw) as SaveState;
       this.px = s.px ?? this.px;
       this.py = s.py ?? this.py;
       this.gold = s.gold ?? 0;
@@ -339,11 +364,7 @@ export class GameEngine {
   }
 
   reset() {
-    try {
-      localStorage.removeItem(this.saveKey);
-    } catch {
-      /* ignore */
-    }
+    this.persist = null;
   }
 
   /* ---------- inventory ---------- */
