@@ -30,24 +30,33 @@ export const Route = createFileRoute("/")({
   component: Game,
 });
 
+const blank = { level: 1, xp: 0, progress: 0, into: 0, need: 115 };
+
 const EMPTY: HudSnapshot = {
   hp: 30,
   maxHp: 30,
   gold: 0,
   level: 1,
   region: "Peaceful Fields",
+  regionLevel: "1-15",
   skills: {
-    mining: { level: 1, xp: 0, progress: 0, into: 0, need: 115 },
-    woodcutting: { level: 1, xp: 0, progress: 0, into: 0, need: 115 },
-    combat: { level: 1, xp: 0, progress: 0, into: 0, need: 115 },
+    mining: { ...blank },
+    woodcutting: { ...blank },
+    combat: { ...blank },
+    gathering: { ...blank },
+    smithing: { ...blank },
+    skinning: { ...blank },
+    tailoring: { ...blank },
   },
   inv: new Array(20).fill(null),
-  weapon: "wooden_club",
-  armor: "cloth_tunic",
+  weapon: { id: "wooden_club", plus: 0 },
+  armor: { id: "cloth_tunic", plus: 0 },
+  food: null,
   activity: "Wandering",
   activityProgress: 0,
   quest: null,
   completed: [],
+  discovered: ["fields"],
   attack: 6,
   defense: 2,
 };
@@ -140,13 +149,27 @@ function Game() {
           npc={npc}
           hud={hud}
           onClose={() => setNpc(null)}
-          onBuy={(id: ItemId) => engineRef.current?.buyItem(id)}
-          onSellAll={() => engineRef.current?.sellAllResources()}
+          onBuy={(who, id: ItemId) => {
+            engineRef.current?.buyItem(who, id);
+          }}
+          onSellAll={() => {
+            engineRef.current?.sellAllResources();
+          }}
           onAccept={(id) => engineRef.current?.acceptQuest(id)}
           onClaim={() => {
             engineRef.current?.claimQuest();
           }}
           onAbandon={() => engineRef.current?.abandonQuest()}
+          onCraft={(id) => {
+            engineRef.current?.craft(id);
+          }}
+          onUpgrade={(which) => {
+            engineRef.current?.upgradeEquipped(which);
+          }}
+          upgradeCosts={{
+            weapon: engineRef.current?.upgradeCostFor("weapon") ?? null,
+            armor: engineRef.current?.upgradeCostFor("armor") ?? null,
+          }}
         />
       )}
     </main>

@@ -57,8 +57,8 @@ function InventoryTab({
   return (
     <div className="space-y-3">
       <div className="flex gap-2">
-        <EquipSlot icon={<Sword className="size-4" />} id={hud.weapon} label="Weapon" />
-        <EquipSlot icon={<Shield className="size-4" />} id={hud.armor} label="Armor" />
+        <EquipSlot icon={<Sword className="size-4" />} eq={hud.weapon} label="Weapon" />
+        <EquipSlot icon={<Shield className="size-4" />} eq={hud.armor} label="Armor" />
       </div>
       <div className="grid grid-cols-5 gap-1.5">
         {hud.inv.map((slot, i) => {
@@ -99,8 +99,8 @@ function InventoryTab({
   );
 }
 
-function EquipSlot({ icon, id, label }: { icon: React.ReactNode; id: string | null; label: string }) {
-  const def = id ? ITEMS[id as keyof typeof ITEMS] : null;
+function EquipSlot({ icon, eq, label }: { icon: React.ReactNode; eq: { id: string; plus: number } | null; label: string }) {
+  const def = eq ? ITEMS[eq.id] : null;
   return (
     <div className="flex flex-1 items-center gap-2 rounded-2xl border border-border/70 bg-muted/50 p-2">
       <span
@@ -110,7 +110,9 @@ function EquipSlot({ icon, id, label }: { icon: React.ReactNode; id: string | nu
         {icon}
       </span>
       <div className="min-w-0">
-        <p className="truncate text-[11px] font-bold text-foreground">{def?.name ?? "Empty"}</p>
+        <p className="truncate text-[11px] font-bold text-foreground">
+          {def ? `${def.name}${eq && eq.plus > 0 ? ` +${eq.plus}` : ""}` : "Empty"}
+        </p>
         <p className="text-[10px] text-muted-foreground">{label}</p>
       </div>
     </div>
@@ -122,6 +124,10 @@ function SkillsTab({ hud }: { hud: HudSnapshot }) {
     { id: "combat", name: "Combat" },
     { id: "mining", name: "Mining" },
     { id: "woodcutting", name: "Woodcutting" },
+    { id: "gathering", name: "Gathering" },
+    { id: "smithing", name: "Smithing" },
+    { id: "skinning", name: "Skinning" },
+    { id: "tailoring", name: "Tailoring" },
   ];
   return (
     <div className="space-y-2">

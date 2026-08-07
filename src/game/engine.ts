@@ -1,27 +1,37 @@
 import {
+  BIOMES,
   BUILDINGS,
-  NPCS,
-  QUESTS,
-  SHOP_STOCK,
-  ITEMS,
+  MAX_PLUS,
   MONSTER_DEFS,
   MONSTER_SPAWNS,
   NODE_DEFS,
   NODE_SPAWNS,
-  REGION_NAME,
+  NPCS,
+  QUESTS,
+  RECIPES,
+  SHOP_STOCK,
   WORLD_H,
   WORLD_W,
+  biomeAt,
+  item,
+  statWithPlus,
+  upgradeCost,
+  type BiomeDef,
+  type MonsterKind,
+  type NodeKind,
+  type NpcDef,
+  type NpcRole,
 } from "./data";
 import { levelFromXp } from "./progression";
-import type { HudSnapshot, InvSlot, ItemId, QuestState, SaveState, SkillId } from "./types";
-import type { NpcRole } from "./data";
+import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
 
 const SAVE_KEY = "tomlandia.save.v1";
 const INV_SIZE = 20;
+const AUTO_EAT_AT = 0.3;
 
 interface ResNode {
   id: number;
-  kind: "copper" | "oak";
+  kind: NodeKind;
   x: number;
   y: number;
   depleted: boolean;
@@ -31,7 +41,7 @@ interface ResNode {
 
 interface Monster {
   id: number;
-  kind: "chicken" | "goblin";
+  kind: MonsterKind;
   x: number;
   y: number;
   hx: number;
@@ -75,6 +85,9 @@ type Target =
   | { type: "monster"; id: number }
   | { type: "npc"; id: NpcRole };
 
+const emptySkills = (): Record<SkillId, { xp: number }> =>
+  SKILL_IDS.reduce((acc, id) => ({ ...acc, [id]: { xp: 0 } }), {} as Record<SkillId, { xp: number }>);
+
 export class GameEngine {
   private ctx: CanvasRenderingContext2D;
   private canvas: HTMLCanvasElement;
@@ -85,17 +98,18 @@ export class GameEngine {
   private dpr = 1;
 
   // player
-  px = WORLD_W / 2;
-  py = WORLD_H / 2 + 120;
+  px = WORLD_W / 6;
+  py = 620;
   hp = 30;
   gold = 0;
   facing = 1;
   private moveT = 0;
 
-  skills: Record<SkillId, { xp: number }> = { mining: { xp: 0 }, woodcutting: { xp: 0 }, combat: { xp: 0 } };
+  skills = emptySkills();
   inv: (InvSlot | null)[] = new Array(INV_SIZE).fill(null);
-  weapon: ItemId | null = "wooden_club";
-  armor: ItemId | null = "cloth_tunic";
+  weapon: EquipState | null = { id: "wooden_club", plus: 0 };
+  armor: EquipState | null = { id: "cloth_tunic", plus: 0 };
+  food: ItemId | null = null;
 
   private nodes: ResNode[] = [];
   private monsters: Monster[] = [];
@@ -110,9 +124,11 @@ export class GameEngine {
   private regenCd = 0;
   private activity = "Wandering";
   private activityProgress = 0;
+  private biome: BiomeDef = BIOMES[0]!;
 
   quest: QuestState | null = null;
   completed: string[] = [];
+  discovered: string[] = ["fields"];
   onInteract: ((id: NpcRole) => void) | null = null;
 
   joystick = { active: false, dx: 0, dy: 0 };
@@ -151,23 +167,28 @@ export class GameEngine {
         hitFlash: 0,
       };
     });
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 20; i++) {
       this.butterflies.push({ x: Math.random() * WORLD_W, y: Math.random() * WORLD_H, p: Math.random() * 10, s: 0.4 + Math.random() * 0.6 });
     }
 
     this.load();
+    this.biome = biomeAt(this.px, this.py);
     this.resize();
   }
 
   /* ---------- persistence ---------- */
 
   get maxHp() {
-    return 30 + (levelFromXp(this.skills.combat.xp).level - 1) * 6;
+    return 30 + (this.lvl("combat") - 1) * 6;
+  }
+
+  private lvl(skill: SkillId) {
+    return levelFromXp(this.skills[skill]?.xp ?? 0).level;
   }
 
   private toSave(): SaveState {
     return {
-      v: 1,
+      v: 2,
       px: this.px,
       py: this.py,
       hp: this.hp,
@@ -176,8 +197,10 @@ export class GameEngine {
       skills: this.skills,
       weapon: this.weapon,
       armor: this.armor,
+      food: this.food,
       quest: this.quest,
       completed: this.completed,
+      discovered: this.discovered,
     };
   }
 
@@ -190,6 +213,12 @@ export class GameEngine {
     }
   }
 
+  private static toEquip(v: EquipState | ItemId | null | undefined): EquipState | null {
+    if (!v) return null;
+    if (typeof v === "string") return { id: v, plus: 0 };
+    return { id: v.id, plus: v.plus ?? 0 };
+  }
+
   private load() {
     try {
       const raw = localStorage.getItem(SAVE_KEY);
@@ -200,11 +229,18 @@ export class GameEngine {
       this.gold = s.gold ?? 0;
       this.inv = Array.isArray(s.inv) ? s.inv.slice(0, INV_SIZE) : this.inv;
       while (this.inv.length < INV_SIZE) this.inv.push(null);
-      if (s.skills) this.skills = { ...this.skills, ...s.skills };
-      this.weapon = s.weapon ?? null;
-      this.armor = s.armor ?? null;
+      if (s.skills) {
+        for (const id of SKILL_IDS) {
+          const xp = s.skills[id]?.xp;
+          if (typeof xp === "number") this.skills[id] = { xp };
+        }
+      }
+      this.weapon = GameEngine.toEquip(s.weapon);
+      this.armor = GameEngine.toEquip(s.armor);
+      this.food = s.food ?? null;
       this.quest = s.quest ?? null;
       this.completed = Array.isArray(s.completed) ? s.completed : [];
+      this.discovered = Array.isArray(s.discovered) && s.discovered.length ? s.discovered : ["fields"];
       this.hp = Math.min(s.hp ?? this.maxHp, this.maxHp);
     } catch {
       /* ignore */
@@ -221,8 +257,26 @@ export class GameEngine {
 
   /* ---------- inventory ---------- */
 
-  addItem(id: ItemId, qty = 1): boolean {
-    const def = ITEMS[id];
+  countItem(id: ItemId): number {
+    return this.inv.reduce((n, s) => (s && s.id === id ? n + s.qty : n), 0);
+  }
+
+  private removeItem(id: ItemId, qty: number): boolean {
+    if (this.countItem(id) < qty) return false;
+    let left = qty;
+    for (let i = 0; i < this.inv.length && left > 0; i++) {
+      const s = this.inv[i];
+      if (!s || s.id !== id) continue;
+      const take = Math.min(left, s.qty);
+      s.qty -= take;
+      left -= take;
+      if (s.qty <= 0) this.inv[i] = null;
+    }
+    return true;
+  }
+
+  addItem(id: ItemId, qty = 1, plus = 0): boolean {
+    const def = item(id);
     if (def.stackable) {
       const slot = this.inv.find((s) => s && s.id === id);
       if (slot) {
@@ -235,14 +289,14 @@ export class GameEngine {
       this.pushText(this.px, this.py - 50, "Bag full!", "#f2a1a1");
       return false;
     }
-    this.inv[idx] = { id, qty };
+    this.inv[idx] = { id, qty, plus };
     return true;
   }
 
   sellSlot(index: number) {
     const slot = this.inv[index];
     if (!slot) return;
-    this.gold += ITEMS[slot.id].value * slot.qty;
+    this.gold += item(slot.id).value * slot.qty;
     this.inv[index] = null;
     this.emitHud(true);
   }
@@ -250,30 +304,42 @@ export class GameEngine {
   equipSlot(index: number) {
     const slot = this.inv[index];
     if (!slot) return;
-    const def = ITEMS[slot.id];
+    const def = item(slot.id);
+    if (def.kind === "food") {
+      this.food = slot.id;
+      this.pushText(this.px, this.py - 40, `${def.name} set as snack`, "#ffe0a8");
+      this.emitHud(true);
+      return;
+    }
     if (def.kind !== "weapon" && def.kind !== "armor") return;
     const prev = def.kind === "weapon" ? this.weapon : this.armor;
-    if (def.kind === "weapon") this.weapon = slot.id;
-    else this.armor = slot.id;
-    this.inv[index] = prev ? { id: prev, qty: 1 } : null;
+    const next: EquipState = { id: slot.id, plus: slot.plus ?? 0 };
+    if (def.kind === "weapon") this.weapon = next;
+    else this.armor = next;
+    this.inv[index] = prev ? { id: prev.id, qty: 1, plus: prev.plus } : null;
     this.emitHud(true);
   }
 
   /* ---------- combat stats ---------- */
 
   get attack() {
-    const lvl = levelFromXp(this.skills.combat.xp).level;
-    return 3 + lvl + (this.weapon ? (ITEMS[this.weapon].attack ?? 0) : 0);
+    const lvl = this.lvl("combat");
+    const w = this.weapon;
+    const base = w ? (item(w.id).attack ?? 0) : 0;
+    return Math.round(3 + lvl + statWithPlus(base, w?.plus ?? 0));
   }
+
   get defense() {
-    const lvl = levelFromXp(this.skills.combat.xp).level;
-    return Math.floor(lvl / 2) + (this.armor ? (ITEMS[this.armor].defense ?? 0) : 0);
+    const lvl = this.lvl("combat");
+    const a = this.armor;
+    const base = a ? (item(a.id).defense ?? 0) : 0;
+    return Math.round(Math.floor(lvl / 2) + statWithPlus(base, a?.plus ?? 0));
   }
 
   private grantXp(skill: SkillId, amount: number) {
-    const before = levelFromXp(this.skills[skill].xp).level;
+    const before = this.lvl(skill);
     this.skills[skill].xp += amount;
-    const after = levelFromXp(this.skills[skill].xp).level;
+    const after = this.lvl(skill);
     this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
     if (after > before) {
       this.pushText(this.px, this.py - 70, `${skill.toUpperCase()} LV ${after}!`, "#ffd98e");
@@ -307,16 +373,16 @@ export class GameEngine {
     for (const m of this.monsters) {
       if (m.dead) continue;
       const d = Math.hypot(m.x - wx, m.y - wy);
-      if (d < 34 && (!best || d < best.d)) best = { d, t: { type: "monster", id: m.id } };
+      if (d < 40 && (!best || d < best.d)) best = { d, t: { type: "monster", id: m.id } };
     }
     for (const n of this.nodes) {
       if (n.depleted) continue;
       const d = Math.hypot(n.x - wx, n.y - wy - 10);
-      if (d < 38 && (!best || d < best.d)) best = { d, t: { type: "node", id: n.id } };
+      if (d < 40 && (!best || d < best.d)) best = { d, t: { type: "node", id: n.id } };
     }
     for (const npc of NPCS) {
       const d = Math.hypot(npc.x - wx, npc.y - wy - 8);
-      if (d < 40 && (!best || d < best.d)) best = { d, t: { type: "npc", id: npc.id } };
+      if (d < 44 && (!best || d < best.d)) best = { d, t: { type: "npc", id: npc.id } };
     }
     if (best) {
       this.target = best.t;
@@ -369,14 +435,25 @@ export class GameEngine {
     return d;
   }
 
+  private autoEat() {
+    if (this.hp / this.maxHp >= AUTO_EAT_AT) return;
+    const id = this.food;
+    if (!id) return;
+    const def = item(id);
+    if (def.kind !== "food" || !def.heal) return;
+    if (!this.removeItem(id, 1)) return;
+    this.hp = Math.min(this.maxHp, this.hp + def.heal);
+    this.pushText(this.px, this.py - 46, `+${def.heal} hp`, "#9fe6a0");
+  }
+
   private update(dt: number) {
     const now = this.time;
 
     // joystick overrides target
     if (this.joystick.active && (this.joystick.dx || this.joystick.dy)) {
       this.target = { type: "none" };
-      this.px = Math.max(20, Math.min(WORLD_W - 20, this.px + this.joystick.dx * 150 * dt));
-      this.py = Math.max(20, Math.min(WORLD_H - 20, this.py + this.joystick.dy * 150 * dt));
+      this.px = Math.max(20, Math.min(WORLD_W - 20, this.px + this.joystick.dx * 160 * dt));
+      this.py = Math.max(20, Math.min(WORLD_H - 20, this.py + this.joystick.dy * 160 * dt));
       if (Math.abs(this.joystick.dx) > 0.05) this.facing = this.joystick.dx > 0 ? 1 : -1;
       this.moveT += dt * 10;
       this.activity = "Wandering";
@@ -395,7 +472,12 @@ export class GameEngine {
         const d = this.moveToward(n.x, n.y + 18, dt);
         const def = NODE_DEFS[n.kind];
         if (d <= 34) {
-          this.activity = n.kind === "copper" ? "Mining copper" : "Chopping oak";
+          if (this.lvl(def.skill) < def.req) {
+            this.pushText(n.x, n.y - 26, `Needs ${def.skill} ${def.req}`, "#f4b0b0");
+            this.target = { type: "none" };
+            return;
+          }
+          this.activity = `Harvesting ${def.name}`;
           this.gatherProgress += dt / def.time;
           this.activityProgress = this.gatherProgress;
           if (Math.random() < dt * 12) {
@@ -414,7 +496,7 @@ export class GameEngine {
             this.addItem(def.item, 1);
             this.questTick("gather", def.item);
             this.grantXp(def.skill, def.xp);
-            this.pushText(n.x, n.y - 20, `+1 ${ITEMS[def.item].name}`, "#dff6c9");
+            this.pushText(n.x, n.y - 20, `+1 ${item(def.item).name}`, "#dff6c9");
             n.depleted = true;
             n.respawnAt = now + def.respawn;
             this.target = { type: "none" };
@@ -431,13 +513,13 @@ export class GameEngine {
       } else {
         const d = this.moveToward(m.x, m.y, dt, 140);
         if (d <= 34) {
-          this.activity = `Fighting ${MONSTER_DEFS[m.kind].name}`;
+          const md = MONSTER_DEFS[m.kind];
+          this.activity = `Fighting ${md.name}`;
           this.combatCd -= dt;
-          this.activityProgress = 1 - Math.max(0, this.combatCd) / 1;
+          this.activityProgress = 1 - Math.max(0, this.combatCd);
           if (this.combatCd <= 0) {
             this.combatCd = 1;
-            const md = MONSTER_DEFS[m.kind];
-            const dmg = Math.max(1, this.attack - md.defense / 2);
+            const dmg = Math.max(1, Math.round(this.attack - md.defense / 2));
             m.hp -= dmg;
             m.hitFlash = 0.2;
             this.pushText(m.x, m.y - 24, `${dmg}`, "#fff0c9");
@@ -449,7 +531,12 @@ export class GameEngine {
               this.pushText(m.x, m.y - 40, `+${gold}g`, "#ffe08a");
               if (Math.random() < md.dropChance) {
                 this.addItem(md.drop, 1);
-                this.pushText(m.x + 16, m.y - 56, `+1 ${ITEMS[md.drop].name}`, "#dff6c9");
+                this.pushText(m.x + 16, m.y - 56, `+1 ${item(md.drop).name}`, "#dff6c9");
+              }
+              if (md.hide) {
+                this.addItem(md.hide, 1);
+                this.grantXp("skinning", md.hideXp);
+                this.pushText(m.x - 16, m.y - 68, `+1 ${item(md.hide).name}`, "#f0d3b0");
               }
               this.questTick("kill", m.kind);
               this.grantXp("combat", md.xp);
@@ -466,13 +553,14 @@ export class GameEngine {
               }
               this.target = { type: "none" };
             } else {
-              const taken = Math.max(1, md.attack - this.defense / 2);
+              const taken = Math.max(1, Math.round(md.attack - this.defense / 2));
               this.hp -= taken;
-              this.pushText(this.px, this.py - 34, `-${Math.round(taken)}`, "#f4b0b0");
+              this.pushText(this.px, this.py - 34, `-${taken}`, "#f4b0b0");
+              this.autoEat();
               if (this.hp <= 0) {
                 this.hp = Math.ceil(this.maxHp * 0.5);
-                this.px = WORLD_W / 2;
-                this.py = WORLD_H / 2 + 120;
+                this.px = 700;
+                this.py = 620;
                 this.gold = Math.max(0, Math.floor(this.gold * 0.9));
                 this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
                 this.target = { type: "none" };
@@ -485,25 +573,42 @@ export class GameEngine {
         }
       }
     } else if (this.target.type === "npc") {
-      const npc = NPCS.find((n) => n.id === (this.target as { id: NpcRole }).id)!;
-      const d = this.moveToward(npc.x, npc.y + 16, dt);
-      this.activity = `Visiting ${npc.name}`;
-      this.activityProgress = 0;
-      if (d <= 44) {
+      const id = this.target.id;
+      const npc = NPCS.find((n) => n.id === id);
+      if (!npc) {
         this.target = { type: "none" };
-        this.onInteract?.(npc.id);
+      } else {
+        const d = this.moveToward(npc.x, npc.y + 16, dt);
+        this.activity = `Visiting ${npc.name}`;
+        this.activityProgress = 0;
+        if (d <= 46) {
+          this.target = { type: "none" };
+          this.onInteract?.(npc.id);
+        }
       }
     } else {
       this.activity = "Wandering";
       this.activityProgress = 0;
     }
 
-    // regen out of combat
+    // biome discovery
+    const b = biomeAt(this.px, this.py);
+    if (b.id !== this.biome.id) {
+      this.biome = b;
+      if (!this.discovered.includes(b.id)) {
+        this.discovered.push(b.id);
+        this.pushText(this.px, this.py - 76, `Discovered ${b.name}!`, "#ffd98e");
+      }
+      this.emitHud(true);
+    }
+
+    // regen + auto-eat out of combat
     if (this.target.type !== "monster") {
       this.regenCd -= dt;
       if (this.regenCd <= 0) {
         this.regenCd = 2.5;
-        if (this.hp < this.maxHp) this.hp = Math.min(this.maxHp, this.hp + 1);
+        if (this.hp < this.maxHp) this.hp = Math.min(this.maxHp, this.hp + 1 + Math.floor(this.maxHp * 0.01));
+        this.autoEat();
       }
     }
 
@@ -520,10 +625,6 @@ export class GameEngine {
         continue;
       }
       m.hitFlash = Math.max(0, m.hitFlash - dt);
-      if (now >= m.wanderAt) {
-        m.wanderAt = now + 1.5 + Math.random() * 3;
-        m.hx = m.hx;
-      }
       const wobble = Math.sin(now * 1.2 + m.id) * 18;
       m.x += (m.hx + wobble - m.x) * dt * 0.8;
       m.y += (m.hy + Math.cos(now * 0.9 + m.id) * 14 - m.y) * dt * 0.8;
@@ -548,10 +649,10 @@ export class GameEngine {
       p.life -= dt;
     }
     this.parts = this.parts.filter((p) => p.life > 0);
-    for (const b of this.butterflies) {
-      b.p += dt;
-      b.x += Math.cos(b.p * 0.8 + b.s) * 22 * dt;
-      b.y += Math.sin(b.p * 1.3) * 18 * dt;
+    for (const bf of this.butterflies) {
+      bf.p += dt;
+      bf.x += Math.cos(bf.p * 0.8 + bf.s) * 22 * dt;
+      bf.y += Math.sin(bf.p * 1.3) * 18 * dt;
     }
 
     // camera
@@ -574,7 +675,7 @@ export class GameEngine {
     }
   }
 
-  /* ---------- quests, shop & food ---------- */
+  /* ---------- quests, shop, crafting & food ---------- */
 
   private questTick(kind: "kill" | "gather", key: string) {
     if (!this.quest) return;
@@ -614,8 +715,8 @@ export class GameEngine {
     this.emitHud(true);
   }
 
-  buyItem(id: ItemId): boolean {
-    const entry = SHOP_STOCK.find((s) => s.id === id);
+  buyItem(npc: NpcRole, id: ItemId): boolean {
+    const entry = (SHOP_STOCK[npc] ?? []).find((s) => s.id === id);
     if (!entry || this.gold < entry.price) return false;
     if (!this.addItem(id, 1)) return false;
     this.gold -= entry.price;
@@ -628,8 +729,8 @@ export class GameEngine {
     let earned = 0;
     this.inv.forEach((slot, i) => {
       if (!slot) return;
-      if (ITEMS[slot.id].kind !== "resource") return;
-      earned += ITEMS[slot.id].value * slot.qty;
+      if (item(slot.id).kind !== "resource") return;
+      earned += item(slot.id).value * slot.qty;
       this.inv[i] = null;
     });
     this.gold += earned;
@@ -638,12 +739,68 @@ export class GameEngine {
     return earned;
   }
 
+  canCraft(recipeId: string): boolean {
+    const r = RECIPES.find((x) => x.id === recipeId);
+    if (!r) return false;
+    if (this.lvl(r.skill) < r.req) return false;
+    return r.inputs.every((i) => this.countItem(i.id) >= i.qty);
+  }
+
+  craft(recipeId: string): boolean {
+    const r = RECIPES.find((x) => x.id === recipeId);
+    if (!r || !this.canCraft(r.id)) return false;
+    for (const i of r.inputs) this.removeItem(i.id, i.qty);
+    this.addItem(r.out, r.outQty);
+    this.grantXp(r.skill, r.xp);
+    this.pushText(this.px, this.py - 56, `+${r.outQty} ${item(r.out).name}`, "#dff6c9");
+    this.emitHud(true);
+    return true;
+  }
+
+  upgradeCostFor(which: "weapon" | "armor"): number | null {
+    const eq = which === "weapon" ? this.weapon : this.armor;
+    if (!eq || eq.plus >= MAX_PLUS) return null;
+    const base = item(eq.id).attack ?? item(eq.id).defense ?? 1;
+    return upgradeCost(base, eq.plus);
+  }
+
+  upgradeEquipped(which: "weapon" | "armor"): boolean {
+    const eq = which === "weapon" ? this.weapon : this.armor;
+    const cost = this.upgradeCostFor(which);
+    if (!eq || cost === null || this.gold < cost) return false;
+    this.gold -= cost;
+    eq.plus += 1;
+    this.pushText(this.px, this.py - 60, `${item(eq.id).name} +${eq.plus}!`, "#ffd98e");
+    for (let i = 0; i < 16; i++) {
+      this.parts.push({
+        x: this.px,
+        y: this.py - 10,
+        vx: (Math.random() - 0.5) * 110,
+        vy: -Math.random() * 120,
+        life: 0.9,
+        color: "#ffe6a7",
+        size: 2 + Math.random() * 2,
+      });
+    }
+    this.emitHud(true);
+    return true;
+  }
+
+  setFood(id: ItemId | null) {
+    this.food = id;
+    this.emitHud(true);
+  }
+
   useSlot(index: number) {
     const slot = this.inv[index];
     if (!slot) return;
-    const def = ITEMS[slot.id];
+    const def = item(slot.id);
     if (def.kind !== "food" || !def.heal) return;
-    if (this.hp >= this.maxHp) return;
+    if (this.hp >= this.maxHp) {
+      this.food = slot.id;
+      this.emitHud(true);
+      return;
+    }
     this.hp = Math.min(this.maxHp, this.hp + def.heal);
     slot.qty -= 1;
     if (slot.qty <= 0) this.inv[index] = null;
@@ -654,24 +811,31 @@ export class GameEngine {
   emitHud(force = false) {
     if (force) this.hudCd = 0.12;
     const mk = (id: SkillId) => {
-      const l = levelFromXp(this.skills[id].xp);
-      return { level: l.level, xp: this.skills[id].xp, progress: l.progress, into: l.into, need: l.need };
+      const l = levelFromXp(this.skills[id]?.xp ?? 0);
+      return { level: l.level, xp: this.skills[id]?.xp ?? 0, progress: l.progress, into: l.into, need: l.need };
     };
+    const skills = SKILL_IDS.reduce(
+      (acc, id) => ({ ...acc, [id]: mk(id) }),
+      {} as HudSnapshot["skills"],
+    );
     this.onHud({
       hp: Math.max(0, Math.round(this.hp)),
       maxHp: this.maxHp,
       gold: this.gold,
-      level: levelFromXp(this.skills.combat.xp).level,
-      region: REGION_NAME,
-      skills: { mining: mk("mining"), woodcutting: mk("woodcutting"), combat: mk("combat") },
+      level: this.lvl("combat"),
+      region: this.biome.name,
+      regionLevel: this.biome.levels,
+      skills,
       inv: this.inv.map((s) => (s ? { ...s } : null)),
-      weapon: this.weapon,
-      armor: this.armor,
+      weapon: this.weapon ? { ...this.weapon } : null,
+      armor: this.armor ? { ...this.armor } : null,
+      food: this.food,
       activity: this.activity,
       activityProgress: this.activityProgress,
       quest: this.quest
         ? (() => {
-            const d = QUESTS.find((q) => q.id === this.quest!.id)!;
+            const d = QUESTS.find((q) => q.id === this.quest!.id);
+            if (!d) return null;
             return {
               id: d.id,
               name: d.name,
@@ -683,6 +847,7 @@ export class GameEngine {
           })()
         : null,
       completed: [...this.completed],
+      discovered: [...this.discovered],
       attack: this.attack,
       defense: this.defense,
     });
@@ -697,24 +862,30 @@ export class GameEngine {
     const h = rect.height;
     ctx.clearRect(0, 0, w, h);
 
-    // grass base
-    const g = ctx.createLinearGradient(0, 0, 0, h);
-    g.addColorStop(0, "#bfe8a0");
-    g.addColorStop(1, "#a3dd8c");
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, w, h);
-
     ctx.save();
     ctx.translate(-Math.round(this.cam.x), -Math.round(this.cam.y));
 
-    this.drawGround(ctx);
+    const view = { x: this.cam.x, y: this.cam.y, w, h };
+    for (const b of BIOMES) {
+      if (b.x > view.x + w || b.x + b.w < view.x || b.y > view.y + h || b.y + b.h < view.y) continue;
+      this.drawBiome(ctx, b);
+    }
     for (const b of BUILDINGS) this.drawBuilding(ctx, b);
     this.drawButterflies(ctx);
 
     const drawables: { y: number; fn: () => void }[] = [];
-    for (const n of this.nodes) drawables.push({ y: n.y, fn: () => this.drawNode(ctx, n) });
-    for (const m of this.monsters) if (!m.dead) drawables.push({ y: m.y, fn: () => this.drawMonster(ctx, m) });
-    for (const npc of NPCS) drawables.push({ y: npc.y, fn: () => this.drawNpc(ctx, npc) });
+    for (const n of this.nodes) {
+      if (!this.inView(n.x, n.y, view)) continue;
+      drawables.push({ y: n.y, fn: () => this.drawNode(ctx, n) });
+    }
+    for (const m of this.monsters) {
+      if (m.dead || !this.inView(m.x, m.y, view)) continue;
+      drawables.push({ y: m.y, fn: () => this.drawMonster(ctx, m) });
+    }
+    for (const npc of NPCS) {
+      if (!this.inView(npc.x, npc.y, view)) continue;
+      drawables.push({ y: npc.y, fn: () => this.drawNpc(ctx, npc) });
+    }
     drawables.push({ y: this.py, fn: () => this.drawPlayer(ctx) });
     drawables.sort((a, b) => a.y - b.y);
     for (const d of drawables) d.fn();
@@ -751,7 +922,9 @@ export class GameEngine {
     ctx.globalAlpha = 1;
     ctx.restore();
 
-    // soft vignette / bloom
+    // biome tint + soft vignette
+    ctx.fillStyle = this.biome.tint;
+    ctx.fillRect(0, 0, w, h);
     const v = ctx.createRadialGradient(w / 2, h / 2, h * 0.3, w / 2, h / 2, h * 0.85);
     v.addColorStop(0, "rgba(255,255,235,0)");
     v.addColorStop(1, "rgba(120,100,150,0.16)");
@@ -759,33 +932,65 @@ export class GameEngine {
     ctx.fillRect(0, 0, w, h);
   }
 
-  private drawGround(ctx: CanvasRenderingContext2D) {
-    // paths & patches
-    ctx.fillStyle = "#e8dcbb";
-    ctx.beginPath();
-    ctx.roundRect(500, 120, 420, 380, 40);
-    ctx.fill();
-    ctx.fillStyle = "rgba(255,255,255,0.18)";
-    for (let i = 0; i < 40; i++) {
-      const x = ((i * 137) % WORLD_W) + 10;
-      const y = ((i * 233) % WORLD_H) + 10;
-      ctx.fillRect(x, y, 18, 4);
+  private inView(x: number, y: number, view: { x: number; y: number; w: number; h: number }) {
+    return x > view.x - 120 && x < view.x + view.w + 120 && y > view.y - 160 && y < view.y + view.h + 160;
+  }
+
+  private drawBiome(ctx: CanvasRenderingContext2D, b: BiomeDef) {
+    const g = ctx.createLinearGradient(0, b.y, 0, b.y + b.h);
+    g.addColorStop(0, b.top);
+    g.addColorStop(1, b.bottom);
+    ctx.fillStyle = g;
+    ctx.fillRect(b.x, b.y, b.w, b.h);
+
+    // town plaza
+    if (b.id === "fields" || b.id === "desert" || b.id === "forest" || b.id === "winter") {
+      ctx.fillStyle = b.detail;
+      ctx.globalAlpha = 0.75;
+      ctx.beginPath();
+      const px = b.id === "fields" ? b.x + 500 : b.id === "desert" ? b.x + 440 : b.id === "forest" ? b.x + 580 : b.x + 560;
+      const py = b.id === "fields" ? 120 : b.id === "desert" ? 150 : b.id === "forest" ? 420 : b.y + 180;
+      ctx.roundRect(px, py, 430, 400, 40);
+      ctx.fill();
+      ctx.globalAlpha = 1;
     }
-    ctx.fillStyle = "#95d283";
-    for (let i = 0; i < 90; i++) {
-      const x = (i * 271) % WORLD_W;
-      const y = (i * 419) % WORLD_H;
+
+    // grass tufts / dunes / snow speckles
+    ctx.fillStyle = b.grass;
+    for (let i = 0; i < 120; i++) {
+      const x = b.x + ((i * 271) % b.w);
+      const y = b.y + ((i * 419) % b.h);
       ctx.fillRect(x, y, 3, 6);
       ctx.fillRect(x + 5, y + 2, 3, 5);
     }
-    // pond
-    ctx.fillStyle = "#9fd8ee";
+    ctx.fillStyle = "rgba(255,255,255,0.16)";
+    for (let i = 0; i < 50; i++) {
+      const x = b.x + ((i * 137) % b.w);
+      const y = b.y + ((i * 233) % b.h);
+      ctx.fillRect(x, y, 18, 4);
+    }
+
+    // water feature per biome
+    if (b.id === "fields") this.pond(ctx, 300, 640, 110, 62, "#9fd8ee");
+    if (b.id === "forest") this.pond(ctx, b.x + 1000, 180, 130, 70, "#7fc9c1");
+    if (b.id === "winter") this.pond(ctx, 400, b.y + 560, 150, 74, "#cfeaf5");
+    if (b.id === "evil") this.pond(ctx, b.x + 1500, b.y + 800, 160, 80, "#5b4a86");
+
+    // biome label
+    ctx.font = "bold 26px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgba(255,255,255,0.35)";
+    ctx.fillText(b.name.toUpperCase(), b.x + b.w / 2, b.y + 60);
+  }
+
+  private pond(ctx: CanvasRenderingContext2D, x: number, y: number, rx: number, ry: number, color: string) {
+    ctx.fillStyle = color;
     ctx.beginPath();
-    ctx.ellipse(300, 640, 110, 62, 0, 0, Math.PI * 2);
+    ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = "rgba(255,255,255,0.4)";
     ctx.beginPath();
-    ctx.ellipse(270, 620, 40, 14, 0, 0, Math.PI * 2);
+    ctx.ellipse(x - 30, y - 20, rx * 0.35, ry * 0.22, 0, 0, Math.PI * 2);
     ctx.fill();
   }
 
@@ -832,11 +1037,9 @@ export class GameEngine {
 
   private drawNode(ctx: CanvasRenderingContext2D, n: ResNode) {
     const def = NODE_DEFS[n.kind];
-    if (n.depleted) {
-      ctx.globalAlpha = 0.35;
-    }
+    if (n.depleted) ctx.globalAlpha = 0.35;
     this.shadow(ctx, n.x, n.y + 20, 22);
-    if (n.kind === "copper") {
+    if (def.shape === "rock") {
       ctx.fillStyle = def.color;
       ctx.beginPath();
       ctx.moveTo(n.x - 24, n.y + 20);
@@ -845,14 +1048,14 @@ export class GameEngine {
       ctx.lineTo(n.x + 24, n.y + 20);
       ctx.closePath();
       ctx.fill();
-      ctx.fillStyle = "#cfc2b2";
+      ctx.fillStyle = "rgba(255,255,255,0.35)";
       ctx.fillRect(n.x - 12, n.y - 10, 12, 8);
       if (!n.depleted) {
         ctx.fillStyle = def.accent;
         ctx.fillRect(n.x - 4, n.y + 2, 8, 8);
         ctx.fillRect(n.x + 8, n.y - 4, 6, 6);
       }
-    } else {
+    } else if (def.shape === "tree") {
       ctx.fillStyle = def.color;
       ctx.fillRect(n.x - 7, n.y - 10, 14, 32);
       const sway = Math.sin(this.time * 1.4 + n.sway) * 3;
@@ -860,11 +1063,25 @@ export class GameEngine {
       ctx.beginPath();
       ctx.arc(n.x + sway, n.y - 30, 30, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = n.depleted ? "#8aa87c" : "#8ed77c";
       ctx.beginPath();
       ctx.arc(n.x + sway - 16, n.y - 18, 18, 0, Math.PI * 2);
       ctx.arc(n.x + sway + 16, n.y - 18, 18, 0, Math.PI * 2);
       ctx.fill();
+    } else {
+      const sway = Math.sin(this.time * 1.8 + n.sway) * 2;
+      ctx.fillStyle = def.color;
+      ctx.beginPath();
+      ctx.arc(n.x + sway, n.y + 2, 20, 0, Math.PI * 2);
+      ctx.fill();
+      if (!n.depleted) {
+        ctx.fillStyle = def.accent;
+        for (let i = 0; i < 5; i++) {
+          const a = (i / 5) * Math.PI * 2 + n.sway;
+          ctx.beginPath();
+          ctx.arc(n.x + sway + Math.cos(a) * 11, n.y + 2 + Math.sin(a) * 8, 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
     }
     if (!n.depleted) {
       const tw = (Math.sin(this.time * 3 + n.sway) + 1) / 2;
@@ -879,50 +1096,53 @@ export class GameEngine {
 
   private drawMonster(ctx: CanvasRenderingContext2D, m: Monster) {
     const d = MONSTER_DEFS[m.kind];
+    const s = d.size;
     const bob = Math.sin(this.time * 4 + m.id) * 2;
-    this.shadow(ctx, m.x, m.y + 14, 14);
+    this.shadow(ctx, m.x, m.y + 14 * s, 14 * s);
     ctx.fillStyle = m.hitFlash > 0 ? "#ffffff" : d.body;
-    // body
     ctx.beginPath();
-    ctx.roundRect(m.x - 10, m.y - 6 + bob, 20, 18, 6);
+    ctx.roundRect(m.x - 10 * s, m.y - 6 * s + bob, 20 * s, 18 * s, 6);
     ctx.fill();
-    // big head
     ctx.beginPath();
-    ctx.arc(m.x, m.y - 16 + bob, 13, 0, Math.PI * 2);
+    ctx.arc(m.x, m.y - 16 * s + bob, 13 * s, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = d.accent;
-    if (m.kind === "chicken") {
+    if (d.ears === "beak") {
       ctx.beginPath();
-      ctx.moveTo(m.x - 4, m.y - 27 + bob);
-      ctx.lineTo(m.x, m.y - 34 + bob);
-      ctx.lineTo(m.x + 4, m.y - 27 + bob);
+      ctx.moveTo(m.x - 4, m.y - 27 * s + bob);
+      ctx.lineTo(m.x, m.y - 34 * s + bob);
+      ctx.lineTo(m.x + 4, m.y - 27 * s + bob);
       ctx.fill();
-      ctx.fillRect(m.x + 10, m.y - 17 + bob, 6, 4);
-    } else {
-      ctx.beginPath();
-      ctx.moveTo(m.x - 13, m.y - 20 + bob);
-      ctx.lineTo(m.x - 20, m.y - 26 + bob);
-      ctx.lineTo(m.x - 11, m.y - 26 + bob);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(m.x + 13, m.y - 20 + bob);
-      ctx.lineTo(m.x + 20, m.y - 26 + bob);
-      ctx.lineTo(m.x + 11, m.y - 26 + bob);
-      ctx.fill();
+      ctx.fillRect(m.x + 10 * s, m.y - 17 * s + bob, 6, 4);
+    } else if (d.ears === "horns") {
+      for (const dir of [-1, 1]) {
+        ctx.beginPath();
+        ctx.moveTo(m.x + dir * 13 * s, m.y - 20 * s + bob);
+        ctx.lineTo(m.x + dir * 20 * s, m.y - 27 * s + bob);
+        ctx.lineTo(m.x + dir * 11 * s, m.y - 27 * s + bob);
+        ctx.fill();
+      }
+    } else if (d.ears === "spikes") {
+      for (let i = -1; i <= 1; i++) {
+        ctx.beginPath();
+        ctx.moveTo(m.x + i * 8 * s - 3, m.y - 26 * s + bob);
+        ctx.lineTo(m.x + i * 8 * s, m.y - 36 * s + bob);
+        ctx.lineTo(m.x + i * 8 * s + 3, m.y - 26 * s + bob);
+        ctx.fill();
+      }
     }
     ctx.fillStyle = "#4a3b52";
-    ctx.fillRect(m.x - 6, m.y - 18 + bob, 3, 3);
-    ctx.fillRect(m.x + 3, m.y - 18 + bob, 3, 3);
-    // hp bar
+    ctx.fillRect(m.x - 6 * s, m.y - 18 * s + bob, 3, 3);
+    ctx.fillRect(m.x + 3 * s, m.y - 18 * s + bob, 3, 3);
     if (m.hp < m.maxHp) {
       ctx.fillStyle = "rgba(70,55,70,0.3)";
-      ctx.fillRect(m.x - 16, m.y - 40, 32, 5);
+      ctx.fillRect(m.x - 16, m.y - 40 * s, 32, 5);
       ctx.fillStyle = "#8fd98a";
-      ctx.fillRect(m.x - 16, m.y - 40, 32 * (m.hp / m.maxHp), 5);
+      ctx.fillRect(m.x - 16, m.y - 40 * s, 32 * (m.hp / m.maxHp), 5);
     }
   }
 
-  private drawNpc(ctx: CanvasRenderingContext2D, npc: (typeof NPCS)[number]) {
+  private drawNpc(ctx: CanvasRenderingContext2D, npc: NpcDef) {
     const bob = Math.sin(this.time * 2 + npc.x) * 1.6;
     const x = npc.x;
     const y = npc.y - bob;
@@ -942,9 +1162,9 @@ export class GameEngine {
     ctx.fillStyle = "#4a3b52";
     ctx.fillRect(x - 5, y - 19, 3, 4);
     ctx.fillRect(x + 3, y - 19, 3, 4);
-    // floating "!" marker when a quest is available or ready to hand in
+
     const marker =
-      npc.id === "elder"
+      npc.services.includes("quests")
         ? this.quest
           ? this.quest.progress >= (QUESTS.find((q) => q.id === this.quest!.id)?.count ?? 99)
             ? "?"
@@ -965,44 +1185,42 @@ export class GameEngine {
     ctx.font = "bold 11px ui-rounded, system-ui, sans-serif";
     ctx.textAlign = "center";
     ctx.fillStyle = "rgba(70,55,70,0.7)";
-    ctx.fillText(npc.name, x, y + 30);
+    ctx.fillText(npc.name, x, y + 32);
   }
 
   private drawPlayer(ctx: CanvasRenderingContext2D) {
-    const ctx2 = ctx;
-    const walking = this.activity === "Walking" || this.activity === "Wandering" || this.activity === "Approaching";
-    const bob = walking ? Math.abs(Math.sin(this.moveT)) * 3 : Math.sin(this.time * 3) * 1.5;
     const x = this.px;
-    const y = this.py - bob;
-    this.shadow(ctx2, this.px, this.py + 16, 16);
-    // legs
-    ctx2.fillStyle = "#6f5b8f";
-    ctx2.fillRect(x - 7, y + 8, 5, 9);
-    ctx2.fillRect(x + 2, y + 8, 5, 9);
+    const y = this.py;
+    const walking = this.activity === "Walking" || this.activity === "Wandering" || this.activity === "Approaching";
+    const bob = walking ? Math.abs(Math.sin(this.moveT)) * 3 : Math.sin(this.time * 2) * 1.4;
+    this.shadow(ctx, x, y + 16, 16);
     // body
-    ctx2.fillStyle = this.armor ? ITEMS[this.armor].color : "#f2c6d8";
-    ctx2.beginPath();
-    ctx2.roundRect(x - 11, y - 6, 22, 16, 5);
-    ctx2.fill();
-    // head (oversized)
-    ctx2.fillStyle = "#ffe0c2";
-    ctx2.beginPath();
-    ctx2.arc(x, y - 19, 15, 0, Math.PI * 2);
-    ctx2.fill();
+    ctx.fillStyle = this.armor ? item(this.armor.id).color : "#f2c6d8";
+    ctx.beginPath();
+    ctx.roundRect(x - 11, y - 8 - bob, 22, 24, 7);
+    ctx.fill();
+    // head
+    ctx.fillStyle = "#ffe0c2";
+    ctx.beginPath();
+    ctx.arc(x, y - 20 - bob, 15, 0, Math.PI * 2);
+    ctx.fill();
     // hair
-    ctx2.fillStyle = "#8a5a3b";
-    ctx2.beginPath();
-    ctx2.arc(x, y - 23, 15, Math.PI, 0);
-    ctx2.fill();
+    ctx.fillStyle = "#6b4a35";
+    ctx.beginPath();
+    ctx.arc(x, y - 24 - bob, 15, Math.PI, 0);
+    ctx.fill();
     // eyes
-    ctx2.fillStyle = "#4a3b52";
-    ctx2.fillRect(x - 6 + this.facing * 2, y - 20, 3, 4);
-    ctx2.fillRect(x + 3 + this.facing * 2, y - 20, 3, 4);
+    ctx.fillStyle = "#4a3b52";
+    ctx.fillRect(x - 6 * this.facing, y - 21 - bob, 3, 4);
+    ctx.fillRect(x + 2 * this.facing, y - 21 - bob, 3, 4);
     // weapon
     if (this.weapon) {
-      ctx2.fillStyle = ITEMS[this.weapon].color;
-      const swing = this.activity.startsWith("Fighting") ? Math.sin(this.time * 12) * 6 : 0;
-      ctx2.fillRect(x + this.facing * 12, y - 8 - swing, 4, 16);
+      ctx.fillStyle = item(this.weapon.id).color;
+      ctx.save();
+      ctx.translate(x + 14 * this.facing, y - 4 - bob);
+      ctx.rotate(this.facing * (this.activity.startsWith("Fighting") ? Math.sin(this.time * 12) * 0.7 - 0.4 : -0.3));
+      ctx.fillRect(-2, -18, 4, 22);
+      ctx.restore();
     }
   }
 }
