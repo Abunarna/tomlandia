@@ -85,7 +85,6 @@ function Game() {
 
   const persist = useCallback(
     (s: SaveState) => {
-      console.log('DBG persist');
       const req = supabase
         .from("player_saves")
         .upsert({ user_id: user.id, data: s as unknown as Json, updated_at: new Date().toISOString() })
@@ -99,7 +98,6 @@ function Game() {
 
   /** Write current progress and wait for the round-trip (used before leaving). */
   const flushSave = useCallback(async () => {
-    console.log('DBG flush engine?', !!engineRef.current);
     engineRef.current?.save();
     await pendingSave.current;
   }, []);
@@ -178,6 +176,8 @@ function Game() {
 
   const signOut = async () => {
     await flushSave();
+    // Stop persisting before the session goes away, or later writes 401.
+    engineRef.current?.reset();
     await supabase.auth.signOut();
     navigate({ to: "/auth", replace: true });
   };
