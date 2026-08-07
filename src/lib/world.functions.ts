@@ -1,54 +1,50 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import type { CraftRes, DamageRes, HarvestRes } from "@/game/engine";
 
 /**
- * Phase 8 — shared world mutations.
+ * Phase 9 — server-authoritative actions.
  *
- * Clients never write world_nodes / world_monsters directly (they only have
- * SELECT). Every state change goes through these server functions, which call
- * SECURITY DEFINER database routines that lock the row, enforce per-player
- * cooldowns and clamp damage — so contention is resolved in one place.
+ * The client only ever says "I want to harvest node 12 from here". The database
+ * routines behind these functions verify range, level, cooldown and shared
+ * world state, compute the outcome, write it into the player's save, and return
+ * the authoritative result.
  */
 
-export interface HarvestResult {
-  ok: boolean;
-  reason?: string;
-  charges?: number;
-  respawn_at?: string | null;
-}
-
-export interface DamageResult {
-  ok: boolean;
-  reason?: string;
-  hp?: number;
-  max_hp?: number;
-  killed?: boolean;
-  /** True only for the player who tagged the monster first. */
-  credited?: boolean;
-  tagged_by?: string | null;
-  respawn_at?: string | null;
-}
+const point = { x: z.number().finite(), y: z.number().finite() };
 
 export const harvestNode = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) => z.object({ id: z.number().int().min(0) }).parse(input))
-  .handler(async ({ data, context }): Promise<HarvestResult> => {
-    const { data: res, error } = await context.supabase.rpc("harvest_node", { _id: data.id });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as HarvestResult;
-  });
-
-export const damageMonster = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((input) =>
-    z.object({ id: z.number().int().min(0), dmg: z.number().int().min(1).max(400) }).parse(input),
-  )
-  .handler(async ({ data, context }): Promise<DamageResult> => {
-    const { data: res, error } = await context.supabase.rpc("damage_monster", {
+  .inputValidator((input) => z.object({ id: z.number().int().min(0), ...point }).parse(input))
+  .handler(async ({ data, context }): Promise<HarvestRes> => {
+    const { data: res, error } = await context.supabase.rpc("harvest_node", {
       _id: data.id,
-      _dmg: data.dmg,
+      _x: data.x,
+      _y: data.y,
     });
     if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as DamageResult;
+    return (res ?? { ok: false, reason: "empty" }) as unknown as HarvestRes;
+  });
+
+export const attackMonster = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ id: z.number().int().min(0), ...point }).parse(input))
+  .handler(async ({ data, context }): Promise<DamageRes> => {
+    const { data: res, error } = await context.supabase.rpc("attack_monster", {
+      _id: data.id,
+      _x: data.x,
+      _y: data.y,
+    });
+    if (error) return { ok: false, reason: error.message };
+    return (res ?? { ok: false, reason: "empty" }) as unknown as DamageRes;
+  });
+
+export const craftItem = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ recipe: z.string().min(1).max(64) }).parse(input))
+  .handler(async ({ data, context }): Promise<CraftRes> => {
+    const { data: res, error } = await context.supabase.rpc("craft_item", { _recipe: data.recipe });
+    if (error) return { ok: false, reason: error.message };
+    return (res ?? { ok: false, reason: "empty" }) as unknown as CraftRes;
   });
