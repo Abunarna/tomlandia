@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Backpack, Hammer } from "lucide-react";
+import { Backpack, Hammer, Store, Volume2, VolumeX } from "lucide-react";
 import { GameEngine } from "@/game/engine";
 import type { NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId } from "@/game/types";
@@ -8,6 +8,7 @@ import { Hud } from "@/components/game/Hud";
 import { Panel, type PanelId } from "@/components/game/Panel";
 import { NpcDialog } from "@/components/game/NpcDialog";
 import { Joystick } from "@/components/game/Joystick";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -59,7 +60,12 @@ const EMPTY: HudSnapshot = {
   discovered: ["fields"],
   attack: 6,
   defense: 2,
+  timeOfDay: 0.35,
+  phase: "Day",
+  market: { listings: [], log: [], fee: 0.05 },
+  soundOn: true,
 };
+
 
 function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -100,7 +106,10 @@ function Game() {
 
       <canvas
         ref={canvasRef}
-        onPointerDown={(e) => engineRef.current?.tapWorld(e.clientX, e.clientY)}
+        onPointerDown={(e) => {
+          engineRef.current?.unlockAudio();
+          engineRef.current?.tapWorld(e.clientX, e.clientY);
+        }}
         className="absolute inset-0 size-full touch-none"
       />
 
@@ -115,6 +124,20 @@ function Game() {
             <Joystick onChange={onJoystick} />
           </div>
           <div className="pointer-events-auto flex flex-col gap-2">
+            <OverlayButton
+              label={hud.soundOn ? "Mute sound" : "Unmute sound"}
+              active={hud.soundOn}
+              onClick={() => engineRef.current?.toggleSound()}
+            >
+              {hud.soundOn ? <Volume2 className="size-5" /> : <VolumeX className="size-5" />}
+            </OverlayButton>
+            <OverlayButton
+              label="Market"
+              active={panel === "market"}
+              onClick={() => setPanel((p) => (p === "market" ? null : "market"))}
+            >
+              <Store className="size-5" />
+            </OverlayButton>
             <OverlayButton
               label="Bag"
               active={panel === "inventory"}
@@ -140,9 +163,20 @@ function Game() {
             onEquip={(i) => engineRef.current?.equipSlot(i)}
             onSell={(i) => engineRef.current?.sellSlot(i)}
             onUse={(i) => engineRef.current?.useSlot(i)}
+            onBuyListing={(id) => {
+              engineRef.current?.buyListing(id);
+            }}
+            onCancelListing={(id) => {
+              engineRef.current?.cancelListing(id);
+            }}
+            onList={(i, qty, price) => {
+              engineRef.current?.listSlot(i, qty, price);
+            }}
+            suggestPrice={(id) => engineRef.current?.suggestPrice(id) ?? 1}
           />
         )}
       </div>
+
 
       {npc && (
         <NpcDialog
