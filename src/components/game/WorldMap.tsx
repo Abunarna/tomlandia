@@ -11,10 +11,10 @@ import {
   WORLD_W,
 } from "@/game/data";
 
-const MIN_ZOOM = 0.6;
 const MAX_ZOOM = 10;
 /** >1 makes pinch zoom move faster than the raw finger distance ratio. */
 const PINCH_GAIN = 2.2;
+
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
