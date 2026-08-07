@@ -539,3 +539,28 @@ export const QUESTS: QuestDef[] = [
   { id: "dune_patrol", name: "Dune Patrol", desc: "Bandits harass the caravans. Defeat 3.", kind: "kill", key: "bandit", count: 3, gold: 700, xpSkill: "combat", xp: 1200 },
   { id: "gloom_harvest", name: "Gloom Harvest", desc: "Pick 5 Gloomcaps from the Evil Woods.", kind: "gather", key: "gloomcap", count: 5, gold: 1100, xpSkill: "gathering", xp: 1600 },
 ];
+
+/* ------------------------------------------------------------------ */
+/* Merchant icons — shown above heads in-world and on the world map    */
+/* ------------------------------------------------------------------ */
+
+export interface NpcIcon {
+  /** glyph drawn inside the badge */
+  glyph: string;
+  /** badge fill */
+  color: string;
+  /** short label for the map legend */
+  label: string;
+}
+
+export const NPC_ICONS: Record<NpcRole, NpcIcon> = {
+  smith: { glyph: "\u2692\uFE0E", color: "#d98b6a", label: "Blacksmith" },
+  merchant: { glyph: "$", color: "#8fbfd9", label: "Market Trader" },
+  elder: { glyph: "?", color: "#c9a7e0", label: "Quest Giver" },
+  sun_smith: { glyph: "\u2694\uFE0E", color: "#f0c268", label: "Sunspire Smith" },
+  weaver: { glyph: "\u2702\uFE0E", color: "#e8b3d8", label: "Arcane Weaver" },
+  banker: { glyph: "\u2605", color: "#d9a95f", label: "Banker" },
+  trapper: { glyph: "\u2691", color: "#b98a5c", label: "Trapper" },
+  innkeeper: { glyph: "\u2302", color: "#7fbd93", label: "Innkeeper" },
+  frost_smith: { glyph: "\u2744\uFE0E", color: "#a9c6e6", label: "Frostforge Smith" },
+};

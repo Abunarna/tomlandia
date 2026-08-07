@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Backpack, Hammer, LogOut, Store, Volume2, VolumeX } from "lucide-react";
+import { Backpack, Hammer, LogOut, Map as MapIcon, Store, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
@@ -14,6 +14,7 @@ import { Hud } from "@/components/game/Hud";
 import { Panel, type PanelId } from "@/components/game/Panel";
 import { NpcDialog } from "@/components/game/NpcDialog";
 import { Joystick } from "@/components/game/Joystick";
+import { WorldMap } from "@/components/game/WorldMap";
 
 
 export const Route = createFileRoute("/_authenticated/play")({
@@ -86,6 +87,7 @@ function Game() {
   const [npc, setNpc] = useState<NpcRole | null>(null);
   const [ready, setReady] = useState(false);
   const [claimable, setClaimable] = useState<SaveState | null>(null);
+  const [mapOpen, setMapOpen] = useState(false);
 
   const pendingSave = useRef<PromiseLike<unknown> | null>(null);
 
@@ -309,6 +311,13 @@ function Game() {
               {hud.soundOn ? <Volume2 className="size-5" /> : <VolumeX className="size-5" />}
             </OverlayButton>
             <OverlayButton
+              label="World map"
+              active={mapOpen}
+              onClick={() => setMapOpen(true)}
+            >
+              <MapIcon className="size-5" />
+            </OverlayButton>
+            <OverlayButton
               label="Market"
               active={panel === "market"}
               onClick={() => {
@@ -396,6 +405,16 @@ function Game() {
             </div>
           </div>
         </div>
+      )}
+
+      {mapOpen && (
+        <WorldMap
+          position={() => ({
+            x: engineRef.current?.px ?? 0,
+            y: engineRef.current?.py ?? 0,
+          })}
+          onClose={() => setMapOpen(false)}
+        />
       )}
 
       {npc && (
