@@ -1,6 +1,6 @@
-import { Coins, Check, X } from "lucide-react";
-import { ITEMS, NPCS, QUESTS, SHOP_STOCK, type NpcRole } from "@/game/data";
-import type { HudSnapshot } from "@/game/types";
+import { Coins, Check, X, Hammer, ArrowUpCircle } from "lucide-react";
+import { MAX_PLUS, NPCS, QUESTS, RECIPES, SHOP_STOCK, item, type NpcRole } from "@/game/data";
+import type { HudSnapshot, ItemId } from "@/game/types";
 
 export function NpcDialog({
   npc,
@@ -11,25 +11,39 @@ export function NpcDialog({
   onAccept,
   onClaim,
   onAbandon,
+  onCraft,
+  onUpgrade,
+  upgradeCosts,
 }: {
   npc: NpcRole;
   hud: HudSnapshot;
   onClose: () => void;
-  onBuy: (id: (typeof SHOP_STOCK)[number]["id"]) => void;
+  onBuy: (npc: NpcRole, id: ItemId) => void;
   onSellAll: () => void;
   onAccept: (id: string) => void;
   onClaim: () => void;
   onAbandon: () => void;
+  onCraft: (recipeId: string) => void;
+  onUpgrade: (which: "weapon" | "armor") => void;
+  upgradeCosts: { weapon: number | null; armor: number | null };
 }) {
   const def = NPCS.find((n) => n.id === npc)!;
-  const resourceValue = hud.inv.reduce(
-    (sum, s) => (s && ITEMS[s.id].kind === "resource" ? sum + ITEMS[s.id].value * s.qty : sum),
-    0,
-  );
+  const stock = SHOP_STOCK[npc] ?? [];
+  const services = def.services;
+  const resourceValue = hud.inv.reduce((sum, s) => {
+    if (!s) return sum;
+    const d = item(s.id);
+    return d.kind === "resource" ? sum + d.value * s.qty : sum;
+  }, 0);
+
+  const count = (id: ItemId) => hud.inv.reduce((n, s) => (s && s.id === id ? n + s.qty : n), 0);
+
+  const craftSkills = services.filter((s) => s === "smith" || s === "tailor" || s === "skin");
+  const skillFor = (s: string) => (s === "smith" ? "smithing" : s === "tailor" ? "tailoring" : "skinning") as const;
 
   return (
     <div className="pointer-events-auto absolute inset-0 z-20 flex items-end bg-foreground/25 backdrop-blur-[2px]">
-      <div className="max-h-[70dvh] w-full overflow-y-auto rounded-t-3xl border-t border-border/60 bg-card p-4 shadow-soft">
+      <div className="max-h-[74dvh] w-full overflow-y-auto rounded-t-3xl border-t border-border/60 bg-card p-4 shadow-soft">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <span className="size-10 shrink-0 rounded-2xl" style={{ backgroundColor: def.robe }} />
@@ -51,26 +65,23 @@ export function NpcDialog({
           “{def.greeting}”
         </p>
 
-        {npc === "smith" && (
-          <div className="mt-3 space-y-1.5">
-            {SHOP_STOCK.map((entry) => {
-              const item = ITEMS[entry.id];
+        {services.includes("shop") && stock.length > 0 && (
+          <Section title="Wares">
+            {stock.map((entry) => {
+              const d = item(entry.id);
               const afford = hud.gold >= entry.price;
               return (
-                <div
-                  key={entry.id}
-                  className="flex items-center gap-2.5 rounded-2xl border border-border/70 bg-muted/40 p-2"
-                >
-                  <span className="size-9 shrink-0 rounded-xl" style={{ backgroundColor: item.color }} />
+                <div key={entry.id} className="flex items-center gap-2.5 rounded-2xl border border-border/70 bg-muted/40 p-2">
+                  <span className="size-9 shrink-0 rounded-xl" style={{ backgroundColor: d.color }} />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-xs font-bold text-foreground">{item.name}</p>
+                    <p className="truncate text-xs font-bold text-foreground">{d.name}</p>
                     <p className="text-[10px] text-muted-foreground">
-                      {item.attack ? `+${item.attack} attack` : item.defense ? `+${item.defense} defense` : `Heals ${item.heal} hp`}
+                      {d.attack ? `+${d.attack} attack` : d.defense ? `+${d.defense} defense` : d.heal ? `Heals ${d.heal} hp` : "Material"}
                     </p>
                   </div>
                   <button
                     disabled={!afford}
-                    onClick={() => onBuy(entry.id)}
+                    onClick={() => onBuy(npc, entry.id)}
                     className="flex shrink-0 items-center gap-1 rounded-xl bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
                   >
                     <Coins className="size-3.5" />
@@ -79,11 +90,11 @@ export function NpcDialog({
                 </div>
               );
             })}
-          </div>
+          </Section>
         )}
 
-        {npc === "merchant" && (
-          <div className="mt-3 space-y-2">
+        {services.includes("sell") && (
+          <Section title="Trade">
             <p className="text-xs text-muted-foreground">
               Your bag holds <span className="font-bold text-foreground">{resourceValue}g</span> worth of resources.
             </p>
@@ -94,11 +105,77 @@ export function NpcDialog({
             >
               Sell all resources
             </button>
-          </div>
+          </Section>
         )}
 
-        {npc === "elder" && (
-          <div className="mt-3 space-y-2">
+        {craftSkills.map((svc) => {
+          const skill = skillFor(svc);
+          const list = RECIPES.filter((r) => r.skill === skill);
+          const lvl = hud.skills[skill].level;
+          return (
+            <Section key={svc} title={`${skill[0]!.toUpperCase()}${skill.slice(1)} (Lv ${lvl})`}>
+              {list.map((r) => {
+                const ok = lvl >= r.req && r.inputs.every((i) => count(i.id) >= i.qty);
+                const out = item(r.out);
+                return (
+                  <div key={r.id} className="flex items-center gap-2.5 rounded-2xl border border-border/70 bg-muted/40 p-2">
+                    <span className="size-9 shrink-0 rounded-xl" style={{ backgroundColor: out.color }} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-xs font-bold text-foreground">
+                        {out.name} {r.outQty > 1 && `x${r.outQty}`}
+                      </p>
+                      <p className="truncate text-[10px] text-muted-foreground">
+                        Lv {r.req} · {r.inputs.map((i) => `${count(i.id)}/${i.qty} ${item(i.id).name}`).join(", ")}
+                      </p>
+                    </div>
+                    <button
+                      disabled={!ok}
+                      onClick={() => onCraft(r.id)}
+                      className="flex shrink-0 items-center gap-1 rounded-xl bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+                    >
+                      <Hammer className="size-3.5" />
+                      Make
+                    </button>
+                  </div>
+                );
+              })}
+            </Section>
+          );
+        })}
+
+        {services.includes("upgrade") && (
+          <Section title="Upgrade gear">
+            {(["weapon", "armor"] as const).map((which) => {
+              const eq = which === "weapon" ? hud.weapon : hud.armor;
+              const cost = upgradeCosts[which];
+              const d = eq ? item(eq.id) : null;
+              return (
+                <div key={which} className="flex items-center gap-2.5 rounded-2xl border border-border/70 bg-muted/40 p-2">
+                  <span className="size-9 shrink-0 rounded-xl" style={{ backgroundColor: d?.color ?? "var(--muted)" }} />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-xs font-bold text-foreground">
+                      {d ? `${d.name} +${eq!.plus}` : `No ${which}`}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">
+                      {eq && eq.plus >= MAX_PLUS ? "Fully upgraded" : "+5% stats per level"}
+                    </p>
+                  </div>
+                  <button
+                    disabled={cost === null || hud.gold < cost}
+                    onClick={() => onUpgrade(which)}
+                    className="flex shrink-0 items-center gap-1 rounded-xl bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+                  >
+                    <ArrowUpCircle className="size-3.5" />
+                    {cost ?? "—"}
+                  </button>
+                </div>
+              );
+            })}
+          </Section>
+        )}
+
+        {services.includes("quests") && (
+          <Section title="Quest board">
             {hud.quest ? (
               <div className="rounded-2xl border border-border/70 bg-muted/40 p-3">
                 <p className="text-xs font-bold text-foreground">{hud.quest.name}</p>
@@ -158,9 +235,18 @@ export function NpcDialog({
                 );
               })
             )}
-          </div>
+          </Section>
         )}
       </div>
+    </div>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="mt-3 space-y-1.5">
+      <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">{title}</p>
+      {children}
     </div>
   );
 }
