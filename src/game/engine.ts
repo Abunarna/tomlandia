@@ -38,6 +38,10 @@ import {
 import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
 
 const SAVE_KEY = "tomlandia.save.v1";
+/** Saves are namespaced per account so two players on one device stay distinct. */
+export function saveKeyFor(accountId?: string | null) {
+  return accountId ? `${SAVE_KEY}.${accountId}` : SAVE_KEY;
+}
 const INV_SIZE = 20;
 const AUTO_EAT_AT = 0.3;
 /** length of one in-game day, in seconds */
