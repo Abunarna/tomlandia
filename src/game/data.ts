@@ -648,9 +648,11 @@ for (const t of TOWN_SPECS) {
     });
     const role = (p as { role?: string }).role;
     if (role) {
-      const below = y + h / 2 < t.cy;
-      npcSpots[role] = { x: x + w / 2, y: below ? y + h + 30 : y - 26 };
+      // traders stand out on the main street, in front of their building
+      const above = y + h / 2 < t.cy;
+      npcSpots[role] = { x: x + w / 2, y: above ? t.cy - 44 : t.cy + 36 };
     }
+
 
   });
 }
