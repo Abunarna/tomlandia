@@ -39,7 +39,8 @@ export function NpcDialog({
   const count = (id: ItemId) => hud.inv.reduce((n, s) => (s && s.id === id ? n + s.qty : n), 0);
 
   const craftSkills = services.filter((s) => s === "smith" || s === "tailor" || s === "skin");
-  const skillFor = (s: string) => (s === "smith" ? "smithing" : s === "tailor" ? "tailoring" : "skinning") as const;
+  const skillFor = (s: string): "smithing" | "tailoring" | "skinning" =>
+    s === "smith" ? "smithing" : s === "tailor" ? "tailoring" : "skinning";
 
   return (
     <div className="pointer-events-auto absolute inset-0 z-20 flex items-end bg-foreground/25 backdrop-blur-[2px]">
