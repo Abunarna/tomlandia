@@ -352,10 +352,12 @@ export class GameEngine {
 
   /** Our own user id, so we can tell whether we own a monster's kill credit. */
   userId = "";
-  /** Server-side harvest. Resolves with the authoritative node state. */
-  onHarvest: ((id: number) => Promise<HarvestRes>) | null = null;
-  /** Server-side monster damage. Resolves with the authoritative monster state. */
-  onDamage: ((id: number, dmg: number) => Promise<DamageRes>) | null = null;
+  /** Server-side harvest. Position is sent so the server can verify range. */
+  onHarvest: ((id: number, x: number, y: number) => Promise<HarvestRes>) | null = null;
+  /** Server-side attack. The server decides the damage — we never send it. */
+  onAttack: ((id: number, x: number, y: number) => Promise<DamageRes>) | null = null;
+  /** Server-side crafting. The server checks materials and grants the result. */
+  onCraft: ((recipe: string) => Promise<CraftRes>) | null = null;
 
   /** Mirror authoritative node rows (snapshot or realtime) into the world. */
   applyNodeRows(rows: { id: number; charges: number; respawn_at: string | null }[]) {
