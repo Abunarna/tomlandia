@@ -100,12 +100,22 @@ export type BiomeId = "fields" | "forest" | "desert" | "evil" | "winter";
 
 export interface BiomeDef {
   id: BiomeId;
+  /** unique key — a biome id can appear several times across the world */
+  key: string;
   name: string;
   levels: string;
   x: number;
   y: number;
   w: number;
   h: number;
+  /** jittered outline in world coordinates */
+  poly: [number, number][];
+  /** show the big name label in-world / on the map */
+  label: boolean;
+  /** optional town plaza (absolute world coords) */
+  plaza?: { x: number; y: number; w: number; h: number };
+  /** optional water feature (absolute world coords) */
+  pond?: { x: number; y: number; rx: number; ry: number };
   /** ground gradient */
   top: string;
   bottom: string;
@@ -114,83 +124,187 @@ export interface BiomeDef {
   tint: string;
 }
 
-export const BIOMES: BiomeDef[] = [
-  {
-    id: "fields",
+type Palette = Omit<BiomeDef, "id" | "key" | "x" | "y" | "w" | "h" | "poly" | "label" | "plaza" | "pond">;
+
+const PALETTES: Record<BiomeId, Palette> = {
+  fields: {
     name: "Peaceful Fields",
     levels: "Lv 1–15",
-    x: 0,
-    y: 0,
-    w: TILE_W,
-    h: TILE_H,
     top: "#bfe8a0",
     bottom: "#a3dd8c",
     grass: "#95d283",
     detail: "#e8dcbb",
     tint: "rgba(255,255,235,0)",
   },
-  {
-    id: "forest",
+  forest: {
     name: "Lush Forest",
     levels: "Lv 15–40",
-    x: TILE_W,
-    y: 0,
-    w: TILE_W,
-    h: TILE_H,
     top: "#79c39a",
     bottom: "#4e9e78",
     grass: "#3f8f6a",
     detail: "#cbb98f",
     tint: "rgba(30,90,60,0.10)",
   },
-  {
-    id: "desert",
+  desert: {
     name: "Sunscorch Desert",
     levels: "Lv 40–70",
-    x: TILE_W * 2,
-    y: 0,
-    w: TILE_W,
-    h: TILE_H,
     top: "#f6dfa6",
     bottom: "#e7c079",
     grass: "#dfb26a",
     detail: "#f3ecc7",
     tint: "rgba(240,190,90,0.10)",
   },
-  {
-    id: "winter",
+  evil: {
+    name: "Evil Woods",
+    levels: "Lv 70–100",
+    top: "#6b5b93",
+    bottom: "#4a3c6d",
+    grass: "#3f3460",
+    detail: "#7d6aa8",
+    tint: "rgba(60,40,90,0.22)",
+  },
+  winter: {
     name: "Winter Mountain",
     levels: "Lv 100+",
-    x: 0,
-    y: TILE_H,
-    w: TILE_W,
-    h: TILE_H,
     top: "#e6f3fb",
     bottom: "#bcd9ec",
     grass: "#a8cbe2",
     detail: "#ffffff",
     tint: "rgba(140,190,230,0.14)",
   },
+};
+
+/** deterministic pseudo-random in [0,1) */
+function rand01(seed: number) {
+  const s = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+  return s - Math.floor(s);
+}
+
+/**
+ * Builds a wobbly blob outline around a rectangle: points are walked around the
+ * perimeter and pushed in/out by a deterministic jitter so edges never look
+ * like straight square borders.
+ */
+function jitterPoly(x: number, y: number, w: number, h: number, seed: number): [number, number][] {
+  const pts: [number, number][] = [];
+  const steps = 14; // per side
+  const amp = Math.min(w, h) * 0.09;
+  const push = (px: number, py: number, i: number, nx: number, ny: number) => {
+    const j = (rand01(seed + i * 3.7) - 0.35) * amp * 2;
+    const wob = Math.sin(i * 1.7 + seed) * amp * 0.45;
+    pts.push([px + nx * (j + wob), py + ny * (j + wob)]);
+  };
+  for (let i = 0; i < steps; i++) push(x + (w * i) / steps, y, i, 0, -1);
+  for (let i = 0; i < steps; i++) push(x + w, y + (h * i) / steps, i + 20, 1, 0);
+  for (let i = 0; i < steps; i++) push(x + w - (w * i) / steps, y + h, i + 40, 0, 1);
+  for (let i = 0; i < steps; i++) push(x, y + h - (h * i) / steps, i + 60, -1, 0);
+  // clamp inside the world
+  return pts.map(([px, py]) => [
+    Math.max(0, Math.min(WORLD_W, px)),
+    Math.max(0, Math.min(WORLD_H, py)),
+  ]) as [number, number][];
+}
+
+interface RegionSpec {
+  id: BiomeId;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  label?: boolean;
+  plaza?: { x: number; y: number; w: number; h: number };
+  pond?: { x: number; y: number; rx: number; ry: number };
+}
+
+/**
+ * Painted in order — later regions sit on top of earlier ones, so the town
+ * regions are listed last to guarantee they own their ground.
+ */
+const REGION_SPECS: RegionSpec[] = [
+  // base layer: rolling fields underneath everything
+  { id: "fields", x: -40, y: -40, w: WORLD_W + 80, h: WORLD_H + 80 },
+  // scattered patches
+  { id: "forest", x: 150, y: 1010, w: 980, h: 790, label: true, pond: { x: 520, y: 1520, rx: 120, ry: 62 } },
+  { id: "desert", x: 1120, y: 1380, w: 940, h: 660, label: true },
+  { id: "evil", x: 1930, y: 760, w: 1080, h: 790, label: true, pond: { x: 2480, y: 1180, rx: 160, ry: 80 } },
+  { id: "evil", x: 2740, y: 1440, w: 960, h: 600 },
+  { id: "winter", x: 3280, y: 1400, w: 920, h: 620, label: true },
+  { id: "desert", x: 3340, y: 660, w: 880, h: 760 },
+  { id: "forest", x: 2380, y: 250, w: 720, h: 640 },
+  { id: "winter", x: -60, y: 1480, w: 700, h: 560 },
+  { id: "fields", x: 1580, y: 1120, w: 780, h: 560, label: true },
+  { id: "desert", x: 640, y: 620, w: 560, h: 430 },
+  // town regions (drawn last so nothing overlaps their ground)
   {
-    id: "evil",
-    name: "Evil Woods",
-    levels: "Lv 70–100",
-    x: TILE_W,
-    y: TILE_H,
-    w: TILE_W * 2,
-    h: TILE_H,
-    top: "#6b5b93",
-    bottom: "#4a3c६d".replace("६", "6"),
-    grass: "#3f3460",
-    detail: "#7d6aa8",
-    tint: "rgba(60,40,90,0.22)",
+    id: "forest",
+    x: 1290,
+    y: -40,
+    w: 1010,
+    h: 760,
+    plaza: { x: 1800, y: 340, w: 440, h: 380 },
+    pond: { x: 1420, y: 180, rx: 130, ry: 70 },
+  },
+  {
+    id: "desert",
+    x: 2860,
+    y: -40,
+    w: 1380,
+    h: 680,
+    plaza: { x: 3230, y: 130, w: 460, h: 390 },
+  },
+  {
+    id: "fields",
+    x: -60,
+    y: -40,
+    w: 1290,
+    h: 960,
+    plaza: { x: 500, y: 110, w: 430, h: 400 },
+    pond: { x: 300, y: 700, rx: 120, ry: 64 },
+  },
+  {
+    id: "winter",
+    x: 380,
+    y: 1120,
+    w: 960,
+    h: 800,
+    plaza: { x: 560, y: 1330, w: 440, h: 380 },
+    pond: { x: 1150, y: 1720, rx: 140, ry: 70 },
   },
 ];
 
+export const BIOMES: BiomeDef[] = REGION_SPECS.map((r, i) => ({
+  ...PALETTES[r.id],
+  id: r.id,
+  key: `${r.id}-${i}`,
+  x: r.x,
+  y: r.y,
+  w: r.w,
+  h: r.h,
+  poly: i === 0 ? [[r.x, r.y], [r.x + r.w, r.y], [r.x + r.w, r.y + r.h], [r.x, r.y + r.h]] : jitterPoly(r.x, r.y, r.w, r.h, i * 17 + 5),
+  label: r.label ?? Boolean(r.plaza),
+  ...(r.plaza ? { plaza: r.plaza } : {}),
+  ...(r.pond ? { pond: r.pond } : {}),
+}));
+
+function pointInPoly(x: number, y: number, poly: [number, number][]) {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i]!;
+    const [xj, yj] = poly[j]!;
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
 export function biomeAt(x: number, y: number): BiomeDef {
-  for (const b of BIOMES) if (x >= b.x && x < b.x + b.w && y >= b.y && y < b.y + b.h) return b;
+  for (let i = BIOMES.length - 1; i > 0; i--) {
+    const b = BIOMES[i]!;
+    if (x < b.x || x > b.x + b.w || y < b.y || y > b.y + b.h) continue;
+    if (pointInPoly(x, y, b.poly)) return b;
+  }
   return BIOMES[0]!;
 }
+
 
 export const REGION_NAME = "Peaceful Fields";
 
