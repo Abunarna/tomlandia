@@ -141,13 +141,12 @@ export function WorldMap({ position, onClose }: Props) {
   };
 
   const focusPlayer = () => {
-    const cur = stateRef.current;
     const z = clamp(3, MIN_ZOOM, MAX_ZOOM);
     const s = fit * z;
     setZoom(z);
     setOffset({
-      x: cur.size.w / 2 - (player.x - WORLD_W / 2) * s - (WORLD_W * s) / 2 + (WORLD_W * s) / 2,
-      y: cur.size.h / 2 - (player.y - WORLD_H / 2) * s - (WORLD_H * s) / 2 + (WORLD_H * s) / 2,
+      x: (WORLD_W * s) / 2 - player.x * s,
+      y: (WORLD_H * s) / 2 - player.y * s,
     });
   };
 

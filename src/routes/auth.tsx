@@ -6,6 +6,8 @@ import { createAccount } from "@/lib/account.functions";
 import { emailForUsername, USERNAME_RE } from "@/lib/account";
 
 export const Route = createFileRoute("/auth")({
+  // Session/redirect state lives in the browser; SSR would mismatch on hydrate.
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Sign in to Tomlandia — Adventurer Accounts" },
