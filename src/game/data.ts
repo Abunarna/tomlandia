@@ -646,10 +646,12 @@ for (const t of TOWN_SPECS) {
       wall: t.wall,
       beam: t.beam,
     });
-    if ("role" in p && p.role) {
+    const role = (p as { role?: string }).role;
+    if (role) {
       const below = y + h / 2 < t.cy;
-      npcSpots[p.role] = { x: x + w / 2, y: below ? y + h + 30 : y - 26 };
+      npcSpots[role] = { x: x + w / 2, y: below ? y + h + 30 : y - 26 };
     }
+
   });
 }
 
