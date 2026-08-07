@@ -11,7 +11,9 @@ import {
 } from "@/game/data";
 
 const MIN_ZOOM = 0.6;
-const MAX_ZOOM = 6;
+const MAX_ZOOM = 10;
+/** >1 makes pinch zoom move faster than the raw finger distance ratio. */
+const PINCH_GAIN = 2.2;
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
@@ -78,7 +80,7 @@ export function WorldMap({ position, onClose }: Props) {
       zoomAt(
         e.clientX - rect.left,
         e.clientY - rect.top,
-        stateRef.current.zoom * Math.exp(-dy * 0.0018),
+        stateRef.current.zoom * Math.exp(-dy * (e.ctrlKey ? 0.012 : 0.0045)),
       );
     };
     el.addEventListener("wheel", onWheel, { passive: false });
@@ -113,15 +115,19 @@ export function WorldMap({ position, onClose }: Props) {
       const cx = (a.x + b.x) / 2;
       const cy = (a.y + b.y) / 2;
       const g = gesture.current;
-      if (g && g.dist > 0) {
-        // pinch scale + two-finger drag in one step
+      if (g && g.dist > 0 && dist > 0) {
+        // pinch scale + two-finger drag in one step (gain > 1 = snappier pinch)
         const cur = stateRef.current;
-        const target = clamp(cur.zoom * (dist / g.dist), MIN_ZOOM, MAX_ZOOM);
+        const ratio = Math.pow(dist / g.dist, PINCH_GAIN);
+        const target = clamp(cur.zoom * ratio, MIN_ZOOM, MAX_ZOOM);
         const k = target / cur.zoom;
-        setOffset({
+        const nextOffset = {
           x: cx - (cx - cur.offset.x) * k + (cx - g.cx),
           y: cy - (cy - cur.offset.y) * k + (cy - g.cy),
-        });
+        };
+        // keep the ref fresh: several pointermove events can fire per frame
+        stateRef.current = { ...cur, zoom: target, offset: nextOffset };
+        setOffset(nextOffset);
         setZoom(target);
       }
       gesture.current = { dist, cx, cy };
