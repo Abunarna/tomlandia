@@ -291,6 +291,9 @@ export class GameEngine {
   listings: Listing[] = [];
   tradeLog: TradeLog[] = [];
   private marketCd = 3;
+  /** True while the Market panel is open — gates periodic market polling. */
+  marketVisible = false;
+
   private clock = DAY_LEN * 0.35;
 
   joystick = { active: false, dx: 0, dy: 0 };
