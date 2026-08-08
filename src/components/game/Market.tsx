@@ -86,11 +86,11 @@ export function MarketTab({
                 key={l.id}
                 className="flex items-center gap-2 rounded-2xl border border-border/70 bg-muted/40 p-2"
               >
-                <span
-                  className="size-8 shrink-0 rounded-lg"
-                  style={{ backgroundColor: def?.color ?? "var(--muted)" }}
-                  aria-hidden
-                />
+                {def ? (
+                  <ItemIcon item={def} className="size-8" />
+                ) : (
+                  <span className="size-8 shrink-0 rounded-lg bg-muted" aria-hidden />
+                )}
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[12px] font-bold text-foreground">
                     {l.qty}× {def?.name ?? l.item}
