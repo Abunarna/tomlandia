@@ -1,6 +1,7 @@
-import { Backpack, Hammer, Shield, Store, Sword, X } from "lucide-react";
+import { Backpack, Hammer, Store, X } from "lucide-react";
 import { ITEMS } from "@/game/data";
 import type { HudSnapshot } from "@/game/types";
+import { GearBadge, ItemIcon } from "./ItemIcon";
 import { MarketTab } from "./Market";
 
 export type PanelId = "inventory" | "skills" | "market";
