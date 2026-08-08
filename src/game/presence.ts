@@ -15,7 +15,7 @@ export const COLS = Math.ceil(WORLD_W / CELL_W);
 export const ROWS = Math.ceil(WORLD_H / CELL_H);
 
 /** How often we broadcast our own position (seconds between sends). */
-const SEND_HZ = 6;
+const SEND_HZ = 4;
 /** Drop a remote player we have not heard from in this long. */
 export const STALE_MS = 6000;
 
