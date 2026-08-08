@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Coins, Check, X, Hammer, ArrowUpCircle, ChevronDown } from "lucide-react";
 import { MAX_PLUS, NPCS, QUESTS, RECIPES, SHOP_STOCK, item, type NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId } from "@/game/types";
+import { ItemIcon } from "./ItemIcon";
 
 
 export function NpcDialog({
@@ -77,7 +78,7 @@ export function NpcDialog({
               const afford = hud.gold >= entry.price;
               return (
                 <div key={entry.id} className="flex items-center gap-2.5 rounded-2xl border border-border/70 bg-muted/40 p-2">
-                  <span className="size-9 shrink-0 rounded-xl" style={{ backgroundColor: d.color }} />
+                  <ItemIcon item={d} className="size-9" />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-xs font-bold text-foreground">{d.name}</p>
                     <p className="text-[10px] text-muted-foreground">
@@ -131,7 +132,7 @@ export function NpcDialog({
                         aria-expanded={open}
                         className="flex min-w-0 flex-1 items-center gap-2.5 text-left active:scale-[0.99]"
                       >
-                        <span className="size-9 shrink-0 rounded-xl" style={{ backgroundColor: out.color }} />
+                        <ItemIcon item={out} className="size-9" />
                         <span className="min-w-0 flex-1">
                           <span className="flex items-center gap-1">
                             <span className="truncate text-xs font-bold text-foreground">
@@ -178,7 +179,7 @@ export function NpcDialog({
                             return (
                               <div key={i.id}>
                                 <div className="flex items-center gap-2">
-                                  <span className="size-4 shrink-0 rounded" style={{ backgroundColor: mat.color }} />
+                                  <ItemIcon item={mat} className="size-4" />
                                   <span className="min-w-0 flex-1 truncate text-[11px] text-foreground">{mat.name}</span>
                                   <span
                                     className={`text-[11px] font-bold ${have >= i.qty ? "text-primary" : "text-destructive"}`}
@@ -213,7 +214,7 @@ export function NpcDialog({
               const d = eq ? item(eq.id) : null;
               return (
                 <div key={which} className="flex items-center gap-2.5 rounded-2xl border border-border/70 bg-muted/40 p-2">
-                  <span className="size-9 shrink-0 rounded-xl" style={{ backgroundColor: d?.color ?? "var(--muted)" }} />
+                  {d ? <ItemIcon item={d} className="size-9" /> : <span className="size-9 shrink-0 rounded-xl bg-muted" />}
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-xs font-bold text-foreground">
                       {d ? `${d.name} +${eq!.plus}` : `No ${which}`}
