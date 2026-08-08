@@ -1,8 +1,33 @@
-import type { ItemDef, ItemId, QuestDef, SkillId } from "./types";
+import type { ItemDef, ItemFamily, ItemId, QuestDef, SkillId } from "./types";
 
 /* ------------------------------------------------------------------ */
 /* Items                                                               */
 /* ------------------------------------------------------------------ */
+
+/** Icon shape family per item — weapons/armour fall back to their kind. */
+const FAMILY_GROUPS: Record<string, string[]> = {
+  ore: ["copper_ore", "iron_ore", "sandstone", "mithril_ore", "cursed_shard", "runite_ore", "tungsten_ore"],
+  log: ["oak_logs", "willow_logs", "maple_logs", "palm_logs", "cursed_bark", "frostpine_logs"],
+  herb: ["flax", "forest_herbs", "desert_bloom", "gloomcap", "frost_lichen"],
+  berries: ["meadow_berries"],
+  hide: ["raw_hide", "thick_hide", "scale_hide", "shadow_pelt", "frost_pelt"],
+  feather: ["feather"],
+  charm: ["goblin_charm"],
+  bar: ["copper_bar", "iron_bar", "mithril_bar", "runite_bar", "tungsten_bar"],
+  leather: ["light_leather", "thick_leather", "shadow_leather"],
+  cloth: ["linen_cloth", "herb_weave", "mystic_cloth"],
+  bun: ["honey_bun"],
+  pie: ["berry_pie"],
+  stew: ["hearty_stew"],
+  tonic: ["frost_tonic"],
+};
+
+const FAMILY_BY_ID: Record<string, ItemFamily> = Object.fromEntries(
+  Object.entries(FAMILY_GROUPS).flatMap(([fam, ids]) => ids.map((id) => [id, fam as ItemFamily])),
+);
+
+const familyFor = (id: string, kind: ItemDef["kind"]): ItemFamily =>
+  kind === "weapon" ? "weapon" : kind === "armor" ? "armor" : (FAMILY_BY_ID[id] ?? "ore");
 
 const def = (
   id: string,
@@ -11,7 +36,16 @@ const def = (
   color: string,
   kind: ItemDef["kind"],
   extra: Partial<ItemDef> = {},
-): ItemDef => ({ id, name, value, color, kind, stackable: kind !== "weapon" && kind !== "armor", ...extra });
+): ItemDef => ({
+  id,
+  name,
+  value,
+  color,
+  kind,
+  family: familyFor(id, kind),
+  stackable: kind !== "weapon" && kind !== "armor",
+  ...extra,
+});
 
 export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
   [
