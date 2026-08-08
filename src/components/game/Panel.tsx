@@ -101,11 +101,7 @@ function InventoryTab({
             >
               {def && (
                 <>
-                  <span
-                    className="block size-full rounded-lg"
-                    style={{ backgroundColor: def.color }}
-                    aria-label={def.name}
-                  />
+                  <ItemIcon item={def} className="size-full" />
                   {slot!.qty > 1 && (
                     <span className="absolute bottom-0 right-1 text-[10px] font-black text-foreground">
                       {slot!.qty}
