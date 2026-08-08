@@ -144,8 +144,8 @@ export function GearBadge({
   className = "size-9",
 }: {
   kind: "weapon" | "armor";
-  color?: string;
-  className?: string;
+  color?: string | undefined;
+  className?: string | undefined;
 }) {
   const Icon = kind === "weapon" ? Sword : Shield;
   return (
