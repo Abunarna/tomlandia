@@ -121,16 +121,19 @@ function InventoryTab({
   );
 }
 
-function EquipSlot({ icon, eq, label }: { icon: React.ReactNode; eq: { id: string; plus: number } | null; label: string }) {
+function EquipSlot({
+  kind,
+  eq,
+  label,
+}: {
+  kind: "weapon" | "armor";
+  eq: { id: string; plus: number } | null;
+  label: string;
+}) {
   const def = eq ? ITEMS[eq.id] : null;
   return (
     <div className="flex flex-1 items-center gap-2 rounded-2xl border border-border/70 bg-muted/50 p-2">
-      <span
-        className="grid size-9 shrink-0 place-items-center rounded-xl"
-        style={{ backgroundColor: def?.color ?? "var(--muted)" }}
-      >
-        {icon}
-      </span>
+      <GearBadge kind={kind} color={def?.color} className="size-9" />
       <div className="min-w-0">
         <p className="truncate text-[11px] font-bold text-foreground">
           {def ? `${def.name}${eq && eq.plus > 0 ? ` +${eq.plus}` : ""}` : "Empty"}
