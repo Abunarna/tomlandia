@@ -89,6 +89,8 @@ function Game() {
   const [mapOpen, setMapOpen] = useState(false);
 
   const pendingSave = useRef<PromiseLike<unknown> | null>(null);
+  const panelRef = useRef<PanelId | null>(null);
+
 
   const persist = useCallback(
     (s: SaveState) => {
