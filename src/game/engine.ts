@@ -1203,12 +1203,17 @@ export class GameEngine {
     // world clock
     this.clock += dt;
 
-    // shared marketplace — refresh the shared order book periodically
-    this.marketCd -= dt;
-    if (this.marketCd <= 0) {
-      this.marketCd = 12;
-      void this.refreshMarket();
+    // shared marketplace — only poll while the Market panel is actually open
+    if (this.marketVisible) {
+      this.marketCd -= dt;
+      if (this.marketCd <= 0) {
+        this.marketCd = 12;
+        void this.refreshMarket();
+      }
+    } else {
+      this.marketCd = 0;
     }
+
 
 
     // camera
