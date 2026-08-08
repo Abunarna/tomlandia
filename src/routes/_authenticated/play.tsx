@@ -181,15 +181,23 @@ function Game() {
     };
   }, []);
 
+  // Keep the engine + realtime handler aware of which panel is open.
+  useEffect(() => {
+    panelRef.current = panel;
+    if (engineRef.current) engineRef.current.marketVisible = panel === "market";
+  }, [panel]);
+
   // Phase 10 — shared marketplace: listings and trades update live for everyone.
   useEffect(() => {
     if (!ready) return;
     let queued = false;
     const bump = () => {
+      if (panelRef.current !== "market") return;
       if (queued) return;
       queued = true;
       window.setTimeout(() => {
         queued = false;
+        if (panelRef.current !== "market") return;
         void engineRef.current?.refreshMarket();
       }, 400);
     };
@@ -202,6 +210,7 @@ function Game() {
       void supabase.removeChannel(channel);
     };
   }, [ready]);
+
 
   // Phase 8 — shared world state: follow node/monster changes in nearby cells.
   useEffect(() => {
