@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Coins, Store, Tag, Undo2 } from "lucide-react";
 import { ITEMS } from "@/game/data";
 import type { HudSnapshot } from "@/game/types";
+import { ItemIcon } from "./ItemIcon";
 
 type FilterKey = "all" | "weapon" | "armor" | "material" | "food";
 
