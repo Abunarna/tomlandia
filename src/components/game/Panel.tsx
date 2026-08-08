@@ -83,8 +83,8 @@ function InventoryTab({
   return (
     <div className="space-y-3">
       <div className="flex gap-2">
-        <EquipSlot icon={<Sword className="size-4" />} eq={hud.weapon} label="Weapon" />
-        <EquipSlot icon={<Shield className="size-4" />} eq={hud.armor} label="Armor" />
+        <EquipSlot kind="weapon" eq={hud.weapon} label="Weapon" />
+        <EquipSlot kind="armor" eq={hud.armor} label="Armor" />
       </div>
       <div className="grid grid-cols-5 gap-1.5">
         {hud.inv.map((slot, i) => {
