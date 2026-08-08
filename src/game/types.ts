@@ -19,6 +19,24 @@ export const SKILL_IDS: SkillId[] = [
 
 export type ItemId = string;
 
+export type ItemFamily =
+  | "ore"
+  | "log"
+  | "herb"
+  | "berries"
+  | "hide"
+  | "leather"
+  | "feather"
+  | "charm"
+  | "bar"
+  | "cloth"
+  | "bun"
+  | "pie"
+  | "stew"
+  | "tonic"
+  | "weapon"
+  | "armor";
+
 export interface ItemDef {
   id: ItemId;
   name: string;
@@ -26,6 +44,8 @@ export interface ItemDef {
   value: number;
   color: string;
   kind: "resource" | "weapon" | "armor" | "food" | "material";
+  /** icon shape family */
+  family?: ItemFamily;
   attack?: number;
   defense?: number;
   heal?: number;
