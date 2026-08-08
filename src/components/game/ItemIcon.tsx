@@ -120,7 +120,7 @@ const Tonic = ({ color }: ShapeProps) => (
   </>
 );
 
-const SHAPES: Record<Exclude<ItemFamily, "weapon" | "armor">, (p: ShapeProps) => JSX.Element> = {
+const SHAPES: Record<Exclude<ItemFamily, "weapon" | "armor">, (p: ShapeProps) => React.ReactElement> = {
   ore: Ore,
   log: Log,
   herb: Herb,
