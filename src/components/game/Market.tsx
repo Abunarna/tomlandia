@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Coins, Store, Tag, Undo2 } from "lucide-react";
 import { ITEMS } from "@/game/data";
 import type { HudSnapshot } from "@/game/types";
+import { ItemIcon } from "./ItemIcon";
 
 type FilterKey = "all" | "weapon" | "armor" | "material" | "food";
 
@@ -86,11 +87,11 @@ export function MarketTab({
                 key={l.id}
                 className="flex items-center gap-2 rounded-2xl border border-border/70 bg-muted/40 p-2"
               >
-                <span
-                  className="size-8 shrink-0 rounded-lg"
-                  style={{ backgroundColor: def?.color ?? "var(--muted)" }}
-                  aria-hidden
-                />
+                {def ? (
+                  <ItemIcon item={def} className="size-8" />
+                ) : (
+                  <span className="size-8 shrink-0 rounded-lg bg-muted" aria-hidden />
+                )}
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[12px] font-bold text-foreground">
                     {l.qty}× {def?.name ?? l.item}
@@ -133,11 +134,11 @@ export function MarketTab({
             const net = Math.round(price * slot.qty * (1 - hud.market.fee));
             return (
               <div key={i} className="flex items-center gap-2 rounded-2xl border border-border/70 bg-muted/40 p-2">
-                <span
-                  className="size-8 shrink-0 rounded-lg"
-                  style={{ backgroundColor: def?.color ?? "var(--muted)" }}
-                  aria-hidden
-                />
+                {def ? (
+                  <ItemIcon item={def} className="size-8" />
+                ) : (
+                  <span className="size-8 shrink-0 rounded-lg bg-muted" aria-hidden />
+                )}
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[12px] font-bold text-foreground">
                     {slot.qty}× {def?.name ?? slot.id}

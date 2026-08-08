@@ -1,6 +1,7 @@
-import { Backpack, Hammer, Shield, Store, Sword, X } from "lucide-react";
+import { Backpack, Hammer, Store, X } from "lucide-react";
 import { ITEMS } from "@/game/data";
 import type { HudSnapshot } from "@/game/types";
+import { GearBadge, ItemIcon } from "./ItemIcon";
 import { MarketTab } from "./Market";
 
 export type PanelId = "inventory" | "skills" | "market";
@@ -82,8 +83,8 @@ function InventoryTab({
   return (
     <div className="space-y-3">
       <div className="flex gap-2">
-        <EquipSlot icon={<Sword className="size-4" />} eq={hud.weapon} label="Weapon" />
-        <EquipSlot icon={<Shield className="size-4" />} eq={hud.armor} label="Armor" />
+        <EquipSlot kind="weapon" eq={hud.weapon} label="Weapon" />
+        <EquipSlot kind="armor" eq={hud.armor} label="Armor" />
       </div>
       <div className="grid grid-cols-5 gap-1.5">
         {hud.inv.map((slot, i) => {
@@ -101,11 +102,7 @@ function InventoryTab({
             >
               {def && (
                 <>
-                  <span
-                    className="block size-full rounded-lg"
-                    style={{ backgroundColor: def.color }}
-                    aria-label={def.name}
-                  />
+                  <ItemIcon item={def} className="size-full" />
                   {slot!.qty > 1 && (
                     <span className="absolute bottom-0 right-1 text-[10px] font-black text-foreground">
                       {slot!.qty}
@@ -124,16 +121,19 @@ function InventoryTab({
   );
 }
 
-function EquipSlot({ icon, eq, label }: { icon: React.ReactNode; eq: { id: string; plus: number } | null; label: string }) {
+function EquipSlot({
+  kind,
+  eq,
+  label,
+}: {
+  kind: "weapon" | "armor";
+  eq: { id: string; plus: number } | null;
+  label: string;
+}) {
   const def = eq ? ITEMS[eq.id] : null;
   return (
     <div className="flex flex-1 items-center gap-2 rounded-2xl border border-border/70 bg-muted/50 p-2">
-      <span
-        className="grid size-9 shrink-0 place-items-center rounded-xl"
-        style={{ backgroundColor: def?.color ?? "var(--muted)" }}
-      >
-        {icon}
-      </span>
+      <GearBadge kind={kind} color={def?.color} className="size-9" />
       <div className="min-w-0">
         <p className="truncate text-[11px] font-bold text-foreground">
           {def ? `${def.name}${eq && eq.plus > 0 ? ` +${eq.plus}` : ""}` : "Empty"}
