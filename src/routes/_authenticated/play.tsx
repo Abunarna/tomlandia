@@ -71,6 +71,7 @@ const EMPTY: HudSnapshot = {
   discovered: ["fields"],
   attack: 6,
   defense: 2,
+  attackInterval: 1,
   timeOfDay: 0.35,
   phase: "Day",
   market: { listings: [], log: [], fee: 0.05 },

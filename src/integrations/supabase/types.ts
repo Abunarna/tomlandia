@@ -75,6 +75,7 @@ export type Database = {
           id: string
           kind: string
           name: string
+          speed: number | null
           stackable: boolean
           value: number
         }
@@ -87,6 +88,7 @@ export type Database = {
           id: string
           kind: string
           name: string
+          speed?: number | null
           stackable?: boolean
           value?: number
         }
@@ -99,6 +101,7 @@ export type Database = {
           id?: string
           kind?: string
           name?: string
+          speed?: number | null
           stackable?: boolean
           value?: number
         }
