@@ -7,7 +7,7 @@ import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
 import { attackMonster, craftItem, fishCast, harvestNode, usePotion } from "@/lib/world.functions";
 import { browseMarket, buyFromMarket, cancelMarketListing, listOnMarket } from "@/lib/market.functions";
-import type { NpcRole } from "@/game/data";
+import { NPCS, type NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
 import type { Json } from "@/integrations/supabase/types";
 import { Hud } from "@/components/game/Hud";
@@ -148,6 +148,13 @@ function Game() {
       // The server writes rewards into the save row, so it has to exist first.
       if (!cloudSave) engine.save();
       engine.onInteract = (id) => {
+        // Grand Market clerks open the exchange directly, not a conversation.
+        if (NPCS.find((n) => n.id === id)?.services.includes("exchange")) {
+          setNpc(null);
+          setPanel("market");
+          void engineRef.current?.refreshMarket();
+          return;
+        }
         setPanel(null);
         setNpc(id);
       };
@@ -353,7 +360,6 @@ function Game() {
               hud={hud}
               onClose={() => setPanel(null)}
               onEquip={(i) => engineRef.current?.equipSlot(i)}
-              onSell={(i) => engineRef.current?.sellSlot(i)}
               onUse={(i) => engineRef.current?.useSlot(i)}
               onDrop={(i) => engineRef.current?.dropSlot(i)}
               onSetFood={(i) => engineRef.current?.equipSlot(i)}

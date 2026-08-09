@@ -12,7 +12,6 @@ export function Panel({
   onClose,
   hud,
   onEquip,
-  onSell,
   onUse,
   onDrop,
   onSetFood,
@@ -25,7 +24,6 @@ export function Panel({
   onClose: () => void;
   hud: HudSnapshot;
   onEquip: (i: number) => void;
-  onSell: (i: number) => void;
   onUse: (i: number) => void;
   onDrop: (i: number) => void;
   onSetFood: (i: number) => void;
@@ -61,7 +59,6 @@ export function Panel({
         <InventoryTab
           hud={hud}
           onEquip={onEquip}
-          onSell={onSell}
           onUse={onUse}
           onDrop={onDrop}
           onSetFood={onSetFood}
@@ -88,14 +85,12 @@ function slotLabel(def: ItemDef, plus?: number | undefined) {
 function InventoryTab({
   hud,
   onEquip,
-  onSell,
   onUse,
   onDrop,
   onSetFood,
 }: {
   hud: HudSnapshot;
   onEquip: (i: number) => void;
-  onSell: (i: number) => void;
   onUse: (i: number) => void;
   onDrop: (i: number) => void;
   onSetFood: (i: number) => void;
@@ -153,7 +148,6 @@ function InventoryTab({
           qty={sel.qty}
           onClose={() => setSelected(null)}
           onEquip={onEquip}
-          onSell={onSell}
           onUse={onUse}
           onDrop={onDrop}
           onSetFood={onSetFood}
@@ -170,7 +164,6 @@ function ItemActions({
   qty,
   onClose,
   onEquip,
-  onSell,
   onUse,
   onDrop,
   onSetFood,
@@ -181,7 +174,6 @@ function ItemActions({
   qty: number;
   onClose: () => void;
   onEquip: (i: number) => void;
-  onSell: (i: number) => void;
   onUse: (i: number) => void;
   onDrop: (i: number) => void;
   onSetFood: (i: number) => void;
@@ -252,7 +244,6 @@ function ItemActions({
             </>
           )}
           {def.kind === "potion" && <ActionButton primary label="Drink" onClick={() => run(onUse)} />}
-          <ActionButton label={`Sell (${def.value * qty}g)`} onClick={() => run(onSell)} />
           <ActionButton label="Drop" onClick={() => run(onDrop)} />
           <ActionButton
             label={examine ? "Hide details" : "Examine"}

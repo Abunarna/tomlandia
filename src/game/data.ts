@@ -793,7 +793,7 @@ const TOWN_SPECS: TownSpec[] = [
   {
     cx: 715,
     cy: 310,
-    count: 13,
+    count: 14,
     wall: "#fdf1dd",
     beam: "#8b6b52",
     roofs: ["#d98b6a", "#c9a7e0", "#8fbfd9", "#c08d68", "#b7906d"],
@@ -804,6 +804,7 @@ const TOWN_SPECS: TownSpec[] = [
       { role: "haven_weaponsmith", name: "Haven Forge", kind: "forge" },
       { role: "haven_armourer", name: "Shieldwright's Hall", kind: "forge" },
       { role: "haven_upgrader", name: "Whetstone Tower", kind: "tower" },
+      { role: "haven_exchange", name: "Grand Market", kind: "stall" },
     ],
     fill: [
       { name: "Grand Haven Inn", kind: "inn" },
@@ -818,7 +819,7 @@ const TOWN_SPECS: TownSpec[] = [
   {
     cx: TILE_W * 2 + 660,
     cy: 325,
-    count: 12,
+    count: 13,
     wall: "#fdf0d4",
     beam: "#a8834e",
     roofs: ["#f0c268", "#e8b3d8", "#d9a95f", "#e0b070", "#caa063"],
@@ -828,6 +829,7 @@ const TOWN_SPECS: TownSpec[] = [
       { role: "banker", name: "Golden Bank", kind: "chapel" },
       { role: "sun_weaponsmith", name: "Sunspire Forge", kind: "forge" },
       { role: "sun_alchemist", name: "Amber Apothecary", kind: "tower" },
+      { role: "sun_exchange", name: "Sunspire Grand Market", kind: "stall" },
     ],
     fill: [
       { name: "Sunspire Spire", kind: "tower" },
@@ -842,7 +844,7 @@ const TOWN_SPECS: TownSpec[] = [
   {
     cx: TILE_W + 620,
     cy: 500,
-    count: 6,
+    count: 7,
     wall: "#f5f0da",
     beam: "#6f5636",
     roofs: ["#7fbd93", "#b98a5c", "#95c9a4", "#8aa86d"],
@@ -850,6 +852,7 @@ const TOWN_SPECS: TownSpec[] = [
       { role: "innkeeper", name: "Willowbrook Inn", kind: "inn" },
       { role: "trapper", name: "Trapper's Hut", kind: "house" },
       { role: "brook_chef", name: "Willow Kitchen", kind: "house" },
+      { role: "brook_exchange", name: "Brookside Grand Market", kind: "stall" },
     ],
     fill: [
       { name: "Woodcutter's Lodge", kind: "barn" },
@@ -860,13 +863,14 @@ const TOWN_SPECS: TownSpec[] = [
   {
     cx: 800,
     cy: TILE_H + 500,
-    count: 6,
+    count: 7,
     wall: "#f2f7fd",
     beam: "#6d7f92",
     roofs: ["#8fb6d9", "#a9c6e6", "#9fb6cc", "#87a7c4"],
     anchors: [
       { role: "frost_smith", name: "Frostforge Smeltery", kind: "forge" },
       { role: "frost_weaponsmith", name: "Frostforge", kind: "forge" },
+      { role: "frost_exchange", name: "Frostmarket Hall", kind: "stall" },
     ],
     fill: [
       { name: "Hearthspur Lodge", kind: "inn" },
@@ -964,7 +968,11 @@ export type NpcRole =
   | "sun_weaponsmith"
   | "sun_alchemist"
   | "brook_chef"
-  | "frost_weaponsmith";
+  | "frost_weaponsmith"
+  | "haven_exchange"
+  | "sun_exchange"
+  | "brook_exchange"
+  | "frost_exchange";
 
 export interface NpcDef {
   id: NpcRole;
@@ -980,6 +988,7 @@ export interface NpcDef {
     | "shop"
     | "sell"
     | "bank"
+    | "exchange"
     | "quests"
     | "smelt"
     | "forge"
@@ -1009,6 +1018,10 @@ export const NPCS: NpcDef[] = [
   { id: "sun_alchemist", name: "Nasrin", title: "Alchemist", ...spot("sun_alchemist", TILE_W * 2 + 790, 300), robe: "#a7d9c2", hair: "#5a4470", greeting: "One drop of this and your blade bites twice.", services: ["alchemy"] },
   { id: "brook_chef", name: "Chef Bramble", title: "Willowbrook Chef", ...spot("brook_chef", TILE_W + 650, 540), robe: "#c9d97f", hair: "#7a5a34", greeting: "Fresh catch? I'll turn it into something warm.", services: ["cook"] },
   { id: "frost_weaponsmith", name: "Halvar", title: "Weaponsmith", ...spot("frost_weaponsmith", 720, TILE_H + 560), robe: "#7f9cbd", hair: "#c9d8e6", greeting: "Cold iron, hot hammer. Stand back.", services: ["forge"] },
+  { id: "haven_exchange", name: "Clerk Tobin", title: "Grand Market", ...spot("haven_exchange", 800, 300), robe: "#cbb98f", hair: "#5a4a35", greeting: "Ledgers open, offers posted. What'll it be?", services: ["exchange"] },
+  { id: "sun_exchange", name: "Clerk Amara", title: "Grand Market", ...spot("sun_exchange", TILE_W * 2 + 680, 300), robe: "#e8c98d", hair: "#4d3a26", greeting: "Every caravan's price, all in one book.", services: ["exchange"] },
+  { id: "brook_exchange", name: "Clerk Nessa", title: "Grand Market", ...spot("brook_exchange", TILE_W + 700, 540), robe: "#a8cf9b", hair: "#6b5233", greeting: "Small village, big ledger. Trade away.", services: ["exchange"] },
+  { id: "frost_exchange", name: "Clerk Bjorn", title: "Grand Market", ...spot("frost_exchange", 640, TILE_H + 560), robe: "#b6cbe0", hair: "#dfe8f2", greeting: "Frost keeps the coin cold and the deals honest.", services: ["exchange"] },
 ];
 
 
@@ -1024,6 +1037,10 @@ export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
   sun_smith: [],
   weaver: [],
   banker: [],
+  haven_exchange: [],
+  sun_exchange: [],
+  brook_exchange: [],
+  frost_exchange: [],
   trapper: [{ id: "hearty_stew", price: 150 }],
   innkeeper: [
     { id: "berry_pie", price: 50 },
@@ -1166,6 +1183,10 @@ export const NPC_ICONS: Record<NpcRole, NpcIcon> = {
   sun_alchemist: { glyph: "\u2697\uFE0E", color: "#a7d9c2", label: "Alchemist" },
   brook_chef: { glyph: "\u2668\uFE0E", color: "#c9d97f", label: "Chef" },
   frost_weaponsmith: { glyph: "\u2694\uFE0E", color: "#7f9cbd", label: "Weaponsmith" },
+  haven_exchange: { glyph: "\u2696\uFE0E", color: "#cbb98f", label: "Grand Market" },
+  sun_exchange: { glyph: "\u2696\uFE0E", color: "#e8c98d", label: "Grand Market" },
+  brook_exchange: { glyph: "\u2696\uFE0E", color: "#a8cf9b", label: "Grand Market" },
+  frost_exchange: { glyph: "\u2696\uFE0E", color: "#b6cbe0", label: "Grand Market" },
 };
 
 /* ------------------------------------------------------------------ */
