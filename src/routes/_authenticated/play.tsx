@@ -148,6 +148,13 @@ function Game() {
       // The server writes rewards into the save row, so it has to exist first.
       if (!cloudSave) engine.save();
       engine.onInteract = (id) => {
+        // Grand Market clerks open the exchange directly, not a conversation.
+        if (NPCS.find((n) => n.id === id)?.services.includes("exchange")) {
+          setNpc(null);
+          setPanel("market");
+          void engine.refreshMarket();
+          return;
+        }
         setPanel(null);
         setNpc(id);
       };
@@ -353,7 +360,6 @@ function Game() {
               hud={hud}
               onClose={() => setPanel(null)}
               onEquip={(i) => engineRef.current?.equipSlot(i)}
-              onSell={(i) => engineRef.current?.sellSlot(i)}
               onUse={(i) => engineRef.current?.useSlot(i)}
               onDrop={(i) => engineRef.current?.dropSlot(i)}
               onSetFood={(i) => engineRef.current?.equipSlot(i)}
