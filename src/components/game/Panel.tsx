@@ -105,6 +105,21 @@ function InventoryTab({
         <EquipSlot kind="weapon" eq={hud.weapon} label="Weapon" />
         <EquipSlot kind="armor" eq={hud.armor} label="Armor" />
       </div>
+      <div className="flex items-center justify-between rounded-2xl border border-border/70 bg-muted/40 px-3 py-2 text-[11px] font-bold">
+        <span className="text-muted-foreground">
+          Attack <span className="text-foreground">{hud.attack}</span>
+        </span>
+        <span className="text-muted-foreground">
+          Defense <span className="text-foreground">{hud.defense}</span>
+        </span>
+        <span className="text-muted-foreground">
+          Swing <span className="text-foreground">{hud.attackInterval.toFixed(2)}s</span>
+          {hud.attackInterval < 1 && (
+            <span className="ml-1 text-xp">{Math.round((1 - hud.attackInterval) * 100)}% faster</span>
+          )}
+        </span>
+      </div>
+
       <div className="grid grid-cols-4 gap-1.5">
         {hud.inv.map((slot, i) => {
           const def = slot ? ITEMS[slot.id] : null;
@@ -188,6 +203,8 @@ function ItemActions({
   const stats: { label: string; value: string }[] = [];
   if (def.attack != null) stats.push({ label: "Attack", value: `+${def.attack}` });
   if (def.defense != null) stats.push({ label: "Defense", value: `+${def.defense}` });
+  if (def.speed != null)
+    stats.push({ label: "Attack speed", value: `+${Math.round(def.speed * 100)}% faster` });
   if (def.heal != null) stats.push({ label: "Heals", value: `${def.heal} hp` });
   if (def.dmgBoost != null)
     stats.push({
