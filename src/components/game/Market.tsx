@@ -4,7 +4,7 @@ import { ITEMS } from "@/game/data";
 import type { HudSnapshot } from "@/game/types";
 import { ItemIcon } from "./ItemIcon";
 
-type FilterKey = "all" | "weapon" | "armor" | "material" | "food";
+type FilterKey = "all" | "weapon" | "armor" | "material" | "food" | "potion";
 
 const FILTERS: { key: FilterKey; label: string }[] = [
   { key: "all", label: "All" },
@@ -12,6 +12,7 @@ const FILTERS: { key: FilterKey; label: string }[] = [
   { key: "armor", label: "Armour" },
   { key: "material", label: "Materials" },
   { key: "food", label: "Food" },
+  { key: "potion", label: "Potions" },
 ];
 
 
