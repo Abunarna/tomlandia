@@ -241,13 +241,16 @@ export function NpcDialog({
                     {open && (
                       <div className="mt-2 space-y-2 rounded-xl bg-card/70 p-2.5">
                         <p className="text-[10px] text-muted-foreground">
-                          {out.attack
-                            ? `+${out.attack} attack`
-                            : out.defense
-                              ? `+${out.defense} defense`
-                              : out.heal
-                                ? `Heals ${out.heal} hp`
-                                : "Crafting material"}
+                          {out.attack || out.defense
+                            ? [
+                                out.attack ? `+${out.attack} attack` : null,
+                                out.defense ? `+${out.defense} defense` : null,
+                              ]
+                                .filter(Boolean)
+                                .join(" · ")
+                            : out.heal
+                              ? `Heals ${out.heal} hp`
+                              : "Crafting material"}
                           {" · "}
                           {r.xp} {skill} xp · {r.time}s
                           {lvl < r.req && ` · needs Lv ${r.req}`}
