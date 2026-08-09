@@ -871,6 +871,13 @@ export class GameEngine {
     return Math.round(Math.floor(lvl / 2) + statWithPlus(base, a?.plus ?? 0));
   }
 
+  /** Seconds between swings — cloth/leather armor trades defense for speed. */
+  get attackInterval() {
+    const a = this.armor;
+    const bonus = a ? (item(a.id).speed ?? 0) : 0;
+    return Math.max(0.5, 1 * (1 - bonus));
+  }
+
   private grantXp(skill: SkillId, amount: number) {
     const before = this.lvl(skill);
     this.skills[skill].xp += amount;
@@ -1244,9 +1251,9 @@ export class GameEngine {
           const md = MONSTER_DEFS[m.kind];
           this.activity = `Fighting ${md.name}`;
           this.combatCd -= dt;
-          this.activityProgress = 1 - Math.max(0, this.combatCd);
+          this.activityProgress = 1 - Math.max(0, this.combatCd) / this.attackInterval;
           if (this.combatCd <= 0) {
-            this.combatCd = 1;
+            this.combatCd = this.attackInterval;
 
             // Phase 9 — the server resolves the swing: it reads our stats from
             // the stored save, decides damage both ways, and awards the kill.
@@ -1952,6 +1959,7 @@ export class GameEngine {
       discovered: [...this.discovered],
       attack: this.attack,
       defense: this.defense,
+      attackInterval: this.attackInterval,
       timeOfDay: this.timeOfDay,
       phase: this.dayPhase,
       market: {

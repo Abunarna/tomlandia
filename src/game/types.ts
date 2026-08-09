@@ -57,6 +57,8 @@ export interface ItemDef {
   attack?: number;
   defense?: number;
   heal?: number;
+  /** armor: fractional reduction of the attack interval (0.1 = 10% faster swings) */
+  speed?: number;
   /** potions: bonus damage per hit while the buff lasts */
   dmgBoost?: number;
   /** potions: number of hits the damage buff lasts for */
@@ -148,6 +150,8 @@ export interface HudSnapshot {
   discovered: string[];
   attack: number;
   defense: number;
+  /** seconds between auto-attacks, after armor speed bonus */
+  attackInterval: number;
   /** 0..1 through the in-game day */
   timeOfDay: number;
   phase: "Dawn" | "Day" | "Dusk" | "Night";
