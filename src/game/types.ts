@@ -165,6 +165,8 @@ export interface HudSnapshot {
     listings: import("./market").Listing[];
     log: import("./market").TradeLog[];
     fee: number;
+    /** last completed sale price, keyed `${itemId}:${plus}` */
+    lastSold: Record<string, number>;
   };
   soundOn: boolean;
   /** Phase 7 — your display name and how many real players are nearby. */
