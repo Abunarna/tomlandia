@@ -166,6 +166,7 @@ export function clearLegacySave() {
   }
 }
 const INV_SIZE = 20;
+const BANK_SIZE = 60;
 const AUTO_EAT_AT = 0.3;
 /** length of one in-game day, in seconds */
 const DAY_LEN = 480;
