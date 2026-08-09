@@ -2010,11 +2010,10 @@ export class GameEngine {
       ctx.fillRect(x, y, 18, 4);
     }
 
-    // water feature
+    // water feature — irregular hand-varied lake with its jetties
     if (b.pond) {
-      const water =
-        b.id === "winter" ? "#cfeaf5" : b.id === "evil" ? "#5b4a86" : b.id === "forest" ? "#7fc9c1" : "#9fd8ee";
-      this.pond(ctx, b.pond.x, b.pond.y, b.pond.rx, b.pond.ry, water);
+      const lake = LAKES.find((l) => l.key === b.id);
+      if (lake) this.lake(ctx, lake);
     }
 
     ctx.restore();
@@ -2036,15 +2035,158 @@ export class GameEngine {
   }
 
 
-  private pond(ctx: CanvasRenderingContext2D, x: number, y: number, rx: number, ry: number, color: string) {
-    ctx.fillStyle = color;
+  /** irregular lake body, shoreline dressing and its wooden jetties */
+  private lake(ctx: CanvasRenderingContext2D, l: LakeDef) {
+    const water =
+      l.style === "winter" ? "#cfeaf5" : l.style === "evil" ? "#5b4a86" : l.style === "forest" ? "#3f8f86" : "#9fd8ee";
+    const path = new Path2D();
+    l.poly.forEach(([x, y], i) => (i ? path.lineTo(x, y) : path.moveTo(x, y)));
+    path.closePath();
+
+    // damp shoreline ring
+    ctx.save();
+    ctx.strokeStyle =
+      l.style === "winter" ? "rgba(226,244,252,0.85)" : l.style === "evil" ? "rgba(66,48,92,0.6)" : "rgba(150,190,140,0.45)";
+    ctx.lineWidth = l.style === "winter" ? 12 : 9;
+    ctx.stroke(path);
+    ctx.restore();
+
+    ctx.save();
+    ctx.fillStyle = water;
+    ctx.fill(path);
+    ctx.clip(path);
+
+    // depth shading toward the middle
+    ctx.fillStyle = l.style === "evil" ? "rgba(28,18,48,0.45)" : "rgba(20,60,90,0.18)";
     ctx.beginPath();
-    ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
+    ctx.ellipse(l.cx, l.cy, l.rx * 0.62, l.ry * 0.6, 0, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = "rgba(255,255,255,0.4)";
+
+    // glints
+    ctx.fillStyle = l.style === "evil" ? "rgba(190,170,230,0.18)" : "rgba(255,255,255,0.35)";
+    for (let i = 0; i < 14; i++) {
+      const x = l.cx - l.rx + ((i * 137) % (l.rx * 2));
+      const y = l.cy - l.ry + ((i * 89) % (l.ry * 2));
+      ctx.fillRect(x, y + Math.sin(this.time * 1.2 + i) * 2, 12, 3);
+    }
+
+    if (l.style === "evil") {
+      ctx.fillStyle = "rgba(200,190,220,0.16)";
+      for (let i = 0; i < 6; i++) {
+        ctx.beginPath();
+        ctx.ellipse(l.cx - l.rx * 0.6 + i * l.rx * 0.25, l.cy + Math.sin(this.time * 0.4 + i) * 8, 52, 16, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    if (l.style === "winter") {
+      ctx.strokeStyle = "rgba(255,255,255,0.9)";
+      ctx.lineWidth = 14;
+      ctx.stroke(path);
+    }
+    if (l.style === "forest") {
+      // canopy shadow overhanging part of the shoreline
+      ctx.fillStyle = "rgba(12,44,32,0.28)";
+      ctx.beginPath();
+      ctx.ellipse(l.cx - l.rx * 0.45, l.cy - l.ry * 0.3, l.rx * 0.55, l.ry * 0.8, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+
+    this.lakeProps(ctx, l);
+    for (const j of l.jetties) this.jetty(ctx, j);
+  }
+
+  /** reeds, lily pads, ice shards or dead trees around the water's edge */
+  private lakeProps(ctx: CanvasRenderingContext2D, l: LakeDef) {
+    for (const p of l.props) {
+      if (l.style === "fields" || l.style === "forest") {
+        // reeds
+        ctx.strokeStyle = l.style === "forest" ? "#3f6b3c" : "#6ea04d";
+        ctx.lineWidth = 2;
+        for (let k = 0; k < 3; k++) {
+          ctx.beginPath();
+          ctx.moveTo(p.x + k * 3, p.y);
+          ctx.lineTo(p.x + k * 3 + (p.t - 0.5) * 6, p.y - 12 - p.t * 8);
+          ctx.stroke();
+        }
+        if (p.t > 0.6) {
+          // lily pad
+          ctx.fillStyle = l.style === "forest" ? "#2f7a58" : "#71b56a";
+          ctx.beginPath();
+          ctx.ellipse(p.x + 14, p.y + 8, 9, 6, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (l.style === "winter") {
+        ctx.fillStyle = "rgba(255,255,255,0.92)";
+        ctx.beginPath();
+        ctx.moveTo(p.x - 8, p.y + 4);
+        ctx.lineTo(p.x + (p.t - 0.5) * 8, p.y - 12 - p.t * 6);
+        ctx.lineTo(p.x + 8, p.y + 4);
+        ctx.closePath();
+        ctx.fill();
+      } else {
+        if (p.t > 0.5) {
+          // dead tree
+          ctx.strokeStyle = "#3a2d४6".replace("४", "4");
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y + 4);
+          ctx.lineTo(p.x, p.y - 26);
+          ctx.moveTo(p.x, p.y - 16);
+          ctx.lineTo(p.x - 10, p.y - 26);
+          ctx.moveTo(p.x, p.y - 20);
+          ctx.lineTo(p.x + 11, p.y - 30);
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = "rgba(90,72,120,0.7)";
+          ctx.fillRect(p.x - 4, p.y - 4, 8, 6);
+        }
+      }
+    }
+  }
+
+  /** planked jetty out over the water, with the fishing spot at its end */
+  private jetty(ctx: CanvasRenderingContext2D, j: { x1: number; y1: number; x2: number; y2: number; hw: number }) {
+    const a = Math.atan2(j.y2 - j.y1, j.x2 - j.x1);
+    const len = Math.hypot(j.x2 - j.x1, j.y2 - j.y1);
+    ctx.save();
+    ctx.translate(j.x1, j.y1);
+    ctx.rotate(a);
+
+    // shadow on the water
+    ctx.fillStyle = "rgba(20,40,60,0.25)";
+    ctx.fillRect(0, -j.hw + 4, len + 12, j.hw * 2);
+
+    // support posts
+    ctx.fillStyle = "#6b4a2e";
+    for (let d = 18; d < len; d += 26) {
+      ctx.fillRect(d, -j.hw - 2, 5, 4);
+      ctx.fillRect(d, j.hw - 2, 5, 4);
+    }
+
+    // planks
+    for (let d = 0; d < len; d += 8) {
+      ctx.fillStyle = (d / 8) % 2 === 0 ? "#a97a4d" : "#96693f";
+      ctx.fillRect(d, -j.hw, 7, j.hw * 2);
+    }
+    // deck platform at the end
+    ctx.fillStyle = "#a97a4d";
+    ctx.fillRect(len - 6, -j.hw - 6, 20, j.hw * 2 + 12);
+    ctx.strokeStyle = "rgba(70,44,22,0.6)";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(len - 6, -j.hw - 6, 20, j.hw * 2 + 12);
+    ctx.restore();
+
+    // fishing spot marker at the deck end
+    const bob = Math.sin(this.time * 2) * 2;
+    ctx.fillStyle = "rgba(255,255,255,0.75)";
     ctx.beginPath();
-    ctx.ellipse(x - 30, y - 20, rx * 0.35, ry * 0.22, 0, 0, Math.PI * 2);
+    ctx.arc(j.x2, j.y2 - 18 + bob, 6, 0, Math.PI * 2);
     ctx.fill();
+    ctx.fillStyle = "#2b6f9c";
+    ctx.font = "10px ui-rounded, system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("🎣", j.x2, j.y2 - 14 + bob);
   }
 
   /** dirt roads and cobbled crossroads laid through each town */
