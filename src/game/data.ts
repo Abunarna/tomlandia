@@ -1592,3 +1592,163 @@ export const BARRIER_LABEL: Record<BarrierKind, string> = {
   rocks: "Rocky Ridge",
   woodland: "Dense Woodland",
 };
+
+// ---------------------------------------------------------------------------
+// Trade roads: gray cobble paths linking every town to every other town.
+// ---------------------------------------------------------------------------
+
+/** the crossroads at the heart of each town */
+export const TOWN_CENTERS: { x: number; y: number }[] = TOWN_SPECS.map((t) => ({ x: t.cx, y: t.cy }));
+
+function inLake(x: number, y: number, pad = 18): boolean {
+  for (const l of LAKES) {
+    if (Math.abs(x - l.cx) > l.rx + pad || Math.abs(y - l.cy) > l.ry + pad) continue;
+    const p = l.poly;
+    let inside = false;
+    for (let i = 0, j = p.length - 1; i < p.length; j = i++) {
+      const [xi, yi] = p[i]!;
+      const [xj, yj] = p[j]!;
+      if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+    }
+    if (inside) return true;
+  }
+  return false;
+}
+
+/** a road may not run through obstacles, nodes or water (bridges are fine) */
+function roadBlocked(x: number, y: number): boolean {
+  if (x < 30 || y < 30 || x > WORLD_W - 30 || y > WORLD_H - 30) return true;
+  if (onBridge(x, y)) return false;
+  return blockedAt(x, y, 16) || inLake(x, y);
+}
+
+const ROAD_CELL = 40;
+const ROAD_COLS = Math.ceil(WORLD_W / ROAD_CELL);
+const ROAD_ROWS = Math.ceil(WORLD_H / ROAD_CELL);
+
+/** pre-computed passability grid so every route shares one pass over the world */
+const ROAD_GRID: Uint8Array = (() => {
+  const g = new Uint8Array(ROAD_COLS * ROAD_ROWS);
+  for (let cy = 0; cy < ROAD_ROWS; cy++) {
+    for (let cx = 0; cx < ROAD_COLS; cx++) {
+      const x = cx * ROAD_CELL + ROAD_CELL / 2;
+      const y = cy * ROAD_CELL + ROAD_CELL / 2;
+      g[cy * ROAD_COLS + cx] = roadBlocked(x, y) ? 1 : 0;
+    }
+  }
+  return g;
+})();
+
+function nearestOpenCell(cx: number, cy: number): number {
+  for (let r = 0; r < 14; r++) {
+    for (let dy = -r; dy <= r; dy++) {
+      for (let dx = -r; dx <= r; dx++) {
+        if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
+        const x = cx + dx;
+        const y = cy + dy;
+        if (x < 0 || y < 0 || x >= ROAD_COLS || y >= ROAD_ROWS) continue;
+        if (!ROAD_GRID[y * ROAD_COLS + x]) return y * ROAD_COLS + x;
+      }
+    }
+  }
+  return cy * ROAD_COLS + cx;
+}
+
+/** plain A* over the coarse grid; returns world-space points */
+function routeBetween(a: { x: number; y: number }, b: { x: number; y: number }): [number, number][] {
+  const start = nearestOpenCell(Math.floor(a.x / ROAD_CELL), Math.floor(a.y / ROAD_CELL));
+  const goal = nearestOpenCell(Math.floor(b.x / ROAD_CELL), Math.floor(b.y / ROAD_CELL));
+  const total = ROAD_COLS * ROAD_ROWS;
+  const g = new Float64Array(total).fill(Infinity);
+  const from = new Int32Array(total).fill(-1);
+  const seen = new Uint8Array(total);
+  const gx = goal % ROAD_COLS;
+  const gy = (goal / ROAD_COLS) | 0;
+  const h = (i: number) => Math.hypot((i % ROAD_COLS) - gx, ((i / ROAD_COLS) | 0) - gy);
+  const open: { i: number; f: number }[] = [{ i: start, f: h(start) }];
+  g[start] = 0;
+  while (open.length) {
+    let bi = 0;
+    for (let i = 1; i < open.length; i++) if (open[i]!.f < open[bi]!.f) bi = i;
+    const cur = open.splice(bi, 1)[0]!.i;
+    if (cur === goal) break;
+    if (seen[cur]) continue;
+    seen[cur] = 1;
+    const cx = cur % ROAD_COLS;
+    const cy = (cur / ROAD_COLS) | 0;
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        if (!dx && !dy) continue;
+        const nx = cx + dx;
+        const ny = cy + dy;
+        if (nx < 0 || ny < 0 || nx >= ROAD_COLS || ny >= ROAD_ROWS) continue;
+        const ni = ny * ROAD_COLS + nx;
+        if (ROAD_GRID[ni]) continue;
+        if (dx && dy && (ROAD_GRID[cy * ROAD_COLS + nx] || ROAD_GRID[ny * ROAD_COLS + cx])) continue;
+        const step = dx && dy ? 1.414 : 1;
+        const ng = g[cur]! + step;
+        if (ng < g[ni]!) {
+          g[ni] = ng;
+          from[ni] = cur;
+          open.push({ i: ni, f: ng + h(ni) });
+        }
+      }
+    }
+  }
+  if (from[goal]! < 0 && goal !== start) return [];
+  const cells: number[] = [];
+  for (let i = goal; i >= 0; i = from[i]!) {
+    cells.push(i);
+    if (i === start) break;
+  }
+  cells.reverse();
+  const raw: [number, number][] = cells.map((i) => [
+    (i % ROAD_COLS) * ROAD_CELL + ROAD_CELL / 2,
+    ((i / ROAD_COLS) | 0) * ROAD_CELL + ROAD_CELL / 2,
+  ]);
+  raw[0] = [a.x, a.y];
+  raw[raw.length - 1] = [b.x, b.y];
+  // soften the grid staircase without pushing the road into obstacles
+  for (let pass = 0; pass < 3; pass++) {
+    for (let i = 1; i < raw.length - 1; i++) {
+      const nx = (raw[i - 1]![0] + raw[i]![0] * 2 + raw[i + 1]![0]) / 4;
+      const ny = (raw[i - 1]![1] + raw[i]![1] * 2 + raw[i + 1]![1]) / 4;
+      if (!roadBlocked(nx, ny)) raw[i] = [nx, ny];
+    }
+  }
+  return raw;
+}
+
+export interface RoadDef {
+  id: string;
+  pts: [number, number][];
+  width: number;
+}
+
+export const ROADS: RoadDef[] = (() => {
+  const out: RoadDef[] = [];
+  for (let i = 0; i < TOWN_CENTERS.length; i++) {
+    for (let j = i + 1; j < TOWN_CENTERS.length; j++) {
+      const pts = routeBetween(TOWN_CENTERS[i]!, TOWN_CENTERS[j]!);
+      if (pts.length > 1) out.push({ id: `road-${i}-${j}`, pts, width: 26 });
+    }
+  }
+  return out;
+})();
+
+/**
+ * Road polylines split so no piece runs across a bridge deck — the bridges
+ * draw themselves and must not be covered by cobbles.
+ */
+export const ROAD_RUNS: { pts: [number, number][]; width: number }[] = ROADS.flatMap((r) => {
+  const runs: { pts: [number, number][]; width: number }[] = [];
+  let cur: [number, number][] = [];
+  for (const p of r.pts) {
+    if (onBridge(p[0], p[1], -30)) {
+      if (cur.length > 1) runs.push({ pts: cur, width: r.width });
+      cur = [];
+    } else cur.push(p);
+  }
+  if (cur.length > 1) runs.push({ pts: cur, width: r.width });
+  return runs;
+});
