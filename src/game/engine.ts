@@ -183,6 +183,17 @@ interface Villager {
   hair: string;
 }
 
+interface LiveNpc {
+  role: NpcRole;
+  x: number;
+  y: number;
+  hx: number;
+  hy: number;
+  tx: number;
+  ty: number;
+  wait: number;
+}
+
 interface Leaf {
   x: number;
   y: number;
@@ -299,6 +310,7 @@ export class GameEngine {
   private parts: Particle[] = [];
   private butterflies: { x: number; y: number; p: number; s: number }[] = [];
   private villagers: Villager[] = [];
+  private npcState: LiveNpc[] = [];
   /** Phase 7 — nearby real players from the presence shards. */
   remotes = new Map<string, RemotePlayer>();
   playerName = "Adventurer";
@@ -383,6 +395,7 @@ export class GameEngine {
       this.butterflies.push({ x: Math.random() * WORLD_W, y: Math.random() * WORLD_H, p: Math.random() * 10, s: 0.4 + Math.random() * 0.6 });
     }
     this.spawnVillagers();
+    this.spawnNpcs();
 
     this.load(opts?.initialSave ?? null);
     this.biome = biomeAt(this.px, this.py);
@@ -512,6 +525,46 @@ export class GameEngine {
       }
       if (Math.abs(dx) + Math.abs(dy) > 1.5) r.bob += dt * 9;
     }
+  }
+
+  private spawnNpcs() {
+    this.npcState = NPCS.map((n) => ({
+      role: n.id,
+      x: n.x,
+      y: n.y,
+      hx: n.x,
+      hy: n.y,
+      tx: n.x,
+      ty: n.y,
+      wait: Math.random() * 4,
+    }));
+  }
+
+  private npcPos(role: NpcRole): LiveNpc | undefined {
+    return this.npcState.find((n) => n.role === role);
+  }
+
+  /** Pick a wander destination near home that is walkable and not on top of another NPC. */
+  private pickNpcTarget(n: LiveNpc) {
+    for (let i = 0; i < 8; i++) {
+      const x = n.hx + (Math.random() - 0.5) * 80;
+      const y = n.hy + (Math.random() - 0.5) * 80;
+      if (blockedAt(x, y, 10)) continue;
+      let clash = false;
+      for (const o of this.npcState) {
+        if (o === n) continue;
+        if (Math.hypot(o.x - x, o.y - y) < 36) {
+          clash = true;
+          break;
+        }
+      }
+      if (clash) continue;
+      n.tx = x;
+      n.ty = y;
+      return;
+    }
+    n.tx = n.x;
+    n.ty = n.y;
   }
 
   private spawnVillagers() {
@@ -868,9 +921,9 @@ export class GameEngine {
       const d = Math.hypot(sp.x - wx, sp.y - wy);
       if (d < 42 && (!best || d < best.d)) best = { d, t: { type: "fish", id: sp.id } };
     }
-    for (const npc of NPCS) {
+    for (const npc of this.npcState) {
       const d = Math.hypot(npc.x - wx, npc.y - wy - 8);
-      if (d < 44 && (!best || d < best.d)) best = { d, t: { type: "npc", id: npc.id } };
+      if (d < 44 && (!best || d < best.d)) best = { d, t: { type: "npc", id: npc.role } };
     }
     if (best) {
       this.target = best.t;
@@ -1259,10 +1312,11 @@ export class GameEngine {
     } else if (this.target.type === "npc") {
       const id = this.target.id;
       const npc = NPCS.find((n) => n.id === id);
-      if (!npc) {
+      const live = this.npcPos(id);
+      if (!npc || !live) {
         this.target = { type: "none" };
       } else {
-        const d = this.moveToward(npc.x, npc.y + 16, dt);
+        const d = this.moveToward(live.x, live.y + 16, dt);
         this.activity = `Visiting ${npc.name}`;
         this.activityProgress = 0;
         if (d <= 46) {
@@ -1365,6 +1419,55 @@ export class GameEngine {
         const step = Math.min(d, 34 * dt);
         v.x += (dx / d) * step;
         v.y += (dy / d) * step;
+      }
+    }
+
+    // functional NPCs drift gently around their post
+    for (const n of this.npcState) {
+      if (n.wait > 0) {
+        n.wait -= dt;
+      } else {
+        const dx = n.tx - n.x;
+        const dy = n.ty - n.y;
+        const d = Math.hypot(dx, dy);
+        if (d < 3) {
+          n.wait = 2 + Math.random() * 5;
+          this.pickNpcTarget(n);
+        } else {
+          const step = Math.min(d, 20 * dt);
+          const nx = n.x + (dx / d) * step;
+          const ny = n.y + (dy / d) * step;
+          if (blockedAt(nx, ny, 10)) {
+            n.wait = 1 + Math.random() * 2;
+            this.pickNpcTarget(n);
+          } else {
+            n.x = nx;
+            n.y = ny;
+          }
+        }
+      }
+    }
+    // light separation so two NPCs never visually stack (keeps each tappable)
+    for (let i = 0; i < this.npcState.length; i++) {
+      const a = this.npcState[i]!;
+      for (let j = i + 1; j < this.npcState.length; j++) {
+        const b = this.npcState[j]!;
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const d = Math.hypot(dx, dy);
+        if (d > 0.001 && d < 36) {
+          const push = ((36 - d) / 2) * Math.min(1, dt * 4);
+          const ux = dx / d;
+          const uy = dy / d;
+          if (!blockedAt(a.x - ux * push, a.y - uy * push, 10)) {
+            a.x -= ux * push;
+            a.y -= uy * push;
+          }
+          if (!blockedAt(b.x + ux * push, b.y + uy * push, 10)) {
+            b.x += ux * push;
+            b.y += uy * push;
+          }
+        }
       }
     }
 
@@ -1909,9 +2012,11 @@ export class GameEngine {
       if (m.dead || !this.inView(m.x, m.y, view)) continue;
       drawables.push({ y: m.y, fn: () => this.drawMonster(ctx, m) });
     }
-    for (const npc of NPCS) {
-      if (!this.inView(npc.x, npc.y, view)) continue;
-      drawables.push({ y: npc.y, fn: () => this.drawNpc(ctx, npc) });
+    for (const live of this.npcState) {
+      if (!this.inView(live.x, live.y, view)) continue;
+      const def = NPCS.find((n) => n.id === live.role);
+      if (!def) continue;
+      drawables.push({ y: live.y, fn: () => this.drawNpc(ctx, def, live) });
     }
     for (const r of this.remotes.values()) {
       if (!this.inView(r.x, r.y, view)) continue;
@@ -2633,11 +2738,11 @@ export class GameEngine {
     }
   }
 
-  private drawNpc(ctx: CanvasRenderingContext2D, npc: NpcDef) {
-    const bob = Math.sin(this.time * 2 + npc.x) * 1.6;
-    const x = npc.x;
-    const y = npc.y - bob;
-    this.shadow(ctx, npc.x, npc.y + 16, 15);
+  private drawNpc(ctx: CanvasRenderingContext2D, npc: NpcDef, live: LiveNpc) {
+    const bob = Math.sin(this.time * 2 + live.hx) * 1.6;
+    const x = live.x;
+    const y = live.y - bob;
+    this.shadow(ctx, live.x, live.y + 16, 15);
     ctx.fillStyle = npc.robe;
     ctx.beginPath();
     ctx.roundRect(x - 11, y - 6, 22, 22, 7);
@@ -2676,7 +2781,7 @@ export class GameEngine {
     // Merchant-type badge floating above the head.
     const icon = NPC_ICONS[npc.id];
     if (icon) {
-      const iy = y - (marker ? 62 : 44) + Math.sin(this.time * 2 + npc.x) * 1.5;
+      const iy = y - (marker ? 62 : 44) + Math.sin(this.time * 2 + live.hx) * 1.5;
       ctx.fillStyle = "rgba(70,55,70,0.22)";
       ctx.beginPath();
       ctx.roundRect(x - 13, iy - 12 + 2, 26, 24, 9);
