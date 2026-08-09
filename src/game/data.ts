@@ -1445,7 +1445,16 @@ function buildGreatRiver(raw: Barrier[]): { pts: [number, number][]; bridges: Br
   const bridges: BridgeDef[] = [];
   const targets = [0.14, 0.38, 0.62, 0.86];
   targets.forEach((t, n) => {
-    let idx = Math.round(t * (pts.length - 1));
+    const wantX = WORLD_W * t;
+    let idx = 0;
+    let bestDx = Infinity;
+    pts.forEach((p, i) => {
+      const dx = Math.abs(p[0] - wantX);
+      if (dx < bestDx) {
+        bestDx = dx;
+        idx = i;
+      }
+    });
     for (let step = 0; step < 12; step++) {
       for (const cand of [idx - step, idx + step]) {
         if (cand < 3 || cand > pts.length - 4) continue;
