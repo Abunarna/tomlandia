@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import {
   BARRIERS,
+  BRIDGES,
   BIOMES,
   BUILDINGS,
   STREETS,
@@ -318,6 +319,19 @@ export function WorldMap({ position, onClose }: Props) {
               strokeLinecap="round"
               strokeLinejoin="round"
               opacity={0.95}
+            />
+          ))}
+          {BRIDGES.map((br) => (
+            <rect
+              key={br.id}
+              x={sx(br.x) - (br.width * scale) / 2}
+              y={sy(br.y) - ((br.len + 28) * scale) / 2}
+              width={Math.max(3, br.width * scale)}
+              height={Math.max(4, (br.len + 28) * scale)}
+              fill="#a9793f"
+              stroke="#6f4a2a"
+              strokeWidth={1}
+              transform={`rotate(${(br.angle * 180) / Math.PI} ${sx(br.x)} ${sy(br.y)})`}
             />
           ))}
         </svg>
