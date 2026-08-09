@@ -25,8 +25,9 @@ export const listOnMarket = createServerFn({ method: "POST" })
     z
       .object({
         item: z.string().min(1).max(64),
-        qty: z.number().int().min(1).max(10000),
+        qty: z.number().int().min(1).max(100000),
         price: z.number().int().min(1).max(10000000),
+        plus: z.number().int().min(0).max(100).default(0),
       })
       .parse(input),
   )
@@ -35,6 +36,7 @@ export const listOnMarket = createServerFn({ method: "POST" })
       _item: data.item,
       _qty: data.qty,
       _price: data.price,
+      _plus: data.plus,
     });
     if (error) return { ok: false, reason: error.message };
     return (res ?? { ok: false, reason: "empty" }) as unknown as MarketRes;
@@ -42,12 +44,18 @@ export const listOnMarket = createServerFn({ method: "POST" })
 
 export const buyFromMarket = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
+  .inputValidator((input) =>
+    z.object({ id: z.string().uuid(), qty: z.number().int().min(1).max(100000).default(1) }).parse(input),
+  )
   .handler(async ({ data, context }): Promise<MarketRes> => {
-    const { data: res, error } = await context.supabase.rpc("market_buy", { _id: data.id });
+    const { data: res, error } = await context.supabase.rpc("market_buy", {
+      _id: data.id,
+      _qty: data.qty,
+    });
     if (error) return { ok: false, reason: error.message };
     return (res ?? { ok: false, reason: "empty" }) as unknown as MarketRes;
   });
+
 
 export const cancelMarketListing = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
