@@ -457,7 +457,7 @@ function BackBar({
 }: {
   onBack: () => void;
   title: string;
-  def?: (typeof ITEMS)[string];
+  def?: (typeof ITEMS)[string] | undefined;
 }) {
   return (
     <div className="flex items-center gap-2">
