@@ -3,6 +3,7 @@ export type SkillId =
   | "mining"
   | "woodcutting"
   | "gathering"
+  | "fishing"
   | "smithing"
   | "skinning"
   | "tailoring";
@@ -12,6 +13,7 @@ export const SKILL_IDS: SkillId[] = [
   "mining",
   "woodcutting",
   "gathering",
+  "fishing",
   "smithing",
   "skinning",
   "tailoring",
@@ -34,6 +36,8 @@ export type ItemFamily =
   | "pie"
   | "stew"
   | "tonic"
+  | "fish"
+  | "potion"
   | "weapon"
   | "armor";
 
@@ -43,13 +47,18 @@ export interface ItemDef {
   stackable: boolean;
   value: number;
   color: string;
-  kind: "resource" | "weapon" | "armor" | "food" | "material";
+  kind: "resource" | "weapon" | "armor" | "food" | "material" | "potion";
   /** icon shape family */
   family?: ItemFamily;
   attack?: number;
   defense?: number;
   heal?: number;
+  /** potions: bonus damage per hit while the buff lasts */
+  dmgBoost?: number;
+  /** potions: number of hits the damage buff lasts for */
+  boostHits?: number;
 }
+
 
 export interface InvSlot {
   id: ItemId;
