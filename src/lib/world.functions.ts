@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import type { CraftRes, DamageRes, HarvestRes } from "@/game/engine";
+import type { CraftRes, DamageRes, FishRes, HarvestRes, PotionRes } from "@/game/engine";
 
 /**
  * Phase 9 — server-authoritative actions.
@@ -47,4 +47,26 @@ export const craftItem = createServerFn({ method: "POST" })
     const { data: res, error } = await context.supabase.rpc("craft_item", { _recipe: data.recipe });
     if (error) return { ok: false, reason: error.message };
     return (res ?? { ok: false, reason: "empty" }) as unknown as CraftRes;
+  });
+
+export const fishCast = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ id: z.number().int().min(0), ...point }).parse(input))
+  .handler(async ({ data, context }): Promise<FishRes> => {
+    const { data: res, error } = await context.supabase.rpc("fish_cast", {
+      _spot: data.id,
+      _x: data.x,
+      _y: data.y,
+    });
+    if (error) return { ok: false, reason: error.message };
+    return (res ?? { ok: false, reason: "empty" }) as unknown as FishRes;
+  });
+
+export const usePotion = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ item: z.string().min(1).max(64) }).parse(input))
+  .handler(async ({ data, context }): Promise<PotionRes> => {
+    const { data: res, error } = await context.supabase.rpc("use_potion", { _item: data.item });
+    if (error) return { ok: false, reason: error.message };
+    return (res ?? { ok: false, reason: "empty" }) as unknown as PotionRes;
   });

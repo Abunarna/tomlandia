@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
-import { attackMonster, craftItem, harvestNode } from "@/lib/world.functions";
+import { attackMonster, craftItem, fishCast, harvestNode, usePotion } from "@/lib/world.functions";
 import { browseMarket, buyFromMarket, cancelMarketListing, listOnMarket } from "@/lib/market.functions";
 import type { NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
@@ -138,6 +138,8 @@ function Game() {
       engine.userId = user.id;
       engine.onHarvest = (id, x, y) => harvestNode({ data: { id, x, y } });
       engine.onAttack = (id, x, y) => attackMonster({ data: { id, x, y } });
+      engine.onFish = (id, x, y) => fishCast({ data: { id, x, y } });
+      engine.onPotion = (itemId) => usePotion({ data: { item: itemId } });
       engine.onCraft = (recipe) => craftItem({ data: { recipe } });
       // Phase 10 — the marketplace is a real shared order book.
       engine.onMarketBrowse = () => browseMarket();

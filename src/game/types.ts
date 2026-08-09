@@ -158,5 +158,7 @@ export interface HudSnapshot {
   /** Phase 7 — your display name and how many real players are nearby. */
   name: string;
   nearby: number;
+  /** Phase: active potion damage buff, if any. */
+  buff: { dmg: number; hits: number } | null;
 }
 
