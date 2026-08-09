@@ -43,9 +43,20 @@ export function NpcDialog({
 
   const count = (id: ItemId) => hud.inv.reduce((n, s) => (s && s.id === id ? n + s.qty : n), 0);
 
-  const craftSkills = services.filter((s) => s === "smith" || s === "tailor" || s === "skin");
-  const skillFor = (s: string): "smithing" | "tailoring" | "skinning" =>
-    s === "smith" ? "smithing" : s === "tailor" ? "tailoring" : "skinning";
+  const STATIONS = ["smelt", "forge", "weave", "armor", "skin", "cook", "alchemy"] as const;
+  type Station = (typeof STATIONS)[number];
+  const stationTitle: Record<Station, string> = {
+    smelt: "Smelting",
+    forge: "Weaponsmithing",
+    weave: "Weaving",
+    armor: "Armoursmithing",
+    skin: "Skinning",
+    cook: "Cooking",
+    alchemy: "Alchemy",
+  };
+  const craftStations = services.filter((s): s is Station =>
+    (STATIONS as readonly string[]).includes(s),
+  );
 
   return (
     <div className="pointer-events-auto absolute inset-0 z-20 flex items-end bg-foreground/25 backdrop-blur-[2px]">
