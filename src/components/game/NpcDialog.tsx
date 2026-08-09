@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Coins, Check, X, Hammer, ArrowUpCircle, ChevronDown } from "lucide-react";
 import { MAX_PLUS, NPCS, QUESTS, RECIPES, SHOP_STOCK, item, type NpcRole } from "@/game/data";
-import type { HudSnapshot, ItemId } from "@/game/types";
+import type { HudSnapshot, InvSlot, ItemId } from "@/game/types";
 import { ItemIcon } from "./ItemIcon";
 
 
@@ -11,6 +11,10 @@ export function NpcDialog({
   onClose,
   onBuy,
   onSellAll,
+  onDepositGold,
+  onWithdrawGold,
+  onDepositItem,
+  onWithdrawItem,
   onAccept,
   onClaim,
   onAbandon,
@@ -23,6 +27,10 @@ export function NpcDialog({
   onClose: () => void;
   onBuy: (npc: NpcRole, id: ItemId) => void;
   onSellAll: () => void;
+  onDepositGold: (n: number) => void;
+  onWithdrawGold: (n: number) => void;
+  onDepositItem: (bagIndex: number, qty: number) => void;
+  onWithdrawItem: (bankIndex: number, qty: number) => void;
   onAccept: (id: string) => void;
   onClaim: () => void;
   onAbandon: () => void;
@@ -34,6 +42,7 @@ export function NpcDialog({
   const stock = SHOP_STOCK[npc] ?? [];
   const services = def.services;
   const [openRecipe, setOpenRecipe] = useState<string | null>(null);
+  const [amount, setAmount] = useState("");
 
   const resourceValue = hud.inv.reduce((sum, s) => {
     if (!s) return sum;
@@ -110,6 +119,66 @@ export function NpcDialog({
           </Section>
         )}
 
+
+        {services.includes("bank") && (
+          <Section title="Bank">
+            <div className="rounded-2xl border border-border/70 bg-muted/40 p-3">
+              <div className="flex items-center justify-between text-[11px] font-bold">
+                <span className="text-muted-foreground">
+                  Bag <span className="text-foreground">{hud.gold}g</span>
+                </span>
+                <span className="text-muted-foreground">
+                  Bank <span className="text-foreground">{hud.bank.gold}g</span>
+                </span>
+              </div>
+              <div className="mt-2 flex items-center gap-2">
+                <input
+                  inputMode="numeric"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value.replace(/[^0-9]/g, ""))}
+                  placeholder="Amount"
+                  aria-label="Gold amount"
+                  className="min-w-0 flex-1 rounded-xl border border-border/70 bg-card px-3 py-2 text-xs font-bold text-foreground outline-none"
+                />
+                <button
+                  onClick={() => onDepositGold(Number(amount) || 0)}
+                  className="rounded-xl bg-primary px-3 py-2 text-xs font-bold text-primary-foreground active:scale-95"
+                >
+                  Deposit
+                </button>
+                <button
+                  onClick={() => onWithdrawGold(Number(amount) || 0)}
+                  className="rounded-xl bg-muted px-3 py-2 text-xs font-bold text-muted-foreground active:scale-95"
+                >
+                  Withdraw
+                </button>
+              </div>
+              <div className="mt-2 flex gap-2">
+                <button
+                  onClick={() => onDepositGold(hud.gold)}
+                  className="flex-1 rounded-xl bg-gold px-3 py-1.5 text-[11px] font-bold text-gold-foreground active:scale-95"
+                >
+                  Deposit all
+                </button>
+                <button
+                  onClick={() => onWithdrawGold(hud.bank.gold)}
+                  className="flex-1 rounded-xl bg-muted px-3 py-1.5 text-[11px] font-bold text-muted-foreground active:scale-95"
+                >
+                  Withdraw all
+                </button>
+              </div>
+            </div>
+
+            <p className="pt-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+              Your bag — tap to deposit
+            </p>
+            <ItemGrid slots={hud.inv} onTap={(i, qty) => onDepositItem(i, qty)} />
+            <p className="pt-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+              In the bank — tap to withdraw
+            </p>
+            <ItemGrid slots={hud.bank.items} onTap={(i, qty) => onWithdrawItem(i, qty)} empty="The vault is empty." />
+          </Section>
+        )}
         {services.includes("sell") && (
           <Section title="Trade">
             <p className="text-xs text-muted-foreground">
@@ -322,6 +391,46 @@ function Section({ title, children }: { title: string; children: React.ReactNode
     <div className="mt-3 space-y-1.5">
       <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">{title}</p>
       {children}
+    </div>
+  );
+}
+
+function ItemGrid({
+  slots,
+  onTap,
+  empty,
+}: {
+  slots: (InvSlot | null)[];
+  onTap: (index: number, qty: number) => void;
+  empty?: string;
+}) {
+  const filled = slots.map((s, i) => ({ s, i })).filter((e) => e.s);
+  if (filled.length === 0) {
+    return <p className="text-[11px] text-muted-foreground">{empty ?? "Nothing here."}</p>;
+  }
+  return (
+    <div className="grid grid-cols-4 gap-1.5">
+      {filled.map(({ s, i }) => {
+        const def = item(s!.id);
+        return (
+          <button
+            key={`${i}-${s!.id}`}
+            onClick={() => onTap(i, s!.qty)}
+            className="flex flex-col items-center gap-0.5 rounded-xl border border-border/70 bg-muted/60 p-1 active:scale-95"
+          >
+            <span className="relative block aspect-square w-full">
+              <ItemIcon item={def} className="size-full" />
+              {s!.qty > 1 && (
+                <span className="absolute bottom-0 right-0.5 text-[10px] font-black text-foreground">{s!.qty}</span>
+              )}
+            </span>
+            <span className="w-full truncate text-center text-[9px] font-semibold leading-tight text-muted-foreground">
+              {def.name}
+              {s!.plus ? ` +${s!.plus}` : ""}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }

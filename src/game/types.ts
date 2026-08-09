@@ -106,6 +106,7 @@ export interface SaveState {
   hp: number;
   gold: number;
   inv: (InvSlot | null)[];
+  bank?: { gold: number; items: (InvSlot | null)[] };
   skills: Record<string, Skill>;
   weapon: EquipState | ItemId | null;
   armor: EquipState | ItemId | null;
@@ -136,6 +137,7 @@ export interface HudSnapshot {
   regionLevel: string;
   skills: Record<SkillId, { level: number; xp: number; progress: number; into: number; need: number }>;
   inv: (InvSlot | null)[];
+  bank: { gold: number; items: (InvSlot | null)[] };
   weapon: EquipState | null;
   armor: EquipState | null;
   food: ItemId | null;

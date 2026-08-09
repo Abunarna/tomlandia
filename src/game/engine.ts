@@ -166,6 +166,7 @@ export function clearLegacySave() {
   }
 }
 const INV_SIZE = 20;
+const BANK_SIZE = 60;
 const AUTO_EAT_AT = 0.3;
 /** length of one in-game day, in seconds */
 const DAY_LEN = 480;
@@ -283,6 +284,10 @@ export class GameEngine {
 
   skills = emptySkills();
   inv: (InvSlot | null)[] = new Array(INV_SIZE).fill(null);
+  bank: { gold: number; items: (InvSlot | null)[] } = {
+    gold: 0,
+    items: new Array(BANK_SIZE).fill(null),
+  };
   weapon: EquipState | null = { id: "wooden_club", plus: 0 };
   armor: EquipState | null = { id: "cloth_tunic", plus: 0 };
   food: ItemId | null = null;
@@ -556,6 +561,7 @@ export class GameEngine {
       hp: this.hp,
       gold: this.gold,
       inv: this.inv,
+      bank: this.bank,
       skills: this.skills,
       weapon: this.weapon,
       armor: this.armor,
@@ -629,6 +635,9 @@ export class GameEngine {
       this.gold = s.gold ?? 0;
       this.inv = Array.isArray(s.inv) ? s.inv.slice(0, INV_SIZE) : this.inv;
       while (this.inv.length < INV_SIZE) this.inv.push(null);
+      const bankItems = Array.isArray(s.bank?.items) ? s.bank!.items.slice(0, BANK_SIZE) : [];
+      while (bankItems.length < BANK_SIZE) bankItems.push(null);
+      this.bank = { gold: Math.max(0, Math.floor(s.bank?.gold ?? 0)), items: bankItems };
       if (s.skills) {
         for (const id of SKILL_IDS) {
           const xp = s.skills[id]?.xp;
@@ -713,6 +722,66 @@ export class GameEngine {
     this.emitHud(true);
   }
 
+
+  /* ---------- bank (local mutations only) ---------- */
+
+  depositGold(amount: number) {
+    const amt = Math.min(Math.max(0, Math.floor(amount)), this.gold);
+    if (amt <= 0) return;
+    this.gold -= amt;
+    this.bank.gold += amt;
+    this.syncNow();
+    this.emitHud(true);
+  }
+
+  withdrawGold(amount: number) {
+    const amt = Math.min(Math.max(0, Math.floor(amount)), this.bank.gold);
+    if (amt <= 0) return;
+    this.bank.gold -= amt;
+    this.gold += amt;
+    this.syncNow();
+    this.emitHud(true);
+  }
+
+  private bankAdd(slot: InvSlot, qty: number): boolean {
+    const def = item(slot.id);
+    if (def.stackable) {
+      const existing = this.bank.items.find((s) => s && s.id === slot.id);
+      if (existing) {
+        existing.qty += qty;
+        return true;
+      }
+    }
+    const idx = this.bank.items.findIndex((s) => s === null);
+    if (idx === -1) {
+      this.pushText(this.px, this.py - 50, "Bank full!", "#f2a1a1");
+      return false;
+    }
+    this.bank.items[idx] = { id: slot.id, qty, plus: slot.plus ?? 0 };
+    return true;
+  }
+
+  depositItem(bagIndex: number, qty = 1) {
+    const slot = this.inv[bagIndex];
+    if (!slot) return;
+    const take = Math.min(Math.max(1, Math.floor(qty)), slot.qty);
+    if (!this.bankAdd(slot, take)) return;
+    slot.qty -= take;
+    if (slot.qty <= 0) this.inv[bagIndex] = null;
+    this.syncNow();
+    this.emitHud(true);
+  }
+
+  withdrawItem(bankIndex: number, qty = 1) {
+    const slot = this.bank.items[bankIndex];
+    if (!slot) return;
+    const take = Math.min(Math.max(1, Math.floor(qty)), slot.qty);
+    if (!this.addItem(slot.id, take, slot.plus ?? 0)) return;
+    slot.qty -= take;
+    if (slot.qty <= 0) this.bank.items[bankIndex] = null;
+    this.syncNow();
+    this.emitHud(true);
+  }
 
   equipSlot(index: number) {
     const slot = this.inv[index];
@@ -1753,6 +1822,10 @@ export class GameEngine {
       regionLevel: this.biome.levels,
       skills,
       inv: this.inv.map((s) => (s ? { ...s } : null)),
+      bank: {
+        gold: this.bank.gold,
+        items: this.bank.items.map((s) => (s ? { ...s } : null)),
+      },
       weapon: this.weapon ? { ...this.weapon } : null,
       armor: this.armor ? { ...this.armor } : null,
       food: this.food,

@@ -60,6 +60,7 @@ const EMPTY: HudSnapshot = {
     tailoring: { ...blank },
   },
   inv: new Array(20).fill(null),
+  bank: { gold: 0, items: new Array(60).fill(null) },
   weapon: { id: "wooden_club", plus: 0 },
   armor: { id: "cloth_tunic", plus: 0 },
   food: null,
@@ -434,6 +435,10 @@ function Game() {
           onSellAll={() => {
             engineRef.current?.sellAllResources();
           }}
+          onDepositGold={(n) => engineRef.current?.depositGold(n)}
+          onWithdrawGold={(n) => engineRef.current?.withdrawGold(n)}
+          onDepositItem={(i, q) => engineRef.current?.depositItem(i, q)}
+          onWithdrawItem={(i, q) => engineRef.current?.withdrawItem(i, q)}
           onAccept={(id) => engineRef.current?.acceptQuest(id)}
           onClaim={() => {
             engineRef.current?.claimQuest();

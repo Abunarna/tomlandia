@@ -979,6 +979,7 @@ export interface NpcDef {
   services: (
     | "shop"
     | "sell"
+    | "bank"
     | "quests"
     | "smelt"
     | "forge"
