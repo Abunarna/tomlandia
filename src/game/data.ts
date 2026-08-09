@@ -441,6 +441,141 @@ export function biomeAt(x: number, y: number): BiomeDef {
 
 
 
+
+/* ------------------------------------------------------------------ */
+/* Lakes, jetties & fishing spots                                      */
+/* ------------------------------------------------------------------ */
+
+export type LakeStyle = "fields" | "forest" | "winter" | "evil";
+
+export interface JettyDef {
+  /** fishing spot id — matches the seeded server-side spot table */
+  id: number;
+  /** plank walkway from the shore anchor out to the deck end */
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  /** walkway half-width */
+  hw: number;
+}
+
+export interface LakeDef {
+  key: string;
+  style: LakeStyle;
+  cx: number;
+  cy: number;
+  rx: number;
+  ry: number;
+  /** irregular jittered shoreline, world coords */
+  poly: [number, number][];
+  /** decorative shoreline props (reeds, ice shards, dead trees…) */
+  props: { x: number; y: number; t: number }[];
+  jetties: JettyDef[];
+}
+
+interface LakeSpec {
+  key: string;
+  style: LakeStyle;
+  cx: number;
+  cy: number;
+  rx: number;
+  ry: number;
+  /** shoreline roughness 0..1 */
+  jitter: number;
+  /** outline resolution — fewer points reads as jagged/angular */
+  points: number;
+  /** whole-lake rotation, radians */
+  rot: number;
+  /** angles (radians) the jetties reach out from */
+  jettyAngles: number[];
+}
+
+const LAKE_SPECS: LakeSpec[] = [
+  // Peaceful Fields — soft and rounded, bright and open
+  { key: "fields", style: "fields", cx: 300, cy: 700, rx: 168, ry: 104, jitter: 0.1, points: 26, rot: 0.15, jettyAngles: [-0.55, 2.5] },
+  // Lush Forest — narrow and elongated, shaded by the canopy
+  { key: "forest", style: "forest", cx: 1520, cy: 250, rx: 210, ry: 78, jitter: 0.16, points: 22, rot: -0.42, jettyAngles: [1.25, 4.3] },
+  // Winter Mountain — angular, ice-rimmed
+  { key: "winter", style: "winter", cx: 1150, cy: 1720, rx: 168, ry: 96, jitter: 0.26, points: 13, rot: 0.3, jettyAngles: [-1.05] },
+  // Evil Woods — murky and misshapen
+  { key: "evil", style: "evil", cx: 2480, cy: 1180, rx: 186, ry: 108, jitter: 0.22, points: 17, rot: -0.2, jettyAngles: [2.15] },
+];
+
+/** the same jittered-outline trick the biome patches use, applied to water */
+function lakeOutline(s: LakeSpec, seed: number): [number, number][] {
+  const pts: [number, number][] = [];
+  for (let i = 0; i < s.points; i++) {
+    const a = (i / s.points) * Math.PI * 2;
+    const wob = 1 + (rand01(seed + i * 7.13) - 0.5) * 2 * s.jitter + Math.sin(a * 3 + seed) * s.jitter * 0.4;
+    const lx = Math.cos(a) * s.rx * wob;
+    const ly = Math.sin(a) * s.ry * wob;
+    pts.push([
+      s.cx + lx * Math.cos(s.rot) - ly * Math.sin(s.rot),
+      s.cy + lx * Math.sin(s.rot) + ly * Math.cos(s.rot),
+    ]);
+  }
+  return pts;
+}
+
+/** point on the lake edge at an angle, scaled outward/inward by `k` */
+function lakePoint(s: LakeSpec, a: number, k: number): [number, number] {
+  const lx = Math.cos(a) * s.rx * k;
+  const ly = Math.sin(a) * s.ry * k;
+  return [
+    s.cx + lx * Math.cos(s.rot) - ly * Math.sin(s.rot),
+    s.cy + lx * Math.sin(s.rot) + ly * Math.cos(s.rot),
+  ];
+}
+
+let spotId = 0;
+export const LAKES: LakeDef[] = LAKE_SPECS.map((s, si) => {
+  const seed = 41 + si * 17;
+  const props: { x: number; y: number; t: number }[] = [];
+  const propCount = s.style === "winter" ? 10 : s.style === "evil" ? 7 : 12;
+  for (let i = 0; i < propCount; i++) {
+    const a = (i / propCount) * Math.PI * 2 + rand01(seed + i) * 0.3;
+    const [x, y] = lakePoint(s, a, 0.94 + rand01(seed + i * 3.1) * 0.16);
+    props.push({ x, y, t: rand01(seed + i * 5.7) });
+  }
+  const jetties = s.jettyAngles.map((a) => {
+    const [x1, y1] = lakePoint(s, a, 1.16);
+    const [x2, y2] = lakePoint(s, a, 0.42);
+    return { id: ++spotId, x1, y1, x2, y2, hw: 11 };
+  });
+  return { key: s.key, style: s.style, cx: s.cx, cy: s.cy, rx: s.rx, ry: s.ry, poly: lakeOutline(s, seed), props, jetties };
+});
+
+export interface FishingSpot {
+  id: number;
+  /** deck end of the jetty — where the player stands to cast */
+  x: number;
+  y: number;
+  lake: string;
+}
+
+export const FISHING_SPOTS: FishingSpot[] = LAKES.flatMap((l) =>
+  l.jetties.map((j) => ({ id: j.id, x: j.x2, y: j.y2, lake: l.key })),
+);
+
+/** seconds a cast takes before the catch is rolled */
+export const FISH_CAST_TIME = 3.5;
+
+export interface FishTier {
+  id: ItemId;
+  xp: number;
+  /** catch weight at fishing level 1 / 15 / 40 / 70 / 100 */
+  w: [number, number, number, number, number];
+}
+
+export const FISH_TABLE: FishTier[] = [
+  { id: "river_minnow", xp: 15, w: [70, 45, 25, 12, 5] },
+  { id: "silver_trout", xp: 45, w: [25, 35, 30, 22, 12] },
+  { id: "golden_koi", xp: 140, w: [4, 15, 28, 30, 23] },
+  { id: "deepwater_eel", xp: 380, w: [1, 4, 13, 26, 35] },
+  { id: "starlight_salmon", xp: 900, w: [0, 1, 4, 10, 25] },
+];
+
 export const REGION_NAME = "Peaceful Fields";
 
 /* ------------------------------------------------------------------ */
