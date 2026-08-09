@@ -2426,17 +2426,75 @@ export class GameEngine {
     ctx.fillText("🎣", j.x2, j.y2 - 14 + bob);
   }
 
+  /** gray cobble trade roads linking the towns */
+  private drawRoads(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
+    for (const run of ROAD_RUNS) {
+      const pts = run.pts;
+      let visible = false;
+      for (const [x, y] of pts) {
+        if (x > view.x - 60 && x < view.x + view.w + 60 && y > view.y - 60 && y < view.y + view.h + 60) {
+          visible = true;
+          break;
+        }
+      }
+      if (!visible) continue;
+
+      const trace = () => {
+        ctx.beginPath();
+        ctx.moveTo(pts[0]![0], pts[0]![1]);
+        for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i]![0], pts[i]![1]);
+      };
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      // packed earth shoulder
+      trace();
+      ctx.strokeStyle = "#8c8a86";
+      ctx.lineWidth = run.width + 6;
+      ctx.stroke();
+      // gray cobble bed
+      trace();
+      ctx.strokeStyle = "#a8a5a0";
+      ctx.lineWidth = run.width;
+      ctx.stroke();
+
+      // cobble stones clipped to the road bed
+      ctx.save();
+      trace();
+      ctx.lineWidth = run.width - 4;
+      ctx.strokeStyle = "#000";
+      ctx.stroke();
+      ctx.clip("nonzero");
+      ctx.restore();
+      for (let i = 0; i < pts.length - 1; i++) {
+        const a = pts[i]!;
+        const b = pts[i + 1]!;
+        const len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+        const ux = (b[0] - a[0]) / len;
+        const uy = (b[1] - a[1]) / len;
+        for (let d = 0; d < len; d += 11) {
+          const cxp = a[0] + ux * d;
+          const cyp = a[1] + uy * d;
+          for (const off of [-8, 0, 8]) {
+            const jx = (((d * 13 + off * 7 + i * 5) % 7) - 3) * 0.5;
+            ctx.fillStyle = ((d + off + i) | 0) % 2 === 0 ? "#9b9893" : "#b5b2ac";
+            ctx.fillRect(cxp - uy * off + jx - 2.5, cyp + ux * off + jx - 2, 5, 4);
+          }
+        }
+      }
+    }
+  }
+
   /** dirt roads and cobbled crossroads laid through each town */
   private drawStreets(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
     for (const s of STREETS) {
       if (s.x > view.x + view.w || s.x + s.w < view.x || s.y > view.y + view.h || s.y + s.h < view.y) continue;
-      ctx.fillStyle = "rgba(196,166,124,0.55)";
+      ctx.fillStyle = "#c4a67c";
       ctx.fillRect(s.x, s.y, s.w, s.h);
-      ctx.fillStyle = "rgba(168,138,98,0.35)";
+      ctx.fillStyle = "#a88a62";
       ctx.fillRect(s.x, s.y, s.w, 5);
       ctx.fillRect(s.x, s.y + s.h - 5, s.w, 5);
       // cobbles
-      ctx.fillStyle = "rgba(150,124,92,0.28)";
+      ctx.fillStyle = "#b19470";
       const step = 22;
       for (let x = s.x + 8; x < s.x + s.w - 8; x += step) {
         for (let y = s.y + 8; y < s.y + s.h - 8; y += step) {
@@ -2446,6 +2504,7 @@ export class GameEngine {
       }
     }
   }
+
 
   private drawBuilding(ctx: CanvasRenderingContext2D, b: (typeof BUILDINGS)[number]) {
     const wallTop = b.y + b.h * 0.38;
