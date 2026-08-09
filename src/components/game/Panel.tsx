@@ -31,7 +31,7 @@ export function Panel({
 }) {
   const title = panel === "inventory" ? "Bag" : panel === "skills" ? "Skills" : "Market";
   return (
-    <div className="pointer-events-auto max-h-[52dvh] overflow-y-auto rounded-t-3xl border-t border-border/60 bg-card/95 p-3 shadow-soft backdrop-blur-md">
+    <div className="pointer-events-auto h-[60dvh] overflow-y-auto rounded-t-3xl border-t border-border/60 bg-card/95 p-3 shadow-soft backdrop-blur-md">
       <div className="mb-2 flex items-center justify-between">
         <p className="flex items-center gap-1.5 text-sm font-bold text-foreground">
           {panel === "inventory" ? (

@@ -1,6 +1,6 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Backpack, Hammer, LogOut, Map as MapIcon, Store, Volume2, VolumeX } from "lucide-react";
+import { Backpack, Hammer, Map as MapIcon, Store, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
@@ -82,7 +82,7 @@ const EMPTY: HudSnapshot = {
 
 function Game() {
   const { user } = Route.useRouteContext();
-  const navigate = useNavigate();
+  
   const [username, setUsername] = useState<string>("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<GameEngine | null>(null);
@@ -110,11 +110,7 @@ function Game() {
     [user.id],
   );
 
-  /** Write current progress and wait for the round-trip (used before leaving). */
-  const flushSave = useCallback(async () => {
-    engineRef.current?.save();
-    await pendingSave.current;
-  }, []);
+
 
   // Load the cloud save first, then boot the engine with it.
   useEffect(() => {
@@ -273,13 +269,6 @@ function Game() {
     };
   }, [user.id]);
 
-  const signOut = async () => {
-    await flushSave();
-    // Stop persisting before the session goes away, or later writes 401.
-    engineRef.current?.reset();
-    await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
-  };
 
 
 
@@ -308,11 +297,13 @@ function Game() {
         <div className="flex-1" />
 
         <div className="pointer-events-none flex items-end justify-end gap-3 p-3">
-          <div className="pointer-events-auto flex flex-col gap-2">
-
-            <OverlayButton label={`Sign out of ${username || "your account"}`} active={false} onClick={signOut}>
-              <LogOut className="size-5" />
-            </OverlayButton>
+          {panel && (
+            <div
+              className="fixed inset-0 z-10 pointer-events-auto"
+              onClick={() => setPanel(null)}
+            />
+          )}
+          <div className="pointer-events-auto z-20 flex flex-col gap-2">
             <OverlayButton
               label={hud.soundOn ? "Mute sound" : "Unmute sound"}
               active={hud.soundOn}
@@ -355,24 +346,26 @@ function Game() {
         </div>
 
         {panel && (
-          <Panel
-            panel={panel}
-            hud={hud}
-            onClose={() => setPanel(null)}
-            onEquip={(i) => engineRef.current?.equipSlot(i)}
-            onSell={(i) => engineRef.current?.sellSlot(i)}
-            onUse={(i) => engineRef.current?.useSlot(i)}
-            onBuyListing={(id) => {
-              void engineRef.current?.buyListing(id);
-            }}
-            onCancelListing={(id) => {
-              void engineRef.current?.cancelListing(id);
-            }}
-            onList={(i, qty, price) => {
-              void engineRef.current?.listSlot(i, qty, price);
-            }}
-            suggestPrice={(id) => engineRef.current?.suggestPrice(id) ?? 1}
-          />
+          <div className="z-20">
+            <Panel
+              panel={panel}
+              hud={hud}
+              onClose={() => setPanel(null)}
+              onEquip={(i) => engineRef.current?.equipSlot(i)}
+              onSell={(i) => engineRef.current?.sellSlot(i)}
+              onUse={(i) => engineRef.current?.useSlot(i)}
+              onBuyListing={(id) => {
+                void engineRef.current?.buyListing(id);
+              }}
+              onCancelListing={(id) => {
+                void engineRef.current?.cancelListing(id);
+              }}
+              onList={(i, qty, price) => {
+                void engineRef.current?.listSlot(i, qty, price);
+              }}
+              suggestPrice={(id) => engineRef.current?.suggestPrice(id) ?? 1}
+            />
+          </div>
         )}
       </div>
 
