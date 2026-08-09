@@ -325,6 +325,9 @@ export class GameEngine {
   joystick = { active: false, dx: 0, dy: 0 };
   private onHud: (s: HudSnapshot) => void;
   private hudCd = 0;
+  private fishCd = 0;
+  private fishPending = false;
+  private potionPending = false;
   private saveCd = 30;
 
 
@@ -1036,6 +1039,67 @@ export class GameEngine {
           this.activityProgress = 0;
         }
       }
+    } else if (this.target.type === "fish") {
+      const sp = FISHING_SPOTS.find((f) => f.id === (this.target as { id: number }).id);
+      if (!sp) {
+        this.target = { type: "none" };
+      } else {
+        const d = this.moveToward(sp.x, sp.y, dt);
+        if (d <= 26) {
+          if (this.fishCd > 0) {
+            this.fishCd -= dt;
+            this.activity = "Waiting for a bite";
+            this.activityProgress = 0;
+          } else {
+            this.activity = "Fishing";
+            this.gatherProgress += dt / FISH_CAST_TIME;
+            this.activityProgress = this.gatherProgress;
+            if (Math.random() < dt * 4) {
+              this.parts.push({
+                x: sp.x + (Math.random() - 0.5) * 16,
+                y: sp.y + (Math.random() - 0.5) * 10,
+                vx: (Math.random() - 0.5) * 20,
+                vy: -14 - Math.random() * 12,
+                life: 0.5,
+                color: "#dff4ff",
+                size: 2,
+              });
+            }
+            if (this.gatherProgress >= 1 && !this.fishPending) {
+              this.gatherProgress = 0;
+              this.fishPending = true;
+              const cast: Promise<FishRes> = this.onFish
+                ? this.onFish(sp.id, this.px, this.py)
+                : Promise.resolve({ ok: false, reason: "offline" });
+              void cast
+                .then((res) => {
+                  this.fishPending = false;
+                  // same short breather between catches that nodes use
+                  this.fishCd = 1.2;
+                  if (res.ok && res.item) {
+                    this.applyServerState(res.state);
+                    this.questTick("gather", res.item);
+                    this.pushText(sp.x, sp.y - 24, `+${res.qty ?? 1} ${item(res.item).name}`, "#dff6c9");
+                    this.orbs.push({ x: this.px, y: this.py - 20, life: 0.9 });
+                    if (res.leveled) this.celebrateLevel("fishing");
+                    sfx.play("gather");
+                  } else if (res.reason === "bag_full") {
+                    this.pushText(sp.x, sp.y - 24, "Bag is full", "#f4b0b0");
+                  } else if (res.reason === "too_far") {
+                    this.pushText(sp.x, sp.y - 24, "Stand on the jetty", "#f4b0b0");
+                  }
+                  this.emitHud(true);
+                })
+                .catch(() => {
+                  this.fishPending = false;
+                });
+            }
+          }
+        } else {
+          this.activity = "Walking";
+          this.activityProgress = 0;
+        }
+      }
     } else if (this.target.type === "monster") {
       const m = this.monsters[this.target.id];
       if (!m || m.dead) {
@@ -1073,6 +1137,10 @@ export class GameEngine {
                   this.pushText(m.x, m.y - 24, `${res.dmg ?? 0}`, "#fff0c9");
                   if (typeof res.hp === "number") m.hp = res.hp;
                   if (res.tagged_by !== undefined) m.taggedBy = res.tagged_by ?? null;
+                  if (res.buff) {
+                    const hits = Number(res.buff.hits) || 0;
+                    this.buff = hits > 0 ? { dmg: Number(res.buff.dmg) || 0, hits } : null;
+                  }
                   this.applyServerState(res.state);
 
                   if (res.killed) {
@@ -1425,6 +1493,27 @@ export class GameEngine {
     const slot = this.inv[index];
     if (!slot) return;
     const def = item(slot.id);
+    if (def.kind === "potion") {
+      if (this.potionPending) return;
+      this.potionPending = true;
+      const use: Promise<PotionRes> = this.onPotion
+        ? this.onPotion(slot.id)
+        : Promise.resolve({ ok: false, reason: "offline" });
+      void use
+        .then((res) => {
+          this.potionPending = false;
+          if (!res.ok) return;
+          this.applyServerState(res.state);
+          if (res.buff) this.buff = { dmg: Number(res.buff.dmg) || 0, hits: Number(res.buff.hits) || 0 };
+          this.pushText(this.px, this.py - 46, `+${this.buff?.dmg ?? 0} dmg`, "#e7c7ff");
+          sfx.play("gather");
+          this.emitHud(true);
+        })
+        .catch(() => {
+          this.potionPending = false;
+        });
+      return;
+    }
     if (def.kind !== "food" || !def.heal) return;
     if (this.hp >= this.maxHp) {
       this.food = slot.id;
@@ -1685,6 +1774,7 @@ export class GameEngine {
       soundOn: sfx.enabled,
       name: this.playerName,
       nearby: this.remotes.size,
+      buff: this.buff ? { ...this.buff } : null,
 
     });
   }
