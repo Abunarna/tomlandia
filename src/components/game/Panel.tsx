@@ -95,7 +95,7 @@ function InventoryTab({
               onClick={() => {
                 if (!def) return;
                 if (def.kind === "weapon" || def.kind === "armor") onEquip(i);
-                else if (def.kind === "food") onUse(i);
+                else if (def.kind === "food" || def.kind === "potion") onUse(i);
                 else onSell(i);
               }}
               className="relative aspect-square rounded-xl border border-border/70 bg-muted/60 p-1 active:scale-95"
@@ -115,7 +115,7 @@ function InventoryTab({
         })}
       </div>
       <p className="text-[11px] text-muted-foreground">
-        Tap gear to equip, food to eat, resources to sell. Visit Pip in Grand Haven to sell everything at once.
+        Tap gear to equip, food to eat, potions to drink for a damage boost, resources to sell. Visit Pip in Grand Haven to sell everything at once.
       </p>
     </div>
   );
