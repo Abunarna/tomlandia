@@ -1985,6 +1985,7 @@ export class GameEngine {
         listings: this.listings.map((l) => ({ ...l })),
         log: this.tradeLog.map((l) => ({ ...l })),
         fee: MARKET_FEE,
+        lastSold: { ...this.lastSold },
       },
       soundOn: sfx.enabled,
       name: this.playerName,
