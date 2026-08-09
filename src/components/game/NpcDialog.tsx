@@ -102,7 +102,9 @@ export function NpcDialog({
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-xs font-bold text-foreground">{d.name}</p>
                     <p className="text-[10px] text-muted-foreground">
-                      {d.attack ? `+${d.attack} attack` : d.defense ? `+${d.defense} defense` : d.heal ? `Heals ${d.heal} hp` : "Material"}
+                      {d.attack || d.defense
+                        ? [d.attack ? `+${d.attack} attack` : null, d.defense ? `+${d.defense} defense` : null].filter(Boolean).join(" · ")
+                        : d.heal ? `Heals ${d.heal} hp` : "Material"}
                     </p>
                   </div>
                   <button
@@ -241,13 +243,16 @@ export function NpcDialog({
                     {open && (
                       <div className="mt-2 space-y-2 rounded-xl bg-card/70 p-2.5">
                         <p className="text-[10px] text-muted-foreground">
-                          {out.attack
-                            ? `+${out.attack} attack`
-                            : out.defense
-                              ? `+${out.defense} defense`
-                              : out.heal
-                                ? `Heals ${out.heal} hp`
-                                : "Crafting material"}
+                          {out.attack || out.defense
+                            ? [
+                                out.attack ? `+${out.attack} attack` : null,
+                                out.defense ? `+${out.defense} defense` : null,
+                              ]
+                                .filter(Boolean)
+                                .join(" · ")
+                            : out.heal
+                              ? `Heals ${out.heal} hp`
+                              : "Crafting material"}
                           {" · "}
                           {r.xp} {skill} xp · {r.time}s
                           {lvl < r.req && ` · needs Lv ${r.req}`}

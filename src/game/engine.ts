@@ -861,7 +861,11 @@ export class GameEngine {
     const lvl = this.lvl("combat");
     const w = this.weapon;
     const base = w ? (item(w.id).attack ?? 0) : 0;
-    return Math.round(3 + lvl + statWithPlus(base, w?.plus ?? 0));
+    const a = this.armor;
+    const armorAtk = a ? (item(a.id).attack ?? 0) : 0;
+    return Math.round(
+      3 + lvl + statWithPlus(base, w?.plus ?? 0) + statWithPlus(armorAtk, a?.plus ?? 0),
+    );
   }
 
   get defense() {

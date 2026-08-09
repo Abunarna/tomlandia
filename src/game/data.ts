@@ -109,12 +109,12 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
     def("tungsten_maul", "Tungsten Maul", 1500, "#d3d9e8", "weapon", { attack: 38 }),
     def("sunspire_wand", "Sunspire Wand", 700, "#f5d78a", "weapon", { attack: 22 }),
     // armor
-    def("cloth_tunic", "Cloth Tunic", 18, "#f2c6d8", "armor", { defense: 2, speed: 0.04 }),
-    def("leather_vest", "Leather Vest", 45, "#c98f5a", "armor", { defense: 4, speed: 0.07 }),
-    def("linen_robe", "Linen Robe", 90, "#f0e6c8", "armor", { defense: 6, speed: 0.1 }),
+    def("cloth_tunic", "Cloth Tunic", 18, "#f2c6d8", "armor", { defense: 2, attack: 1, speed: 0.04 }),
+    def("leather_vest", "Leather Vest", 45, "#c98f5a", "armor", { defense: 4, attack: 1, speed: 0.07 }),
+    def("linen_robe", "Linen Robe", 90, "#f0e6c8", "armor", { defense: 6, attack: 2, speed: 0.1 }),
     def("iron_mail", "Iron Mail", 170, "#9aa8bd", "armor", { defense: 9 }),
     def("mithril_plate", "Mithril Plate", 420, "#a8cdee", "armor", { defense: 16 }),
-    def("mystic_robe", "Mystic Robe", 640, "#d5b7f0", "armor", { defense: 21, speed: 0.16 }),
+    def("mystic_robe", "Mystic Robe", 640, "#d5b7f0", "armor", { defense: 21, attack: 7, speed: 0.16 }),
     def("runite_plate", "Runite Plate", 980, "#95e6d6", "armor", { defense: 27 }),
     def("frostguard_plate", "Frostguard Plate", 1600, "#d3d9e8", "armor", { defense: 38 }),
     // food
