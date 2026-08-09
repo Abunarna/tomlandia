@@ -125,13 +125,14 @@ export function NpcDialog({
           </Section>
         )}
 
-        {craftSkills.map((svc) => {
-          const skill = skillFor(svc);
-          const list = RECIPES.filter((r) => r.skill === skill);
-          const lvl = hud.skills[skill].level;
+        {craftStations.map((svc) => {
+          const list = RECIPES.filter((r) => r.station === svc);
+          const stationLvl = Math.max(...list.map((r) => hud.skills[r.skill].level), 0);
           return (
-            <Section key={svc} title={`${skill[0]!.toUpperCase()}${skill.slice(1)} (Lv ${lvl})`}>
+            <Section key={svc} title={`${stationTitle[svc]} (Lv ${stationLvl})`}>
               {list.map((r) => {
+                const skill = r.skill;
+                const lvl = hud.skills[skill].level;
                 const ok = lvl >= r.req && r.inputs.every((i) => count(i.id) >= i.qty);
                 const out = item(r.out);
                 const open = openRecipe === r.id;
