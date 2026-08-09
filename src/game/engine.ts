@@ -2705,12 +2705,10 @@ export class GameEngine {
     ctx.fillRect(cx - 12, b.y + b.h - 30, 24, 30);
   }
 
-  private buildingLabel(ctx: CanvasRenderingContext2D, b: (typeof BUILDINGS)[number]) {
-    ctx.font = "bold 12px ui-rounded, system-ui, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillStyle = "rgba(70,55,70,0.75)";
-    ctx.fillText(b.name, b.x + b.w / 2, b.y - (b.kind === "tower" ? 54 : b.kind === "chapel" ? 48 : 20));
+  private buildingLabel(_ctx: CanvasRenderingContext2D, _b: (typeof BUILDINGS)[number]) {
+    // Building names are intentionally not rendered; only NPCs get labels.
   }
+
 
 
   private drawButterflies(ctx: CanvasRenderingContext2D) {
