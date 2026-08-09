@@ -4,6 +4,8 @@ export type SkillId =
   | "woodcutting"
   | "gathering"
   | "fishing"
+  | "cooking"
+  | "alchemy"
   | "smithing"
   | "skinning"
   | "tailoring";
@@ -14,6 +16,8 @@ export const SKILL_IDS: SkillId[] = [
   "woodcutting",
   "gathering",
   "fishing",
+  "cooking",
+  "alchemy",
   "smithing",
   "skinning",
   "tailoring",
