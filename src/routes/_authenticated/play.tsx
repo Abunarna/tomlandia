@@ -301,11 +301,13 @@ function Game() {
         <div className="flex-1" />
 
         <div className="pointer-events-none flex items-end justify-end gap-3 p-3">
-          <div className="pointer-events-auto flex flex-col gap-2">
-
-            <OverlayButton label={`Sign out of ${username || "your account"}`} active={false} onClick={signOut}>
-              <LogOut className="size-5" />
-            </OverlayButton>
+          {panel && (
+            <div
+              className="fixed inset-0 z-10"
+              onClick={() => setPanel(null)}
+            />
+          )}
+          <div className="pointer-events-auto z-20 flex flex-col gap-2">
             <OverlayButton
               label={hud.soundOn ? "Mute sound" : "Unmute sound"}
               active={hud.soundOn}
@@ -348,24 +350,26 @@ function Game() {
         </div>
 
         {panel && (
-          <Panel
-            panel={panel}
-            hud={hud}
-            onClose={() => setPanel(null)}
-            onEquip={(i) => engineRef.current?.equipSlot(i)}
-            onSell={(i) => engineRef.current?.sellSlot(i)}
-            onUse={(i) => engineRef.current?.useSlot(i)}
-            onBuyListing={(id) => {
-              void engineRef.current?.buyListing(id);
-            }}
-            onCancelListing={(id) => {
-              void engineRef.current?.cancelListing(id);
-            }}
-            onList={(i, qty, price) => {
-              void engineRef.current?.listSlot(i, qty, price);
-            }}
-            suggestPrice={(id) => engineRef.current?.suggestPrice(id) ?? 1}
-          />
+          <div className="z-20">
+            <Panel
+              panel={panel}
+              hud={hud}
+              onClose={() => setPanel(null)}
+              onEquip={(i) => engineRef.current?.equipSlot(i)}
+              onSell={(i) => engineRef.current?.sellSlot(i)}
+              onUse={(i) => engineRef.current?.useSlot(i)}
+              onBuyListing={(id) => {
+                void engineRef.current?.buyListing(id);
+              }}
+              onCancelListing={(id) => {
+                void engineRef.current?.cancelListing(id);
+              }}
+              onList={(i, qty, price) => {
+                void engineRef.current?.listSlot(i, qty, price);
+              }}
+              suggestPrice={(id) => engineRef.current?.suggestPrice(id) ?? 1}
+            />
+          </div>
         )}
       </div>
 
