@@ -152,7 +152,7 @@ function Game() {
         if (NPCS.find((n) => n.id === id)?.services.includes("exchange")) {
           setNpc(null);
           setPanel("market");
-          void engine.refreshMarket();
+          void engineRef.current?.refreshMarket();
           return;
         }
         setPanel(null);
