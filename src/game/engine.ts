@@ -4,6 +4,7 @@ import {
   BIOMES,
   BUILDINGS,
   STREETS,
+  ROAD_RUNS,
   MAX_PLUS,
   MONSTER_DEFS,
   MONSTER_SPAWNS,
@@ -2457,14 +2458,7 @@ export class GameEngine {
       ctx.lineWidth = run.width;
       ctx.stroke();
 
-      // cobble stones clipped to the road bed
-      ctx.save();
-      trace();
-      ctx.lineWidth = run.width - 4;
-      ctx.strokeStyle = "#000";
-      ctx.stroke();
-      ctx.clip("nonzero");
-      ctx.restore();
+      // cobble stones speckled along the road bed
       for (let i = 0; i < pts.length - 1; i++) {
         const a = pts[i]!;
         const b = pts[i + 1]!;
