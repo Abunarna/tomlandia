@@ -76,6 +76,7 @@ const EMPTY: HudSnapshot = {
   soundOn: true,
   name: "Adventurer",
   nearby: 0,
+  buff: null,
 };
 
 
