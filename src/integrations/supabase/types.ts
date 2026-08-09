@@ -14,10 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
+      game_fish: {
+        Row: {
+          item_id: string
+          w1: number
+          w100: number
+          w15: number
+          w40: number
+          w70: number
+          xp: number
+        }
+        Insert: {
+          item_id: string
+          w1: number
+          w100: number
+          w15: number
+          w40: number
+          w70: number
+          xp: number
+        }
+        Update: {
+          item_id?: string
+          w1?: number
+          w100?: number
+          w15?: number
+          w40?: number
+          w70?: number
+          xp?: number
+        }
+        Relationships: []
+      }
+      game_fishing_spots: {
+        Row: {
+          id: number
+          lake: string
+          x: number
+          y: number
+        }
+        Insert: {
+          id: number
+          lake: string
+          x: number
+          y: number
+        }
+        Update: {
+          id?: number
+          lake?: string
+          x?: number
+          y?: number
+        }
+        Relationships: []
+      }
       game_items: {
         Row: {
           attack: number | null
+          boost_hits: number | null
           defense: number | null
+          dmg_boost: number | null
           heal: number | null
           id: string
           kind: string
@@ -27,7 +80,9 @@ export type Database = {
         }
         Insert: {
           attack?: number | null
+          boost_hits?: number | null
           defense?: number | null
+          dmg_boost?: number | null
           heal?: number | null
           id: string
           kind: string
@@ -37,7 +92,9 @@ export type Database = {
         }
         Update: {
           attack?: number | null
+          boost_hits?: number | null
           defense?: number | null
+          dmg_boost?: number | null
           heal?: number | null
           id?: string
           kind?: string
@@ -428,6 +485,10 @@ export type Database = {
         Args: { _data: Json; _stat: string; _which: string }
         Returns: number
       }
+      fish_cast: {
+        Args: { _spot: number; _x: number; _y: number }
+        Returns: Json
+      }
       grant_skill_xp: {
         Args: { _amount: number; _data: Json; _skill: string }
         Returns: Json
@@ -459,6 +520,7 @@ export type Database = {
         Args: { _uid: string; _x: number; _y: number }
         Returns: boolean
       }
+      use_potion: { Args: { _item: string }; Returns: Json }
       xp_level: { Args: { _xp: number }; Returns: number }
     }
     Enums: {
