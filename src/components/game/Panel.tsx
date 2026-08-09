@@ -81,7 +81,7 @@ export function Panel({
   );
 }
 
-function slotLabel(def: ItemDef, plus?: number) {
+function slotLabel(def: ItemDef, plus?: number | undefined) {
   return `${def.name}${plus && plus > 0 ? ` +${plus}` : ""}`;
 }
 
@@ -177,7 +177,7 @@ function ItemActions({
 }: {
   index: number;
   def: ItemDef;
-  plus?: number;
+  plus?: number | undefined;
   qty: number;
   onClose: () => void;
   onEquip: (i: number) => void;
