@@ -151,6 +151,8 @@ function SkillsTab({ hud }: { hud: HudSnapshot }) {
     { id: "woodcutting", name: "Woodcutting" },
     { id: "gathering", name: "Gathering" },
     { id: "fishing", name: "Fishing" },
+    { id: "cooking", name: "Cooking" },
+    { id: "alchemy", name: "Alchemy" },
 
     { id: "smithing", name: "Smithing" },
     { id: "skinning", name: "Skinning" },

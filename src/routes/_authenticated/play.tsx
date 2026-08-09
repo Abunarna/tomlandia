@@ -52,6 +52,8 @@ const EMPTY: HudSnapshot = {
     combat: { ...blank },
     gathering: { ...blank },
     fishing: { ...blank },
+    cooking: { ...blank },
+    alchemy: { ...blank },
 
     smithing: { ...blank },
     skinning: { ...blank },
