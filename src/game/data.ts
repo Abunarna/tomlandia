@@ -1561,7 +1561,10 @@ export function blockedAt(x: number, y: number, pad = 10): boolean {
     for (let i = 0; i < bar.pts.length - 1; i++) {
       const a = bar.pts[i]!;
       const b = bar.pts[i + 1]!;
-      if (distToSeg(x, y, a[0], a[1], b[0], b[1]) < r) return true;
+      if (distToSeg(x, y, a[0], a[1], b[0], b[1]) < r) {
+        if (bar.id === "great-river" && onBridge(x, y, pad)) break;
+        return true;
+      }
     }
   }
   for (const s of SOLID_RECTS) {
