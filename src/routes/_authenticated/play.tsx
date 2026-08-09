@@ -354,6 +354,9 @@ function Game() {
               onEquip={(i) => engineRef.current?.equipSlot(i)}
               onSell={(i) => engineRef.current?.sellSlot(i)}
               onUse={(i) => engineRef.current?.useSlot(i)}
+              onDrop={(i) => engineRef.current?.dropSlot(i)}
+              onSetFood={(i) => engineRef.current?.equipSlot(i)}
+
               onBuyListing={(id) => {
                 void engineRef.current?.buyListing(id);
               }}

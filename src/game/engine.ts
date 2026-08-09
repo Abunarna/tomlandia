@@ -702,6 +702,18 @@ export class GameEngine {
     this.emitHud(true);
   }
 
+  /** Discard a stack outright — local mutation, no gold, no server round-trip. */
+  dropSlot(index: number) {
+    const slot = this.inv[index];
+    if (!slot) return;
+    const def = item(slot.id);
+    this.inv[index] = null;
+    this.pushText(this.px, this.py - 40, `Dropped ${def.name}`, "#cbb9a4");
+    this.syncNow();
+    this.emitHud(true);
+  }
+
+
   equipSlot(index: number) {
     const slot = this.inv[index];
     if (!slot) return;
