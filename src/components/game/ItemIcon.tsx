@@ -120,6 +120,30 @@ const Tonic = ({ color }: ShapeProps) => (
   </>
 );
 
+const Fish = ({ color }: ShapeProps) => (
+  <>
+    <path
+      d="M3.5 12c3-4.5 7-6.5 11-6.5 2.6 0 4.6.9 6 2.3-1.4 1.4-2 2.7-2 4.2s.6 2.8 2 4.2c-1.4 1.4-3.4 2.3-6 2.3-4 0-8-2-11-6.5z"
+      fill={color}
+      stroke={STROKE}
+      strokeWidth="1.2"
+      strokeLinejoin="round"
+    />
+    <path d="M3.5 12 7 9.5v5L3.5 12z" fill={color} stroke={STROKE} strokeWidth="1.1" strokeLinejoin="round" />
+    <circle cx="16.5" cy="10.5" r="1" fill={STROKE} />
+    <path d="M9 8.8c1.6-.9 3.2-1.3 4.8-1.3" stroke={LIGHT} strokeWidth="1.2" strokeLinecap="round" fill="none" />
+  </>
+);
+
+const Potion = ({ color }: ShapeProps) => (
+  <>
+    <path d="M9.5 2.5h5v3.2l2.6 4A6 6 0 0 1 12.3 21h-.6A6 6 0 0 1 6.9 9.7l2.6-4V2.5z" fill={color} stroke={STROKE} strokeWidth="1.2" strokeLinejoin="round" />
+    <rect x="8.8" y="1.5" width="6.4" height="2.4" rx="1.2" fill={LIGHT} stroke={STROKE} strokeWidth="1" />
+    <path d="M8.6 13.5c2.4 1.2 4.4 1.2 6.8 0" stroke={LIGHT} strokeWidth="1.2" fill="none" strokeLinecap="round" />
+    <circle cx="10.6" cy="17" r="1" fill={LIGHT} />
+  </>
+);
+
 const SHAPES: Record<Exclude<ItemFamily, "weapon" | "armor">, (p: ShapeProps) => React.ReactElement> = {
   ore: Ore,
   log: Log,
@@ -135,7 +159,10 @@ const SHAPES: Record<Exclude<ItemFamily, "weapon" | "armor">, (p: ShapeProps) =>
   pie: Pie,
   stew: Stew,
   tonic: Tonic,
+  fish: Fish,
+  potion: Potion,
 };
+
 
 /** Lucide gear badge — the same treatment the equipment slots use. */
 export function GearBadge({

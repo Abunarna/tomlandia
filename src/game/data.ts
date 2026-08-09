@@ -20,6 +20,14 @@ const FAMILY_GROUPS: Record<string, string[]> = {
   pie: ["berry_pie"],
   stew: ["hearty_stew"],
   tonic: ["frost_tonic"],
+  fish: ["river_minnow", "silver_trout", "golden_koi", "deepwater_eel", "starlight_salmon"],
+  potion: [
+    "minor_venom_draught",
+    "goblins_fury_tonic",
+    "serpents_bite_elixir",
+    "shadow_venom",
+    "frostfire_brew",
+  ],
 };
 
 const FAMILY_BY_ID: Record<string, ItemFamily> = Object.fromEntries(
@@ -114,6 +122,19 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
     def("berry_pie", "Berry Pie", 34, "#f19bb0", "food", { heal: 45 }),
     def("hearty_stew", "Hearty Stew", 90, "#e0a070", "food", { heal: 120 }),
     def("frost_tonic", "Frost Tonic", 180, "#a9d8e6", "food", { heal: 300 }),
+    def("phoenix_fillet", "Phoenix Fillet", 700, "#f59a5c", "food", { heal: 650 }),
+    // fish
+    def("river_minnow", "River Minnow", 8, "#9fc9d8", "resource"),
+    def("silver_trout", "Silver Trout", 24, "#c8d6e0", "resource"),
+    def("golden_koi", "Golden Koi", 65, "#f4c05e", "resource"),
+    def("deepwater_eel", "Deepwater Eel", 150, "#7b8fb0", "resource"),
+    def("starlight_salmon", "Starlight Salmon", 320, "#f0a3b6", "resource"),
+    // potions
+    def("minor_venom_draught", "Minor Venom Draught", 35, "#a7d97f", "potion", { dmgBoost: 2, boostHits: 5 }),
+    def("goblins_fury_tonic", "Goblin's Fury Tonic", 90, "#e08a5c", "potion", { dmgBoost: 5, boostHits: 8 }),
+    def("serpents_bite_elixir", "Serpent's Bite Elixir", 220, "#6fc8a0", "potion", { dmgBoost: 10, boostHits: 10 }),
+    def("shadow_venom", "Shadow Venom", 480, "#9b7ac0", "potion", { dmgBoost: 18, boostHits: 12 }),
+    def("frostfire_brew", "Frostfire Brew", 900, "#8fd6ee", "potion", { dmgBoost: 30, boostHits: 15 }),
   ].map((d) => [d.id, d]),
 );
 
