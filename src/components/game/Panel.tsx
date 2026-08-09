@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { Backpack, Hammer, Store, X } from "lucide-react";
 import { ITEMS } from "@/game/data";
-import type { HudSnapshot } from "@/game/types";
+import type { HudSnapshot, ItemDef } from "@/game/types";
 import { GearBadge, ItemIcon } from "./ItemIcon";
 import { MarketTab } from "./Market";
 
@@ -13,6 +14,8 @@ export function Panel({
   onEquip,
   onSell,
   onUse,
+  onDrop,
+  onSetFood,
   onBuyListing,
   onCancelListing,
   onList,
@@ -24,11 +27,14 @@ export function Panel({
   onEquip: (i: number) => void;
   onSell: (i: number) => void;
   onUse: (i: number) => void;
+  onDrop: (i: number) => void;
+  onSetFood: (i: number) => void;
   onBuyListing: (id: string) => void;
   onCancelListing: (id: string) => void;
   onList: (index: number, qty: number, price: number) => void;
   suggestPrice: (itemId: string) => number;
 }) {
+
   const title = panel === "inventory" ? "Bag" : panel === "skills" ? "Skills" : "Market";
   return (
     <div className="pointer-events-auto h-[60dvh] overflow-y-auto rounded-t-3xl border-t border-border/60 bg-card/95 p-3 shadow-soft backdrop-blur-md">
