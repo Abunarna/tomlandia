@@ -2127,7 +2127,7 @@ export class GameEngine {
       } else {
         if (p.t > 0.5) {
           // dead tree
-          ctx.strokeStyle = "#3a2d४6".replace("४", "4");
+          ctx.strokeStyle = "#3a2d46";
           ctx.lineWidth = 4;
           ctx.beginPath();
           ctx.moveTo(p.x, p.y + 4);
