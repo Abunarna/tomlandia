@@ -25,6 +25,10 @@ import {
   NPC_ICONS,
   type NpcDef,
   type NpcRole,
+  LAKES,
+  FISHING_SPOTS,
+  FISH_CAST_TIME,
+  type LakeDef,
 } from "./data";
 import { TILE_H, TILE_W } from "./data";
 import { levelFromXp } from "./progression";
@@ -87,6 +91,27 @@ export interface DamageRes {
   leveled?: boolean;
   tagged_by?: string | null;
   respawn_at?: string | null;
+  buff?: { dmg: number; hits: number };
+  state?: ServerState;
+}
+
+/** Authoritative reply from the fishing routine. */
+export interface FishRes {
+  ok: boolean;
+  reason?: string;
+  item?: ItemId;
+  qty?: number;
+  skill?: SkillId;
+  xp?: number;
+  leveled?: boolean;
+  state?: ServerState;
+}
+
+/** Authoritative reply from drinking a potion. */
+export interface PotionRes {
+  ok: boolean;
+  reason?: string;
+  buff?: { dmg: number; hits: number; item?: string };
   state?: ServerState;
 }
 
@@ -233,7 +258,8 @@ type Target =
   | { type: "point"; x: number; y: number }
   | { type: "node"; id: number }
   | { type: "monster"; id: number }
-  | { type: "npc"; id: NpcRole };
+  | { type: "npc"; id: NpcRole }
+  | { type: "fish"; id: number };
 
 const emptySkills = (): Record<SkillId, { xp: number }> =>
   SKILL_IDS.reduce((acc, id) => ({ ...acc, [id]: { xp: 0 } }), {} as Record<SkillId, { xp: number }>);
@@ -365,6 +391,13 @@ export class GameEngine {
   onAttack: ((id: number, x: number, y: number) => Promise<DamageRes>) | null = null;
   /** Server-side crafting. The server checks materials and grants the result. */
   onCraft: ((recipe: string) => Promise<CraftRes>) | null = null;
+  /** Server-side fishing cast. The server rolls the catch from the shared table. */
+  onFish: ((id: number, x: number, y: number) => Promise<FishRes>) | null = null;
+  /** Server-side potion use. The server stores the damage buff on our save. */
+  onPotion: ((itemId: string) => Promise<PotionRes>) | null = null;
+
+  /** Active damage buff from a potion — mirrored from the server. */
+  buff: { dmg: number; hits: number } | null = null;
 
   /** Mirror authoritative node rows (snapshot or realtime) into the world. */
   applyNodeRows(rows: { id: number; charges: number; respawn_at: string | null }[]) {
@@ -746,6 +779,10 @@ export class GameEngine {
       if (n.depleted) continue;
       const d = Math.hypot(n.x - wx, n.y - wy - 10);
       if (d < 40 && (!best || d < best.d)) best = { d, t: { type: "node", id: n.id } };
+    }
+    for (const sp of FISHING_SPOTS) {
+      const d = Math.hypot(sp.x - wx, sp.y - wy);
+      if (d < 42 && (!best || d < best.d)) best = { d, t: { type: "fish", id: sp.id } };
     }
     for (const npc of NPCS) {
       const d = Math.hypot(npc.x - wx, npc.y - wy - 8);
