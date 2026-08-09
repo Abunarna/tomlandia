@@ -38,6 +38,7 @@ import { sfx } from "./audio";
 import {
   MARKET_FEE,
   feeFor,
+  priceKey,
   suggestedPrice,
   tradeText,
   type BrowseRes,
