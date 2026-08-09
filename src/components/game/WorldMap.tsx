@@ -6,6 +6,7 @@ import {
   BIOMES,
   BUILDINGS,
   STREETS,
+  ROAD_RUNS,
   NPCS,
   NPC_ICONS,
   WORLD_H,
@@ -321,6 +322,17 @@ export function WorldMap({ position, onClose }: Props) {
               opacity={0.95}
             />
           ))}
+          {ROAD_RUNS.map((r, i) => (
+            <path
+              key={`road-${i}`}
+              d={r.pts.map(([x, y], k) => `${k === 0 ? "M" : "L"}${sx(x)},${sy(y)}`).join(" ")}
+              fill="none"
+              stroke="#a8a5a0"
+              strokeWidth={Math.max(1.5, r.width * scale)}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          ))}
           {BRIDGES.map((br) => (
             <rect
               key={br.id}
@@ -367,7 +379,7 @@ export function WorldMap({ position, onClose }: Props) {
               top: sy(s.y),
               width: Math.max(2, s.w * scale),
               height: Math.max(2, s.h * scale),
-              background: "rgba(196,166,124,0.65)",
+              background: "#c4a67c",
             }}
           />
         ))}
