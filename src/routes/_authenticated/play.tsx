@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Backpack, Hammer, Map as MapIcon, Store, Volume2, VolumeX } from "lucide-react";
+import { Backpack, Hammer, Map as MapIcon, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
@@ -325,16 +325,6 @@ function Game() {
               onClick={() => setMapOpen(true)}
             >
               <MapIcon className="size-5" />
-            </OverlayButton>
-            <OverlayButton
-              label="Market"
-              active={panel === "market"}
-              onClick={() => {
-                setPanel((p) => (p === "market" ? null : "market"));
-                void engineRef.current?.refreshMarket();
-              }}
-            >
-              <Store className="size-5" />
             </OverlayButton>
             <OverlayButton
               label="Bag"
