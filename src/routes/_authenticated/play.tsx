@@ -110,11 +110,7 @@ function Game() {
     [user.id],
   );
 
-  /** Write current progress and wait for the round-trip (used before leaving). */
-  const flushSave = useCallback(async () => {
-    engineRef.current?.save();
-    await pendingSave.current;
-  }, []);
+
 
   // Load the cloud save first, then boot the engine with it.
   useEffect(() => {
