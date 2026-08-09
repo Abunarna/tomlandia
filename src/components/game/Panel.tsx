@@ -27,7 +27,7 @@ export function Panel({
   onUse: (i: number) => void;
   onDrop: (i: number) => void;
   onSetFood: (i: number) => void;
-  onBuyListing: (id: string) => void;
+  onBuyListing: (id: string, qty: number) => void;
   onCancelListing: (id: string) => void;
   onList: (index: number, qty: number, price: number) => void;
   suggestPrice: (itemId: string) => number;
