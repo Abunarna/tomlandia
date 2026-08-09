@@ -299,7 +299,7 @@ function Game() {
         <div className="pointer-events-none flex items-end justify-end gap-3 p-3">
           {panel && (
             <div
-              className="fixed inset-0 z-10"
+              className="fixed inset-0 z-10 pointer-events-auto"
               onClick={() => setPanel(null)}
             />
           )}
