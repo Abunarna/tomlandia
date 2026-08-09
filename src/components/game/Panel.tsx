@@ -58,7 +58,14 @@ export function Panel({
         </button>
       </div>
       {panel === "inventory" ? (
-        <InventoryTab hud={hud} onEquip={onEquip} onSell={onSell} onUse={onUse} />
+        <InventoryTab
+          hud={hud}
+          onEquip={onEquip}
+          onSell={onSell}
+          onUse={onUse}
+          onDrop={onDrop}
+          onSetFood={onSetFood}
+        />
       ) : panel === "skills" ? (
         <SkillsTab hud={hud} />
       ) : (
@@ -74,25 +81,36 @@ export function Panel({
   );
 }
 
+function slotLabel(def: ItemDef, plus?: number) {
+  return `${def.name}${plus && plus > 0 ? ` +${plus}` : ""}`;
+}
 
 function InventoryTab({
   hud,
   onEquip,
   onSell,
   onUse,
+  onDrop,
+  onSetFood,
 }: {
   hud: HudSnapshot;
   onEquip: (i: number) => void;
   onSell: (i: number) => void;
   onUse: (i: number) => void;
+  onDrop: (i: number) => void;
+  onSetFood: (i: number) => void;
 }) {
+  const [selected, setSelected] = useState<number | null>(null);
+  const sel = selected != null ? hud.inv[selected] : null;
+  const selDef = sel ? ITEMS[sel.id] : null;
+
   return (
     <div className="space-y-3">
       <div className="flex gap-2">
         <EquipSlot kind="weapon" eq={hud.weapon} label="Weapon" />
         <EquipSlot kind="armor" eq={hud.armor} label="Armor" />
       </div>
-      <div className="grid grid-cols-5 gap-1.5">
+      <div className="grid grid-cols-4 gap-1.5">
         {hud.inv.map((slot, i) => {
           const def = slot ? ITEMS[slot.id] : null;
           return (
@@ -100,32 +118,181 @@ function InventoryTab({
               key={i}
               onClick={() => {
                 if (!def) return;
-                if (def.kind === "weapon" || def.kind === "armor") onEquip(i);
-                else if (def.kind === "food" || def.kind === "potion") onUse(i);
-                else onSell(i);
+                setSelected(i);
               }}
-              className="relative aspect-square rounded-xl border border-border/70 bg-muted/60 p-1 active:scale-95"
+              className="flex flex-col items-center gap-0.5 rounded-xl border border-border/70 bg-muted/60 p-1 active:scale-95"
             >
-              {def && (
-                <>
-                  <ItemIcon item={def} className="size-full" />
-                  {slot!.qty > 1 && (
-                    <span className="absolute bottom-0 right-1 text-[10px] font-black text-foreground">
-                      {slot!.qty}
-                    </span>
-                  )}
-                </>
-              )}
+              <span className="relative block aspect-square w-full">
+                {def && (
+                  <>
+                    <ItemIcon item={def} className="size-full" />
+                    {slot!.qty > 1 && (
+                      <span className="absolute bottom-0 right-0.5 text-[10px] font-black text-foreground">
+                        {slot!.qty}
+                      </span>
+                    )}
+                  </>
+                )}
+              </span>
+              <span className="w-full truncate text-center text-[9px] font-semibold leading-tight text-muted-foreground">
+                {def ? slotLabel(def, slot!.plus) : ""}
+              </span>
             </button>
           );
         })}
       </div>
       <p className="text-[11px] text-muted-foreground">
-        Tap gear to equip, food to eat, potions to drink for a damage boost, resources to sell. Visit Pip in Grand Haven to sell everything at once.
+        Tap an item to choose what to do with it. Visit Pip in Grand Haven to sell everything at once.
       </p>
+
+      {selected != null && sel && selDef && (
+        <ItemActions
+          index={selected}
+          def={selDef}
+          plus={sel.plus}
+          qty={sel.qty}
+          onClose={() => setSelected(null)}
+          onEquip={onEquip}
+          onSell={onSell}
+          onUse={onUse}
+          onDrop={onDrop}
+          onSetFood={onSetFood}
+        />
+      )}
     </div>
   );
 }
+
+function ItemActions({
+  index,
+  def,
+  plus,
+  qty,
+  onClose,
+  onEquip,
+  onSell,
+  onUse,
+  onDrop,
+  onSetFood,
+}: {
+  index: number;
+  def: ItemDef;
+  plus?: number;
+  qty: number;
+  onClose: () => void;
+  onEquip: (i: number) => void;
+  onSell: (i: number) => void;
+  onUse: (i: number) => void;
+  onDrop: (i: number) => void;
+  onSetFood: (i: number) => void;
+}) {
+  const [examine, setExamine] = useState(false);
+  const gear = def.kind === "weapon" || def.kind === "armor";
+  const run = (fn: (i: number) => void) => {
+    fn(index);
+    onClose();
+  };
+
+  const stats: { label: string; value: string }[] = [];
+  if (def.attack != null) stats.push({ label: "Attack", value: `+${def.attack}` });
+  if (def.defense != null) stats.push({ label: "Defense", value: `+${def.defense}` });
+  if (def.heal != null) stats.push({ label: "Heals", value: `${def.heal} hp` });
+  if (def.dmgBoost != null)
+    stats.push({
+      label: "Damage boost",
+      value: `+${def.dmgBoost}${def.boostHits != null ? ` for ${def.boostHits} hits` : ""}`,
+    });
+  if (def.value != null) stats.push({ label: "Value", value: `${def.value}g each` });
+
+  return (
+    <div
+      className="fixed inset-0 z-40 grid place-items-center bg-background/80 p-6 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-xs rounded-3xl border border-border/60 bg-card p-5 shadow-soft"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center gap-3">
+          <span className="block size-10 shrink-0">
+            <ItemIcon item={def} className="size-full" />
+          </span>
+          <div className="min-w-0">
+            <p className="truncate font-display text-base font-bold text-foreground">
+              {slotLabel(def, plus)}
+            </p>
+            <p className="text-[11px] capitalize text-muted-foreground">
+              {def.kind}
+              {qty > 1 ? ` · ${qty} held` : ""}
+            </p>
+          </div>
+        </div>
+
+        {examine && (
+          <div className="mt-3 space-y-1 rounded-2xl border border-border/60 bg-muted/40 p-3">
+            {stats.length === 0 ? (
+              <p className="text-[11px] text-muted-foreground">No notable stats.</p>
+            ) : (
+              stats.map((s) => (
+                <div key={s.label} className="flex justify-between text-[11px]">
+                  <span className="text-muted-foreground">{s.label}</span>
+                  <span className="font-bold text-foreground">{s.value}</span>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        <div className="mt-4 space-y-2">
+          {gear && <ActionButton primary label="Equip" onClick={() => run(onEquip)} />}
+          {def.kind === "food" && (
+            <>
+              <ActionButton primary label="Eat now" onClick={() => run(onUse)} />
+              <ActionButton label="Set as auto-snack" onClick={() => run(onSetFood)} />
+            </>
+          )}
+          {def.kind === "potion" && <ActionButton primary label="Drink" onClick={() => run(onUse)} />}
+          <ActionButton label={`Sell (${def.value * qty}g)`} onClick={() => run(onSell)} />
+          <ActionButton label="Drop" onClick={() => run(onDrop)} />
+          <ActionButton
+            label={examine ? "Hide details" : "Examine"}
+            onClick={() => setExamine((v) => !v)}
+          />
+          <button
+            onClick={onClose}
+            className="w-full rounded-2xl px-4 py-2.5 text-sm font-semibold text-muted-foreground"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ActionButton({
+  label,
+  onClick,
+  primary,
+}: {
+  label: string;
+  onClick: () => void;
+  primary?: boolean;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full rounded-2xl px-4 py-2.5 text-sm font-semibold active:scale-[0.98] ${
+        primary
+          ? "bg-primary text-primary-foreground"
+          : "border border-border/60 bg-muted/40 text-foreground"
+      }`}
+    >
+      {label}
+    </button>
+  );
+}
+
 
 function EquipSlot({
   kind,
