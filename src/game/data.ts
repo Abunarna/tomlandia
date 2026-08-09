@@ -868,7 +868,7 @@ export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
 
 export interface Recipe {
   id: string;
-  skill: Extract<SkillId, "smithing" | "tailoring" | "skinning">;
+  skill: Extract<SkillId, "smithing" | "tailoring" | "skinning" | "cooking" | "alchemy">;
   out: ItemId;
   outQty: number;
   inputs: { id: ItemId; qty: number }[];
@@ -886,25 +886,39 @@ export const RECIPES: Recipe[] = [
   { id: "tungsten_bar", skill: "smithing", out: "tungsten_bar", outQty: 1, inputs: [{ id: "tungsten_ore", qty: 2 }, { id: "runite_bar", qty: 1 }], req: 100, xp: 620, time: 3 },
   // Smithing — bar to gear
   { id: "copper_sword", skill: "smithing", out: "copper_sword", outQty: 1, inputs: [{ id: "copper_bar", qty: 3 }], req: 5, xp: 90, time: 2.4 },
+  { id: "bronze_dagger", skill: "smithing", out: "bronze_dagger", outQty: 1, inputs: [{ id: "copper_bar", qty: 2 }, { id: "willow_logs", qty: 1 }, { id: "goblin_charm", qty: 1 }], req: 3, xp: 60, time: 2.2 },
+  { id: "sunspire_wand", skill: "smithing", out: "sunspire_wand", outQty: 1, inputs: [{ id: "mithril_bar", qty: 2 }, { id: "willow_logs", qty: 2 }, { id: "feather", qty: 2 }], req: 45, xp: 640, time: 3 },
   { id: "steel_sword", skill: "smithing", out: "steel_sword", outQty: 1, inputs: [{ id: "iron_bar", qty: 3 }, { id: "oak_logs", qty: 1 }], req: 20, xp: 220, time: 2.6 },
   { id: "iron_mail", skill: "smithing", out: "iron_mail", outQty: 1, inputs: [{ id: "iron_bar", qty: 4 }], req: 24, xp: 260, time: 2.8 },
-  { id: "mithril_blade", skill: "smithing", out: "mithril_blade", outQty: 1, inputs: [{ id: "mithril_bar", qty: 3 }, { id: "palm_logs", qty: 1 }], req: 45, xp: 620, time: 3 },
+  { id: "mithril_blade", skill: "smithing", out: "mithril_blade", outQty: 1, inputs: [{ id: "mithril_bar", qty: 3 }, { id: "palm_logs", qty: 1 }, { id: "maple_logs", qty: 1 }], req: 45, xp: 620, time: 3 },
   { id: "mithril_plate", skill: "smithing", out: "mithril_plate", outQty: 1, inputs: [{ id: "mithril_bar", qty: 4 }], req: 50, xp: 700, time: 3.2 },
   { id: "runite_greatsword", skill: "smithing", out: "runite_greatsword", outQty: 1, inputs: [{ id: "runite_bar", qty: 4 }, { id: "frostpine_logs", qty: 1 }], req: 75, xp: 1500, time: 3.4 },
   { id: "runite_plate", skill: "smithing", out: "runite_plate", outQty: 1, inputs: [{ id: "runite_bar", qty: 5 }], req: 80, xp: 1700, time: 3.6 },
-  { id: "tungsten_maul", skill: "smithing", out: "tungsten_maul", outQty: 1, inputs: [{ id: "tungsten_bar", qty: 4 }], req: 105, xp: 2600, time: 3.8 },
+  { id: "tungsten_maul", skill: "smithing", out: "tungsten_maul", outQty: 1, inputs: [{ id: "tungsten_bar", qty: 4 }, { id: "cursed_bark", qty: 1 }], req: 105, xp: 2600, time: 3.8 },
   { id: "frostguard_plate", skill: "smithing", out: "frostguard_plate", outQty: 1, inputs: [{ id: "tungsten_bar", qty: 5 }, { id: "frost_pelt", qty: 2 }], req: 110, xp: 3000, time: 4 },
   // Skinning — hides to leather
   { id: "light_leather", skill: "skinning", out: "light_leather", outQty: 1, inputs: [{ id: "raw_hide", qty: 3 }], req: 1, xp: 30, time: 1.6 },
   { id: "thick_leather", skill: "skinning", out: "thick_leather", outQty: 1, inputs: [{ id: "thick_hide", qty: 3 }], req: 25, xp: 110, time: 2 },
   { id: "shadow_leather", skill: "skinning", out: "shadow_leather", outQty: 1, inputs: [{ id: "shadow_pelt", qty: 3 }, { id: "scale_hide", qty: 1 }], req: 65, xp: 460, time: 2.4 },
   // Tailoring
-  { id: "linen_cloth", skill: "tailoring", out: "linen_cloth", outQty: 1, inputs: [{ id: "flax", qty: 3 }], req: 1, xp: 26, time: 1.6 },
+  { id: "linen_cloth", skill: "tailoring", out: "linen_cloth", outQty: 1, inputs: [{ id: "flax", qty: 3 }, { id: "meadow_berries", qty: 1 }], req: 1, xp: 26, time: 1.6 },
   { id: "herb_weave", skill: "tailoring", out: "herb_weave", outQty: 1, inputs: [{ id: "forest_herbs", qty: 3 }, { id: "linen_cloth", qty: 1 }], req: 22, xp: 120, time: 2 },
-  { id: "mystic_cloth", skill: "tailoring", out: "mystic_cloth", outQty: 1, inputs: [{ id: "gloomcap", qty: 2 }, { id: "herb_weave", qty: 2 }], req: 60, xp: 520, time: 2.4 },
+  { id: "mystic_cloth", skill: "tailoring", out: "mystic_cloth", outQty: 1, inputs: [{ id: "gloomcap", qty: 2 }, { id: "herb_weave", qty: 2 }, { id: "desert_bloom", qty: 1 }], req: 60, xp: 520, time: 2.4 },
   { id: "leather_vest", skill: "tailoring", out: "leather_vest", outQty: 1, inputs: [{ id: "light_leather", qty: 3 }], req: 6, xp: 90, time: 2.2 },
   { id: "linen_robe", skill: "tailoring", out: "linen_robe", outQty: 1, inputs: [{ id: "linen_cloth", qty: 3 }, { id: "light_leather", qty: 1 }], req: 14, xp: 180, time: 2.4 },
-  { id: "mystic_robe", skill: "tailoring", out: "mystic_robe", outQty: 1, inputs: [{ id: "mystic_cloth", qty: 3 }, { id: "shadow_leather", qty: 1 }], req: 66, xp: 900, time: 3 },
+  { id: "mystic_robe", skill: "tailoring", out: "mystic_robe", outQty: 1, inputs: [{ id: "mystic_cloth", qty: 3 }, { id: "shadow_leather", qty: 1 }, { id: "frost_lichen", qty: 1 }], req: 66, xp: 900, time: 3 },
+  // Cooking
+  { id: "honey_bun", skill: "cooking", out: "honey_bun", outQty: 1, inputs: [{ id: "river_minnow", qty: 2 }], req: 1, xp: 30, time: 1.6 },
+  { id: "berry_pie", skill: "cooking", out: "berry_pie", outQty: 1, inputs: [{ id: "silver_trout", qty: 2 }, { id: "feather", qty: 1 }], req: 15, xp: 110, time: 2 },
+  { id: "hearty_stew", skill: "cooking", out: "hearty_stew", outQty: 1, inputs: [{ id: "golden_koi", qty: 2 }, { id: "goblin_charm", qty: 1 }], req: 40, xp: 340, time: 2.4 },
+  { id: "frost_tonic", skill: "cooking", out: "frost_tonic", outQty: 1, inputs: [{ id: "deepwater_eel", qty: 2 }, { id: "thick_leather", qty: 1 }], req: 70, xp: 900, time: 2.8 },
+  { id: "phoenix_fillet", skill: "cooking", out: "phoenix_fillet", outQty: 1, inputs: [{ id: "starlight_salmon", qty: 3 }, { id: "frost_pelt", qty: 1 }], req: 100, xp: 2200, time: 3.2 },
+  // Alchemy
+  { id: "minor_venom_draught", skill: "alchemy", out: "minor_venom_draught", outQty: 1, inputs: [{ id: "raw_hide", qty: 2 }], req: 1, xp: 40, time: 1.8 },
+  { id: "goblins_fury_tonic", skill: "alchemy", out: "goblins_fury_tonic", outQty: 1, inputs: [{ id: "goblin_charm", qty: 2 }, { id: "thick_hide", qty: 1 }], req: 20, xp: 180, time: 2.2 },
+  { id: "serpents_bite_elixir", skill: "alchemy", out: "serpents_bite_elixir", outQty: 1, inputs: [{ id: "scale_hide", qty: 2 }], req: 45, xp: 520, time: 2.6 },
+  { id: "shadow_venom", skill: "alchemy", out: "shadow_venom", outQty: 1, inputs: [{ id: "shadow_pelt", qty: 2 }, { id: "feather", qty: 1 }], req: 75, xp: 1400, time: 3 },
+  { id: "frostfire_brew", skill: "alchemy", out: "frostfire_brew", outQty: 1, inputs: [{ id: "frost_pelt", qty: 2 }, { id: "goblin_charm", qty: 1 }], req: 105, xp: 3000, time: 3.4 },
 ];
 
 /* ------------------------------------------------------------------ */
