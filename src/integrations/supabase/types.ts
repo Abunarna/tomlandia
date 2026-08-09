@@ -241,9 +241,10 @@ export type Database = {
       market_listings: {
         Row: {
           created_at: string
+          expires_at: string
           id: string
-          is_npc: boolean
           item_id: string
+          plus: number
           price: number
           qty: number
           seller_id: string | null
@@ -252,9 +253,10 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          expires_at?: string
           id?: string
-          is_npc?: boolean
           item_id: string
+          plus?: number
           price: number
           qty: number
           seller_id?: string | null
@@ -263,9 +265,10 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          expires_at?: string
           id?: string
-          is_npc?: boolean
           item_id?: string
+          plus?: number
           price?: number
           qty?: number
           seller_id?: string | null
@@ -282,12 +285,34 @@ export type Database = {
           },
         ]
       }
+      market_prices: {
+        Row: {
+          item_id: string
+          plus: number
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          item_id: string
+          plus?: number
+          price: number
+          updated_at?: string
+        }
+        Update: {
+          item_id?: string
+          plus?: number
+          price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       market_trades: {
         Row: {
           buyer_name: string
           created_at: string
           id: string
           item_id: string
+          plus: number
           price: number
           qty: number
           seller_name: string
@@ -297,6 +322,7 @@ export type Database = {
           created_at?: string
           id?: string
           item_id: string
+          plus?: number
           price: number
           qty: number
           seller_name: string
@@ -306,6 +332,7 @@ export type Database = {
           created_at?: string
           id?: string
           item_id?: string
+          plus?: number
           price?: number
           qty?: number
           seller_name?: string
@@ -510,14 +537,22 @@ export type Database = {
         Returns: Json
       }
       market_browse: { Args: never; Returns: Json }
-      market_buy: { Args: { _id: string }; Returns: Json }
+      market_buy: { Args: { _id: string; _qty?: number }; Returns: Json }
       market_cancel: { Args: { _id: string }; Returns: Json }
+      market_expire: { Args: never; Returns: undefined }
       market_list: {
-        Args: { _item: string; _price: number; _qty: number }
+        Args: { _item: string; _plus?: number; _price: number; _qty: number }
         Returns: Json
       }
       market_player_name: { Args: { _uid: string }; Returns: string }
-      market_top_up_npc: { Args: never; Returns: undefined }
+      mk_inv_give: {
+        Args: { _inv: Json; _item: string; _plus: number; _qty: number }
+        Returns: Json
+      }
+      mk_inv_take: {
+        Args: { _inv: Json; _item: string; _plus: number; _qty: number }
+        Returns: Json
+      }
       skill_xp: { Args: { _data: Json; _skill: string }; Returns: number }
       track_position: {
         Args: { _uid: string; _x: number; _y: number }
