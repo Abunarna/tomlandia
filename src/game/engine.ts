@@ -1796,6 +1796,10 @@ export class GameEngine {
       if (b.x > view.x + w || b.x + b.w < view.x || b.y > view.y + h || b.y + b.h < view.y) continue;
       this.drawBiome(ctx, b);
     }
+    for (const l of LAKES) {
+      if (l.cx - l.rx > view.x + w || l.cx + l.rx < view.x || l.cy - l.ry > view.y + h || l.cy + l.ry < view.y) continue;
+      this.lake(ctx, l);
+    }
     this.drawStreets(ctx, view);
     this.drawBarriers(ctx, view);
 
@@ -2010,11 +2014,6 @@ export class GameEngine {
       ctx.fillRect(x, y, 18, 4);
     }
 
-    // water feature — irregular hand-varied lake with its jetties
-    if (b.pond) {
-      const lake = LAKES.find((l) => l.key === b.id);
-      if (lake) this.lake(ctx, lake);
-    }
 
     ctx.restore();
 
