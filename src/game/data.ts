@@ -1337,7 +1337,198 @@ function buildBarriers(): Barrier[] {
 }
 
 
-export const BARRIERS: Barrier[] = buildBarriers();
+/* ------------------------------------------------------------------ */
+/* The Great River — one continuous waterway from the far west to the  */
+/* far east, threaded through the old river stretches. Rock ridges and */
+/* treelines that stand in its way are washed out and replaced.        */
+/* ------------------------------------------------------------------ */
+
+export interface BridgeDef {
+  id: string;
+  /** deck centre in world coords */
+  x: number;
+  y: number;
+  /** rotation of the deck, radians (perpendicular to the river) */
+  angle: number;
+  /** deck length (across the river) and width (walkable strip) */
+  len: number;
+  width: number;
+}
+
+const RIVER_WIDTH = BARRIER_WIDTH.river;
+
+/** true when the river must steer clear of this spot (towns, nodes, NPCs...) */
+function riverBlockedAt(x: number, y: number) {
+  if (nearClearZone(x, y)) return true;
+  for (const b of BUILDINGS) {
+    if (x > b.x - 70 && x < b.x + b.w + 70 && y > b.y - 70 && y < b.y + b.h + 70) return true;
+  }
+  return false;
+}
+
+function buildGreatRiver(raw: Barrier[]): { pts: [number, number][]; bridges: BridgeDef[] } {
+  // 1. chain the existing river stretches west -> east by their centres
+  const centres = raw
+    .filter((b) => b.kind === "river")
+    .map((b) => [(b.minX + b.maxX) / 2, (b.minY + b.maxY) / 2] as [number, number]);
+
+  const used = new Set<number>();
+  const chain: [number, number][] = [];
+  let cur: [number, number] | null = null;
+  for (;;) {
+    let best = -1;
+    let bestScore = Infinity;
+    for (let i = 0; i < centres.length; i++) {
+      if (used.has(i)) continue;
+      const c = centres[i]!;
+      if (cur && c[0] <= cur[0] + 40) continue;
+      const score = cur ? c[0] - cur[0] + Math.abs(c[1] - cur[1]) * 0.7 : c[0];
+      if (score < bestScore) {
+        bestScore = score;
+        best = i;
+      }
+    }
+    if (best < 0) break;
+    used.add(best);
+    cur = centres[best]!;
+    chain.push(cur);
+  }
+
+  const startY = chain[0]?.[1] ?? WORLD_H * 0.45;
+  const endY = chain[chain.length - 1]?.[1] ?? WORLD_H * 0.55;
+  const waypoints: [number, number][] = [[-30, startY], ...chain, [WORLD_W + 30, endY]];
+
+  // 2. resample into a smooth meander
+  const SAMPLES = 90;
+  const sampled: [number, number][] = [];
+  for (let s = 0; s <= SAMPLES; s++) {
+    const t = (s / SAMPLES) * (waypoints.length - 1);
+    const i = Math.min(waypoints.length - 2, Math.floor(t));
+    const f = t - i;
+    const a = waypoints[i]!;
+    const b = waypoints[i + 1]!;
+    const e = f * f * (3 - 2 * f); // smoothstep between waypoints
+    sampled.push([a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e]);
+  }
+  // gentle extra wobble so it reads as a natural river
+  for (let i = 1; i < sampled.length - 1; i++) {
+    sampled[i]![1] += Math.sin(i * 0.55) * 26 + Math.sin(i * 0.21 + 1.7) * 34;
+  }
+
+  // 3. nudge each sample off towns, buildings, nodes and NPCs
+  const pts: [number, number][] = sampled.map(([x, y], i) => {
+    if (i === 0 || i === sampled.length - 1) return [x, clamp01px(y)];
+    let ny = y;
+    if (riverBlockedAt(x, ny)) {
+      for (let d = 30; d <= 420; d += 30) {
+        if (!riverBlockedAt(x, y - d)) {
+          ny = y - d;
+          break;
+        }
+        if (!riverBlockedAt(x, y + d)) {
+          ny = y + d;
+          break;
+        }
+      }
+    }
+    return [x, clamp01px(ny)];
+  });
+  // smooth the nudges back out
+  for (let pass = 0; pass < 3; pass++) {
+    for (let i = 1; i < pts.length - 1; i++) {
+      const y = (pts[i - 1]![1] + pts[i]![1] * 2 + pts[i + 1]![1]) / 4;
+      if (!riverBlockedAt(pts[i]![0], y)) pts[i]![1] = y;
+    }
+  }
+
+  // 4. four bridges, roughly equidistant along the river, on clear banks
+  const bridges: BridgeDef[] = [];
+  const targets = [0.14, 0.38, 0.62, 0.86];
+  targets.forEach((t, n) => {
+    let idx = Math.round(t * (pts.length - 1));
+    for (let step = 0; step < 12; step++) {
+      for (const cand of [idx - step, idx + step]) {
+        if (cand < 3 || cand > pts.length - 4) continue;
+        const [x, y] = pts[cand]!;
+        if (!riverBlockedAt(x, y - 90) && !riverBlockedAt(x, y + 90)) {
+          idx = cand;
+          step = 99;
+          break;
+        }
+      }
+    }
+    const a = pts[idx - 1]!;
+    const b = pts[idx + 1]!;
+    const [x, y] = pts[idx]!;
+    bridges.push({
+      id: `bridge-${n + 1}`,
+      x,
+      y,
+      angle: Math.atan2(b[1] - a[1], b[0] - a[0]),
+      len: RIVER_WIDTH + 46,
+      width: 62,
+    });
+  });
+
+  return { pts, bridges };
+}
+
+function clamp01px(y: number) {
+  return Math.max(60, Math.min(WORLD_H - 60, y));
+}
+
+const RAW_BARRIERS = buildBarriers();
+const GREAT = buildGreatRiver(RAW_BARRIERS);
+
+/** wooden bridges crossing the Great River */
+export const BRIDGES: BridgeDef[] = GREAT.bridges;
+
+const riverXs = GREAT.pts.map((p) => p[0]);
+const riverYs = GREAT.pts.map((p) => p[1]);
+
+const GREAT_RIVER: Barrier = {
+  id: "great-river",
+  kind: "river",
+  pts: GREAT.pts,
+  width: RIVER_WIDTH,
+  minX: Math.min(...riverXs),
+  minY: Math.min(...riverYs),
+  maxX: Math.max(...riverXs),
+  maxY: Math.max(...riverYs),
+};
+
+/** distance from a point to the Great River polyline */
+function distToRiver(x: number, y: number) {
+  let best = Infinity;
+  for (let i = 0; i < GREAT.pts.length - 1; i++) {
+    const a = GREAT.pts[i]!;
+    const b = GREAT.pts[i + 1]!;
+    best = Math.min(best, distToSeg(x, y, a[0], a[1], b[0], b[1]));
+  }
+  return best;
+}
+
+export const BARRIERS: Barrier[] = [
+  // old river stretches are absorbed; ridges/treelines in the way are washed out
+  ...RAW_BARRIERS.filter(
+    (b) => b.kind !== "river" && !b.pts.some(([x, y]) => distToRiver(x, y) < b.width / 2 + RIVER_WIDTH / 2),
+  ),
+  GREAT_RIVER,
+];
+
+/** true when the point stands on a bridge deck (so the river is crossable there) */
+export function onBridge(x: number, y: number, pad = 0): boolean {
+  for (const br of BRIDGES) {
+    const dx = x - br.x;
+    const dy = y - br.y;
+    const c = Math.cos(-br.angle);
+    const s = Math.sin(-br.angle);
+    const lx = dx * c - dy * s; // along the river
+    const ly = dx * s + dy * c; // across the river
+    if (Math.abs(lx) < br.width / 2 - pad && Math.abs(ly) < br.len / 2 + 16) return true;
+  }
+  return false;
+}
 
 function distToSeg(px: number, py: number, ax: number, ay: number, bx: number, by: number) {
   const dx = bx - ax;
