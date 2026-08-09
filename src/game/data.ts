@@ -658,14 +658,17 @@ const TOWN_SPECS: TownSpec[] = [
   {
     cx: 715,
     cy: 310,
-    count: 10,
+    count: 13,
     wall: "#fdf1dd",
     beam: "#8b6b52",
     roofs: ["#d98b6a", "#c9a7e0", "#8fbfd9", "#c08d68", "#b7906d"],
     anchors: [
-      { role: "smith", name: "Haven Forge", kind: "forge" },
+      { role: "smith", name: "Haven Smeltery", kind: "forge" },
       { role: "merchant", name: "Market Stall", kind: "stall" },
       { role: "elder", name: "Moot Hall", kind: "chapel" },
+      { role: "haven_weaponsmith", name: "Haven Forge", kind: "forge" },
+      { role: "haven_armourer", name: "Shieldwright's Hall", kind: "forge" },
+      { role: "haven_upgrader", name: "Whetstone Tower", kind: "tower" },
     ],
     fill: [
       { name: "Grand Haven Inn", kind: "inn" },
@@ -680,14 +683,16 @@ const TOWN_SPECS: TownSpec[] = [
   {
     cx: TILE_W * 2 + 660,
     cy: 325,
-    count: 10,
+    count: 12,
     wall: "#fdf0d4",
     beam: "#a8834e",
     roofs: ["#f0c268", "#e8b3d8", "#d9a95f", "#e0b070", "#caa063"],
     anchors: [
-      { role: "sun_smith", name: "Sunspire Forge", kind: "forge" },
+      { role: "sun_smith", name: "Sunspire Smeltery", kind: "forge" },
       { role: "weaver", name: "Arcane Loom", kind: "tower" },
       { role: "banker", name: "Golden Bank", kind: "chapel" },
+      { role: "sun_weaponsmith", name: "Sunspire Forge", kind: "forge" },
+      { role: "sun_alchemist", name: "Amber Apothecary", kind: "tower" },
     ],
     fill: [
       { name: "Sunspire Spire", kind: "tower" },
@@ -702,13 +707,14 @@ const TOWN_SPECS: TownSpec[] = [
   {
     cx: TILE_W + 620,
     cy: 500,
-    count: 5,
+    count: 6,
     wall: "#f5f0da",
     beam: "#6f5636",
     roofs: ["#7fbd93", "#b98a5c", "#95c9a4", "#8aa86d"],
     anchors: [
       { role: "innkeeper", name: "Willowbrook Inn", kind: "inn" },
       { role: "trapper", name: "Trapper's Hut", kind: "house" },
+      { role: "brook_chef", name: "Willow Kitchen", kind: "house" },
     ],
     fill: [
       { name: "Woodcutter's Lodge", kind: "barn" },
@@ -719,11 +725,14 @@ const TOWN_SPECS: TownSpec[] = [
   {
     cx: 800,
     cy: TILE_H + 500,
-    count: 5,
+    count: 6,
     wall: "#f2f7fd",
     beam: "#6d7f92",
     roofs: ["#8fb6d9", "#a9c6e6", "#9fb6cc", "#87a7c4"],
-    anchors: [{ role: "frost_smith", name: "Frostforge", kind: "forge" }],
+    anchors: [
+      { role: "frost_smith", name: "Frostforge Smeltery", kind: "forge" },
+      { role: "frost_weaponsmith", name: "Frostforge", kind: "forge" },
+    ],
     fill: [
       { name: "Hearthspur Lodge", kind: "inn" },
       { name: "Ice Cellar", kind: "barn" },
@@ -813,7 +822,14 @@ export type NpcRole =
   | "banker"
   | "trapper"
   | "innkeeper"
-  | "frost_smith";
+  | "frost_smith"
+  | "haven_weaponsmith"
+  | "haven_armourer"
+  | "haven_upgrader"
+  | "sun_weaponsmith"
+  | "sun_alchemist"
+  | "brook_chef"
+  | "frost_weaponsmith";
 
 export interface NpcDef {
   id: NpcRole;
@@ -825,19 +841,38 @@ export interface NpcDef {
   hair: string;
   greeting: string;
   /** which service panes this npc offers */
-  services: ("shop" | "sell" | "quests" | "smith" | "tailor" | "skin" | "upgrade")[];
+  services: (
+    | "shop"
+    | "sell"
+    | "quests"
+    | "smelt"
+    | "forge"
+    | "weave"
+    | "armor"
+    | "skin"
+    | "cook"
+    | "alchemy"
+    | "upgrade"
+  )[];
 }
 
 export const NPCS: NpcDef[] = [
-  { id: "smith", name: "Bruna", title: "Blacksmith", ...spot("smith", 625, 420), robe: "#d98b6a", hair: "#5c3a2e", greeting: "Fresh off the anvil. Gold first, hero.", services: ["shop", "smith", "upgrade"] },
+  { id: "smith", name: "Bruna", title: "Haven Smelter", ...spot("smith", 625, 420), robe: "#d98b6a", hair: "#5c3a2e", greeting: "Ore in, bars out. That's the whole of it.", services: ["shop", "smelt"] },
   { id: "merchant", name: "Pip", title: "Market Trader", ...spot("merchant", 782, 442), robe: "#8fbfd9", hair: "#3f5f78", greeting: "Ore, logs, feathers — I'll take the lot.", services: ["sell", "shop"] },
   { id: "elder", name: "Elder Maren", title: "Village Elder", ...spot("elder", 712, 300), robe: "#c9a7e0", hair: "#e6e0ef", greeting: "Grand Haven could use a hand today.", services: ["quests"] },
-  { id: "sun_smith", name: "Master Alric", title: "Sunspire Smith", ...spot("sun_smith", TILE_W * 2 + 735, 350), robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings when it's shaped right.", services: ["smith", "upgrade"] },
-  { id: "weaver", name: "Lira", title: "Arcane Weaver", ...spot("weaver", TILE_W * 2 + 905, 420), robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["tailor"] },
+  { id: "sun_smith", name: "Master Alric", title: "Sunspire Smelter", ...spot("sun_smith", TILE_W * 2 + 735, 350), robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings once the dross burns away.", services: ["smelt"] },
+  { id: "weaver", name: "Lira", title: "Arcane Weaver", ...spot("weaver", TILE_W * 2 + 905, 420), robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["weave"] },
   { id: "banker", name: "Coinmaster Odo", title: "Golden Bank", ...spot("banker", TILE_W * 2 + 565, 440), robe: "#d9a95f", hair: "#4a3b2e", greeting: "Every scrap has a price, friend.", services: ["sell"] },
   { id: "trapper", name: "Rook", title: "Trapper", ...spot("trapper", TILE_W + 728, 590), robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin", "sell"] },
   { id: "innkeeper", name: "Mabel", title: "Willowbrook Inn", ...spot("innkeeper", TILE_W + 560, 540), robe: "#7fbd93", hair: "#a86f45", greeting: "A warm meal keeps a hero standing.", services: ["shop"] },
-  { id: "frost_smith", name: "Sigrid", title: "Frostforge Smith", ...spot("frost_smith", 882, TILE_H + 560), robe: "#a9c6e6", hair: "#e6eef7", greeting: "Only runite holds an edge up here.", services: ["smith", "upgrade", "shop"] },
+  { id: "frost_smith", name: "Sigrid", title: "Frostforge Smelter", ...spot("frost_smith", 882, TILE_H + 560), robe: "#a9c6e6", hair: "#e6eef7", greeting: "The furnace never sleeps in the cold.", services: ["smelt", "shop"] },
+  { id: "haven_weaponsmith", name: "Garrick", title: "Weaponsmith", ...spot("haven_weaponsmith", 560, 300), robe: "#c2765a", hair: "#402a20", greeting: "Give me bars and I'll give you an edge.", services: ["forge"] },
+  { id: "haven_armourer", name: "Dame Ysolde", title: "Armourer", ...spot("haven_armourer", 870, 300), robe: "#9aa7b8", hair: "#6b5540", greeting: "Plate, mail or robe — I'll fit you proper.", services: ["armor"] },
+  { id: "haven_upgrader", name: "Old Whetstone Tam", title: "Gear Upgrader", ...spot("haven_upgrader", 640, 210), robe: "#b7a06d", hair: "#d8d2c4", greeting: "Every notch I grind makes you harder to kill.", services: ["upgrade"] },
+  { id: "sun_weaponsmith", name: "Zafira", title: "Weaponsmith", ...spot("sun_weaponsmith", TILE_W * 2 + 600, 300), robe: "#e09a4f", hair: "#4a3324", greeting: "Sun-tempered steel, hammered to sing.", services: ["forge"] },
+  { id: "sun_alchemist", name: "Nasrin", title: "Alchemist", ...spot("sun_alchemist", TILE_W * 2 + 790, 300), robe: "#a7d9c2", hair: "#5a4470", greeting: "One drop of this and your blade bites twice.", services: ["alchemy"] },
+  { id: "brook_chef", name: "Chef Bramble", title: "Willowbrook Chef", ...spot("brook_chef", TILE_W + 650, 540), robe: "#c9d97f", hair: "#7a5a34", greeting: "Fresh catch? I'll turn it into something warm.", services: ["cook"] },
+  { id: "frost_weaponsmith", name: "Halvar", title: "Weaponsmith", ...spot("frost_weaponsmith", 720, TILE_H + 560), robe: "#7f9cbd", hair: "#c9d8e6", greeting: "Cold iron, hot hammer. Stand back.", services: ["forge"] },
 ];
 
 
@@ -859,6 +894,13 @@ export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
     { id: "hearty_stew", price: 140 },
   ],
   frost_smith: [{ id: "frost_tonic", price: 280 }],
+  haven_weaponsmith: [],
+  haven_armourer: [],
+  haven_upgrader: [],
+  sun_weaponsmith: [],
+  sun_alchemist: [],
+  brook_chef: [],
+  frost_weaponsmith: [],
 };
 
 
@@ -866,9 +908,14 @@ export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
 /* Crafting                                                            */
 /* ------------------------------------------------------------------ */
 
+/** which specialist NPC exposes a recipe (independent of the skill it trains) */
+export type CraftStation = "smelt" | "forge" | "weave" | "armor" | "skin" | "cook" | "alchemy";
+
 export interface Recipe {
   id: string;
   skill: Extract<SkillId, "smithing" | "tailoring" | "skinning" | "cooking" | "alchemy">;
+  /** the specialist NPC service that offers this recipe */
+  station: CraftStation;
   out: ItemId;
   outQty: number;
   inputs: { id: ItemId; qty: number }[];
@@ -879,46 +926,46 @@ export interface Recipe {
 
 export const RECIPES: Recipe[] = [
   // Smithing — ore to bar
-  { id: "copper_bar", skill: "smithing", out: "copper_bar", outQty: 1, inputs: [{ id: "copper_ore", qty: 2 }], req: 1, xp: 22, time: 1.6 },
-  { id: "iron_bar", skill: "smithing", out: "iron_bar", outQty: 1, inputs: [{ id: "iron_ore", qty: 2 }], req: 15, xp: 55, time: 1.8 },
-  { id: "mithril_bar", skill: "smithing", out: "mithril_bar", outQty: 1, inputs: [{ id: "mithril_ore", qty: 2 }, { id: "sandstone", qty: 1 }], req: 40, xp: 150, time: 2.2 },
-  { id: "runite_bar", skill: "smithing", out: "runite_bar", outQty: 1, inputs: [{ id: "runite_ore", qty: 2 }, { id: "cursed_shard", qty: 1 }], req: 70, xp: 420, time: 2.6 },
-  { id: "tungsten_bar", skill: "smithing", out: "tungsten_bar", outQty: 1, inputs: [{ id: "tungsten_ore", qty: 2 }, { id: "runite_bar", qty: 1 }], req: 100, xp: 620, time: 3 },
+  { id: "copper_bar", station: "smelt", skill: "smithing", out: "copper_bar", outQty: 1, inputs: [{ id: "copper_ore", qty: 2 }], req: 1, xp: 22, time: 1.6 },
+  { id: "iron_bar", station: "smelt", skill: "smithing", out: "iron_bar", outQty: 1, inputs: [{ id: "iron_ore", qty: 2 }], req: 15, xp: 55, time: 1.8 },
+  { id: "mithril_bar", station: "smelt", skill: "smithing", out: "mithril_bar", outQty: 1, inputs: [{ id: "mithril_ore", qty: 2 }, { id: "sandstone", qty: 1 }], req: 40, xp: 150, time: 2.2 },
+  { id: "runite_bar", station: "smelt", skill: "smithing", out: "runite_bar", outQty: 1, inputs: [{ id: "runite_ore", qty: 2 }, { id: "cursed_shard", qty: 1 }], req: 70, xp: 420, time: 2.6 },
+  { id: "tungsten_bar", station: "smelt", skill: "smithing", out: "tungsten_bar", outQty: 1, inputs: [{ id: "tungsten_ore", qty: 2 }, { id: "runite_bar", qty: 1 }], req: 100, xp: 620, time: 3 },
   // Smithing — bar to gear
-  { id: "copper_sword", skill: "smithing", out: "copper_sword", outQty: 1, inputs: [{ id: "copper_bar", qty: 3 }], req: 5, xp: 90, time: 2.4 },
-  { id: "bronze_dagger", skill: "smithing", out: "bronze_dagger", outQty: 1, inputs: [{ id: "copper_bar", qty: 2 }, { id: "willow_logs", qty: 1 }, { id: "goblin_charm", qty: 1 }], req: 3, xp: 60, time: 2.2 },
-  { id: "sunspire_wand", skill: "smithing", out: "sunspire_wand", outQty: 1, inputs: [{ id: "mithril_bar", qty: 2 }, { id: "willow_logs", qty: 2 }, { id: "feather", qty: 2 }], req: 45, xp: 640, time: 3 },
-  { id: "steel_sword", skill: "smithing", out: "steel_sword", outQty: 1, inputs: [{ id: "iron_bar", qty: 3 }, { id: "oak_logs", qty: 1 }], req: 20, xp: 220, time: 2.6 },
-  { id: "iron_mail", skill: "smithing", out: "iron_mail", outQty: 1, inputs: [{ id: "iron_bar", qty: 4 }], req: 24, xp: 260, time: 2.8 },
-  { id: "mithril_blade", skill: "smithing", out: "mithril_blade", outQty: 1, inputs: [{ id: "mithril_bar", qty: 3 }, { id: "palm_logs", qty: 1 }, { id: "maple_logs", qty: 1 }], req: 45, xp: 620, time: 3 },
-  { id: "mithril_plate", skill: "smithing", out: "mithril_plate", outQty: 1, inputs: [{ id: "mithril_bar", qty: 4 }], req: 50, xp: 700, time: 3.2 },
-  { id: "runite_greatsword", skill: "smithing", out: "runite_greatsword", outQty: 1, inputs: [{ id: "runite_bar", qty: 4 }, { id: "frostpine_logs", qty: 1 }], req: 75, xp: 1500, time: 3.4 },
-  { id: "runite_plate", skill: "smithing", out: "runite_plate", outQty: 1, inputs: [{ id: "runite_bar", qty: 5 }], req: 80, xp: 1700, time: 3.6 },
-  { id: "tungsten_maul", skill: "smithing", out: "tungsten_maul", outQty: 1, inputs: [{ id: "tungsten_bar", qty: 4 }, { id: "cursed_bark", qty: 1 }], req: 105, xp: 2600, time: 3.8 },
-  { id: "frostguard_plate", skill: "smithing", out: "frostguard_plate", outQty: 1, inputs: [{ id: "tungsten_bar", qty: 5 }, { id: "frost_pelt", qty: 2 }], req: 110, xp: 3000, time: 4 },
+  { id: "copper_sword", station: "forge", skill: "smithing", out: "copper_sword", outQty: 1, inputs: [{ id: "copper_bar", qty: 3 }], req: 5, xp: 90, time: 2.4 },
+  { id: "bronze_dagger", station: "forge", skill: "smithing", out: "bronze_dagger", outQty: 1, inputs: [{ id: "copper_bar", qty: 2 }, { id: "willow_logs", qty: 1 }, { id: "goblin_charm", qty: 1 }], req: 3, xp: 60, time: 2.2 },
+  { id: "sunspire_wand", station: "forge", skill: "smithing", out: "sunspire_wand", outQty: 1, inputs: [{ id: "mithril_bar", qty: 2 }, { id: "willow_logs", qty: 2 }, { id: "feather", qty: 2 }], req: 45, xp: 640, time: 3 },
+  { id: "steel_sword", station: "forge", skill: "smithing", out: "steel_sword", outQty: 1, inputs: [{ id: "iron_bar", qty: 3 }, { id: "oak_logs", qty: 1 }], req: 20, xp: 220, time: 2.6 },
+  { id: "iron_mail", station: "armor", skill: "smithing", out: "iron_mail", outQty: 1, inputs: [{ id: "iron_bar", qty: 4 }], req: 24, xp: 260, time: 2.8 },
+  { id: "mithril_blade", station: "forge", skill: "smithing", out: "mithril_blade", outQty: 1, inputs: [{ id: "mithril_bar", qty: 3 }, { id: "palm_logs", qty: 1 }, { id: "maple_logs", qty: 1 }], req: 45, xp: 620, time: 3 },
+  { id: "mithril_plate", station: "armor", skill: "smithing", out: "mithril_plate", outQty: 1, inputs: [{ id: "mithril_bar", qty: 4 }], req: 50, xp: 700, time: 3.2 },
+  { id: "runite_greatsword", station: "forge", skill: "smithing", out: "runite_greatsword", outQty: 1, inputs: [{ id: "runite_bar", qty: 4 }, { id: "frostpine_logs", qty: 1 }], req: 75, xp: 1500, time: 3.4 },
+  { id: "runite_plate", station: "armor", skill: "smithing", out: "runite_plate", outQty: 1, inputs: [{ id: "runite_bar", qty: 5 }], req: 80, xp: 1700, time: 3.6 },
+  { id: "tungsten_maul", station: "forge", skill: "smithing", out: "tungsten_maul", outQty: 1, inputs: [{ id: "tungsten_bar", qty: 4 }, { id: "cursed_bark", qty: 1 }], req: 105, xp: 2600, time: 3.8 },
+  { id: "frostguard_plate", station: "armor", skill: "smithing", out: "frostguard_plate", outQty: 1, inputs: [{ id: "tungsten_bar", qty: 5 }, { id: "frost_pelt", qty: 2 }], req: 110, xp: 3000, time: 4 },
   // Skinning — hides to leather
-  { id: "light_leather", skill: "skinning", out: "light_leather", outQty: 1, inputs: [{ id: "raw_hide", qty: 3 }], req: 1, xp: 30, time: 1.6 },
-  { id: "thick_leather", skill: "skinning", out: "thick_leather", outQty: 1, inputs: [{ id: "thick_hide", qty: 3 }], req: 25, xp: 110, time: 2 },
-  { id: "shadow_leather", skill: "skinning", out: "shadow_leather", outQty: 1, inputs: [{ id: "shadow_pelt", qty: 3 }, { id: "scale_hide", qty: 1 }], req: 65, xp: 460, time: 2.4 },
+  { id: "light_leather", station: "skin", skill: "skinning", out: "light_leather", outQty: 1, inputs: [{ id: "raw_hide", qty: 3 }], req: 1, xp: 30, time: 1.6 },
+  { id: "thick_leather", station: "skin", skill: "skinning", out: "thick_leather", outQty: 1, inputs: [{ id: "thick_hide", qty: 3 }], req: 25, xp: 110, time: 2 },
+  { id: "shadow_leather", station: "skin", skill: "skinning", out: "shadow_leather", outQty: 1, inputs: [{ id: "shadow_pelt", qty: 3 }, { id: "scale_hide", qty: 1 }], req: 65, xp: 460, time: 2.4 },
   // Tailoring
-  { id: "linen_cloth", skill: "tailoring", out: "linen_cloth", outQty: 1, inputs: [{ id: "flax", qty: 3 }, { id: "meadow_berries", qty: 1 }], req: 1, xp: 26, time: 1.6 },
-  { id: "herb_weave", skill: "tailoring", out: "herb_weave", outQty: 1, inputs: [{ id: "forest_herbs", qty: 3 }, { id: "linen_cloth", qty: 1 }], req: 22, xp: 120, time: 2 },
-  { id: "mystic_cloth", skill: "tailoring", out: "mystic_cloth", outQty: 1, inputs: [{ id: "gloomcap", qty: 2 }, { id: "herb_weave", qty: 2 }, { id: "desert_bloom", qty: 1 }], req: 60, xp: 520, time: 2.4 },
-  { id: "leather_vest", skill: "tailoring", out: "leather_vest", outQty: 1, inputs: [{ id: "light_leather", qty: 3 }], req: 6, xp: 90, time: 2.2 },
-  { id: "linen_robe", skill: "tailoring", out: "linen_robe", outQty: 1, inputs: [{ id: "linen_cloth", qty: 3 }, { id: "light_leather", qty: 1 }], req: 14, xp: 180, time: 2.4 },
-  { id: "mystic_robe", skill: "tailoring", out: "mystic_robe", outQty: 1, inputs: [{ id: "mystic_cloth", qty: 3 }, { id: "shadow_leather", qty: 1 }, { id: "frost_lichen", qty: 1 }], req: 66, xp: 900, time: 3 },
+  { id: "linen_cloth", station: "weave", skill: "tailoring", out: "linen_cloth", outQty: 1, inputs: [{ id: "flax", qty: 3 }, { id: "meadow_berries", qty: 1 }], req: 1, xp: 26, time: 1.6 },
+  { id: "herb_weave", station: "weave", skill: "tailoring", out: "herb_weave", outQty: 1, inputs: [{ id: "forest_herbs", qty: 3 }, { id: "linen_cloth", qty: 1 }], req: 22, xp: 120, time: 2 },
+  { id: "mystic_cloth", station: "weave", skill: "tailoring", out: "mystic_cloth", outQty: 1, inputs: [{ id: "gloomcap", qty: 2 }, { id: "herb_weave", qty: 2 }, { id: "desert_bloom", qty: 1 }], req: 60, xp: 520, time: 2.4 },
+  { id: "leather_vest", station: "armor", skill: "tailoring", out: "leather_vest", outQty: 1, inputs: [{ id: "light_leather", qty: 3 }], req: 6, xp: 90, time: 2.2 },
+  { id: "linen_robe", station: "armor", skill: "tailoring", out: "linen_robe", outQty: 1, inputs: [{ id: "linen_cloth", qty: 3 }, { id: "light_leather", qty: 1 }], req: 14, xp: 180, time: 2.4 },
+  { id: "mystic_robe", station: "armor", skill: "tailoring", out: "mystic_robe", outQty: 1, inputs: [{ id: "mystic_cloth", qty: 3 }, { id: "shadow_leather", qty: 1 }, { id: "frost_lichen", qty: 1 }], req: 66, xp: 900, time: 3 },
   // Cooking
-  { id: "honey_bun", skill: "cooking", out: "honey_bun", outQty: 1, inputs: [{ id: "river_minnow", qty: 2 }], req: 1, xp: 30, time: 1.6 },
-  { id: "berry_pie", skill: "cooking", out: "berry_pie", outQty: 1, inputs: [{ id: "silver_trout", qty: 2 }, { id: "feather", qty: 1 }], req: 15, xp: 110, time: 2 },
-  { id: "hearty_stew", skill: "cooking", out: "hearty_stew", outQty: 1, inputs: [{ id: "golden_koi", qty: 2 }, { id: "goblin_charm", qty: 1 }], req: 40, xp: 340, time: 2.4 },
-  { id: "frost_tonic", skill: "cooking", out: "frost_tonic", outQty: 1, inputs: [{ id: "deepwater_eel", qty: 2 }, { id: "thick_leather", qty: 1 }], req: 70, xp: 900, time: 2.8 },
-  { id: "phoenix_fillet", skill: "cooking", out: "phoenix_fillet", outQty: 1, inputs: [{ id: "starlight_salmon", qty: 3 }, { id: "frost_pelt", qty: 1 }], req: 100, xp: 2200, time: 3.2 },
+  { id: "honey_bun", station: "cook", skill: "cooking", out: "honey_bun", outQty: 1, inputs: [{ id: "river_minnow", qty: 2 }], req: 1, xp: 30, time: 1.6 },
+  { id: "berry_pie", station: "cook", skill: "cooking", out: "berry_pie", outQty: 1, inputs: [{ id: "silver_trout", qty: 2 }, { id: "feather", qty: 1 }], req: 15, xp: 110, time: 2 },
+  { id: "hearty_stew", station: "cook", skill: "cooking", out: "hearty_stew", outQty: 1, inputs: [{ id: "golden_koi", qty: 2 }, { id: "goblin_charm", qty: 1 }], req: 40, xp: 340, time: 2.4 },
+  { id: "frost_tonic", station: "cook", skill: "cooking", out: "frost_tonic", outQty: 1, inputs: [{ id: "deepwater_eel", qty: 2 }, { id: "thick_leather", qty: 1 }], req: 70, xp: 900, time: 2.8 },
+  { id: "phoenix_fillet", station: "cook", skill: "cooking", out: "phoenix_fillet", outQty: 1, inputs: [{ id: "starlight_salmon", qty: 3 }, { id: "frost_pelt", qty: 1 }], req: 100, xp: 2200, time: 3.2 },
   // Alchemy
-  { id: "minor_venom_draught", skill: "alchemy", out: "minor_venom_draught", outQty: 1, inputs: [{ id: "raw_hide", qty: 2 }], req: 1, xp: 40, time: 1.8 },
-  { id: "goblins_fury_tonic", skill: "alchemy", out: "goblins_fury_tonic", outQty: 1, inputs: [{ id: "goblin_charm", qty: 2 }, { id: "thick_hide", qty: 1 }], req: 20, xp: 180, time: 2.2 },
-  { id: "serpents_bite_elixir", skill: "alchemy", out: "serpents_bite_elixir", outQty: 1, inputs: [{ id: "scale_hide", qty: 2 }], req: 45, xp: 520, time: 2.6 },
-  { id: "shadow_venom", skill: "alchemy", out: "shadow_venom", outQty: 1, inputs: [{ id: "shadow_pelt", qty: 2 }, { id: "feather", qty: 1 }], req: 75, xp: 1400, time: 3 },
-  { id: "frostfire_brew", skill: "alchemy", out: "frostfire_brew", outQty: 1, inputs: [{ id: "frost_pelt", qty: 2 }, { id: "goblin_charm", qty: 1 }], req: 105, xp: 3000, time: 3.4 },
+  { id: "minor_venom_draught", station: "alchemy", skill: "alchemy", out: "minor_venom_draught", outQty: 1, inputs: [{ id: "raw_hide", qty: 2 }], req: 1, xp: 40, time: 1.8 },
+  { id: "goblins_fury_tonic", station: "alchemy", skill: "alchemy", out: "goblins_fury_tonic", outQty: 1, inputs: [{ id: "goblin_charm", qty: 2 }, { id: "thick_hide", qty: 1 }], req: 20, xp: 180, time: 2.2 },
+  { id: "serpents_bite_elixir", station: "alchemy", skill: "alchemy", out: "serpents_bite_elixir", outQty: 1, inputs: [{ id: "scale_hide", qty: 2 }], req: 45, xp: 520, time: 2.6 },
+  { id: "shadow_venom", station: "alchemy", skill: "alchemy", out: "shadow_venom", outQty: 1, inputs: [{ id: "shadow_pelt", qty: 2 }, { id: "feather", qty: 1 }], req: 75, xp: 1400, time: 3 },
+  { id: "frostfire_brew", station: "alchemy", skill: "alchemy", out: "frostfire_brew", outQty: 1, inputs: [{ id: "frost_pelt", qty: 2 }, { id: "goblin_charm", qty: 1 }], req: 105, xp: 3000, time: 3.4 },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -967,15 +1014,22 @@ export interface NpcIcon {
 }
 
 export const NPC_ICONS: Record<NpcRole, NpcIcon> = {
-  smith: { glyph: "\u2692\uFE0E", color: "#d98b6a", label: "Blacksmith" },
+  smith: { glyph: "\u2692\uFE0E", color: "#d98b6a", label: "Smelter" },
   merchant: { glyph: "$", color: "#8fbfd9", label: "Market Trader" },
   elder: { glyph: "?", color: "#c9a7e0", label: "Quest Giver" },
-  sun_smith: { glyph: "\u2694\uFE0E", color: "#f0c268", label: "Sunspire Smith" },
+  sun_smith: { glyph: "\u2692\uFE0E", color: "#f0c268", label: "Smelter" },
   weaver: { glyph: "\u2702\uFE0E", color: "#e8b3d8", label: "Arcane Weaver" },
   banker: { glyph: "\u2605", color: "#d9a95f", label: "Banker" },
   trapper: { glyph: "\u2691", color: "#b98a5c", label: "Trapper" },
   innkeeper: { glyph: "\u2302", color: "#7fbd93", label: "Innkeeper" },
-  frost_smith: { glyph: "\u2744\uFE0E", color: "#a9c6e6", label: "Frostforge Smith" },
+  frost_smith: { glyph: "\u2744\uFE0E", color: "#a9c6e6", label: "Frostforge Smelter" },
+  haven_weaponsmith: { glyph: "\u2694\uFE0E", color: "#c2765a", label: "Weaponsmith" },
+  haven_armourer: { glyph: "\u26E8\uFE0E", color: "#9aa7b8", label: "Armourer" },
+  haven_upgrader: { glyph: "\u2191", color: "#b7a06d", label: "Gear Upgrader" },
+  sun_weaponsmith: { glyph: "\u2694\uFE0E", color: "#e09a4f", label: "Weaponsmith" },
+  sun_alchemist: { glyph: "\u2697\uFE0E", color: "#a7d9c2", label: "Alchemist" },
+  brook_chef: { glyph: "\u2668\uFE0E", color: "#c9d97f", label: "Chef" },
+  frost_weaponsmith: { glyph: "\u2694\uFE0E", color: "#7f9cbd", label: "Weaponsmith" },
 };
 
 /* ------------------------------------------------------------------ */
