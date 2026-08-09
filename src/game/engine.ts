@@ -2177,6 +2177,40 @@ export class GameEngine {
       }
     }
     ctx.lineWidth = 1;
+    this.drawBridges(ctx, view);
+  }
+
+  /** wooden plank bridges crossing the Great River */
+  private drawBridges(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
+    for (const br of BRIDGES) {
+      if (!this.inView(br.x, br.y, view)) continue;
+      ctx.save();
+      ctx.translate(br.x, br.y);
+      ctx.rotate(br.angle);
+      const halfLen = br.len / 2 + 14; // across the river (local Y)
+      const halfW = br.width / 2; // along the river (local X)
+
+      // shadow on the water
+      ctx.fillStyle = "rgba(30,50,70,0.25)";
+      ctx.fillRect(-halfW + 3, -halfLen + 4, br.width, halfLen * 2);
+      // deck
+      ctx.fillStyle = "#8b6239";
+      ctx.fillRect(-halfW, -halfLen, br.width, halfLen * 2);
+      // planks
+      ctx.fillStyle = "#a9793f";
+      for (let y = -halfLen + 3; y < halfLen - 3; y += 11) {
+        ctx.fillRect(-halfW + 2, y, br.width - 4, 8);
+      }
+      // rails
+      ctx.fillStyle = "#6f4a2a";
+      ctx.fillRect(-halfW - 3, -halfLen, 5, halfLen * 2);
+      ctx.fillRect(halfW - 2, -halfLen, 5, halfLen * 2);
+      for (let y = -halfLen; y <= halfLen; y += 26) {
+        ctx.fillRect(-halfW - 4, y, 7, 6);
+        ctx.fillRect(halfW - 3, y, 7, 6);
+      }
+      ctx.restore();
+    }
   }
 
 
