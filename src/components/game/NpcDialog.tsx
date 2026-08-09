@@ -102,7 +102,9 @@ export function NpcDialog({
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-xs font-bold text-foreground">{d.name}</p>
                     <p className="text-[10px] text-muted-foreground">
-                      {d.attack ? `+${d.attack} attack` : d.defense ? `+${d.defense} defense` : d.heal ? `Heals ${d.heal} hp` : "Material"}
+                      {d.attack || d.defense
+                        ? [d.attack ? `+${d.attack} attack` : null, d.defense ? `+${d.defense} defense` : null].filter(Boolean).join(" · ")
+                        : d.heal ? `Heals ${d.heal} hp` : "Material"}
                     </p>
                   </div>
                   <button
