@@ -2001,6 +2001,7 @@ export class GameEngine {
       if (l.cx - l.rx > view.x + w || l.cx + l.rx < view.x || l.cy - l.ry > view.y + h || l.cy + l.ry < view.y) continue;
       this.lake(ctx, l);
     }
+    this.drawRoads(ctx, view);
     this.drawStreets(ctx, view);
     this.drawBarriers(ctx, view);
 
