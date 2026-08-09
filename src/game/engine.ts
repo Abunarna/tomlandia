@@ -1738,21 +1738,26 @@ export class GameEngine {
     return "Dusk";
   }
 
-  suggestPrice(id: ItemId) {
-    return suggestedPrice(id);
+  suggestPrice(id: ItemId, plus = 0) {
+    return suggestedPrice(id, plus);
   }
 
-  /* ---------- Phase 10: shared order book ---------- */
+  /* ---------- global player exchange ---------- */
+
+  /** Last completed player sale per item configuration, keyed `${item}:${plus}`. */
+  lastSold: Record<string, number> = {};
 
   /** Server hooks — the client only ever asks; the server moves items and gold. */
   onMarketBrowse: (() => Promise<BrowseRes>) | null = null;
-  onMarketList: ((item: ItemId, qty: number, price: number) => Promise<MarketRes>) | null = null;
-  onMarketBuy: ((id: string) => Promise<MarketRes>) | null = null;
+  onMarketList:
+    | ((item: ItemId, qty: number, price: number, plus: number) => Promise<MarketRes>)
+    | null = null;
+  onMarketBuy: ((id: string, qty: number) => Promise<MarketRes>) | null = null;
   onMarketCancel: ((id: string) => Promise<MarketRes>) | null = null;
 
   private marketBusy = false;
 
-  /** Pull the live order book and trade feed from the server. */
+  /** Pull the live order book, recent sales and last-sold prices from the server. */
   async refreshMarket(): Promise<void> {
     if (!this.onMarketBrowse || this.marketBusy) return;
     this.marketBusy = true;
@@ -1765,28 +1770,33 @@ export class GameEngine {
         item: l.item,
         qty: l.qty,
         price: l.price,
+        plus: l.plus ?? 0,
         seller: l.mine ? "You" : l.seller,
         mine: l.mine,
-        npc: l.npc,
+        createdAt: Date.parse(l.created_at) || Date.now(),
+        expiresAt: Date.parse(l.expires_at) || Date.now(),
       }));
       this.tradeLog = (res.trades ?? []).map((t) => ({
         id: t.id,
         text: tradeText(t),
         at: Date.parse(t.at) || Date.now(),
       }));
+      const prices: Record<string, number> = {};
+      for (const p of res.prices ?? []) prices[priceKey(p.item, p.plus ?? 0)] = p.price;
+      this.lastSold = prices;
       this.emitHud(true);
     } finally {
       this.marketBusy = false;
     }
   }
 
-  /** List a stack (or part of it) from the bag on the shared market. */
+  /** List a stack (or part of it) from the bag on the global exchange. */
   async listSlot(index: number, qty: number, price: number): Promise<boolean> {
     const slot = this.inv[index];
     if (!slot || !this.onMarketList) return false;
     const amount = Math.max(1, Math.min(Math.round(qty), slot.qty));
     const unit = Math.max(1, Math.round(price));
-    const res = await this.onMarketList(slot.id, amount, unit);
+    const res = await this.onMarketList(slot.id, amount, unit, slot.plus ?? 0);
     if (!res.ok) {
       sfx.play("error");
       this.pushText(this.px, this.py - 50, this.marketReason(res.reason), "#f4b0b0");
@@ -1800,12 +1810,13 @@ export class GameEngine {
     return true;
   }
 
-  /** Buy another player's (or a shopkeeper's) listing. */
-  async buyListing(id: string): Promise<boolean> {
+  /** Buy all — or part — of another player's listing. */
+  async buyListing(id: string, qty = 1): Promise<boolean> {
     const l = this.listings.find((x) => x.id === id);
-    if (l?.mine) return this.cancelListing(id);
+    if (l?.mine) return false;
     if (!this.onMarketBuy) return false;
-    const res = await this.onMarketBuy(id);
+    const amount = Math.max(1, Math.min(Math.round(qty), l?.qty ?? qty));
+    const res = await this.onMarketBuy(id, amount);
     if (!res.ok) {
       sfx.play("error");
       this.pushText(this.px, this.py - 50, this.marketReason(res.reason), "#f4b0b0");
@@ -1820,7 +1831,7 @@ export class GameEngine {
     return true;
   }
 
-  /** Pull your own listing back into the bag. */
+  /** Pull your own listing back into the bag — always free. */
   async cancelListing(id: string): Promise<boolean> {
     if (!this.onMarketCancel) return false;
     const res = await this.onMarketCancel(id);
@@ -1834,6 +1845,7 @@ export class GameEngine {
     await this.refreshMarket();
     return true;
   }
+
 
   private marketReason(reason?: string): string {
     switch (reason) {
