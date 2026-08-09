@@ -1,5 +1,6 @@
 import {
   BARRIERS,
+  BRIDGES,
   BIOMES,
   BUILDINGS,
   STREETS,
