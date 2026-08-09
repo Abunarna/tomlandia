@@ -1,6 +1,6 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Backpack, Hammer, LogOut, Map as MapIcon, Store, Volume2, VolumeX } from "lucide-react";
+import { Backpack, Hammer, Map as MapIcon, Store, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
@@ -82,7 +82,7 @@ const EMPTY: HudSnapshot = {
 
 function Game() {
   const { user } = Route.useRouteContext();
-  const navigate = useNavigate();
+  
   const [username, setUsername] = useState<string>("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<GameEngine | null>(null);
@@ -273,13 +273,6 @@ function Game() {
     };
   }, [user.id]);
 
-  const signOut = async () => {
-    await flushSave();
-    // Stop persisting before the session goes away, or later writes 401.
-    engineRef.current?.reset();
-    await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
-  };
 
 
 
