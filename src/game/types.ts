@@ -54,6 +54,12 @@ export interface ItemDef {
   kind: "resource" | "weapon" | "armor" | "food" | "material" | "potion";
   /** icon shape family */
   family?: ItemFamily;
+  /** exchange pricing metadata (all optional — defaults to tier 1 / common / level 0) */
+  tier?: 1 | 2 | 3 | 4 | 5;
+  rarity?: "common" | "uncommon" | "rare" | "epic" | "legendary";
+  level?: number;
+  /** set true to keep an item off the global exchange */
+  untradable?: boolean;
   attack?: number;
   defense?: number;
   heal?: number;
@@ -159,6 +165,8 @@ export interface HudSnapshot {
     listings: import("./market").Listing[];
     log: import("./market").TradeLog[];
     fee: number;
+    /** last completed sale price, keyed `${itemId}:${plus}` */
+    lastSold: Record<string, number>;
   };
   soundOn: boolean;
   /** Phase 7 — your display name and how many real players are nearby. */

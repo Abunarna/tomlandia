@@ -74,7 +74,7 @@ const EMPTY: HudSnapshot = {
   attackInterval: 1,
   timeOfDay: 0.35,
   phase: "Day",
-  market: { listings: [], log: [], fee: 0.05 },
+  market: { listings: [], log: [], fee: 0.05, lastSold: {} },
   soundOn: true,
   name: "Adventurer",
   nearby: 0,
@@ -140,10 +140,10 @@ function Game() {
       engine.onFish = (id, x, y) => fishCast({ data: { id, x, y } });
       engine.onPotion = (itemId) => usePotion({ data: { item: itemId } });
       engine.onCraft = (recipe) => craftItem({ data: { recipe } });
-      // Phase 10 — the marketplace is a real shared order book.
+      // The exchange is a 100% player-driven shared order book.
       engine.onMarketBrowse = () => browseMarket();
-      engine.onMarketList = (item, qty, price) => listOnMarket({ data: { item, qty, price } });
-      engine.onMarketBuy = (id) => buyFromMarket({ data: { id } });
+      engine.onMarketList = (item, qty, price, plus) => listOnMarket({ data: { item, qty, price, plus } });
+      engine.onMarketBuy = (id, qty) => buyFromMarket({ data: { id, qty } });
       engine.onMarketCancel = (id) => cancelMarketListing({ data: { id } });
       void engine.refreshMarket();
       // The server writes rewards into the save row, so it has to exist first.
@@ -355,8 +355,8 @@ function Game() {
               onDrop={(i) => engineRef.current?.dropSlot(i)}
               onSetFood={(i) => engineRef.current?.equipSlot(i)}
 
-              onBuyListing={(id) => {
-                void engineRef.current?.buyListing(id);
+              onBuyListing={(id, qty) => {
+                void engineRef.current?.buyListing(id, qty);
               }}
               onCancelListing={(id) => {
                 void engineRef.current?.cancelListing(id);
