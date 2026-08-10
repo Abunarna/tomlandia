@@ -328,6 +328,13 @@ function Game() {
               <MapIcon className="size-5" />
             </OverlayButton>
             <OverlayButton
+              label="Leaderboards"
+              active={panel === "leaderboard"}
+              onClick={() => setPanel((p) => (p === "leaderboard" ? null : "leaderboard"))}
+            >
+              <Trophy className="size-5" />
+            </OverlayButton>
+            <OverlayButton
               label="Bag"
               active={panel === "inventory"}
               onClick={() => setPanel((p) => (p === "inventory" ? null : "inventory"))}
@@ -341,6 +348,7 @@ function Game() {
             >
               <Hammer className="size-5" />
             </OverlayButton>
+
           </div>
         </div>
 
