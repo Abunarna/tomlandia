@@ -104,7 +104,7 @@ function Game() {
       // Row-locking merge: the server keeps its own economy fields when our
       // copy is stale, instead of us blindly overwriting the row.
       const req = supabase
-        .rpc("player_sync", { _data: s as unknown as Json, _rev: rev ?? undefined })
+        .rpc("player_sync", rev === null ? { _data: s as unknown as Json } : { _data: s as unknown as Json, _rev: rev })
         .then(({ data, error }) => {
           if (error) {
             console.error("Save failed", error.message);
