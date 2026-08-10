@@ -1105,6 +1105,10 @@ export class GameEngine {
       }
       this.hp = Math.min(this.hp, this.maxHp);
     }
+    // The server just wrote the row, so our version marker is stale. Push a
+    // sync to pick the new one up before any local bag/bank change is saved.
+    this.rev = null;
+    this.syncNow();
   }
 
   /** Level-up fanfare, fired when the server reports a new level. */
