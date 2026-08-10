@@ -644,24 +644,69 @@ export class GameEngine {
   }
 
 
+  /**
+   * Single writer for the cloud save. The row is merged server-side under a
+   * row lock, so a stale local copy can never clobber server-granted rewards.
+   */
+  private pushSave(toast: boolean) {
+    if (!this.persist) return;
+    if (this.syncing) {
+      this.syncQueued = true;
+      return;
+    }
+    this.syncing = true;
+    try {
+      const p = this.persist(this.toSave(), this.rev);
+      void Promise.resolve(p)
+        .then((ack) => {
+          if (ack && typeof ack.rev === "number") this.rev = ack.rev;
+          if (ack?.conflict && ack.data) {
+            // The server had newer economy state than we did — take theirs.
+            this.applyAuthoritative(ack.data);
+            this.emitHud(true);
+          }
+        })
+        .catch(() => {
+          this.rev = null;
+        })
+        .then(() => {
+          this.syncing = false;
+          if (this.syncQueued) {
+            this.syncQueued = false;
+            this.pushSave(false);
+          }
+        });
+    } catch {
+      this.syncing = false;
+    }
+    if (toast) this.pushText(this.px, this.py - 40, "Saved", "#9fd6f5");
+  }
+
   /** Persist without the "Saved" toast — used after local gold changes. */
   private syncNow() {
-    try {
-      this.persist?.(this.toSave());
-    } catch {
-      /* ignore */
-    }
+    this.pushSave(false);
   }
 
   save() {
-    if (!this.persist) return;
-    try {
-      this.persist(this.toSave());
-      this.pushText(this.px, this.py - 40, "Saved", "#9fd6f5");
-    } catch {
-      /* ignore */
+    this.pushSave(true);
+  }
+
+  /** Adopt the server-owned economy fields from an authoritative row. */
+  private applyAuthoritative(s: SaveState) {
+    if (Array.isArray(s.inv)) {
+      this.inv = s.inv.slice(0, INV_SIZE).map((x) => (x ? { ...x } : null));
+      while (this.inv.length < INV_SIZE) this.inv.push(null);
+    }
+    if (typeof s.gold === "number") this.gold = s.gold;
+    if (s.skills) {
+      for (const id of SKILL_IDS) {
+        const xp = s.skills[id]?.xp;
+        if (typeof xp === "number") this.skills[id] = { xp };
+      }
+      this.hp = Math.min(this.hp, this.maxHp);
     }
   }
+
 
   /** Replace the live state with a save (used for claiming old local progress). */
   applySave(s: SaveState) {
