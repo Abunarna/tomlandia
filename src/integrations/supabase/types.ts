@@ -378,6 +378,30 @@ export type Database = {
         }
         Relationships: []
       }
+      player_scores: {
+        Row: {
+          level: number
+          skill: string
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          level?: number
+          skill: string
+          updated_at?: string
+          user_id: string
+          username?: string
+        }
+        Update: {
+          level?: number
+          skill?: string
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -536,6 +560,7 @@ export type Database = {
         Args: { _inv: Json; _item: string; _qty: number }
         Returns: Json
       }
+      leaderboard: { Args: { _skill: string }; Returns: Json }
       market_browse: { Args: never; Returns: Json }
       market_buy: { Args: { _id: string; _qty?: number }; Returns: Json }
       market_cancel: { Args: { _id: string }; Returns: Json }

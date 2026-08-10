@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Backpack, Hammer, Map as MapIcon, Volume2, VolumeX } from "lucide-react";
+import { Backpack, Hammer, Map as MapIcon, Trophy, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
@@ -328,6 +328,13 @@ function Game() {
               <MapIcon className="size-5" />
             </OverlayButton>
             <OverlayButton
+              label="Leaderboards"
+              active={panel === "leaderboard"}
+              onClick={() => setPanel((p) => (p === "leaderboard" ? null : "leaderboard"))}
+            >
+              <Trophy className="size-5" />
+            </OverlayButton>
+            <OverlayButton
               label="Bag"
               active={panel === "inventory"}
               onClick={() => setPanel((p) => (p === "inventory" ? null : "inventory"))}
@@ -341,6 +348,7 @@ function Game() {
             >
               <Hammer className="size-5" />
             </OverlayButton>
+
           </div>
         </div>
 

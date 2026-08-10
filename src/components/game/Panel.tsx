@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Backpack, Hammer, Store, X } from "lucide-react";
+import { Backpack, Hammer, Store, Trophy, X } from "lucide-react";
 import { ITEMS } from "@/game/data";
 import type { HudSnapshot, ItemDef } from "@/game/types";
 import { GearBadge, ItemIcon } from "./ItemIcon";
 import { MarketTab } from "./Market";
+import { LeaderboardTab } from "./Leaderboard";
 
-export type PanelId = "inventory" | "skills" | "market";
+export type PanelId = "inventory" | "skills" | "market" | "leaderboard";
+
 
 export function Panel({
   panel,
@@ -33,7 +35,14 @@ export function Panel({
   suggestPrice: (itemId: string) => number;
 }) {
 
-  const title = panel === "inventory" ? "Bag" : panel === "skills" ? "Skills" : "Market";
+  const title =
+    panel === "inventory"
+      ? "Bag"
+      : panel === "skills"
+        ? "Skills"
+        : panel === "leaderboard"
+          ? "Global Leaderboards"
+          : "Market";
   return (
     <div className="pointer-events-auto h-[60dvh] overflow-y-auto rounded-t-3xl border-t border-border/60 bg-card/95 p-3 shadow-soft backdrop-blur-md">
       <div className="mb-2 flex items-center justify-between">
@@ -42,6 +51,8 @@ export function Panel({
             <Backpack className="size-4" />
           ) : panel === "skills" ? (
             <Hammer className="size-4" />
+          ) : panel === "leaderboard" ? (
+            <Trophy className="size-4" />
           ) : (
             <Store className="size-4" />
           )}
@@ -65,6 +76,8 @@ export function Panel({
         />
       ) : panel === "skills" ? (
         <SkillsTab hud={hud} />
+      ) : panel === "leaderboard" ? (
+        <LeaderboardTab />
       ) : (
         <MarketTab
           hud={hud}
@@ -74,6 +87,7 @@ export function Panel({
           suggestPrice={suggestPrice}
         />
       )}
+
     </div>
   );
 }
