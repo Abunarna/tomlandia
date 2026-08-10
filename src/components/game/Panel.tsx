@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Backpack, Hammer, Store, X } from "lucide-react";
+import { Backpack, Hammer, Store, Trophy, X } from "lucide-react";
 import { ITEMS } from "@/game/data";
 import type { HudSnapshot, ItemDef } from "@/game/types";
 import { GearBadge, ItemIcon } from "./ItemIcon";
 import { MarketTab } from "./Market";
+import { LeaderboardTab } from "./Leaderboard";
 
-export type PanelId = "inventory" | "skills" | "market";
+export type PanelId = "inventory" | "skills" | "market" | "leaderboard";
+
 
 export function Panel({
   panel,
