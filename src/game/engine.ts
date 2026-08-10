@@ -60,6 +60,15 @@ export interface ServerState {
   skills?: Partial<Record<SkillId, { xp: number }>> | null;
 }
 
+/** Reply from the row-locking cloud save routine. */
+export interface SyncAck {
+  ok?: boolean;
+  rev?: number;
+  conflict?: boolean;
+  data?: SaveState;
+}
+
+
 /** Authoritative reply from the shared-world harvest routine. */
 export interface HarvestRes {
   ok: boolean;
