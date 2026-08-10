@@ -363,16 +363,19 @@ export type Database = {
       player_saves: {
         Row: {
           data: Json
+          rev: number
           updated_at: string
           user_id: string
         }
         Insert: {
           data: Json
+          rev?: number
           updated_at?: string
           user_id: string
         }
         Update: {
           data?: Json
+          rev?: number
           updated_at?: string
           user_id?: string
         }
@@ -578,6 +581,7 @@ export type Database = {
         Args: { _inv: Json; _item: string; _plus: number; _qty: number }
         Returns: Json
       }
+      player_sync: { Args: { _data: Json; _rev?: number }; Returns: Json }
       skill_xp: { Args: { _data: Json; _skill: string }; Returns: number }
       track_position: {
         Args: { _uid: string; _x: number; _y: number }
