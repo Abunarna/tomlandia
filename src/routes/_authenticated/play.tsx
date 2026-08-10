@@ -100,17 +100,24 @@ function Game() {
 
 
   const persist = useCallback(
-    (s: SaveState) => {
+    (s: SaveState, rev: number | null): PromiseLike<SyncAck | null> => {
+      // Row-locking merge: the server keeps its own economy fields when our
+      // copy is stale, instead of us blindly overwriting the row.
       const req = supabase
-        .from("player_saves")
-        .upsert({ user_id: user.id, data: s as unknown as Json, updated_at: new Date().toISOString() })
-        .then(({ error }) => {
-          if (error) console.error("Save failed", error.message);
+        .rpc("player_sync", { _data: s as unknown as Json, _rev: rev })
+        .then(({ data, error }) => {
+          if (error) {
+            console.error("Save failed", error.message);
+            return null;
+          }
+          return (data ?? null) as unknown as SyncAck | null;
         });
       pendingSave.current = req;
+      return req;
     },
-    [user.id],
+    [],
   );
+
 
 
 
