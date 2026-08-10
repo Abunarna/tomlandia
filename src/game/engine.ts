@@ -351,15 +351,29 @@ export class GameEngine {
   private saveCd = 30;
 
 
-  /** Progress is persisted to the cloud by the host app, never to localStorage. */
-  private persist: ((s: SaveState) => void) | null = null;
+  /**
+   * Progress is persisted to the cloud by the host app, never to localStorage.
+   * The host resolves to the authoritative row so a stale client copy can never
+   * overwrite rewards the server already committed.
+   */
+  private persist: ((s: SaveState, rev: number | null) => PromiseLike<SyncAck | null>) | null = null;
+
+  /** Row version we last saw; `null` means "unknown, treat my copy as stale". */
+  private rev: number | null = null;
+  private syncing = false;
+  private syncQueued = false;
 
   constructor(
     canvas: HTMLCanvasElement,
     onHud: (s: HudSnapshot) => void,
-    opts?: { initialSave?: SaveState | null; onPersist?: (s: SaveState) => void },
+    opts?: {
+      initialSave?: SaveState | null;
+      initialRev?: number | null;
+      onPersist?: (s: SaveState, rev: number | null) => PromiseLike<SyncAck | null>;
+    },
   ) {
     this.persist = opts?.onPersist ?? null;
+    this.rev = opts?.initialRev ?? null;
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d")!;
     this.onHud = onHud;
