@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Backpack, Hammer, Map as MapIcon, Trophy, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { GameEngine, clearLegacySave, readLegacySave } from "@/game/engine";
+import { GameEngine, clearLegacySave, readLegacySave, type SyncAck } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
 import { attackMonster, craftItem, fishCast, harvestNode, usePotion } from "@/lib/world.functions";
@@ -100,17 +100,24 @@ function Game() {
 
 
   const persist = useCallback(
-    (s: SaveState) => {
+    (s: SaveState, rev: number | null): PromiseLike<SyncAck | null> => {
+      // Row-locking merge: the server keeps its own economy fields when our
+      // copy is stale, instead of us blindly overwriting the row.
       const req = supabase
-        .from("player_saves")
-        .upsert({ user_id: user.id, data: s as unknown as Json, updated_at: new Date().toISOString() })
-        .then(({ error }) => {
-          if (error) console.error("Save failed", error.message);
+        .rpc("player_sync", rev === null ? { _data: s as unknown as Json } : { _data: s as unknown as Json, _rev: rev })
+        .then(({ data, error }) => {
+          if (error) {
+            console.error("Save failed", error.message);
+            return null;
+          }
+          return (data ?? null) as unknown as SyncAck | null;
         });
       pendingSave.current = req;
+      return req;
     },
-    [user.id],
+    [],
   );
+
 
 
 
@@ -125,13 +132,17 @@ function Game() {
     void (async () => {
       const { data } = await supabase
         .from("player_saves")
-        .select("data")
+        .select("data, rev")
         .eq("user_id", user.id)
         .maybeSingle();
       if (cancelled) return;
 
       const cloudSave = (data?.data as unknown as SaveState | undefined) ?? null;
-      engine = new GameEngine(canvas, setHud, { initialSave: cloudSave, onPersist: persist });
+      engine = new GameEngine(canvas, setHud, {
+        initialSave: cloudSave,
+        initialRev: typeof data?.rev === "number" ? data.rev : null,
+        onPersist: persist,
+      });
       engineRef.current = engine;
       // Phase 9 — the server resolves every world action and owns the rewards.
       engine.userId = user.id;
