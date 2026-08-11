@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Backpack, Hammer, Map as MapIcon, Trophy, Volume2, VolumeX } from "lucide-react";
+import { Backpack, Hammer, Map as MapIcon, Maximize, Minimize, Trophy, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave, type SyncAck } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
@@ -94,6 +94,8 @@ function Game() {
   const [ready, setReady] = useState(false);
   const [claimable, setClaimable] = useState<SaveState | null>(null);
   const [mapOpen, setMapOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showFsPrompt, setShowFsPrompt] = useState(false);
 
   const pendingSave = useRef<PromiseLike<unknown> | null>(null);
   const panelRef = useRef<PanelId | null>(null);
@@ -289,6 +291,34 @@ function Game() {
     };
   }, [user.id]);
 
+  // Fullscreen helpers — request/exit the browser Fullscreen API on the whole
+  // document and keep our icon state in sync with user-initiated changes too.
+  const toggleFullscreen = useCallback(async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch {
+      // Some browsers reject fullscreen without a user gesture or on unsupported
+      // platforms — fail silently rather than breaking the game.
+    }
+  }, []);
+
+  useEffect(() => {
+    const onFsChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
+    document.addEventListener("fullscreenchange", onFsChange);
+    return () => document.removeEventListener("fullscreenchange", onFsChange);
+  }, []);
+
+  // Offer fullscreen once the game has finished loading.
+  useEffect(() => {
+    if (!ready) return;
+    const dismissed = window.sessionStorage.getItem("tom_fs_prompt");
+    if (!dismissed && !document.fullscreenElement) setShowFsPrompt(true);
+  }, [ready]);
+
 
 
 
@@ -324,6 +354,13 @@ function Game() {
             />
           )}
           <div className="pointer-events-auto z-20 flex flex-col gap-2">
+            <OverlayButton
+              label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+              active={isFullscreen}
+              onClick={toggleFullscreen}
+            >
+              {isFullscreen ? <Minimize className="size-5" /> : <Maximize className="size-5" />}
+            </OverlayButton>
             <OverlayButton
               label={hud.soundOn ? "Mute sound" : "Unmute sound"}
               active={hud.soundOn}
@@ -424,6 +461,38 @@ function Game() {
                 className="flex-1 rounded-2xl border border-border/60 px-4 py-3 font-semibold text-foreground"
               >
                 Start fresh
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showFsPrompt && (
+        <div className="absolute inset-0 z-30 grid place-items-center bg-background/80 p-6 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-3xl border border-border/60 bg-card p-5 shadow-soft">
+            <h2 className="font-display text-lg font-bold text-foreground">Play in fullscreen?</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Immerse yourself in Tomlandia. You can toggle fullscreen anytime with the button in the corner.
+            </p>
+            <div className="mt-5 flex gap-2">
+              <button
+                onClick={() => {
+                  void toggleFullscreen();
+                  window.sessionStorage.setItem("tom_fs_prompt", "1");
+                  setShowFsPrompt(false);
+                }}
+                className="flex-1 rounded-2xl bg-primary px-4 py-3 font-semibold text-primary-foreground"
+              >
+                Go fullscreen
+              </button>
+              <button
+                onClick={() => {
+                  window.sessionStorage.setItem("tom_fs_prompt", "1");
+                  setShowFsPrompt(false);
+                }}
+                className="flex-1 rounded-2xl border border-border/60 px-4 py-3 font-semibold text-foreground"
+              >
+                Not now
               </button>
             </div>
           </div>
