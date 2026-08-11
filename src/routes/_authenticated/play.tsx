@@ -94,6 +94,8 @@ function Game() {
   const [ready, setReady] = useState(false);
   const [claimable, setClaimable] = useState<SaveState | null>(null);
   const [mapOpen, setMapOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showFsPrompt, setShowFsPrompt] = useState(false);
 
   const pendingSave = useRef<PromiseLike<unknown> | null>(null);
   const panelRef = useRef<PanelId | null>(null);
