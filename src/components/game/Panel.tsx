@@ -44,8 +44,8 @@ export function Panel({
           ? "Global Leaderboards"
           : "Market";
   return (
-    <div className="pointer-events-auto h-[60dvh] overflow-y-auto rounded-t-3xl border-t border-border/60 bg-card/95 p-3 shadow-soft backdrop-blur-md">
-      <div className="mb-2 flex items-center justify-between">
+    <div className="pointer-events-auto flex h-full min-h-0 flex-col overflow-hidden rounded-t-3xl border-t border-border/60 bg-card/95 p-3 shadow-soft backdrop-blur-md">
+      <div className="mb-2 flex shrink-0 items-center justify-between">
         <p className="flex items-center gap-1.5 text-sm font-bold text-foreground">
           {panel === "inventory" ? (
             <Backpack className="size-4" />
@@ -66,27 +66,29 @@ export function Panel({
           <X className="size-4" />
         </button>
       </div>
-      {panel === "inventory" ? (
-        <InventoryTab
-          hud={hud}
-          onEquip={onEquip}
-          onUse={onUse}
-          onDrop={onDrop}
-          onSetFood={onSetFood}
-        />
-      ) : panel === "skills" ? (
-        <SkillsTab hud={hud} />
-      ) : panel === "leaderboard" ? (
-        <LeaderboardTab />
-      ) : (
-        <MarketTab
-          hud={hud}
-          onBuy={onBuyListing}
-          onCancel={onCancelListing}
-          onList={onList}
-          suggestPrice={suggestPrice}
-        />
-      )}
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        {panel === "inventory" ? (
+          <InventoryTab
+            hud={hud}
+            onEquip={onEquip}
+            onUse={onUse}
+            onDrop={onDrop}
+            onSetFood={onSetFood}
+          />
+        ) : panel === "skills" ? (
+          <SkillsTab hud={hud} />
+        ) : panel === "leaderboard" ? (
+          <LeaderboardTab />
+        ) : (
+          <MarketTab
+            hud={hud}
+            onBuy={onBuyListing}
+            onCancel={onCancelListing}
+            onList={onList}
+            suggestPrice={suggestPrice}
+          />
+        )}
+      </div>
 
     </div>
   );
