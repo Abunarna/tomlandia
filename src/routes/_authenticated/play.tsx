@@ -344,85 +344,88 @@ function Game() {
       <div className="pointer-events-none absolute inset-0 flex flex-col">
         <Hud hud={hud} />
 
-        <div className="flex-1" />
-
-        <div className="pointer-events-none flex items-end justify-end gap-3 p-3">
-          {panel && (
+        {panel ? (
+          <>
+            {/* Tap anywhere outside the sheet to close it. */}
             <div
               className="fixed inset-0 z-10 pointer-events-auto"
               onClick={() => setPanel(null)}
             />
-          )}
-          <div className="pointer-events-auto z-20 flex flex-col gap-2">
-            <OverlayButton
-              label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-              active={isFullscreen}
-              onClick={toggleFullscreen}
-            >
-              {isFullscreen ? <Minimize className="size-5" /> : <Maximize className="size-5" />}
-            </OverlayButton>
-            <OverlayButton
-              label={hud.soundOn ? "Mute sound" : "Unmute sound"}
-              active={hud.soundOn}
-              onClick={() => engineRef.current?.toggleSound()}
-            >
-              {hud.soundOn ? <Volume2 className="size-5" /> : <VolumeX className="size-5" />}
-            </OverlayButton>
-            <OverlayButton
-              label="World map"
-              active={mapOpen}
-              onClick={() => setMapOpen(true)}
-            >
-              <MapIcon className="size-5" />
-            </OverlayButton>
-            <OverlayButton
-              label="Leaderboards"
-              active={panel === "leaderboard"}
-              onClick={() => setPanel((p) => (p === "leaderboard" ? null : "leaderboard"))}
-            >
-              <Trophy className="size-5" />
-            </OverlayButton>
-            <OverlayButton
-              label="Bag"
-              active={panel === "inventory"}
-              onClick={() => setPanel((p) => (p === "inventory" ? null : "inventory"))}
-            >
-              <Backpack className="size-5" />
-            </OverlayButton>
-            <OverlayButton
-              label="Skills"
-              active={panel === "skills"}
-              onClick={() => setPanel((p) => (p === "skills" ? null : "skills"))}
-            >
-              <Hammer className="size-5" />
-            </OverlayButton>
+            {/* Menu fills all space below the HUD; right-side buttons are hidden. */}
+            <div className="pointer-events-auto z-30 min-h-0 flex-1">
+              <Panel
+                panel={panel}
+                hud={hud}
+                onClose={() => setPanel(null)}
+                onEquip={(i) => engineRef.current?.equipSlot(i)}
+                onUse={(i) => engineRef.current?.useSlot(i)}
+                onDrop={(i) => engineRef.current?.dropSlot(i)}
+                onSetFood={(i) => engineRef.current?.equipSlot(i)}
 
-          </div>
-        </div>
+                onBuyListing={(id, qty) => {
+                  void engineRef.current?.buyListing(id, qty);
+                }}
+                onCancelListing={(id) => {
+                  void engineRef.current?.cancelListing(id);
+                }}
+                onList={(i, qty, price) => {
+                  void engineRef.current?.listSlot(i, qty, price);
+                }}
+                suggestPrice={(id) => engineRef.current?.suggestPrice(id) ?? 1}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex-1" />
 
-        {panel && (
-          <div className="z-20">
-            <Panel
-              panel={panel}
-              hud={hud}
-              onClose={() => setPanel(null)}
-              onEquip={(i) => engineRef.current?.equipSlot(i)}
-              onUse={(i) => engineRef.current?.useSlot(i)}
-              onDrop={(i) => engineRef.current?.dropSlot(i)}
-              onSetFood={(i) => engineRef.current?.equipSlot(i)}
-
-              onBuyListing={(id, qty) => {
-                void engineRef.current?.buyListing(id, qty);
-              }}
-              onCancelListing={(id) => {
-                void engineRef.current?.cancelListing(id);
-              }}
-              onList={(i, qty, price) => {
-                void engineRef.current?.listSlot(i, qty, price);
-              }}
-              suggestPrice={(id) => engineRef.current?.suggestPrice(id) ?? 1}
-            />
-          </div>
+            <div className="pointer-events-none flex items-end justify-end gap-3 p-3">
+              <div className="pointer-events-auto z-20 flex flex-col gap-2">
+                <OverlayButton
+                  label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                  active={isFullscreen}
+                  onClick={toggleFullscreen}
+                >
+                  {isFullscreen ? <Minimize className="size-5" /> : <Maximize className="size-5" />}
+                </OverlayButton>
+                <OverlayButton
+                  label={hud.soundOn ? "Mute sound" : "Unmute sound"}
+                  active={hud.soundOn}
+                  onClick={() => engineRef.current?.toggleSound()}
+                >
+                  {hud.soundOn ? <Volume2 className="size-5" /> : <VolumeX className="size-5" />}
+                </OverlayButton>
+                <OverlayButton
+                  label="World map"
+                  active={mapOpen}
+                  onClick={() => setMapOpen(true)}
+                >
+                  <MapIcon className="size-5" />
+                </OverlayButton>
+                <OverlayButton
+                  label="Leaderboards"
+                  active={panel === "leaderboard"}
+                  onClick={() => setPanel((p) => (p === "leaderboard" ? null : "leaderboard"))}
+                >
+                  <Trophy className="size-5" />
+                </OverlayButton>
+                <OverlayButton
+                  label="Bag"
+                  active={panel === "inventory"}
+                  onClick={() => setPanel((p) => (p === "inventory" ? null : "inventory"))}
+                >
+                  <Backpack className="size-5" />
+                </OverlayButton>
+                <OverlayButton
+                  label="Skills"
+                  active={panel === "skills"}
+                  onClick={() => setPanel((p) => (p === "skills" ? null : "skills"))}
+                >
+                  <Hammer className="size-5" />
+                </OverlayButton>
+              </div>
+            </div>
+          </>
         )}
       </div>
 
