@@ -467,6 +467,38 @@ function Game() {
         </div>
       )}
 
+      {showFsPrompt && (
+        <div className="absolute inset-0 z-30 grid place-items-center bg-background/80 p-6 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-3xl border border-border/60 bg-card p-5 shadow-soft">
+            <h2 className="font-display text-lg font-bold text-foreground">Play in fullscreen?</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Immerse yourself in Tomlandia. You can toggle fullscreen anytime with the button in the corner.
+            </p>
+            <div className="mt-5 flex gap-2">
+              <button
+                onClick={() => {
+                  void toggleFullscreen();
+                  window.sessionStorage.setItem("tom_fs_prompt", "1");
+                  setShowFsPrompt(false);
+                }}
+                className="flex-1 rounded-2xl bg-primary px-4 py-3 font-semibold text-primary-foreground"
+              >
+                Go fullscreen
+              </button>
+              <button
+                onClick={() => {
+                  window.sessionStorage.setItem("tom_fs_prompt", "1");
+                  setShowFsPrompt(false);
+                }}
+                className="flex-1 rounded-2xl border border-border/60 px-4 py-3 font-semibold text-foreground"
+              >
+                Not now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {mapOpen && (
         <WorldMap
           position={() => ({
