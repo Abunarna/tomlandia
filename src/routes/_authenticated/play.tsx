@@ -355,6 +355,13 @@ function Game() {
           )}
           <div className="pointer-events-auto z-20 flex flex-col gap-2">
             <OverlayButton
+              label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+              active={isFullscreen}
+              onClick={toggleFullscreen}
+            >
+              {isFullscreen ? <Minimize className="size-5" /> : <Maximize className="size-5" />}
+            </OverlayButton>
+            <OverlayButton
               label={hud.soundOn ? "Mute sound" : "Unmute sound"}
               active={hud.soundOn}
               onClick={() => engineRef.current?.toggleSound()}
