@@ -291,6 +291,34 @@ function Game() {
     };
   }, [user.id]);
 
+  // Fullscreen helpers — request/exit the browser Fullscreen API on the whole
+  // document and keep our icon state in sync with user-initiated changes too.
+  const toggleFullscreen = useCallback(async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch {
+      // Some browsers reject fullscreen without a user gesture or on unsupported
+      // platforms — fail silently rather than breaking the game.
+    }
+  }, []);
+
+  useEffect(() => {
+    const onFsChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
+    document.addEventListener("fullscreenchange", onFsChange);
+    return () => document.removeEventListener("fullscreenchange", onFsChange);
+  }, []);
+
+  // Offer fullscreen once the game has finished loading.
+  useEffect(() => {
+    if (!ready) return;
+    const dismissed = window.sessionStorage.getItem("tom_fs_prompt");
+    if (!dismissed && !document.fullscreenElement) setShowFsPrompt(true);
+  }, [ready]);
+
 
 
 
