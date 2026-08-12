@@ -883,27 +883,56 @@ export class GameEngine {
     this.emitHud(true);
   }
 
-  /** Discard a stack outright — local mutation, no gold, no server round-trip. */
+  /**
+   * Bag / gear / bank changes are resolved server-side under the same row lock
+   * the world actions use, so an in-flight reward can never wipe them (and a
+   * stale client can never resurrect an item it no longer owns). We apply the
+   * change locally first for instant feedback, then adopt the server's answer.
+   */
+  private runGear(p: Promise<GearRes> | null) {
+    if (!p) {
+      // No server binding (tests/offline): fall back to a plain cloud save.
+      this.syncNow();
+      this.emitHud(true);
+      return;
+    }
+    void p
+      .then((res) => {
+        if (res?.state) this.applyServerState(res.state);
+        else {
+          // Rejected: re-read the authoritative row instead of trusting our copy.
+          this.rev = null;
+          this.syncNow();
+        }
+        this.emitHud(true);
+      })
+      .catch(() => {
+        this.rev = null;
+        this.syncNow();
+      });
+  }
+
+  /** Discard a stack outright. */
   dropSlot(index: number) {
     const slot = this.inv[index];
     if (!slot) return;
     const def = item(slot.id);
     this.inv[index] = null;
     this.pushText(this.px, this.py - 40, `Dropped ${def.name}`, "#cbb9a4");
-    this.syncNow();
     this.emitHud(true);
+    this.runGear(this.onDrop ? this.onDrop(index) : null);
   }
 
 
-  /* ---------- bank (local mutations only) ---------- */
+  /* ---------- bank ---------- */
 
   depositGold(amount: number) {
     const amt = Math.min(Math.max(0, Math.floor(amount)), this.gold);
     if (amt <= 0) return;
     this.gold -= amt;
     this.bank.gold += amt;
-    this.syncNow();
     this.emitHud(true);
+    this.runGear(this.onBankGold ? this.onBankGold("in", amt) : null);
   }
 
   withdrawGold(amount: number) {
@@ -911,8 +940,8 @@ export class GameEngine {
     if (amt <= 0) return;
     this.bank.gold -= amt;
     this.gold += amt;
-    this.syncNow();
     this.emitHud(true);
+    this.runGear(this.onBankGold ? this.onBankGold("out", amt) : null);
   }
 
   private bankAdd(slot: InvSlot, qty: number): boolean {
@@ -940,8 +969,8 @@ export class GameEngine {
     if (!this.bankAdd(slot, take)) return;
     slot.qty -= take;
     if (slot.qty <= 0) this.inv[bagIndex] = null;
-    this.syncNow();
     this.emitHud(true);
+    this.runGear(this.onBankItem ? this.onBankItem("in", bagIndex, take) : null);
   }
 
   withdrawItem(bankIndex: number, qty = 1) {
@@ -951,8 +980,8 @@ export class GameEngine {
     if (!this.addItem(slot.id, take, slot.plus ?? 0)) return;
     slot.qty -= take;
     if (slot.qty <= 0) this.bank.items[bankIndex] = null;
-    this.syncNow();
     this.emitHud(true);
+    this.runGear(this.onBankItem ? this.onBankItem("out", bankIndex, take) : null);
   }
 
   equipSlot(index: number) {
@@ -963,6 +992,7 @@ export class GameEngine {
       this.food = slot.id;
       this.pushText(this.px, this.py - 40, `${def.name} set as snack`, "#ffe0a8");
       this.emitHud(true);
+      this.runGear(this.onEquip ? this.onEquip(index) : null);
       return;
     }
     if (def.kind !== "weapon" && def.kind !== "armor") return;
@@ -972,7 +1002,9 @@ export class GameEngine {
     else this.armor = next;
     this.inv[index] = prev ? { id: prev.id, qty: 1, plus: prev.plus } : null;
     this.emitHud(true);
+    this.runGear(this.onEquip ? this.onEquip(index) : null);
   }
+
 
   /* ---------- combat stats ---------- */
 
