@@ -537,6 +537,11 @@ export type Database = {
         Args: { _id: number; _x: number; _y: number }
         Returns: Json
       }
+      bank_gold: { Args: { _amount: number; _dir: string }; Returns: Json }
+      bank_item: {
+        Args: { _dir: string; _index: number; _qty: number }
+        Returns: Json
+      }
       craft_item: { Args: { _recipe: string }; Returns: Json }
       equip_stat: {
         Args: { _data: Json; _stat: string; _which: string }
@@ -546,6 +551,8 @@ export type Database = {
         Args: { _spot: number; _x: number; _y: number }
         Returns: Json
       }
+      gear_equip: { Args: { _index: number }; Returns: Json }
+      gear_upgrade: { Args: { _which: string }; Returns: Json }
       grant_skill_xp: {
         Args: { _amount: number; _data: Json; _skill: string }
         Returns: Json
@@ -559,6 +566,7 @@ export type Database = {
         Returns: Json
       }
       inv_count: { Args: { _inv: Json; _item: string }; Returns: number }
+      inv_drop: { Args: { _index: number }; Returns: Json }
       inv_remove: {
         Args: { _inv: Json; _item: string; _qty: number }
         Returns: Json
@@ -581,8 +589,20 @@ export type Database = {
         Args: { _inv: Json; _item: string; _plus: number; _qty: number }
         Returns: Json
       }
+      pl_state: { Args: { _d: Json }; Returns: Json }
       player_sync: { Args: { _data: Json; _rev?: number }; Returns: Json }
       skill_xp: { Args: { _data: Json; _skill: string }; Returns: number }
+      slot_add: {
+        Args: {
+          _arr: Json
+          _id: string
+          _plus: number
+          _qty: number
+          _size: number
+          _stackable: boolean
+        }
+        Returns: Json
+      }
       track_position: {
         Args: { _uid: string; _x: number; _y: number }
         Returns: boolean
