@@ -58,7 +58,22 @@ export interface ServerState {
   inv?: InvSlot[] | null;
   gold?: number | null;
   skills?: Partial<Record<SkillId, { xp: number }>> | null;
+  /** Gear, snack and bank are server-owned too, so they can never be lost. */
+  weapon?: EquipState | ItemId | null;
+  armor?: EquipState | ItemId | null;
+  food?: ItemId | null;
+  bank?: { gold?: number; items?: (InvSlot | null)[] } | null;
 }
+
+/** Generic reply from the small bag/gear/bank routines. */
+export interface GearRes {
+  ok: boolean;
+  reason?: string;
+  cost?: number;
+  plus?: number;
+  state?: ServerState;
+}
+
 
 /** Reply from the row-locking cloud save routine. */
 export interface SyncAck {
