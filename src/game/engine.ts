@@ -457,6 +457,17 @@ export class GameEngine {
   onFish: ((id: number, x: number, y: number) => Promise<FishRes>) | null = null;
   /** Server-side potion use. The server stores the damage buff on our save. */
   onPotion: ((itemId: string) => Promise<PotionRes>) | null = null;
+  /** Server-side equip/unequip (or set snack) — keeps bag and gear in one row lock. */
+  onEquip: ((index: number) => Promise<GearRes>) | null = null;
+  /** Server-side gear upgrade (+1), paying gold under the same row lock. */
+  onUpgrade: ((which: "weapon" | "armor") => Promise<GearRes>) | null = null;
+  /** Server-side drop of a bag stack. */
+  onDrop: ((index: number) => Promise<GearRes>) | null = null;
+  /** Server-side bank gold move. */
+  onBankGold: ((dir: "in" | "out", amount: number) => Promise<GearRes>) | null = null;
+  /** Server-side bank item move. */
+  onBankItem: ((dir: "in" | "out", index: number, qty: number) => Promise<GearRes>) | null = null;
+
 
   /** Active damage buff from a potion — mirrored from the server. */
   buff: { dmg: number; hits: number } | null = null;
