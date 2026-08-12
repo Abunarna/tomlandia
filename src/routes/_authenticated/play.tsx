@@ -5,7 +5,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave, type SyncAck } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
-import { attackMonster, craftItem, fishCast, harvestNode, usePotion } from "@/lib/world.functions";
+import {
+  attackMonster,
+  bankGold,
+  bankItem,
+  craftItem,
+  dropSlotAction,
+  equipSlotAction,
+  fishCast,
+  harvestNode,
+  upgradeGear,
+  usePotion,
+} from "@/lib/world.functions";
 import { browseMarket, buyFromMarket, cancelMarketListing, listOnMarket } from "@/lib/market.functions";
 import { NPCS, type NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
@@ -153,6 +164,14 @@ function Game() {
       engine.onFish = (id, x, y) => fishCast({ data: { id, x, y } });
       engine.onPotion = (itemId) => usePotion({ data: { item: itemId } });
       engine.onCraft = (recipe) => craftItem({ data: { recipe } });
+      // Gear, bag and bank changes are settled server-side under a row lock so
+      // equipped (and upgraded) items can never be lost to a concurrent reward.
+      engine.onEquip = (index) => equipSlotAction({ data: { index } });
+      engine.onUpgrade = (which) => upgradeGear({ data: { which } });
+      engine.onDrop = (index) => dropSlotAction({ data: { index } });
+      engine.onBankGold = (dir, amount) => bankGold({ data: { dir, amount } });
+      engine.onBankItem = (dir, index, qty) => bankItem({ data: { dir, index, qty } });
+
       // The exchange is a 100% player-driven shared order book.
       engine.onMarketBrowse = () => browseMarket();
       engine.onMarketList = (item, qty, price, plus) => listOnMarket({ data: { item, qty, price, plus } });

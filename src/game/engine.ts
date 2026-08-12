@@ -58,7 +58,22 @@ export interface ServerState {
   inv?: InvSlot[] | null;
   gold?: number | null;
   skills?: Partial<Record<SkillId, { xp: number }>> | null;
+  /** Gear, snack and bank are server-owned too, so they can never be lost. */
+  weapon?: EquipState | ItemId | null;
+  armor?: EquipState | ItemId | null;
+  food?: ItemId | null;
+  bank?: { gold?: number; items?: (InvSlot | null)[] } | null;
 }
+
+/** Generic reply from the small bag/gear/bank routines. */
+export interface GearRes {
+  ok: boolean;
+  reason?: string;
+  cost?: number;
+  plus?: number;
+  state?: ServerState;
+}
+
 
 /** Reply from the row-locking cloud save routine. */
 export interface SyncAck {
@@ -442,6 +457,17 @@ export class GameEngine {
   onFish: ((id: number, x: number, y: number) => Promise<FishRes>) | null = null;
   /** Server-side potion use. The server stores the damage buff on our save. */
   onPotion: ((itemId: string) => Promise<PotionRes>) | null = null;
+  /** Server-side equip/unequip (or set snack) — keeps bag and gear in one row lock. */
+  onEquip: ((index: number) => Promise<GearRes>) | null = null;
+  /** Server-side gear upgrade (+1), paying gold under the same row lock. */
+  onUpgrade: ((which: "weapon" | "armor") => Promise<GearRes>) | null = null;
+  /** Server-side drop of a bag stack. */
+  onDrop: ((index: number) => Promise<GearRes>) | null = null;
+  /** Server-side bank gold move. */
+  onBankGold: ((dir: "in" | "out", amount: number) => Promise<GearRes>) | null = null;
+  /** Server-side bank item move. */
+  onBankItem: ((dir: "in" | "out", index: number, qty: number) => Promise<GearRes>) | null = null;
+
 
   /** Active damage buff from a potion — mirrored from the server. */
   buff: { dmg: number; hits: number } | null = null;
@@ -714,7 +740,29 @@ export class GameEngine {
       }
       this.hp = Math.min(this.hp, this.maxHp);
     }
+    this.applyGearState(s);
   }
+
+  /** Gear, snack and bank now live server-side — mirror them verbatim. */
+  private applyGearState(s: {
+    weapon?: EquipState | ItemId | null;
+    armor?: EquipState | ItemId | null;
+    food?: ItemId | null;
+    bank?: { gold?: number; items?: (InvSlot | null)[] } | null;
+  }) {
+    if ("weapon" in s) this.weapon = GameEngine.toEquip(s.weapon);
+    if ("armor" in s) this.armor = GameEngine.toEquip(s.armor);
+    if ("food" in s) this.food = s.food ?? null;
+    if (s.bank) {
+      const items = Array.isArray(s.bank.items) ? s.bank.items.slice(0, BANK_SIZE) : [];
+      while (items.length < BANK_SIZE) items.push(null);
+      this.bank = {
+        gold: typeof s.bank.gold === "number" ? s.bank.gold : this.bank.gold,
+        items: items.map((x) => (x ? { ...x } : null)),
+      };
+    }
+  }
+
 
 
   /** Replace the live state with a save (used for claiming old local progress). */
@@ -835,27 +883,56 @@ export class GameEngine {
     this.emitHud(true);
   }
 
-  /** Discard a stack outright — local mutation, no gold, no server round-trip. */
+  /**
+   * Bag / gear / bank changes are resolved server-side under the same row lock
+   * the world actions use, so an in-flight reward can never wipe them (and a
+   * stale client can never resurrect an item it no longer owns). We apply the
+   * change locally first for instant feedback, then adopt the server's answer.
+   */
+  private runGear(p: Promise<GearRes> | null) {
+    if (!p) {
+      // No server binding (tests/offline): fall back to a plain cloud save.
+      this.syncNow();
+      this.emitHud(true);
+      return;
+    }
+    void p
+      .then((res) => {
+        if (res?.state) this.applyServerState(res.state);
+        else {
+          // Rejected: re-read the authoritative row instead of trusting our copy.
+          this.rev = null;
+          this.syncNow();
+        }
+        this.emitHud(true);
+      })
+      .catch(() => {
+        this.rev = null;
+        this.syncNow();
+      });
+  }
+
+  /** Discard a stack outright. */
   dropSlot(index: number) {
     const slot = this.inv[index];
     if (!slot) return;
     const def = item(slot.id);
     this.inv[index] = null;
     this.pushText(this.px, this.py - 40, `Dropped ${def.name}`, "#cbb9a4");
-    this.syncNow();
     this.emitHud(true);
+    this.runGear(this.onDrop ? this.onDrop(index) : null);
   }
 
 
-  /* ---------- bank (local mutations only) ---------- */
+  /* ---------- bank ---------- */
 
   depositGold(amount: number) {
     const amt = Math.min(Math.max(0, Math.floor(amount)), this.gold);
     if (amt <= 0) return;
     this.gold -= amt;
     this.bank.gold += amt;
-    this.syncNow();
     this.emitHud(true);
+    this.runGear(this.onBankGold ? this.onBankGold("in", amt) : null);
   }
 
   withdrawGold(amount: number) {
@@ -863,8 +940,8 @@ export class GameEngine {
     if (amt <= 0) return;
     this.bank.gold -= amt;
     this.gold += amt;
-    this.syncNow();
     this.emitHud(true);
+    this.runGear(this.onBankGold ? this.onBankGold("out", amt) : null);
   }
 
   private bankAdd(slot: InvSlot, qty: number): boolean {
@@ -892,8 +969,8 @@ export class GameEngine {
     if (!this.bankAdd(slot, take)) return;
     slot.qty -= take;
     if (slot.qty <= 0) this.inv[bagIndex] = null;
-    this.syncNow();
     this.emitHud(true);
+    this.runGear(this.onBankItem ? this.onBankItem("in", bagIndex, take) : null);
   }
 
   withdrawItem(bankIndex: number, qty = 1) {
@@ -903,8 +980,8 @@ export class GameEngine {
     if (!this.addItem(slot.id, take, slot.plus ?? 0)) return;
     slot.qty -= take;
     if (slot.qty <= 0) this.bank.items[bankIndex] = null;
-    this.syncNow();
     this.emitHud(true);
+    this.runGear(this.onBankItem ? this.onBankItem("out", bankIndex, take) : null);
   }
 
   equipSlot(index: number) {
@@ -915,6 +992,7 @@ export class GameEngine {
       this.food = slot.id;
       this.pushText(this.px, this.py - 40, `${def.name} set as snack`, "#ffe0a8");
       this.emitHud(true);
+      this.runGear(this.onEquip ? this.onEquip(index) : null);
       return;
     }
     if (def.kind !== "weapon" && def.kind !== "armor") return;
@@ -924,7 +1002,9 @@ export class GameEngine {
     else this.armor = next;
     this.inv[index] = prev ? { id: prev.id, qty: 1, plus: prev.plus } : null;
     this.emitHud(true);
+    this.runGear(this.onEquip ? this.onEquip(index) : null);
   }
+
 
   /* ---------- combat stats ---------- */
 
@@ -1105,10 +1185,12 @@ export class GameEngine {
       }
       this.hp = Math.min(this.hp, this.maxHp);
     }
+    this.applyGearState(state);
     // The server just wrote the row, so our version marker is stale. Push a
     // sync to pick the new one up before any local bag/bank change is saved.
     this.rev = null;
     this.syncNow();
+
   }
 
   /** Level-up fanfare, fired when the server reports a new level. */
@@ -1735,9 +1817,11 @@ export class GameEngine {
     const eq = which === "weapon" ? this.weapon : this.armor;
     const cost = this.upgradeCostFor(which);
     if (!eq || cost === null || this.gold < cost) return false;
+    // Bump the level first, then let the server settle gold + plus atomically.
     this.gold -= cost;
-    this.syncNow();
     eq.plus += 1;
+    this.runGear(this.onUpgrade ? this.onUpgrade(which) : null);
+
     this.pushText(this.px, this.py - 60, `${item(eq.id).name} +${eq.plus}!`, "#ffd98e");
     for (let i = 0; i < 16; i++) {
       this.parts.push({
