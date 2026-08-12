@@ -1817,9 +1817,11 @@ export class GameEngine {
     const eq = which === "weapon" ? this.weapon : this.armor;
     const cost = this.upgradeCostFor(which);
     if (!eq || cost === null || this.gold < cost) return false;
+    // Bump the level first, then let the server settle gold + plus atomically.
     this.gold -= cost;
-    this.syncNow();
     eq.plus += 1;
+    this.runGear(this.onUpgrade ? this.onUpgrade(which) : null);
+
     this.pushText(this.px, this.py - 60, `${item(eq.id).name} +${eq.plus}!`, "#ffd98e");
     for (let i = 0; i < 16; i++) {
       this.parts.push({
