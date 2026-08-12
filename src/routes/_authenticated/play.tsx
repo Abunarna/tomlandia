@@ -5,7 +5,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave, type SyncAck } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
-import { attackMonster, craftItem, fishCast, harvestNode, usePotion } from "@/lib/world.functions";
+import {
+  attackMonster,
+  bankGold,
+  bankItem,
+  craftItem,
+  dropSlotAction,
+  equipSlotAction,
+  fishCast,
+  harvestNode,
+  upgradeGear,
+  usePotion,
+} from "@/lib/world.functions";
 import { browseMarket, buyFromMarket, cancelMarketListing, listOnMarket } from "@/lib/market.functions";
 import { NPCS, type NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
