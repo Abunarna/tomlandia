@@ -740,7 +740,29 @@ export class GameEngine {
       }
       this.hp = Math.min(this.hp, this.maxHp);
     }
+    this.applyGearState(s);
   }
+
+  /** Gear, snack and bank now live server-side — mirror them verbatim. */
+  private applyGearState(s: {
+    weapon?: EquipState | ItemId | null;
+    armor?: EquipState | ItemId | null;
+    food?: ItemId | null;
+    bank?: { gold?: number; items?: (InvSlot | null)[] } | null;
+  }) {
+    if ("weapon" in s) this.weapon = GameEngine.toEquip(s.weapon);
+    if ("armor" in s) this.armor = GameEngine.toEquip(s.armor);
+    if ("food" in s) this.food = s.food ?? null;
+    if (s.bank) {
+      const items = Array.isArray(s.bank.items) ? s.bank.items.slice(0, BANK_SIZE) : [];
+      while (items.length < BANK_SIZE) items.push(null);
+      this.bank = {
+        gold: typeof s.bank.gold === "number" ? s.bank.gold : this.bank.gold,
+        items: items.map((x) => (x ? { ...x } : null)),
+      };
+    }
+  }
+
 
 
   /** Replace the live state with a save (used for claiming old local progress). */
