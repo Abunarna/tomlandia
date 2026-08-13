@@ -463,6 +463,8 @@ export class GameEngine {
   onUpgrade: ((which: "weapon" | "armor") => Promise<GearRes>) | null = null;
   /** Server-side drop of a bag stack. */
   onDrop: ((index: number) => Promise<GearRes>) | null = null;
+  /** Server-side sale of a bag stack to an NPC merchant. */
+  onSell: ((index: number) => Promise<GearRes>) | null = null;
   /** Server-side bank gold move. */
   onBankGold: ((dir: "in" | "out", amount: number) => Promise<GearRes>) | null = null;
   /** Server-side bank item move. */
