@@ -1026,13 +1026,10 @@ export const NPCS: NpcDef[] = [
 
 
 export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
-  // Gear is never sold by NPCs — weapons and armour must be crafted by players
+  // NPCs sell nothing at all — gear, food and potions must be player-crafted
   // (or traded between players on the marketplace).
-  smith: [{ id: "honey_bun", price: 18 }],
-  merchant: [
-    { id: "honey_bun", price: 20 },
-    { id: "berry_pie", price: 55 },
-  ],
+  smith: [],
+  merchant: [],
   elder: [],
   sun_smith: [],
   weaver: [],
@@ -1041,12 +1038,9 @@ export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
   sun_exchange: [],
   brook_exchange: [],
   frost_exchange: [],
-  trapper: [{ id: "hearty_stew", price: 150 }],
-  innkeeper: [
-    { id: "berry_pie", price: 50 },
-    { id: "hearty_stew", price: 140 },
-  ],
-  frost_smith: [{ id: "frost_tonic", price: 280 }],
+  trapper: [],
+  innkeeper: [],
+  frost_smith: [],
   haven_weaponsmith: [],
   haven_armourer: [],
   haven_upgrader: [],
@@ -1055,6 +1049,7 @@ export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
   brook_chef: [],
   frost_weaponsmith: [],
 };
+
 
 
 /* ------------------------------------------------------------------ */
