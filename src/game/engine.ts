@@ -876,13 +876,22 @@ export class GameEngine {
     return true;
   }
 
+  /** Merchant price for a bag stack — upgraded gear is worth more. */
+  sellValue(slot: InvSlot | null): number {
+    if (!slot) return 0;
+    return Math.max(0, Math.floor(item(slot.id).value * slot.qty * (1 + 0.1 * (slot.plus ?? 0))));
+  }
+
+  /** Sell a bag slot (weapons and armour included) to an NPC merchant. */
   sellSlot(index: number) {
     const slot = this.inv[index];
     if (!slot) return;
-    this.gold += item(slot.id).value * slot.qty;
+    const earned = this.sellValue(slot);
+    this.gold += earned;
     this.inv[index] = null;
-    this.syncNow();
+    this.pushText(this.px, this.py - 50, `+${earned}g`, "#ffe08a");
     this.emitHud(true);
+    this.runGear(this.onSell ? this.onSell(index) : null);
   }
 
   /**
