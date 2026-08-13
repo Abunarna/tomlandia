@@ -11,6 +11,7 @@ import {
   bankItem,
   craftItem,
   dropSlotAction,
+  sellSlotAction,
   equipSlotAction,
   fishCast,
   harvestNode,
@@ -169,6 +170,7 @@ function Game() {
       engine.onEquip = (index) => equipSlotAction({ data: { index } });
       engine.onUpgrade = (which) => upgradeGear({ data: { which } });
       engine.onDrop = (index) => dropSlotAction({ data: { index } });
+      engine.onSell = (index) => sellSlotAction({ data: { index } });
       engine.onBankGold = (dir, amount) => bankGold({ data: { dir, amount } });
       engine.onBankItem = (dir, index, qty) => bankItem({ data: { dir, index, qty } });
 
@@ -542,6 +544,7 @@ function Game() {
           onSellAll={() => {
             engineRef.current?.sellAllResources();
           }}
+          onSellItem={(i) => engineRef.current?.sellSlot(i)}
           onDepositGold={(n) => engineRef.current?.depositGold(n)}
           onWithdrawGold={(n) => engineRef.current?.withdrawGold(n)}
           onDepositItem={(i, q) => engineRef.current?.depositItem(i, q)}
