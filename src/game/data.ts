@@ -1583,6 +1583,8 @@ export function blockedAt(x: number, y: number, pad = 10): boolean {
     const r = d.r + pad;
     if (Math.abs(x - d.x) < r && Math.abs(y - d.y) < r && Math.hypot(x - d.x, y - d.y) < r) return true;
   }
+  // lakes are water — you can fish from the shore but not walk on them
+  if (inLake(x, y, 0)) return true;
   return false;
 }
 
