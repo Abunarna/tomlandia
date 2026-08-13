@@ -1002,15 +1002,15 @@ export interface NpcDef {
 }
 
 export const NPCS: NpcDef[] = [
-  { id: "smith", name: "Bruna", title: "Haven Smelter", ...spot("smith", 625, 420), robe: "#d98b6a", hair: "#5c3a2e", greeting: "Ore in, bars out. That's the whole of it.", services: ["shop", "smelt"] },
-  { id: "merchant", name: "Pip", title: "Market Trader", ...spot("merchant", 782, 442), robe: "#8fbfd9", hair: "#3f5f78", greeting: "Ore, logs, feathers — I'll take the lot.", services: ["sell", "shop"] },
+  { id: "smith", name: "Bruna", title: "Haven Smelter", ...spot("smith", 625, 420), robe: "#d98b6a", hair: "#5c3a2e", greeting: "Ore in, bars out. That's the whole of it.", services: ["smelt"] },
+  { id: "merchant", name: "Pip", title: "Market Trader", ...spot("merchant", 782, 442), robe: "#8fbfd9", hair: "#3f5f78", greeting: "Ore, logs, feathers — I'll take the lot.", services: ["sell"] },
   { id: "elder", name: "Elder Maren", title: "Village Elder", ...spot("elder", 712, 300), robe: "#c9a7e0", hair: "#e6e0ef", greeting: "Grand Haven could use a hand today.", services: ["quests"] },
   { id: "sun_smith", name: "Master Alric", title: "Sunspire Smelter", ...spot("sun_smith", TILE_W * 2 + 735, 350), robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings once the dross burns away.", services: ["smelt"] },
   { id: "weaver", name: "Lira", title: "Arcane Weaver", ...spot("weaver", TILE_W * 2 + 905, 420), robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["weave"] },
   { id: "banker", name: "Coinmaster Odo", title: "Golden Bank", ...spot("banker", TILE_W * 2 + 565, 440), robe: "#d9a95f", hair: "#4a3b2e", greeting: "Every scrap has a price, friend.", services: ["sell"] },
   { id: "trapper", name: "Rook", title: "Trapper", ...spot("trapper", TILE_W + 728, 590), robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin", "sell"] },
-  { id: "innkeeper", name: "Mabel", title: "Willowbrook Inn", ...spot("innkeeper", TILE_W + 560, 540), robe: "#7fbd93", hair: "#a86f45", greeting: "A warm meal keeps a hero standing.", services: ["shop"] },
-  { id: "frost_smith", name: "Sigrid", title: "Frostforge Smelter", ...spot("frost_smith", 882, TILE_H + 560), robe: "#a9c6e6", hair: "#e6eef7", greeting: "The furnace never sleeps in the cold.", services: ["smelt", "shop"] },
+  { id: "innkeeper", name: "Mabel", title: "Willowbrook Inn", ...spot("innkeeper", TILE_W + 560, 540), robe: "#7fbd93", hair: "#a86f45", greeting: "A warm meal keeps a hero standing.", services: ["cook"] },
+  { id: "frost_smith", name: "Sigrid", title: "Frostforge Smelter", ...spot("frost_smith", 882, TILE_H + 560), robe: "#a9c6e6", hair: "#e6eef7", greeting: "The furnace never sleeps in the cold.", services: ["smelt"] },
   { id: "haven_weaponsmith", name: "Garrick", title: "Weaponsmith", ...spot("haven_weaponsmith", 560, 300), robe: "#c2765a", hair: "#402a20", greeting: "Give me bars and I'll give you an edge.", services: ["forge"] },
   { id: "haven_armourer", name: "Dame Ysolde", title: "Armourer", ...spot("haven_armourer", 870, 300), robe: "#9aa7b8", hair: "#6b5540", greeting: "Plate, mail or robe — I'll fit you proper.", services: ["armor"] },
   { id: "haven_upgrader", name: "Old Whetstone Tam", title: "Gear Upgrader", ...spot("haven_upgrader", 640, 210), robe: "#b7a06d", hair: "#d8d2c4", greeting: "Every notch I grind makes you harder to kill.", services: ["upgrade"] },
