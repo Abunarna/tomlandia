@@ -11,6 +11,7 @@ export function NpcDialog({
   onClose,
   onBuy,
   onSellAll,
+  onSellItem,
   onDepositGold,
   onWithdrawGold,
   onDepositItem,
@@ -27,6 +28,7 @@ export function NpcDialog({
   onClose: () => void;
   onBuy: (npc: NpcRole, id: ItemId) => void;
   onSellAll: () => void;
+  onSellItem: (index: number) => void;
   onDepositGold: (n: number) => void;
   onWithdrawGold: (n: number) => void;
   onDepositItem: (bagIndex: number, qty: number) => void;
@@ -49,6 +51,22 @@ export function NpcDialog({
     const d = item(s.id);
     return d.kind === "resource" ? sum + d.value * s.qty : sum;
   }, 0);
+
+  /** weapons and armour in the bag, with the merchant's offer */
+  const gearForSale = hud.inv
+    .map((slot, index) => ({ slot, index }))
+    .filter((e): e is { slot: InvSlot; index: number } => {
+      if (!e.slot) return false;
+      const k = item(e.slot.id).kind;
+      return k === "weapon" || k === "armor";
+    })
+    .map((e) => ({
+      ...e,
+      price: Math.max(
+        0,
+        Math.floor(item(e.slot.id).value * e.slot.qty * (1 + 0.1 * (e.slot.plus ?? 0))),
+      ),
+    }));
 
   const count = (id: ItemId) => hud.inv.reduce((n, s) => (s && s.id === id ? n + s.qty : n), 0);
 
@@ -193,6 +211,29 @@ export function NpcDialog({
             >
               Sell all resources
             </button>
+            {gearForSale.length > 0 && (
+              <>
+                <p className="pt-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+                  Weapons &amp; armour — tap to sell
+                </p>
+                <div className="space-y-1.5">
+                  {gearForSale.map(({ slot, index, price }) => (
+                    <button
+                      key={index}
+                      onClick={() => onSellItem(index)}
+                      className="flex w-full items-center gap-2.5 rounded-2xl border border-border/60 bg-muted/40 px-3 py-2 text-left active:scale-[0.99]"
+                    >
+                      <ItemIcon item={item(slot.id)} className="size-7 shrink-0" />
+                      <span className="min-w-0 flex-1 truncate text-xs font-semibold text-foreground">
+                        {item(slot.id).name}
+                        {slot.plus ? ` +${slot.plus}` : ""}
+                      </span>
+                      <span className="shrink-0 text-xs font-bold text-gold">{price}g</span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </Section>
         )}
 

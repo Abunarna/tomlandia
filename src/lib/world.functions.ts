@@ -104,6 +104,16 @@ export const dropSlotAction = createServerFn({ method: "POST" })
     return (res ?? { ok: false, reason: "empty" }) as unknown as GearRes;
   });
 
+/** Sell a bag slot (any item, gear included) to an NPC merchant. */
+export const sellSlotAction = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ index: z.number().int().min(0).max(19) }).parse(input))
+  .handler(async ({ data, context }): Promise<GearRes> => {
+    const { data: res, error } = await context.supabase.rpc("inv_sell", { _index: data.index });
+    if (error) return { ok: false, reason: error.message };
+    return (res ?? { ok: false, reason: "empty" }) as unknown as GearRes;
+  });
+
 export const bankGold = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) =>

@@ -571,6 +571,7 @@ export type Database = {
         Args: { _inv: Json; _item: string; _qty: number }
         Returns: Json
       }
+      inv_sell: { Args: { _index: number }; Returns: Json }
       leaderboard: { Args: { _skill: string }; Returns: Json }
       market_browse: { Args: never; Returns: Json }
       market_buy: { Args: { _id: string; _qty?: number }; Returns: Json }
