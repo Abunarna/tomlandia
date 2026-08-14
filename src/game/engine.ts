@@ -1471,10 +1471,15 @@ export class GameEngine {
                     if (res.taken) this.pushText(this.px, this.py - 34, `-${res.taken}`, "#f4b0b0");
                     this.autoEat();
                     if (this.hp <= 0) {
+                      const lostGold = Math.floor(this.gold * 0.1);
                       this.hp = Math.ceil(this.maxHp * 0.5);
                       this.px = 700;
                       this.py = 620;
-                      this.gold = Math.max(0, Math.floor(this.gold * 0.9));
+                      this.gold = Math.max(0, this.gold - lostGold);
+                      this.death = {
+                        at: Date.now(),
+                        reason: `A villager dragged you back to Grand Haven at half health. You lost ${lostGold} gold (10%) in the chaos.`,
+                      };
                       this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
                       this.target = { type: "none" };
                     }
