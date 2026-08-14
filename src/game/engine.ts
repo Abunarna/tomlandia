@@ -474,6 +474,9 @@ export class GameEngine {
   /** Active damage buff from a potion — mirrored from the server. */
   buff: { dmg: number; hits: number } | null = null;
 
+  /** Most recent death event shown as a fullscreen red overlay. */
+  death: { at: number; reason: string } | null = null;
+
   /** Mirror authoritative node rows (snapshot or realtime) into the world. */
   applyNodeRows(rows: { id: number; charges: number; respawn_at: string | null }[]) {
     for (const row of rows) {
