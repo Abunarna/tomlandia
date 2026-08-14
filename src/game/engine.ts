@@ -1069,7 +1069,7 @@ export class GameEngine {
   }
 
   private pushText(x: number, y: number, text: string, color: string) {
-    this.texts.push({ x, y, text, color, life: 1.1 });
+    this.texts.push({ x, y, text, color, life: 2.2 });
   }
 
   /* ---------- input ---------- */
