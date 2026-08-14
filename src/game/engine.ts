@@ -2162,6 +2162,7 @@ export class GameEngine {
       nearby: this.remotes.size,
       buff: this.buff ? { ...this.buff } : null,
       death: this.death ? { ...this.death } : null,
+    });
   }
 
   /* ---------- render ---------- */
