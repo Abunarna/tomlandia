@@ -474,6 +474,9 @@ export class GameEngine {
   /** Active damage buff from a potion — mirrored from the server. */
   buff: { dmg: number; hits: number } | null = null;
 
+  /** Most recent death event shown as a fullscreen red overlay. */
+  death: { at: number; reason: string } | null = null;
+
   /** Mirror authoritative node rows (snapshot or realtime) into the world. */
   applyNodeRows(rows: { id: number; charges: number; respawn_at: string | null }[]) {
     for (const row of rows) {
@@ -1468,10 +1471,15 @@ export class GameEngine {
                     if (res.taken) this.pushText(this.px, this.py - 34, `-${res.taken}`, "#f4b0b0");
                     this.autoEat();
                     if (this.hp <= 0) {
+                      const lostGold = Math.floor(this.gold * 0.1);
                       this.hp = Math.ceil(this.maxHp * 0.5);
                       this.px = 700;
                       this.py = 620;
-                      this.gold = Math.max(0, Math.floor(this.gold * 0.9));
+                      this.gold = Math.max(0, this.gold - lostGold);
+                      this.death = {
+                        at: Date.now(),
+                        reason: `A villager dragged you back to Grand Haven at half health. You lost ${lostGold} gold (10%) in the chaos.`,
+                      };
                       this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
                       this.target = { type: "none" };
                     }
@@ -2158,7 +2166,7 @@ export class GameEngine {
       name: this.playerName,
       nearby: this.remotes.size,
       buff: this.buff ? { ...this.buff } : null,
-
+      death: this.death ? { ...this.death } : null,
     });
   }
 

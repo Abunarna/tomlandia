@@ -91,6 +91,7 @@ const EMPTY: HudSnapshot = {
   name: "Adventurer",
   nearby: 0,
   buff: null,
+  death: null,
 };
 
 
@@ -340,6 +341,15 @@ function Game() {
     if (!dismissed && !document.fullscreenElement) setShowFsPrompt(true);
   }, [ready]);
 
+  // Death overlay: show for 3 seconds whenever a new death event arrives.
+  const [death, setDeath] = useState<HudSnapshot["death"]>(null);
+  useEffect(() => {
+    if (!hud.death) return;
+    setDeath(hud.death);
+    const t = window.setTimeout(() => setDeath(null), 3000);
+    return () => window.clearTimeout(t);
+  }, [hud.death]);
+
 
 
 
@@ -450,6 +460,15 @@ function Game() {
         )}
       </div>
 
+
+      {death && (
+        <div className="absolute inset-0 z-40 grid place-items-center bg-red-950/70 px-6 text-center backdrop-blur-sm animate-in fade-in duration-300">
+          <div>
+            <p className="font-display text-4xl font-black tracking-wide text-red-100 drop-shadow">You died</p>
+            <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-red-200/90">{death.reason}</p>
+          </div>
+        </div>
+      )}
 
       {!ready && (
         <div className="absolute inset-0 z-20 grid place-items-center bg-background">
