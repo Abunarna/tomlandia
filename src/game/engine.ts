@@ -2242,7 +2242,7 @@ export class GameEngine {
     }
     ctx.globalAlpha = 1;
 
-    ctx.font = "bold 13px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+    ctx.font = "bold 20px ui-rounded, 'Baloo 2', system-ui, sans-serif";
     ctx.textAlign = "center";
     for (const t of this.texts) {
       ctx.globalAlpha = Math.min(1, t.life);
