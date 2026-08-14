@@ -541,7 +541,7 @@ export const LAKES: LakeDef[] = LAKE_SPECS.map((s, si) => {
   const jetties = s.jettyAngles.map((a) => {
     const [x1, y1] = lakePoint(s, a, 1.16);
     const [x2, y2] = lakePoint(s, a, 0.42);
-    return { id: ++spotId, x1, y1, x2, y2, hw: 11 };
+    return { id: ++spotId, x1, y1, x2, y2, hw: 20 };
   });
   return { key: s.key, style: s.style, cx: s.cx, cy: s.cy, rx: s.rx, ry: s.ry, poly: lakeOutline(s, seed), props, jetties };
 });
