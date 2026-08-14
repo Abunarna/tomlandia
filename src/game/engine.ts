@@ -3093,6 +3093,10 @@ export class GameEngine {
     ctx.textAlign = "center";
     ctx.fillStyle = "rgba(70,55,70,0.7)";
     ctx.fillText(npc.name, x, y + 32);
+    // Role / title under the name in bold.
+    ctx.font = "bold 10px ui-rounded, system-ui, sans-serif";
+    ctx.fillStyle = "rgba(95,74,92,0.92)";
+    ctx.fillText(npc.title, x, y + 44);
   }
 
   private drawRemote(ctx: CanvasRenderingContext2D, r: RemotePlayer) {
