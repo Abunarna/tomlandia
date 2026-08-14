@@ -174,5 +174,7 @@ export interface HudSnapshot {
   nearby: number;
   /** Phase: active potion damage buff, if any. */
   buff: { dmg: number; hits: number } | null;
+  /** Most recent death: epoch ms + description of the negative effects. Null while alive. */
+  death: { at: number; reason: string } | null;
 }
 
