@@ -91,6 +91,7 @@ const EMPTY: HudSnapshot = {
   name: "Adventurer",
   nearby: 0,
   buff: null,
+  death: null,
 };
 
 
