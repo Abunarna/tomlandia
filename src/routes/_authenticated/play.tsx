@@ -341,6 +341,15 @@ function Game() {
     if (!dismissed && !document.fullscreenElement) setShowFsPrompt(true);
   }, [ready]);
 
+  // Death overlay: show for 3 seconds whenever a new death event arrives.
+  const [death, setDeath] = useState<HudSnapshot["death"]>(null);
+  useEffect(() => {
+    if (!hud.death) return;
+    setDeath(hud.death);
+    const t = window.setTimeout(() => setDeath(null), 3000);
+    return () => window.clearTimeout(t);
+  }, [hud.death]);
+
 
 
 
