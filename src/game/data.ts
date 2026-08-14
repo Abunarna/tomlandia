@@ -1578,8 +1578,19 @@ export function blockedAt(x: number, y: number, pad = 10): boolean {
     const r = d.r + pad;
     if (Math.abs(x - d.x) < r && Math.abs(y - d.y) < r && Math.hypot(x - d.x, y - d.y) < r) return true;
   }
-  // lakes are water — you can fish from the shore but not walk on them
-  if (inLake(x, y, 0)) return true;
+  // lakes are water — you can fish from the shore but not walk on them,
+  // except along the planked jetties that reach out to the fishing decks
+  if (inLake(x, y, 0) && !onJetty(x, y, pad)) return true;
+  return false;
+}
+
+/** true when the point stands on a jetty deck (so it is walkable over water) */
+export function onJetty(x: number, y: number, pad = 0): boolean {
+  for (const l of LAKES) {
+    for (const j of l.jetties) {
+      if (distToSeg(x, y, j.x1, j.y1, j.x2, j.y2) < j.hw + pad) return true;
+    }
+  }
   return false;
 }
 
