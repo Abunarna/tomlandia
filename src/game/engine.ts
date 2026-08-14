@@ -2161,8 +2161,7 @@ export class GameEngine {
       name: this.playerName,
       nearby: this.remotes.size,
       buff: this.buff ? { ...this.buff } : null,
-
-    });
+      death: this.death ? { ...this.death } : null,
   }
 
   /* ---------- render ---------- */
