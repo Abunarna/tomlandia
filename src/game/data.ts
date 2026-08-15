@@ -1115,12 +1115,9 @@ export const MAX_PLUS = 1000;
 export const PLUS_STEP = 0.05;
 
 export function upgradeCost(base: number, plus: number): number {
-  // doubling per 5 levels up to +25, then a steady linear climb so the
-  // long tail to +1000 stays reachable instead of exploding exponentially
-  const capped = Math.min(plus, 25);
-  const tier = Math.floor(capped / 5);
-  let cost = (25 + base * 0.6) * Math.pow(2, tier) * (1 + (capped % 5) * 0.25);
-  if (plus > 25) cost *= 1 + (plus - 25) * 0.35;
+  // cost doubles every 5 upgrade levels, forever
+  const tier = Math.floor(plus / 5);
+  const cost = (25 + base * 0.6) * Math.pow(2, tier) * (1 + (plus % 5) * 0.25);
   return Math.round(cost);
 }
 
