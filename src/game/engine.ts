@@ -113,7 +113,7 @@ export interface DamageRes {
   credited?: boolean;
   kind?: string;
   gold?: number;
-  loot?: { item: ItemId; qty: number }[];
+  loot?: { item?: ItemId; id?: ItemId; qty: number }[];
   xp?: number;
   leveled?: boolean;
   tagged_by?: string | null;
