@@ -40,6 +40,36 @@ export const attackMonster = createServerFn({ method: "POST" })
     return (res ?? { ok: false, reason: "empty" }) as unknown as DamageRes;
   });
 
+/**
+ * DESOLATUS. His position is a deterministic client-side calculation, so the
+ * caller reports where it believes he is; the routine sanity-checks that
+ * against the last position any player reported before resolving the swing.
+ */
+export const attackBoss = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) =>
+    z
+      .object({
+        ...point,
+        bx: z.number().finite(),
+        by: z.number().finite(),
+        passive: z.boolean().optional(),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data, context }): Promise<DamageRes> => {
+    const { data: res, error } = await context.supabase.rpc("attack_boss", {
+      _x: data.x,
+      _y: data.y,
+      _bx: data.bx,
+      _by: data.by,
+      _passive: data.passive ?? false,
+    });
+    if (error) return { ok: false, reason: error.message };
+    return (res ?? { ok: false, reason: "empty" }) as unknown as DamageRes;
+  });
+
+
 export const craftItem = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ recipe: z.string().min(1).max(64) }).parse(input))
