@@ -119,6 +119,8 @@ export interface SaveState {
   weapon: EquipState | ItemId | null;
   armor: EquipState | ItemId | null;
   food?: ItemId | null;
+  /** auto-eat threshold as a fraction of max HP (0.25 / 0.5 / 0.75) */
+  autoEatAt?: number;
   quest?: QuestState | null;
   completed?: string[];
   discovered?: string[];
@@ -149,6 +151,8 @@ export interface HudSnapshot {
   weapon: EquipState | null;
   armor: EquipState | null;
   food: ItemId | null;
+  /** auto-snack widget state */
+  autoEat: { threshold: number; qty: number; firedAt: number; cooldownUntil: number };
   activity: string;
   activityProgress: number;
   quest: HudQuest | null;

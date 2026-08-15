@@ -196,7 +196,6 @@ export function clearLegacySave() {
 }
 const INV_SIZE = 20;
 const BANK_SIZE = 60;
-const AUTO_EAT_AT = 0.3;
 /** length of one in-game day, in seconds */
 const DAY_LEN = 480;
 
@@ -331,6 +330,12 @@ export class GameEngine {
   weapon: EquipState | null = { id: "wooden_club", plus: 0 };
   armor: EquipState | null = { id: "cloth_tunic", plus: 0 };
   food: ItemId | null = null;
+  /** player-chosen auto-eat threshold (fraction of max HP) */
+  autoEatAt = 0.5;
+  /** wall-clock ms when the 2s auto-eat cooldown ends */
+  private autoEatCdUntil = 0;
+  /** wall-clock ms of the last auto-eat trigger (drives the glow pulse) */
+  private autoEatFiredAt = 0;
 
   private nodes: ResNode[] = [];
   private monsters: Monster[] = [];
@@ -684,6 +689,7 @@ export class GameEngine {
       weapon: this.weapon,
       armor: this.armor,
       food: this.food,
+      autoEatAt: this.autoEatAt,
       quest: this.quest,
       completed: this.completed,
       discovered: this.discovered,
@@ -832,6 +838,9 @@ export class GameEngine {
       this.weapon = GameEngine.toEquip(s.weapon);
       this.armor = GameEngine.toEquip(s.armor);
       this.food = s.food ?? null;
+      if (typeof s.autoEatAt === "number" && [0.25, 0.5, 0.75].includes(s.autoEatAt)) {
+        this.autoEatAt = s.autoEatAt;
+      }
       this.quest = s.quest ?? null;
       this.completed = Array.isArray(s.completed) ? s.completed : [];
       this.discovered = Array.isArray(s.discovered) && s.discovered.length ? s.discovered : ["fields"];
@@ -1259,13 +1268,24 @@ export class GameEngine {
     }
   }
 
+  /** Cycle the auto-eat threshold 75% -> 50% -> 25% -> 75%. */
+  cycleAutoEat() {
+    this.autoEatAt = this.autoEatAt === 0.75 ? 0.5 : this.autoEatAt === 0.5 ? 0.25 : 0.75;
+    this.emitHud(true);
+    this.save();
+  }
+
   private autoEat() {
-    if (this.hp / this.maxHp >= AUTO_EAT_AT) return;
+    if (this.hp / this.maxHp > this.autoEatAt) return;
+    const now = Date.now();
+    if (now < this.autoEatCdUntil) return;
     const id = this.food;
     if (!id) return;
     const def = item(id);
     if (def.kind !== "food" || !def.heal) return;
     if (!this.removeItem(id, 1)) return;
+    this.autoEatFiredAt = now;
+    this.autoEatCdUntil = now + 2000;
     this.hp = Math.min(this.maxHp, this.hp + def.heal);
     this.pushText(this.px, this.py - 46, `+${def.heal} hp`, "#9fe6a0");
   }
@@ -2181,6 +2201,12 @@ export class GameEngine {
       weapon: this.weapon ? { ...this.weapon } : null,
       armor: this.armor ? { ...this.armor } : null,
       food: this.food,
+      autoEat: {
+        threshold: this.autoEatAt,
+        qty: this.food ? this.countItem(this.food) : 0,
+        firedAt: this.autoEatFiredAt,
+        cooldownUntil: this.autoEatCdUntil,
+      },
       activity: this.activity,
       activityProgress: this.activityProgress,
       quest: this.quest
