@@ -425,6 +425,7 @@ function Game() {
                 onUse={(i) => engineRef.current?.useSlot(i)}
                 onDrop={(i) => engineRef.current?.dropSlot(i)}
                 onSetFood={(i) => engineRef.current?.equipSlot(i)}
+                onClearFood={() => engineRef.current?.clearAutoSnack()}
 
                 onBuyListing={(id, qty) => {
                   void engineRef.current?.buyListing(id, qty);
