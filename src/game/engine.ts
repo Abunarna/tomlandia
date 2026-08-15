@@ -22,6 +22,7 @@ import {
   item,
   statWithPlus,
   upgradeCost,
+  monsterLevel,
   type BiomeDef,
   type MonsterKind,
   type NodeKind,
