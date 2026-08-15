@@ -52,13 +52,12 @@ export function NpcDialog({
     return d.kind === "resource" ? sum + d.value * s.qty : sum;
   }, 0);
 
-  /** weapons and armour in the bag, with the merchant's offer */
-  const gearForSale = hud.inv
+  /** everything sellable in the bag, with the merchant's offer */
+  const bagForSale = hud.inv
     .map((slot, index) => ({ slot, index }))
     .filter((e): e is { slot: InvSlot; index: number } => {
       if (!e.slot) return false;
-      const k = item(e.slot.id).kind;
-      return k === "weapon" || k === "armor";
+      return item(e.slot.id).value > 0;
     })
     .map((e) => ({
       ...e,
