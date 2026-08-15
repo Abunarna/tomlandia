@@ -216,7 +216,7 @@ export function NpcDialog({
                   Weapons &amp; armour — tap to sell
                 </p>
                 <div className="space-y-1.5">
-                  {gearForSale.map(({ slot, index, price }) => (
+                  {bagForSale.map(({ slot, index, price }) => (
                     <button
                       key={index}
                       onClick={() => onSellItem(index)}
@@ -226,6 +226,7 @@ export function NpcDialog({
                       <span className="min-w-0 flex-1 truncate text-xs font-semibold text-foreground">
                         {item(slot.id).name}
                         {slot.plus ? ` +${slot.plus}` : ""}
+                        {slot.qty > 1 ? ` ×${slot.qty}` : ""}
                       </span>
                       <span className="shrink-0 text-xs font-bold text-gold">{price}g</span>
                     </button>
