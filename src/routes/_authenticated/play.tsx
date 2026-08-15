@@ -145,19 +145,39 @@ function Game() {
     const onResize = () => engine?.resize();
 
     void (async () => {
-      const { data } = await supabase
-        .from("player_saves")
-        .select("data, rev")
-        .eq("user_id", user.id)
-        .maybeSingle();
-      if (cancelled) return;
+      // Never start the game on a failed read: booting with an empty save and
+      // then autosaving is how a character could be overwritten. Retry first.
+      let row: { data: unknown; rev: number | null } | null = null;
+      let readOk = false;
+      for (let attempt = 0; attempt < 4 && !readOk; attempt++) {
+        const { data, error } = await supabase
+          .from("player_saves")
+          .select("data, rev")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (cancelled) return;
+        if (!error) {
+          readOk = true;
+          row = (data as typeof row) ?? null;
+        } else {
+          console.error("Save load failed", error.message);
+          await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
+          if (cancelled) return;
+        }
+      }
+      if (!readOk) {
+        setLoadFailed(true);
+        return;
+      }
 
-      const cloudSave = (data?.data as unknown as SaveState | undefined) ?? null;
+      const cloudSave = (row?.data as unknown as SaveState | undefined) ?? null;
       engine = new GameEngine(canvas, setHud, {
         initialSave: cloudSave,
-        initialRev: typeof data?.rev === "number" ? data.rev : null,
+        // A missing/unreadable save must never look "up to date" to the server.
+        initialRev: cloudSave && typeof row?.rev === "number" ? row.rev : null,
         onPersist: persist,
       });
+
       engineRef.current = engine;
       // Phase 9 — the server resolves every world action and owns the rewards.
       engine.userId = user.id;
