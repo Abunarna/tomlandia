@@ -351,17 +351,22 @@ export function WorldMap({ position, onClose }: Props) {
         {BIOMES.filter((b) => b.label).map((b) => (
           <div
             key={`label-${b.key}`}
-            className="pointer-events-none absolute px-2 py-1"
-            style={{ left: sx(b.x + b.w / 2), top: sy(b.y + b.h * 0.32), transform: "translate(-50%,-50%)" }}
+            className="pointer-events-none absolute z-30 flex flex-col items-center gap-0.5 rounded-2xl px-2.5 py-1.5"
+            style={{
+              left: sx(b.x + b.w / 2),
+              top: sy(b.y + b.h * 0.32),
+              transform: "translate(-50%,-50%)",
+              background: "rgba(52,40,64,0.55)",
+            }}
           >
             <div
-              className="text-center font-display font-bold leading-tight text-[rgba(60,48,60,0.85)]"
+              className="text-center font-display font-bold leading-tight text-white"
               style={{ fontSize: Math.max(9, Math.min(20, 13 * zoom)) }}
             >
               {b.name}
             </div>
             <div
-              className="text-center leading-tight text-[rgba(60,48,60,0.6)]"
+              className="text-center font-bold leading-tight text-white/80"
               style={{ fontSize: Math.max(8, Math.min(15, 10 * zoom)) }}
             >
               {b.levels}
