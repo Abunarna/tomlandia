@@ -271,14 +271,24 @@ export function NpcDialog({
                           </span>
                         </span>
                       </button>
-                      <button
-                        disabled={!ok}
-                        onClick={() => onCraft(r.id)}
-                        className="flex shrink-0 items-center gap-1 rounded-xl bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
-                      >
-                        <Hammer className="size-3.5" />
-                        Make
-                      </button>
+                      <div className="flex shrink-0 flex-col gap-1">
+                        <button
+                          disabled={!ok}
+                          onClick={() => onCraft(r.id)}
+                          className="flex items-center justify-center gap-1 rounded-xl bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+                        >
+                          <Hammer className="size-3.5" />
+                          Make
+                        </button>
+                        <button
+                          disabled={!ok}
+                          onClick={() => onCraftAll(r.id)}
+                          className="rounded-xl bg-muted px-3 py-1 text-[11px] font-bold text-muted-foreground disabled:opacity-40 active:scale-95"
+                        >
+                          Make all
+                        </button>
+                      </div>
+
                     </div>
 
                     {open && (
