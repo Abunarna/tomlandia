@@ -1712,3 +1712,143 @@ export const ROAD_RUNS: { pts: [number, number][]; width: number }[] = ROADS.fla
   if (cur.length > 1) runs.push({ pts: cur, width: r.width });
   return runs;
 });
+
+/* ------------------------------------------------------------------ */
+/* Spawn generation — biome aware, obstacle aware                      */
+/* ------------------------------------------------------------------ */
+
+interface BiomePlan {
+  nodes: [NodeKind, number][];
+  mobs: [MonsterKind, number][];
+}
+
+/** what belongs where, and roughly how much of it across the whole world */
+const SPAWN_PLAN: Record<BiomeId, BiomePlan> = {
+  fields: {
+    nodes: [["copper", 14], ["oak", 14], ["flax", 12], ["berries", 12]],
+    mobs: [["chicken", 14], ["goblin", 12]],
+  },
+  forest: {
+    nodes: [["iron", 12], ["willow", 12], ["maple", 10], ["herbs", 12]],
+    mobs: [["wolf", 12], ["bear", 10]],
+  },
+  desert: {
+    nodes: [["sandstone", 11], ["mithril", 9], ["palm", 9], ["bloom", 9]],
+    mobs: [["serpent", 10], ["bandit", 9]],
+  },
+  evil: {
+    nodes: [["cursed_rock", 9], ["cursed_tree", 9], ["gloomcap", 9]],
+    mobs: [["wraith", 9], ["shadow_beast", 8]],
+  },
+  winter: {
+    nodes: [["runite", 9], ["tungsten", 7], ["frostpine", 9], ["lichen", 8]],
+    mobs: [["yeti", 8], ["frost_giant", 6]],
+  },
+};
+
+const placed: { x: number; y: number }[] = [];
+
+function nearRoad(x: number, y: number, pad: number) {
+  for (const r of ROADS) {
+    for (let i = 0; i < r.pts.length - 1; i++) {
+      const a = r.pts[i]!;
+      const b = r.pts[i + 1]!;
+      if (Math.abs(x - a[0]) > 260 && Math.abs(x - b[0]) > 260) continue;
+      if (distToSeg(x, y, a[0], a[1], b[0], b[1]) < r.width / 2 + pad) return true;
+    }
+  }
+  return false;
+}
+
+function nearTown(x: number, y: number) {
+  for (const c of TOWN_CENTERS) if (Math.hypot(x - c.x, y - c.y) < 330) return true;
+  for (const s of STREETS) {
+    if (x > s.x - 60 && x < s.x + s.w + 60 && y > s.y - 60 && y < s.y + s.h + 60) return true;
+  }
+  for (const b of BIOMES) {
+    const p = b.plaza;
+    if (p && x > p.x - 50 && x < p.x + p.w + 50 && y > p.y - 50 && y < p.y + p.h + 50) return true;
+  }
+  for (const n of NPCS) if (Math.hypot(x - n.x, y - n.y) < 150) return true;
+  for (const b of BUILDINGS) {
+    if (x > b.x - 60 && x < b.x + b.w + 60 && y > b.y - 60 && y < b.y + b.h + 60) return true;
+  }
+  return false;
+}
+
+/** a spot must be walkable, dry, off the roads and clear of anything built */
+function spawnable(x: number, y: number) {
+  if (x < 90 || y < 90 || x > WORLD_W - 90 || y > WORLD_H - 90) return false;
+  if (blockedAt(x, y, 34)) return false;
+  if (inLake(x, y, 50)) return false;
+  if (onJetty(x, y, 40) || onBridge(x, y, -60)) return false;
+  if (nearRoad(x, y, 40)) return false;
+  if (nearTown(x, y)) return false;
+  for (const p of placed) if (Math.hypot(x - p.x, y - p.y) < 92) return false;
+  // never seal a walkable pocket: keep a little breathing room around the spot
+  return true;
+}
+
+(() => {
+  // deterministic, well-spread candidate list over the whole world
+  const step = 64;
+  const cands: { x: number; y: number; k: number }[] = [];
+  let i = 0;
+  for (let y = 120; y < WORLD_H - 120; y += step) {
+    for (let x = 120; x < WORLD_W - 120; x += step) {
+      i++;
+      cands.push({
+        x: x + (rand01(i * 1.7) - 0.5) * step * 0.8,
+        y: y + (rand01(i * 3.1 + 11) - 0.5) * step * 0.8,
+        k: rand01(i * 7.3 + 5),
+      });
+    }
+  }
+  cands.sort((a, b) => a.k - b.k);
+
+  // remaining quota per biome
+  const want = new Map<string, { node: Map<NodeKind, number>; mob: Map<MonsterKind, number> }>();
+  for (const [bid, plan] of Object.entries(SPAWN_PLAN)) {
+    want.set(bid, {
+      node: new Map(plan.nodes as [NodeKind, number][]),
+      mob: new Map(plan.mobs as [MonsterKind, number][]),
+    });
+  }
+
+  const pickMost = <K extends string>(m: Map<K, number>): K | null => {
+    let best: K | null = null;
+    let n = 0;
+    for (const [k, v] of m) if (v > n) ((best = k), (n = v));
+    return best;
+  };
+
+  for (const c of cands) {
+    const bid = biomeAt(c.x, c.y).id;
+    const w = want.get(bid);
+    if (!w) continue;
+    const nodesLeft = [...w.node.values()].reduce((a, b) => a + b, 0);
+    const mobsLeft = [...w.mob.values()].reduce((a, b) => a + b, 0);
+    if (!nodesLeft && !mobsLeft) continue;
+    if (!spawnable(c.x, c.y)) continue;
+
+    // alternate between nodes and monsters, weighted by what is still missing
+    const takeNode = nodesLeft > 0 && (mobsLeft === 0 || c.k * (nodesLeft + mobsLeft) < nodesLeft);
+    if (takeNode) {
+      const kind = pickMost(w.node);
+      if (!kind) continue;
+      w.node.set(kind, w.node.get(kind)! - 1);
+      NODE_SPAWNS.push({ kind, x: Math.round(c.x), y: Math.round(c.y) });
+      SOLID_DISCS.push({
+        x: Math.round(c.x),
+        y: Math.round(c.y) + (NODE_DEFS[kind].shape === "tree" ? 8 : 2),
+        r: NODE_DEFS[kind].shape === "bush" ? 11 : 14,
+      });
+    } else {
+      const kind = pickMost(w.mob);
+      if (!kind) continue;
+      w.mob.set(kind, w.mob.get(kind)! - 1);
+      MONSTER_SPAWNS.push({ kind, x: Math.round(c.x), y: Math.round(c.y) });
+    }
+    placed.push({ x: c.x, y: c.y });
+  }
+})();
