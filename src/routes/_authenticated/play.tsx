@@ -94,6 +94,17 @@ const EMPTY: HudSnapshot = {
   nearby: 0,
   buff: null,
   death: null,
+  boss: {
+    name: "DESOLATUS",
+    level: 150,
+    alive: true,
+    hp: 45000,
+    maxHp: 45000,
+    dist: 99999,
+    warn: 0,
+    engaged: false,
+    respawnAt: 0,
+  },
 };
 
 
