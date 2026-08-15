@@ -466,6 +466,13 @@ function Game() {
           <div>
             <p className="font-display text-4xl font-black tracking-wide text-red-100 drop-shadow">You died</p>
             <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-red-200/90">{death.reason}</p>
+            <button
+              type="button"
+              onClick={() => setDeath(null)}
+              className="mt-6 rounded-full border border-red-200/40 bg-red-100/10 px-8 py-2.5 text-sm font-bold tracking-wide text-red-50 transition active:scale-95 hover:bg-red-100/20"
+            >
+              Continue
+            </button>
           </div>
         </div>
       )}
