@@ -644,10 +644,6 @@ export interface NodeSpawn {
   y: number;
 }
 
-function scatter(kind: NodeKind, bx: number, by: number, spots: [number, number][]): NodeSpawn[] {
-  return spots.map(([x, y]) => ({ kind, x: bx + x, y: by + y }));
-}
-
 /**
  * Spawns are generated at the bottom of this file, once the world geometry
  * (biomes, lakes, barriers, buildings and roads) is known — every node is
@@ -713,22 +709,8 @@ export interface MonsterSpawn {
   y: number;
 }
 
-function mob(kind: MonsterKind, bx: number, by: number, spots: [number, number][]): MonsterSpawn[] {
-  return spots.map(([x, y]) => ({ kind, x: bx + x, y: by + y }));
-}
-
-export const MONSTER_SPAWNS: MonsterSpawn[] = [
-  ...mob("chicken", 0, 0, [[560, 780], [660, 850], [470, 880], [760, 720]]),
-  ...mob("goblin", 0, 0, [[980, 700], [1120, 620], [1050, 860]]),
-  ...mob("wolf", TILE_W, 0, [[380, 180], [520, 300], [260, 560], [700, 620]]),
-  ...mob("bear", TILE_W, 0, [[900, 400], [1100, 700], [820, 900]]),
-  ...mob("serpent", TILE_W * 2, 0, [[400, 560], [560, 400], [300, 860]]),
-  ...mob("bandit", TILE_W * 2, 0, [[880, 200], [1020, 500], [760, 640]]),
-  ...mob("wraith", TILE_W, TILE_H, [[420, 460], [900, 700], [1400, 200]]),
-  ...mob("shadow_beast", TILE_W, TILE_H, [[1200, 820], [1800, 460], [2400, 300]]),
-  ...mob("yeti", 0, TILE_H, [[520, 500], [820, 620], [640, 880]]),
-  ...mob("frost_giant", 0, TILE_H, [[1000, 480], [1240, 880]]),
-];
+/** Filled in by the spawn generator at the bottom of this file. */
+export const MONSTER_SPAWNS: MonsterSpawn[] = [];
 
 /* ------------------------------------------------------------------ */
 /* Towns & buildings                                                   */
@@ -867,16 +849,6 @@ const TOWN_SPECS: TownSpec[] = [
   },
 ];
 
-/** a lot is only usable when it does not swallow a resource node or spawn */
-function lotFree(x: number, y: number) {
-  const pad = 34;
-  const hit = (px: number, py: number) =>
-    px > x - pad && px < x + LOT_W + pad && py > y - pad && py < y + LOT_H + pad;
-  return (
-    !NODE_SPAWNS.some((n) => hit(n.x, n.y)) && !MONSTER_SPAWNS.some((m) => hit(m.x, m.y))
-  );
-}
-
 const buildings: BuildingDef[] = [];
 const streets: StreetDef[] = [];
 const npcSpots: Record<string, { x: number; y: number }> = {};
@@ -893,7 +865,7 @@ for (const t of TOWN_SPECS) {
       Math.hypot(a.x + LOT_W / 2 - t.cx, a.y + LOT_H / 2 - t.cy) -
       Math.hypot(b.x + LOT_W / 2 - t.cx, b.y + LOT_H / 2 - t.cy),
   );
-  const chosen = lots.filter((l) => lotFree(l.x, l.y)).slice(0, t.count);
+  const chosen = lots.slice(0, t.count);
   const plan = [...t.anchors, ...t.fill];
 
   chosen.forEach((lot, i) => {
@@ -1201,8 +1173,6 @@ const CLEAR_ZONES: { x: number; y: number; r: number }[] = [
   })),
   ...NPCS.map((n) => ({ x: n.x, y: n.y, r: 150 })),
   ...BUILDINGS.map((b) => ({ x: b.x + b.w / 2, y: b.y + b.h / 2, r: 140 })),
-  ...NODE_SPAWNS.map((n) => ({ x: n.x, y: n.y, r: 95 })),
-  ...MONSTER_SPAWNS.map((m) => ({ x: m.x, y: m.y, r: 62 })),
 ];
 
 function nearClearZone(x: number, y: number) {
@@ -1537,11 +1507,7 @@ const SOLID_RECTS = BUILDINGS.map((b) => ({
 }));
 
 /** solid trunks / boulders / bushes — small enough to still harvest from any side */
-const SOLID_DISCS = NODE_SPAWNS.map((n) => ({
-  x: n.x,
-  y: n.y + (NODE_DEFS[n.kind].shape === "tree" ? 8 : 2),
-  r: NODE_DEFS[n.kind].shape === "bush" ? 11 : 14,
-}));
+const SOLID_DISCS: { x: number; y: number; r: number }[] = [];
 
 /** true when the world point is inside a barrier, a building or a resource node */
 export function blockedAt(x: number, y: number, pad = 10): boolean {
