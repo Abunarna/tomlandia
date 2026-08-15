@@ -210,7 +210,7 @@ export function NpcDialog({
             >
               Sell all resources
             </button>
-            {gearForSale.length > 0 && (
+            {bagForSale.length > 0 && (
               <>
                 <p className="pt-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
                   Weapons &amp; armour — tap to sell
