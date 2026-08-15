@@ -213,7 +213,7 @@ export function NpcDialog({
             {bagForSale.length > 0 && (
               <>
                 <p className="pt-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
-                  Weapons &amp; armour — tap to sell
+                  Your bag — tap to sell
                 </p>
                 <div className="space-y-1.5">
                   {bagForSale.map(({ slot, index, price }) => (
