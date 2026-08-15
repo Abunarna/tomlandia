@@ -1803,37 +1803,75 @@ export class GameEngine {
     const r = RECIPES.find((x) => x.id === recipeId);
     if (!r || !this.onCraft) return false;
     if (this.craftPending) return false;
-    this.craftPending = true;
-    void this.onCraft(r.id)
-      .then((res) => {
-        this.craftPending = false;
-        if (!res.ok) {
-          const why =
-            res.reason === "bag_full"
-              ? "Bag is full"
-              : res.reason === "low_level"
-                ? `Needs ${res.skill} ${res.req}`
-                : res.reason === "missing_materials"
-                  ? "Missing materials"
-                  : "Not right now";
-          this.pushText(this.px, this.py - 56, why, "#f4b0b0");
-          this.emitHud(true);
-          return;
-        }
-        this.applyServerState(res.state);
-        sfx.play("craft");
-        this.pushText(this.px, this.py - 56, `+${res.out_qty ?? 1} ${item(r.out).name}`, "#dff6c9");
-        this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
-        if (res.leveled) this.celebrateLevel(r.skill);
-        this.emitHud(true);
-      })
-      .catch(() => {
-        this.craftPending = false;
-      });
+    void this.craftOnce(r.id);
     return true;
   }
 
+  /** Craft repeatedly, one item per recipe-time, until materials run out. */
+  craftAll(recipeId: string): boolean {
+    const r = RECIPES.find((x) => x.id === recipeId);
+    if (!r || !this.onCraft) return false;
+    if (this.craftPending || this.craftLoop) return false;
+    this.craftLoop = true;
+    void (async () => {
+      try {
+        // safety cap so a server bug can't spin forever
+        for (let n = 0; n < 500; n++) {
+          if (!this.craftLoop) break;
+          if (!this.canCraft(r.id)) break;
+          const ok = await this.craftOnce(r.id);
+          if (!ok) break;
+          if (!this.craftLoop) break;
+          await new Promise((res) => setTimeout(res, Math.max(200, r.time * 1000)));
+        }
+      } finally {
+        this.craftLoop = false;
+      }
+    })();
+    return true;
+  }
+
+  /** Stop an in-flight "make all" run. */
+  stopCraftAll() {
+    this.craftLoop = false;
+  }
+
+  private async craftOnce(recipeId: string): Promise<boolean> {
+    const r = RECIPES.find((x) => x.id === recipeId);
+    if (!r || !this.onCraft || this.craftPending) return false;
+    this.craftPending = true;
+    try {
+      const res = await this.onCraft(r.id);
+      this.craftPending = false;
+      if (!res.ok) {
+        const why =
+          res.reason === "bag_full"
+            ? "Bag is full"
+            : res.reason === "low_level"
+              ? `Needs ${res.skill} ${res.req}`
+              : res.reason === "missing_materials"
+                ? "Missing materials"
+                : "Not right now";
+        this.pushText(this.px, this.py - 56, why, "#f4b0b0");
+        this.emitHud(true);
+        return false;
+      }
+      this.applyServerState(res.state);
+      sfx.play("craft");
+      this.pushText(this.px, this.py - 56, `+${res.out_qty ?? 1} ${item(r.out).name}`, "#dff6c9");
+      this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
+      if (res.leveled) this.celebrateLevel(r.skill);
+      this.emitHud(true);
+      return true;
+    } catch {
+      this.craftPending = false;
+      return false;
+    }
+  }
+
   private craftPending = false;
+  private craftLoop = false;
+
 
   upgradeCostFor(which: "weapon" | "armor"): number | null {
     const eq = which === "weapon" ? this.weapon : this.armor;
