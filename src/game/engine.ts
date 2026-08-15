@@ -1328,6 +1328,112 @@ export class GameEngine {
   }
 
 
+  /* ---------- DESOLATUS ---------- */
+
+  get bossAlive() {
+    return this.boss.hp > 0 && (!this.boss.respawnAt || Date.now() >= this.boss.respawnAt);
+  }
+
+  /** Adopt the shared HP pool from the database / realtime feed. */
+  applyBossRow(row: { hp: number; max_hp: number; respawn_at: string | null }) {
+    this.boss.hp = row.hp;
+    this.boss.maxHp = row.max_hp || BOSS_HP;
+    this.boss.respawnAt = row.respawn_at ? Date.parse(row.respawn_at) : 0;
+    this.emitHud(true);
+  }
+
+  /** Shared damage-taken handling (regular monsters and the boss both use it). */
+  private takeHit(taken: number, killer: string) {
+    if (taken > 0) {
+      this.hp -= taken;
+      this.pushText(this.px, this.py - 34, `-${taken}`, "#f4b0b0");
+    }
+    this.autoEat();
+    if (this.hp <= 0) {
+      const lostGold = Math.floor(this.gold * 0.1);
+      this.hp = Math.ceil(this.maxHp * 0.5);
+      this.px = 700;
+      this.py = 620;
+      this.gold = Math.max(0, this.gold - lostGold);
+      this.death = {
+        at: Date.now(),
+        reason: `${killer} struck you down. A villager dragged you back to Grand Haven at half health. You lost ${lostGold} gold (10%) in the chaos.`,
+      };
+      this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
+      this.target = { type: "none" };
+    }
+  }
+
+  /** One boss swing (ours, or his free hit when we simply stand too close). */
+  private bossSwing(passive: boolean) {
+    if (this.boss.pending || !this.onBossAttack) return;
+    this.boss.pending = true;
+    void this.onBossAttack(this.px, this.py, this.boss.x, this.boss.y, passive)
+      .then((res) => {
+        this.boss.pending = false;
+        if (!res.ok) {
+          if (res.reason === "dead") {
+            this.boss.hp = 0;
+            this.boss.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : Date.now() + 600000;
+            if (this.target.type === "boss") this.target = { type: "none" };
+          }
+          if (typeof res.hp === "number") this.boss.hp = res.hp;
+          return;
+        }
+        if (typeof res.hp === "number") this.boss.hp = res.hp;
+        if (typeof res.max_hp === "number") this.boss.maxHp = res.max_hp;
+        if (!passive) {
+          this.boss.hitFlash = 0.2;
+          sfx.play("hit");
+          this.pushText(this.boss.x, this.boss.y - 70, `${res.dmg ?? 0}`, "#ffd3d3");
+        }
+        this.applyServerState(res.state);
+        if (res.killed) {
+          this.boss.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : Date.now() + 600000;
+          this.pushText(this.boss.x, this.boss.y - 100, `${BOSS_NAME} FALLS!`, "#ffd98e");
+          if (res.gold) this.pushText(this.px, this.py - 60, `+${res.gold}g`, "#ffe08a");
+          (res.loot ?? []).forEach((l, i) => {
+            const id = l.item ?? l.id;
+            if (!id || !ITEMS[id]) return;
+            this.pushText(this.px + (i % 2 ? 16 : -16), this.py - 76 - i * 12, `+${l.qty} ${ITEMS[id]!.name}`, "#dff6c9");
+          });
+          if (res.leveled) this.celebrateLevel("combat");
+          if (this.target.type === "boss") this.target = { type: "none" };
+        } else {
+          this.takeHit(Math.max(0, res.taken ?? 0), BOSS_NAME);
+        }
+        this.emitHud(true);
+      })
+      .catch(() => {
+        this.boss.pending = false;
+      });
+  }
+
+  /** Roam by clock, and let him hit anyone loitering inside his reach. */
+  private tickBoss(dt: number) {
+    const pose = desolatusAt();
+    this.boss.x = pose.x;
+    this.boss.y = pose.y;
+    this.boss.facing = pose.facing;
+    if (this.boss.hitFlash > 0) this.boss.hitFlash -= dt;
+    if (this.boss.respawnAt && Date.now() >= this.boss.respawnAt) {
+      this.boss.respawnAt = 0;
+      this.boss.hp = this.boss.maxHp;
+    }
+    this.boss.dist = Math.hypot(pose.x - this.px, pose.y - this.py);
+
+    if (!this.bossAlive) return;
+    if (this.boss.dist <= BOSS_ATTACK_RADIUS && this.target.type !== "boss") {
+      this.bossAggroCd -= dt;
+      if (this.bossAggroCd <= 0) {
+        this.bossAggroCd = 1.6;
+        this.bossSwing(true);
+      }
+    } else {
+      this.bossAggroCd = 0;
+    }
+  }
+
   private autoEat() {
     if (this.hp / this.maxHp > this.autoEatAt) return;
     const now = Date.now();
@@ -1346,6 +1452,7 @@ export class GameEngine {
   private update(dt: number) {
     const now = this.time;
     this.tickRemotes(dt);
+    this.tickBoss(dt);
 
     // joystick overrides target
     if (this.joystick.active && (this.joystick.dx || this.joystick.dy)) {
@@ -1573,6 +1680,24 @@ export class GameEngine {
                   m.pending = false;
                 });
             }
+          }
+        } else {
+          this.activity = "Approaching";
+          this.activityProgress = 0;
+        }
+      }
+    } else if (this.target.type === "boss") {
+      if (!this.bossAlive) {
+        this.target = { type: "none" };
+      } else {
+        const d = this.moveToward(this.boss.x, this.boss.y + 20, dt, 140);
+        if (d <= BOSS_MELEE_RADIUS) {
+          this.activity = `Fighting ${BOSS_NAME}`;
+          this.combatCd -= dt;
+          this.activityProgress = 1 - Math.max(0, this.combatCd) / this.attackInterval;
+          if (this.combatCd <= 0) {
+            this.combatCd = this.attackInterval;
+            this.bossSwing(false);
           }
         } else {
           this.activity = "Approaching";
@@ -2294,6 +2419,26 @@ export class GameEngine {
       nearby: this.remotes.size,
       buff: this.buff ? { ...this.buff } : null,
       death: this.death ? { ...this.death } : null,
+      boss: {
+        name: BOSS_NAME,
+        level: BOSS_LEVEL,
+        alive: this.bossAlive,
+        hp: Math.max(0, Math.round(this.boss.hp)),
+        maxHp: this.boss.maxHp,
+        dist: Math.round(this.boss.dist),
+        // 0 at the edge of the warning ring, 1 once he is on top of you
+        warn: this.bossAlive
+          ? Math.max(
+              0,
+              Math.min(
+                1,
+                (BOSS_WARN_RADIUS - this.boss.dist) / (BOSS_WARN_RADIUS - BOSS_ATTACK_RADIUS),
+              ),
+            )
+          : 0,
+        engaged: this.target.type === "boss",
+        respawnAt: this.boss.respawnAt,
+      },
     });
   }
 
