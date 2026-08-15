@@ -2498,6 +2498,7 @@ export class GameEngine {
       if (!this.inView(r.x, r.y, view)) continue;
       drawables.push({ y: r.y, fn: () => this.drawRemote(ctx, r) });
     }
+    if (this.bossAlive) drawables.push({ y: this.boss.y, fn: () => this.drawBoss(ctx) });
     drawables.push({ y: this.py, fn: () => this.drawPlayer(ctx) });
     drawables.sort((a, b) => a.y - b.y);
     for (const d of drawables) d.fn();
@@ -3308,6 +3309,94 @@ export class GameEngine {
       ctx.fillStyle = mine ? "#8fd98a" : "#e8b26a";
       ctx.fillRect(m.x - 16, m.y - 34 * s, 32 * (m.hp / m.maxHp), 5);
     }
+  }
+
+  /**
+   * DESOLATUS — same primitive-shape technique as every other creature, just
+   * twice the scale of the biggest one, with horns and a spiked greatsword.
+   */
+  private drawBoss(ctx: CanvasRenderingContext2D) {
+    const s = BOSS_SIZE;
+    const x = this.boss.x;
+    const y = this.boss.y;
+    const f = this.boss.facing;
+    const bob = Math.sin(this.time * 2.2) * 3;
+    const flash = this.boss.hitFlash > 0;
+    this.shadow(ctx, x, y + 16 * s, 18 * s);
+
+    // sword, drawn behind the body when he faces away from it
+    const sx = x + f * 20 * s;
+    const grad = ctx.createLinearGradient(sx, y - 60 * s + bob, sx, y + 10 * s + bob);
+    grad.addColorStop(0, "#221024");
+    grad.addColorStop(0.55, "#4a1f5e");
+    grad.addColorStop(1, "#8a4bd0");
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(sx - 5 * s, y + 8 * s + bob);
+    ctx.lineTo(sx - 5 * s, y - 52 * s + bob);
+    ctx.lineTo(sx, y - 64 * s + bob);
+    ctx.lineTo(sx + 5 * s, y - 52 * s + bob);
+    ctx.lineTo(sx + 5 * s, y + 8 * s + bob);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = "#6d2fa8";
+    for (let i = 0; i < 4; i++) {
+      const sy = y - 12 * s - i * 11 * s + bob;
+      ctx.beginPath();
+      ctx.moveTo(sx + f * 5 * s, sy);
+      ctx.lineTo(sx + f * 15 * s, sy - 4 * s);
+      ctx.lineTo(sx + f * 5 * s, sy - 8 * s);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.fillStyle = "#2a1420";
+    ctx.fillRect(sx - 9 * s, y + 6 * s + bob, 18 * s, 4 * s);
+
+    // body
+    ctx.fillStyle = flash ? "#ffffff" : "#7d1620";
+    ctx.beginPath();
+    ctx.roundRect(x - 14 * s, y - 8 * s + bob, 28 * s, 24 * s, 8);
+    ctx.fill();
+    ctx.fillStyle = flash ? "#ffffff" : "#5a0d17";
+    ctx.beginPath();
+    ctx.roundRect(x - 14 * s, y + 4 * s + bob, 28 * s, 12 * s, 8);
+    ctx.fill();
+    // head
+    ctx.fillStyle = flash ? "#ffffff" : "#9c1f2b";
+    ctx.beginPath();
+    ctx.arc(x, y - 20 * s + bob, 15 * s, 0, Math.PI * 2);
+    ctx.fill();
+    // horns
+    ctx.fillStyle = "#2a1018";
+    for (const dir of [-1, 1]) {
+      ctx.beginPath();
+      ctx.moveTo(x + dir * 13 * s, y - 26 * s + bob);
+      ctx.quadraticCurveTo(x + dir * 34 * s, y - 44 * s + bob, x + dir * 22 * s, y - 58 * s + bob);
+      ctx.quadraticCurveTo(x + dir * 26 * s, y - 40 * s + bob, x + dir * 10 * s, y - 32 * s + bob);
+      ctx.closePath();
+      ctx.fill();
+    }
+    // eyes
+    ctx.fillStyle = "#ffd45c";
+    ctx.fillRect(x - 8 * s, y - 23 * s + bob, 5 * s, 3 * s);
+    ctx.fillRect(x + 3 * s, y - 23 * s + bob, 5 * s, 3 * s);
+
+    // nameplate + shared health pool
+    const label = `${BOSS_NAME} · Lv ${BOSS_LEVEL}`;
+    ctx.font = "bold 15px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+    ctx.textAlign = "center";
+    const lw = ctx.measureText(label).width + 16;
+    ctx.fillStyle = "rgba(46,10,16,0.75)";
+    ctx.beginPath();
+    ctx.roundRect(x - lw / 2, y - 84 * s + bob, lw, 20, 9);
+    ctx.fill();
+    ctx.fillStyle = "#ffd9d9";
+    ctx.fillText(label, x, y - 70 * s + bob);
+    const bw = 120;
+    ctx.fillStyle = "rgba(40,20,26,0.5)";
+    ctx.fillRect(x - bw / 2, y - 60 * s + bob, bw, 7);
+    ctx.fillStyle = "#e0483f";
+    ctx.fillRect(x - bw / 2, y - 60 * s + bob, bw * Math.max(0, this.boss.hp / this.boss.maxHp), 7);
   }
 
   private drawNpc(ctx: CanvasRenderingContext2D, npc: NpcDef, live: LiveNpc) {
