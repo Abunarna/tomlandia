@@ -18,6 +18,7 @@ import {
   WORLD_W,
   biomeAt,
   blockedAt,
+  ITEMS,
   item,
   statWithPlus,
   upgradeCost,
