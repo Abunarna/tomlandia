@@ -1231,7 +1231,9 @@ export class GameEngine {
       this.pushText(m.x, m.y - 40, `+${res.gold}g`, "#ffe08a");
     }
     (res.loot ?? []).forEach((l, i) => {
-      this.pushText(m.x + (i % 2 ? 16 : -16), m.y - 56 - i * 12, `+${l.qty} ${item(l.item).name}`, "#dff6c9");
+      const id = l.item ?? l.id;
+      if (!id || !ITEMS[id]) return;
+      this.pushText(m.x + (i % 2 ? 16 : -16), m.y - 56 - i * 12, `+${l.qty} ${ITEMS[id]!.name}`, "#dff6c9");
     });
     this.questTick("kill", m.kind);
     this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
