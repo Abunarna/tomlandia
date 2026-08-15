@@ -629,6 +629,10 @@ function Game() {
           onCraft={(id) => {
             engineRef.current?.craft(id);
           }}
+          onCraftAll={(id) => {
+            engineRef.current?.craftAll(id);
+          }}
+
           onUpgrade={(which) => {
             engineRef.current?.upgradeEquipped(which);
           }}
