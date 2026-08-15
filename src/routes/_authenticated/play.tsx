@@ -109,6 +109,7 @@ function Game() {
   const [mapOpen, setMapOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showFsPrompt, setShowFsPrompt] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
 
   const pendingSave = useRef<PromiseLike<unknown> | null>(null);
   const panelRef = useRef<PanelId | null>(null);
@@ -147,7 +148,8 @@ function Game() {
     void (async () => {
       // Never start the game on a failed read: booting with an empty save and
       // then autosaving is how a character could be overwritten. Retry first.
-      let row: { data: unknown; rev: number | null } | null = null;
+      type SaveRow = { data: unknown; rev: number | null };
+      let row: SaveRow | null = null;
       let readOk = false;
       for (let attempt = 0; attempt < 4 && !readOk; attempt++) {
         const { data, error } = await supabase
@@ -158,7 +160,7 @@ function Game() {
         if (cancelled) return;
         if (!error) {
           readOk = true;
-          row = (data as typeof row) ?? null;
+          row = (data as SaveRow | null) ?? null;
         } else {
           console.error("Save load failed", error.message);
           await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
