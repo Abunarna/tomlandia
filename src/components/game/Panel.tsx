@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Backpack, Hammer, Store, Trophy, X } from "lucide-react";
-import { ITEMS } from "@/game/data";
+import { ITEMS, statWithPlus } from "@/game/data";
 import type { HudSnapshot, ItemDef } from "@/game/types";
 import { GearBadge, ItemIcon } from "./ItemIcon";
 import { MarketTab } from "./Market";
