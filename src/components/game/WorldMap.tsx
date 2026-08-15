@@ -139,10 +139,18 @@ export function WorldMap({ position, onClose }: Props) {
   }, [size.w, size.h]);
 
   // Track the player's live position while the map is open.
+  const [player, setPlayer] = useState(() => position());
+  const [boss, setBoss] = useState(() => desolatusAt());
+
+  // Track the player's live position while the map is open.
   useEffect(() => {
-    const t = window.setInterval(() => setPlayer(position()), 250);
+    const t = window.setInterval(() => {
+      setPlayer(position());
+      setBoss(desolatusAt());
+    }, 250);
     return () => window.clearInterval(t);
   }, [position]);
+
 
   /** Zoom about a screen point so the world point under it stays put. */
   const zoomAt = useCallback(
