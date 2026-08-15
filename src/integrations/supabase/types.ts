@@ -450,6 +450,36 @@ export type Database = {
         }
         Relationships: []
       }
+      world_boss: {
+        Row: {
+          hp: number
+          id: number
+          max_hp: number
+          respawn_at: string | null
+          updated_at: string
+          x: number
+          y: number
+        }
+        Insert: {
+          hp: number
+          id: number
+          max_hp: number
+          respawn_at?: string | null
+          updated_at?: string
+          x?: number
+          y?: number
+        }
+        Update: {
+          hp?: number
+          id?: number
+          max_hp?: number
+          respawn_at?: string | null
+          updated_at?: string
+          x?: number
+          y?: number
+        }
+        Relationships: []
+      }
       world_cooldowns: {
         Row: {
           key: string
@@ -557,6 +587,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      attack_boss: {
+        Args: {
+          _bx: number
+          _by: number
+          _passive?: boolean
+          _x: number
+          _y: number
+        }
+        Returns: Json
+      }
       attack_monster: {
         Args: { _id: number; _x: number; _y: number }
         Returns: Json
