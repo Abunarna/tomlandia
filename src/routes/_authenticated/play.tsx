@@ -368,9 +368,12 @@ function Game() {
   useEffect(() => {
     if (!hud.death) return;
     setDeath(hud.death);
-    const t = window.setTimeout(() => setDeath(null), 3000);
+    const t = window.setTimeout(() => {
+      engineRef.current?.acknowledgeDeath();
+      setDeath(null);
+    }, 3000);
     return () => window.clearTimeout(t);
-  }, [hud.death]);
+  }, [hud.death?.at]);
 
 
 
@@ -490,7 +493,10 @@ function Game() {
             <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-red-200/90">{death.reason}</p>
             <button
               type="button"
-              onClick={() => setDeath(null)}
+              onClick={() => {
+                engineRef.current?.acknowledgeDeath();
+                setDeath(null);
+              }}
               className="mt-6 rounded-full border border-red-200/40 bg-red-100/10 px-8 py-2.5 text-sm font-bold tracking-wide text-red-50 transition active:scale-95 hover:bg-red-100/20"
             >
               Continue
