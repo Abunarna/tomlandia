@@ -20,6 +20,7 @@ export function NpcDialog({
   onClaim,
   onAbandon,
   onCraft,
+  onCraftAll,
   onUpgrade,
   upgradeCosts,
 }: {
@@ -37,6 +38,7 @@ export function NpcDialog({
   onClaim: () => void;
   onAbandon: () => void;
   onCraft: (recipeId: string) => void;
+  onCraftAll: (recipeId: string) => void;
   onUpgrade: (which: "weapon" | "armor") => void;
   upgradeCosts: { weapon: number | null; armor: number | null };
 }) {
