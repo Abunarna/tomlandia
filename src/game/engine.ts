@@ -479,6 +479,12 @@ export class GameEngine {
   /** Most recent death event shown as a fullscreen red overlay. */
   death: { at: number; reason: string } | null = null;
 
+  /** Acknowledge the current death event so HUD updates cannot reopen it. */
+  acknowledgeDeath() {
+    this.death = null;
+    this.emitHud(true);
+  }
+
   /** Mirror authoritative node rows (snapshot or realtime) into the world. */
   applyNodeRows(rows: { id: number; charges: number; respawn_at: string | null }[]) {
     for (const row of rows) {
