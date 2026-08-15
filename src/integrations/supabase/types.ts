@@ -360,6 +360,30 @@ export type Database = {
         }
         Relationships: []
       }
+      player_save_backups: {
+        Row: {
+          created_at: string
+          data: Json
+          id: number
+          rev: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          id?: number
+          rev?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: number
+          rev?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       player_saves: {
         Row: {
           data: Json
@@ -592,6 +616,8 @@ export type Database = {
       }
       pl_state: { Args: { _d: Json }; Returns: Json }
       player_sync: { Args: { _data: Json; _rev?: number }; Returns: Json }
+      save_is_fresh: { Args: { _d: Json }; Returns: boolean }
+      save_total_xp: { Args: { _d: Json }; Returns: number }
       skill_xp: { Args: { _data: Json; _skill: string }; Returns: number }
       slot_add: {
         Args: {

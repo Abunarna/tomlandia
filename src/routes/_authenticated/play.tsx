@@ -109,6 +109,7 @@ function Game() {
   const [mapOpen, setMapOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showFsPrompt, setShowFsPrompt] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
 
   const pendingSave = useRef<PromiseLike<unknown> | null>(null);
   const panelRef = useRef<PanelId | null>(null);
@@ -145,19 +146,40 @@ function Game() {
     const onResize = () => engine?.resize();
 
     void (async () => {
-      const { data } = await supabase
-        .from("player_saves")
-        .select("data, rev")
-        .eq("user_id", user.id)
-        .maybeSingle();
-      if (cancelled) return;
+      // Never start the game on a failed read: booting with an empty save and
+      // then autosaving is how a character could be overwritten. Retry first.
+      type SaveRow = { data: unknown; rev: number | null };
+      let row: SaveRow | null = null;
+      let readOk = false;
+      for (let attempt = 0; attempt < 4 && !readOk; attempt++) {
+        const { data, error } = await supabase
+          .from("player_saves")
+          .select("data, rev")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (cancelled) return;
+        if (!error) {
+          readOk = true;
+          row = (data as SaveRow | null) ?? null;
+        } else {
+          console.error("Save load failed", error.message);
+          await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
+          if (cancelled) return;
+        }
+      }
+      if (!readOk) {
+        setLoadFailed(true);
+        return;
+      }
 
-      const cloudSave = (data?.data as unknown as SaveState | undefined) ?? null;
+      const cloudSave = (row?.data as unknown as SaveState | undefined) ?? null;
       engine = new GameEngine(canvas, setHud, {
         initialSave: cloudSave,
-        initialRev: typeof data?.rev === "number" ? data.rev : null,
+        // A missing/unreadable save must never look "up to date" to the server.
+        initialRev: cloudSave && typeof row?.rev === "number" ? row.rev : null,
         onPersist: persist,
       });
+
       engineRef.current = engine;
       // Phase 9 — the server resolves every world action and owns the rewards.
       engine.userId = user.id;
@@ -477,11 +499,29 @@ function Game() {
         </div>
       )}
 
-      {!ready && (
+      {!ready && !loadFailed && (
         <div className="absolute inset-0 z-20 grid place-items-center bg-background">
           <p className="text-sm text-muted-foreground">Loading your adventure…</p>
         </div>
       )}
+
+      {loadFailed && (
+        <div className="absolute inset-0 z-40 grid place-items-center bg-background p-6 text-center">
+          <div className="max-w-xs">
+            <h2 className="font-display text-lg font-bold text-foreground">Couldn't reach your save</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              We stopped the game rather than risk your progress. Check your connection and try again.
+            </p>
+            <button
+              className="mt-4 rounded-2xl bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground"
+              onClick={() => window.location.reload()}
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      )}
+
 
       {claimable && (
         <div className="absolute inset-0 z-30 grid place-items-center bg-background/80 p-6 backdrop-blur-sm">
