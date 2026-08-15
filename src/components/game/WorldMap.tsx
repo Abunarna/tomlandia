@@ -433,6 +433,43 @@ export function WorldMap({ position, onClose }: Props) {
           );
         })}
 
+        {(() => {
+          const s = Math.max(20, Math.min(40, 26 * zoom));
+          return (
+            <div
+              className="pointer-events-none absolute z-20 grid place-items-center rounded-full border-2 border-white/80"
+              style={{
+                left: sx(boss.x) - s / 2,
+                top: sy(boss.y) - s / 2,
+                width: s,
+                height: s,
+                background: "#7a0f1c",
+                animation: "boss-pulse 1.2s ease-in-out infinite",
+              }}
+              title={`${BOSS_NAME} — world boss`}
+            >
+              <svg viewBox="0 0 24 24" width={s * 0.72} height={s * 0.72} aria-hidden>
+                {/* horns */}
+                <path
+                  d="M6 10C3.5 9 2.5 6 3 3.5C5.5 4.5 7.5 6.5 8 9Z M18 10C20.5 9 21.5 6 21 3.5C18.5 4.5 16.5 6.5 16 9Z"
+                  fill="#f4c2c7"
+                />
+                {/* head */}
+                <path
+                  d="M12 7c3.6 0 6 2.3 6 5.5 0 3.4-2.7 6.5-6 8-3.3-1.5-6-4.6-6-8C6 9.3 8.4 7 12 7Z"
+                  fill="#e0343f"
+                />
+                {/* eyes */}
+                <circle cx="9.8" cy="12.3" r="1.1" fill="#2b0508" />
+                <circle cx="14.2" cy="12.3" r="1.1" fill="#2b0508" />
+              </svg>
+              <span className="sr-only">{BOSS_NAME} location</span>
+            </div>
+          );
+        })()}
+
+        <style>{`@keyframes boss-pulse{0%,100%{box-shadow:0 0 0 0 rgba(224,52,63,.75);transform:scale(1)}50%{box-shadow:0 0 0 10px rgba(224,52,63,0);transform:scale(1.12)}}`}</style>
+
         <div
           className="absolute size-3.5 rounded-full border-2 border-white bg-primary shadow-soft"
           style={{ left: sx(player.x) - 7, top: sy(player.y) - 7 }}
