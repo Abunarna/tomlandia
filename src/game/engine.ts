@@ -1182,14 +1182,28 @@ export class GameEngine {
     this.save();
   }
 
+  /** CSS-pixel size of the canvas, cached so the loop never forces a layout. */
+  viewW = 0;
+  viewH = 0;
+
   resize() {
     const rect = this.canvas.getBoundingClientRect();
-    this.dpr = Math.min(2, window.devicePixelRatio || 1);
-    this.canvas.width = Math.floor(rect.width * this.dpr);
-    this.canvas.height = Math.floor(rect.height * this.dpr);
-    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+    this.viewW = rect.width;
+    this.viewH = rect.height;
+    // Cap the backing store: a wide desktop window at dpr 2 would otherwise
+    // paint 6-10x the pixels of the portrait mobile target every frame.
+    const MAX_PIXELS = 2_400_000;
+    let dpr = Math.min(2, window.devicePixelRatio || 1);
+    const area = Math.max(1, rect.width * rect.height);
+    if (area * dpr * dpr > MAX_PIXELS) dpr = Math.max(1, Math.sqrt(MAX_PIXELS / area));
+    this.dpr = dpr;
+    this.canvas.width = Math.floor(rect.width * dpr);
+    this.canvas.height = Math.floor(rect.height * dpr);
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     this.ctx.imageSmoothingEnabled = false;
+    this.terrainCache = null;
   }
+
 
   /** move, but never walk into a river, rocky ridge or dense woodland */
   private tryStep(nx: number, ny: number) {
@@ -1904,9 +1918,11 @@ export class GameEngine {
 
 
     // camera
-    const rect = this.canvas.getBoundingClientRect();
-    const tx = Math.max(0, Math.min(WORLD_W - rect.width, this.px - rect.width / 2));
-    const ty = Math.max(0, Math.min(WORLD_H - rect.height, this.py - rect.height / 2));
+    const vw = this.viewW;
+    const vh = this.viewH;
+    const tx = Math.max(0, Math.min(WORLD_W - vw, this.px - vw / 2));
+    const ty = Math.max(0, Math.min(WORLD_H - vh, this.py - vh / 2));
+
     this.cam.x += (tx - this.cam.x) * Math.min(1, dt * 6);
     this.cam.y += (ty - this.cam.y) * Math.min(1, dt * 6);
 
