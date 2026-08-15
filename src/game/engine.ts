@@ -22,6 +22,7 @@ import {
   item,
   statWithPlus,
   upgradeCost,
+  monsterLevel,
   type BiomeDef,
   type MonsterKind,
   type NodeKind,
@@ -3018,14 +3019,26 @@ export class GameEngine {
     ctx.fillStyle = "#4a3b52";
     ctx.fillRect(m.x - 6 * s, m.y - 18 * s + bob, 3, 3);
     ctx.fillRect(m.x + 3 * s, m.y - 18 * s + bob, 3, 3);
+    // Persistent nameplate: name + level, always shown above the head.
+    const label = `${d.name} · Lv ${monsterLevel(d)}`;
+    ctx.font = "bold 11px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+    ctx.textAlign = "center";
+    const lw = ctx.measureText(label).width + 12;
+    ctx.fillStyle = "rgba(52,40,64,0.55)";
+    ctx.beginPath();
+    ctx.roundRect(m.x - lw / 2, m.y - 54 * s + bob, lw, 16, 8);
+    ctx.fill();
+    ctx.fillStyle = "#f6f2ff";
+    ctx.fillText(label, m.x, m.y - 43 * s + bob);
+
     if (m.hp < m.maxHp) {
       // Shared health pool. Amber bar = another player tagged it first, so the
-      // loot is theirs.
+      // loot is theirs. Drawn below the nameplate.
       const mine = !m.taggedBy || m.taggedBy === this.userId;
       ctx.fillStyle = "rgba(70,55,70,0.3)";
-      ctx.fillRect(m.x - 16, m.y - 40 * s, 32, 5);
+      ctx.fillRect(m.x - 16, m.y - 34 * s, 32, 5);
       ctx.fillStyle = mine ? "#8fd98a" : "#e8b26a";
-      ctx.fillRect(m.x - 16, m.y - 40 * s, 32 * (m.hp / m.maxHp), 5);
+      ctx.fillRect(m.x - 16, m.y - 34 * s, 32 * (m.hp / m.maxHp), 5);
     }
   }
 

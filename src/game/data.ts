@@ -721,6 +721,11 @@ export const MONSTER_DEFS: Record<MonsterKind, MonsterDefT> = {
   frost_giant: { name: "Frost Giant", hp: 2200, attack: 165, defense: 80, xp: 3400, gold: [400, 780], drop: "tungsten_ore", dropChance: 0.4, hide: "frost_pelt", hideXp: 900, body: "#bcd9ec", accent: "#7fa8c4", size: 1.7, ears: "spikes" },
 };
 
+/** Approximate combat level derived from a monster's HP and attack. */
+export function monsterLevel(md: MonsterDefT): number {
+  return Math.max(1, Math.round((md.hp + md.attack * 2) / 24));
+}
+
 export interface MonsterSpawn {
   kind: MonsterKind;
   x: number;
