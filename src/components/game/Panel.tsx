@@ -328,14 +328,28 @@ function EquipSlot({
   label: string;
 }) {
   const def = eq ? ITEMS[eq.id] : null;
+  const plus = eq?.plus ?? 0;
+  const statKey = kind === "weapon" ? "attack" : "defense";
+  const statLabel = kind === "weapon" ? "Base attack" : "Base defence";
+  const base = def?.[statKey];
+  const total = base != null ? statWithPlus(base, plus) : null;
+  const bonus = total != null ? Math.round((total - base!) * 10) / 10 : null;
   return (
     <div className="flex flex-1 items-center gap-2 rounded-2xl border border-border/70 bg-muted/50 p-2">
       <GearBadge kind={kind} color={def?.color} className="size-9" />
       <div className="min-w-0">
         <p className="truncate text-[11px] font-bold text-foreground">
-          {def ? `${def.name}${eq && eq.plus > 0 ? ` +${eq.plus}` : ""}` : "Empty"}
+          {def ? `${def.name}${plus > 0 ? ` +${plus}` : ""}` : "Empty"}
         </p>
-        <p className="text-[10px] text-muted-foreground">{label}</p>
+        {def && base != null && total != null && bonus != null ? (
+          <p className="text-[10px] leading-tight text-muted-foreground">
+            <span>{statLabel} {base}</span>
+            <span className="text-xp"> +{bonus}</span>
+            <span className="font-bold text-foreground"> ({total})</span>
+          </p>
+        ) : (
+          <p className="text-[10px] text-muted-foreground">{label}</p>
+        )}
       </div>
     </div>
   );
