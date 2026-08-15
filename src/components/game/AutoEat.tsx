@@ -91,6 +91,12 @@ export function AutoEat({ hud, onCycle }: { hud: HudSnapshot; onCycle: () => voi
           </span>
         </>
       )}
+
+      {/* threshold readout */}
+      <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-card/95 px-1.5 py-[1px] text-[9px] font-black leading-none text-foreground shadow-soft">
+        {Math.round(threshold * 100)}%
+      </span>
     </button>
   );
 }
+

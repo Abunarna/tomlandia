@@ -17,6 +17,7 @@ export function Panel({
   onUse,
   onDrop,
   onSetFood,
+  onClearFood,
   onBuyListing,
   onCancelListing,
   onList,
@@ -29,6 +30,7 @@ export function Panel({
   onUse: (i: number) => void;
   onDrop: (i: number) => void;
   onSetFood: (i: number) => void;
+  onClearFood: () => void;
   onBuyListing: (id: string, qty: number) => void;
   onCancelListing: (id: string) => void;
   onList: (index: number, qty: number, price: number) => void;
@@ -74,6 +76,7 @@ export function Panel({
             onUse={onUse}
             onDrop={onDrop}
             onSetFood={onSetFood}
+            onClearFood={onClearFood}
           />
         ) : panel === "skills" ? (
           <SkillsTab hud={hud} />
@@ -104,12 +107,14 @@ function InventoryTab({
   onUse,
   onDrop,
   onSetFood,
+  onClearFood,
 }: {
   hud: HudSnapshot;
   onEquip: (i: number) => void;
   onUse: (i: number) => void;
   onDrop: (i: number) => void;
   onSetFood: (i: number) => void;
+  onClearFood: () => void;
 }) {
   const [selected, setSelected] = useState<number | null>(null);
   const sel = selected != null ? hud.inv[selected] : null;
@@ -182,6 +187,8 @@ function InventoryTab({
           onUse={onUse}
           onDrop={onDrop}
           onSetFood={onSetFood}
+          onClearFood={onClearFood}
+          isSnack={hud.food === sel.id}
         />
       )}
     </div>
@@ -198,6 +205,8 @@ function ItemActions({
   onUse,
   onDrop,
   onSetFood,
+  onClearFood,
+  isSnack,
 }: {
   index: number;
   def: ItemDef;
@@ -208,6 +217,8 @@ function ItemActions({
   onUse: (i: number) => void;
   onDrop: (i: number) => void;
   onSetFood: (i: number) => void;
+  onClearFood: () => void;
+  isSnack: boolean;
 }) {
   const [examine, setExamine] = useState(false);
   const gear = def.kind === "weapon" || def.kind === "armor";
@@ -273,7 +284,17 @@ function ItemActions({
           {def.kind === "food" && (
             <>
               <ActionButton primary label="Eat now" onClick={() => run(onUse)} />
-              <ActionButton label="Set as auto-snack" onClick={() => run(onSetFood)} />
+              {isSnack ? (
+                <ActionButton
+                  label="Unequip from auto-snack"
+                  onClick={() => {
+                    onClearFood();
+                    onClose();
+                  }}
+                />
+              ) : (
+                <ActionButton label="Set as auto-snack" onClick={() => run(onSetFood)} />
+              )}
             </>
           )}
           {def.kind === "potion" && <ActionButton primary label="Drink" onClick={() => run(onUse)} />}

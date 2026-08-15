@@ -1271,9 +1271,26 @@ export class GameEngine {
   /** Cycle the auto-eat threshold 75% -> 50% -> 25% -> 75%. */
   cycleAutoEat() {
     this.autoEatAt = this.autoEatAt === 0.75 ? 0.5 : this.autoEatAt === 0.5 ? 0.25 : 0.75;
+    this.pushText(
+      this.px,
+      this.py - 40,
+      `Auto-snack at ${Math.round(this.autoEatAt * 100)}% hp`,
+      "#9fe6a0",
+    );
     this.emitHud(true);
-    this.save();
+    this.pushSave(false);
   }
+
+  /** Remove the equipped auto-snack food. */
+  clearAutoSnack() {
+    if (!this.food) return;
+    this.food = null;
+    this.pushText(this.px, this.py - 40, "Auto-snack cleared", "#ffe0a8");
+    this.emitHud(true);
+    this.runGear(this.onEquip ? this.onEquip(-1) : null);
+    this.pushSave(false);
+  }
+
 
   private autoEat() {
     if (this.hp / this.maxHp > this.autoEatAt) return;
