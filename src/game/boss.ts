@@ -14,8 +14,8 @@ import { WORLD_H, WORLD_W, blockedAt } from "./data";
 export const BOSS_NAME = "DESOLATUS";
 export const BOSS_LEVEL = 150;
 
-/** 2x the largest existing monster (Frost Giant, size 1.7). */
-export const BOSS_SIZE = 3.4;
+/** ~1.5x the largest existing monster (Frost Giant, size 1.7) — trimmed for readability. */
+export const BOSS_SIZE = 2.55;
 
 /** A quarter of player walk speed (130 px/s) — he lumbers. */
 export const BOSS_SPEED = 32.5;

@@ -3313,7 +3313,7 @@ export class GameEngine {
 
   /**
    * DESOLATUS — same primitive-shape technique as every other creature, just
-   * twice the scale of the biggest one, with horns and a spiked greatsword.
+   * larger (BOSS_SIZE ≈ 1.5x the biggest monster), with horns and a spiked greatsword.
    */
   private drawBoss(ctx: CanvasRenderingContext2D) {
     const s = BOSS_SIZE;
