@@ -67,7 +67,11 @@ export function AutoEat({ hud, onCycle }: { hud: HudSnapshot; onCycle: () => voi
         />
       </svg>
 
-      {has && (
+      {!has ? (
+        <span className="relative text-[10px] font-semibold tracking-wide text-muted-foreground/70">
+          empty
+        </span>
+      ) : (
         <>
           <span className="relative block size-7">
             <ItemIcon item={def!} className="size-full" />
