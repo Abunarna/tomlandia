@@ -1107,17 +1107,23 @@ export const RECIPES: Recipe[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* Equipment upgrading (+1 .. +25)                                     */
+/* Equipment upgrading (+1 .. +1000)                                   */
 /* ------------------------------------------------------------------ */
 
-export const MAX_PLUS = 25;
+export const MAX_PLUS = 1000;
 /** each upgrade level grants +5% of base stat */
 export const PLUS_STEP = 0.05;
 
 export function upgradeCost(base: number, plus: number): number {
-  const tier = Math.floor(plus / 5);
-  return Math.round((25 + base * 0.6) * Math.pow(2, tier) * (1 + (plus % 5) * 0.25));
+  // doubling per 5 levels up to +25, then a steady linear climb so the
+  // long tail to +1000 stays reachable instead of exploding exponentially
+  const capped = Math.min(plus, 25);
+  const tier = Math.floor(capped / 5);
+  let cost = (25 + base * 0.6) * Math.pow(2, tier) * (1 + (capped % 5) * 0.25);
+  if (plus > 25) cost *= 1 + (plus - 25) * 0.35;
+  return Math.round(cost);
 }
+
 
 export function statWithPlus(base: number, plus: number): number {
   return Math.round(base * (1 + plus * PLUS_STEP) * 10) / 10;
