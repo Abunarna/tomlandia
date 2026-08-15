@@ -564,17 +564,49 @@ export const FISH_CAST_TIME = 3.5;
 export interface FishTier {
   id: ItemId;
   xp: number;
-  /** catch weight at fishing level 1 / 15 / 40 / 70 / 100 */
-  w: [number, number, number, number, number];
+  /** rarity rank, 1 = most common … 5 = rarest (mirrors the cooking recipe tiers) */
+  rank: 1 | 2 | 3 | 4 | 5;
 }
 
+/**
+ * Rarity order comes straight from the cooking ladder:
+ * Honey Bun (lv1) ← minnow, Berry Pie (lv15) ← trout, Hearty Stew (lv40) ← koi,
+ * Frost Tonic (lv70) ← eel, Phoenix Fillet (lv100) ← starlight salmon.
+ */
 export const FISH_TABLE: FishTier[] = [
-  { id: "river_minnow", xp: 15, w: [70, 45, 25, 12, 5] },
-  { id: "silver_trout", xp: 45, w: [25, 35, 30, 22, 12] },
-  { id: "golden_koi", xp: 140, w: [4, 15, 28, 30, 23] },
-  { id: "deepwater_eel", xp: 380, w: [1, 4, 13, 26, 35] },
-  { id: "starlight_salmon", xp: 900, w: [0, 1, 4, 10, 25] },
+  { id: "river_minnow", xp: 15, rank: 1 },
+  { id: "silver_trout", xp: 45, rank: 2 },
+  { id: "golden_koi", xp: 140, rank: 3 },
+  { id: "deepwater_eel", xp: 380, rank: 4 },
+  { id: "starlight_salmon", xp: 900, rank: 5 },
 ];
+
+/** drop chance in % at level 1, ordered by rarity rank */
+const FISH_START_PCT = [90, 4, 3, 2, 1];
+/** drop chance in % at level 100+ — flat across all five fish */
+const FISH_END_PCT = [20, 20, 20, 20, 20];
+
+/** Percentage chance of catching each fish at a given fishing level (uncapped input). */
+export function fishChances(level: number): { id: ItemId; pct: number }[] {
+  const t = (Math.min(Math.max(Math.floor(level), 1), 100) - 1) / 99;
+  return FISH_TABLE.map((f, i) => ({
+    id: f.id,
+    pct: FISH_START_PCT[i]! + t * (FISH_END_PCT[i]! - FISH_START_PCT[i]!),
+  }));
+}
+
+/** Roll a weighted catch for the given fishing level. */
+export function rollFish(level: number): FishTier {
+  const chances = fishChances(level);
+  const total = chances.reduce((s, c) => s + c.pct, 0);
+  let roll = Math.random() * total;
+  for (let i = 0; i < chances.length; i++) {
+    roll -= chances[i]!.pct;
+    if (roll <= 0) return FISH_TABLE[i]!;
+  }
+  return FISH_TABLE[0]!;
+}
+
 
 export const REGION_NAME = "Peaceful Fields";
 
