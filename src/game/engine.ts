@@ -2444,28 +2444,87 @@ export class GameEngine {
 
   /* ---------- render ---------- */
 
+  /**
+   * Static terrain (biomes, roads, streets, barriers) never moves, so it is
+   * painted once into an offscreen canvas covering the view plus a margin and
+   * blitted each frame. Animated water stays live, drawn between the layers.
+   */
+  private terrainCache: {
+    base: HTMLCanvasElement;
+    over: HTMLCanvasElement;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    scale: number;
+  } | null = null;
+
+  private ensureTerrain(view: { x: number; y: number; w: number; h: number }) {
+    const M = 256;
+    const c = this.terrainCache;
+    if (
+      c &&
+      c.scale === this.dpr &&
+      view.x >= c.x &&
+      view.y >= c.y &&
+      view.x + view.w <= c.x + c.w &&
+      view.y + view.h <= c.y + c.h
+    ) {
+      return c;
+    }
+    const w = Math.ceil(view.w) + M * 2;
+    const h = Math.ceil(view.h) + M * 2;
+    const x = Math.floor(view.x) - M;
+    const y = Math.floor(view.y) - M;
+    const s = this.dpr;
+    const make = () => {
+      const cv = (c && c.w === w && c.h === h ? null : null) ?? document.createElement("canvas");
+      cv.width = Math.floor(w * s);
+      cv.height = Math.floor(h * s);
+      return cv;
+    };
+    const base = make();
+    const over = make();
+    const region = { x, y, w, h };
+    const bctx = base.getContext("2d")!;
+    bctx.setTransform(s, 0, 0, s, 0, 0);
+    bctx.imageSmoothingEnabled = false;
+    bctx.translate(-x, -y);
+    for (const b of BIOMES) {
+      if (b.x > region.x + w || b.x + b.w < region.x || b.y > region.y + h || b.y + b.h < region.y) continue;
+      this.drawBiome(bctx, b);
+    }
+    const octx = over.getContext("2d")!;
+    octx.setTransform(s, 0, 0, s, 0, 0);
+    octx.imageSmoothingEnabled = false;
+    octx.translate(-x, -y);
+    this.drawRoads(octx, region);
+    this.drawStreets(octx, region);
+    this.drawBarriers(octx, region);
+
+    const next = { base, over, x, y, w, h, scale: s };
+    this.terrainCache = next;
+    return next;
+  }
+
   private render() {
     const ctx = this.ctx;
-    const rect = this.canvas.getBoundingClientRect();
-    const w = rect.width;
-    const h = rect.height;
+    const w = this.viewW;
+    const h = this.viewH;
     ctx.clearRect(0, 0, w, h);
 
     ctx.save();
     ctx.translate(-Math.round(this.cam.x), -Math.round(this.cam.y));
 
     const view = { x: this.cam.x, y: this.cam.y, w, h };
-    for (const b of BIOMES) {
-      if (b.x > view.x + w || b.x + b.w < view.x || b.y > view.y + h || b.y + b.h < view.y) continue;
-      this.drawBiome(ctx, b);
-    }
+    const terrain = this.ensureTerrain(view);
+    ctx.drawImage(terrain.base, terrain.x, terrain.y, terrain.w, terrain.h);
     for (const l of LAKES) {
       if (l.cx - l.rx > view.x + w || l.cx + l.rx < view.x || l.cy - l.ry > view.y + h || l.cy + l.ry < view.y) continue;
       this.lake(ctx, l);
     }
-    this.drawRoads(ctx, view);
-    this.drawStreets(ctx, view);
-    this.drawBarriers(ctx, view);
+    ctx.drawImage(terrain.over, terrain.x, terrain.y, terrain.w, terrain.h);
+
 
     this.drawButterflies(ctx);
     for (const v of this.villagers) {
