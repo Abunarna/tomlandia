@@ -75,7 +75,7 @@ export interface ItemDef {
 export interface InvSlot {
   id: ItemId;
   qty: number;
-  /** upgrade level 0..25, gear only */
+  /** upgrade level 0..1000, gear only */
   plus?: number;
 }
 
