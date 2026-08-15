@@ -52,13 +52,12 @@ export function NpcDialog({
     return d.kind === "resource" ? sum + d.value * s.qty : sum;
   }, 0);
 
-  /** weapons and armour in the bag, with the merchant's offer */
-  const gearForSale = hud.inv
+  /** everything sellable in the bag, with the merchant's offer */
+  const bagForSale = hud.inv
     .map((slot, index) => ({ slot, index }))
     .filter((e): e is { slot: InvSlot; index: number } => {
       if (!e.slot) return false;
-      const k = item(e.slot.id).kind;
-      return k === "weapon" || k === "armor";
+      return item(e.slot.id).value > 0;
     })
     .map((e) => ({
       ...e,
@@ -211,13 +210,13 @@ export function NpcDialog({
             >
               Sell all resources
             </button>
-            {gearForSale.length > 0 && (
+            {bagForSale.length > 0 && (
               <>
                 <p className="pt-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
-                  Weapons &amp; armour — tap to sell
+                  Your bag — tap to sell
                 </p>
                 <div className="space-y-1.5">
-                  {gearForSale.map(({ slot, index, price }) => (
+                  {bagForSale.map(({ slot, index, price }) => (
                     <button
                       key={index}
                       onClick={() => onSellItem(index)}
@@ -227,6 +226,7 @@ export function NpcDialog({
                       <span className="min-w-0 flex-1 truncate text-xs font-semibold text-foreground">
                         {item(slot.id).name}
                         {slot.plus ? ` +${slot.plus}` : ""}
+                        {slot.qty > 1 ? ` ×${slot.qty}` : ""}
                       </span>
                       <span className="shrink-0 text-xs font-bold text-gold">{price}g</span>
                     </button>
