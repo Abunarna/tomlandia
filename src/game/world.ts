@@ -27,6 +27,13 @@ export interface MonsterRow {
   respawn_at: string | null;
 }
 
+/** DESOLATUS — one global row. Only his HP is shared state; he roams by clock. */
+export interface BossRow {
+  hp: number;
+  max_hp: number;
+  respawn_at: string | null;
+}
+
 export function worldCellId(x: number, y: number) {
   const cx = Math.max(0, Math.min(COLS - 1, Math.floor(x / CELL_W)));
   const cy = Math.max(0, Math.min(ROWS - 1, Math.floor(y / CELL_H)));
@@ -51,10 +58,12 @@ interface Sink {
   position: () => { x: number; y: number };
   onNodes: (rows: NodeRow[]) => void;
   onMonsters: (rows: MonsterRow[]) => void;
+  onBoss?: (row: BossRow) => void;
 }
 
 export class WorldNet {
   private channels = new Map<string, RealtimeChannel>();
+  private bossChannel: RealtimeChannel | null = null;
   private timer: ReturnType<typeof setInterval> | null = null;
   private stopped = false;
   private lastCells = "";
@@ -72,6 +81,22 @@ export class WorldNet {
     if (nodes.data) this.sink.onNodes(nodes.data as NodeRow[]);
     if (monsters.data) this.sink.onMonsters(monsters.data as MonsterRow[]);
 
+    // The boss is global, not sharded: he can be anywhere, so everyone follows
+    // the single row wherever they stand.
+    if (this.sink.onBoss) {
+      const boss = await supabase.from("world_boss").select("hp,max_hp,respawn_at").eq("id", 1).maybeSingle();
+      if (this.stopped) return;
+      if (boss.data) this.sink.onBoss(boss.data as BossRow);
+      this.bossChannel = supabase
+        .channel("world:boss")
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table: "world_boss" },
+          ({ new: row }) => this.sink.onBoss?.(row as BossRow),
+        );
+      this.bossChannel.subscribe();
+    }
+
     this.sync();
     this.timer = setInterval(() => this.sync(), 1000);
   }
@@ -82,6 +107,8 @@ export class WorldNet {
     this.timer = null;
     for (const ch of this.channels.values()) void supabase.removeChannel(ch);
     this.channels.clear();
+    if (this.bossChannel) void supabase.removeChannel(this.bossChannel);
+    this.bossChannel = null;
     this.lastCells = "";
   }
 

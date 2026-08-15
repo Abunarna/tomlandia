@@ -180,5 +180,17 @@ export interface HudSnapshot {
   buff: { dmg: number; hits: number } | null;
   /** Most recent death: epoch ms + description of the negative effects. Null while alive. */
   death: { at: number; reason: string } | null;
+  /** DESOLATUS — the shared roaming world boss. `warn` is 0..1 proximity dread. */
+  boss: {
+    name: string;
+    level: number;
+    alive: boolean;
+    hp: number;
+    maxHp: number;
+    dist: number;
+    warn: number;
+    engaged: boolean;
+    respawnAt: number;
+  };
 }
 

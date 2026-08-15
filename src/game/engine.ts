@@ -35,6 +35,16 @@ import {
   type LakeDef,
 } from "./data";
 import { TILE_H, TILE_W } from "./data";
+import {
+  BOSS_ATTACK_RADIUS,
+  BOSS_HP,
+  BOSS_LEVEL,
+  BOSS_MELEE_RADIUS,
+  BOSS_NAME,
+  BOSS_SIZE,
+  BOSS_WARN_RADIUS,
+  desolatusAt,
+} from "./boss";
 import { levelFromXp } from "./progression";
 import { sfx } from "./audio";
 import {
@@ -299,7 +309,8 @@ type Target =
   | { type: "node"; id: number }
   | { type: "monster"; id: number }
   | { type: "npc"; id: NpcRole }
-  | { type: "fish"; id: number };
+  | { type: "fish"; id: number }
+  | { type: "boss" };
 
 const emptySkills = (): Record<SkillId, { xp: number }> =>
   SKILL_IDS.reduce((acc, id) => ({ ...acc, [id]: { xp: 0 } }), {} as Record<SkillId, { xp: number }>);
@@ -349,6 +360,27 @@ export class GameEngine {
   remotes = new Map<string, RemotePlayer>();
   playerName = "Adventurer";
   private leaves: Leaf[] = [];
+
+  /**
+   * DESOLATUS — the shared world boss. Position comes from the deterministic
+   * clock path (zero network cost); only the HP pool is synced.
+   */
+  boss = {
+    x: WORLD_W / 2,
+    y: WORLD_H / 2,
+    facing: 1 as 1 | -1,
+    hp: BOSS_HP,
+    maxHp: BOSS_HP,
+    respawnAt: 0,
+    dist: 99999,
+    pending: false,
+    hitFlash: 0,
+  };
+  private bossAggroCd = 0;
+  /** Server-side boss swing. Reports his computed position for verification. */
+  onBossAttack:
+    | ((x: number, y: number, bx: number, by: number, passive: boolean) => Promise<DamageRes>)
+    | null = null;
 
   private target: Target = { type: "none" };
   private gatherProgress = 0;
@@ -1100,6 +1132,10 @@ export class GameEngine {
     const wy = sy - rect.top + this.cam.y;
 
     let best: { d: number; t: Target } | null = null;
+    if (this.bossAlive) {
+      const d = Math.hypot(this.boss.x - wx, this.boss.y - 30 - wy);
+      if (d < 80) best = { d: 0, t: { type: "boss" } };
+    }
     for (const m of this.monsters) {
       if (m.dead) continue;
       const d = Math.hypot(m.x - wx, m.y - wy);
@@ -1292,6 +1328,112 @@ export class GameEngine {
   }
 
 
+  /* ---------- DESOLATUS ---------- */
+
+  get bossAlive() {
+    return this.boss.hp > 0 && (!this.boss.respawnAt || Date.now() >= this.boss.respawnAt);
+  }
+
+  /** Adopt the shared HP pool from the database / realtime feed. */
+  applyBossRow(row: { hp: number; max_hp: number; respawn_at: string | null }) {
+    this.boss.hp = row.hp;
+    this.boss.maxHp = row.max_hp || BOSS_HP;
+    this.boss.respawnAt = row.respawn_at ? Date.parse(row.respawn_at) : 0;
+    this.emitHud(true);
+  }
+
+  /** Shared damage-taken handling (regular monsters and the boss both use it). */
+  private takeHit(taken: number, killer: string) {
+    if (taken > 0) {
+      this.hp -= taken;
+      this.pushText(this.px, this.py - 34, `-${taken}`, "#f4b0b0");
+    }
+    this.autoEat();
+    if (this.hp <= 0) {
+      const lostGold = Math.floor(this.gold * 0.1);
+      this.hp = Math.ceil(this.maxHp * 0.5);
+      this.px = 700;
+      this.py = 620;
+      this.gold = Math.max(0, this.gold - lostGold);
+      this.death = {
+        at: Date.now(),
+        reason: `${killer} struck you down. A villager dragged you back to Grand Haven at half health. You lost ${lostGold} gold (10%) in the chaos.`,
+      };
+      this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
+      this.target = { type: "none" };
+    }
+  }
+
+  /** One boss swing (ours, or his free hit when we simply stand too close). */
+  private bossSwing(passive: boolean) {
+    if (this.boss.pending || !this.onBossAttack) return;
+    this.boss.pending = true;
+    void this.onBossAttack(this.px, this.py, this.boss.x, this.boss.y, passive)
+      .then((res) => {
+        this.boss.pending = false;
+        if (!res.ok) {
+          if (res.reason === "dead") {
+            this.boss.hp = 0;
+            this.boss.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : Date.now() + 600000;
+            if (this.target.type === "boss") this.target = { type: "none" };
+          }
+          if (typeof res.hp === "number") this.boss.hp = res.hp;
+          return;
+        }
+        if (typeof res.hp === "number") this.boss.hp = res.hp;
+        if (typeof res.max_hp === "number") this.boss.maxHp = res.max_hp;
+        if (!passive) {
+          this.boss.hitFlash = 0.2;
+          sfx.play("hit");
+          this.pushText(this.boss.x, this.boss.y - 70, `${res.dmg ?? 0}`, "#ffd3d3");
+        }
+        this.applyServerState(res.state);
+        if (res.killed) {
+          this.boss.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : Date.now() + 600000;
+          this.pushText(this.boss.x, this.boss.y - 100, `${BOSS_NAME} FALLS!`, "#ffd98e");
+          if (res.gold) this.pushText(this.px, this.py - 60, `+${res.gold}g`, "#ffe08a");
+          (res.loot ?? []).forEach((l, i) => {
+            const id = l.item ?? l.id;
+            if (!id || !ITEMS[id]) return;
+            this.pushText(this.px + (i % 2 ? 16 : -16), this.py - 76 - i * 12, `+${l.qty} ${ITEMS[id]!.name}`, "#dff6c9");
+          });
+          if (res.leveled) this.celebrateLevel("combat");
+          if (this.target.type === "boss") this.target = { type: "none" };
+        } else {
+          this.takeHit(Math.max(0, res.taken ?? 0), BOSS_NAME);
+        }
+        this.emitHud(true);
+      })
+      .catch(() => {
+        this.boss.pending = false;
+      });
+  }
+
+  /** Roam by clock, and let him hit anyone loitering inside his reach. */
+  private tickBoss(dt: number) {
+    const pose = desolatusAt();
+    this.boss.x = pose.x;
+    this.boss.y = pose.y;
+    this.boss.facing = pose.facing;
+    if (this.boss.hitFlash > 0) this.boss.hitFlash -= dt;
+    if (this.boss.respawnAt && Date.now() >= this.boss.respawnAt) {
+      this.boss.respawnAt = 0;
+      this.boss.hp = this.boss.maxHp;
+    }
+    this.boss.dist = Math.hypot(pose.x - this.px, pose.y - this.py);
+
+    if (!this.bossAlive) return;
+    if (this.boss.dist <= BOSS_ATTACK_RADIUS && this.target.type !== "boss") {
+      this.bossAggroCd -= dt;
+      if (this.bossAggroCd <= 0) {
+        this.bossAggroCd = 1.6;
+        this.bossSwing(true);
+      }
+    } else {
+      this.bossAggroCd = 0;
+    }
+  }
+
   private autoEat() {
     if (this.hp / this.maxHp > this.autoEatAt) return;
     const now = Date.now();
@@ -1310,6 +1452,7 @@ export class GameEngine {
   private update(dt: number) {
     const now = this.time;
     this.tickRemotes(dt);
+    this.tickBoss(dt);
 
     // joystick overrides target
     if (this.joystick.active && (this.joystick.dx || this.joystick.dy)) {
@@ -1537,6 +1680,24 @@ export class GameEngine {
                   m.pending = false;
                 });
             }
+          }
+        } else {
+          this.activity = "Approaching";
+          this.activityProgress = 0;
+        }
+      }
+    } else if (this.target.type === "boss") {
+      if (!this.bossAlive) {
+        this.target = { type: "none" };
+      } else {
+        const d = this.moveToward(this.boss.x, this.boss.y + 20, dt, 140);
+        if (d <= BOSS_MELEE_RADIUS) {
+          this.activity = `Fighting ${BOSS_NAME}`;
+          this.combatCd -= dt;
+          this.activityProgress = 1 - Math.max(0, this.combatCd) / this.attackInterval;
+          if (this.combatCd <= 0) {
+            this.combatCd = this.attackInterval;
+            this.bossSwing(false);
           }
         } else {
           this.activity = "Approaching";
@@ -2258,6 +2419,26 @@ export class GameEngine {
       nearby: this.remotes.size,
       buff: this.buff ? { ...this.buff } : null,
       death: this.death ? { ...this.death } : null,
+      boss: {
+        name: BOSS_NAME,
+        level: BOSS_LEVEL,
+        alive: this.bossAlive,
+        hp: Math.max(0, Math.round(this.boss.hp)),
+        maxHp: this.boss.maxHp,
+        dist: Math.round(this.boss.dist),
+        // 0 at the edge of the warning ring, 1 once he is on top of you
+        warn: this.bossAlive
+          ? Math.max(
+              0,
+              Math.min(
+                1,
+                (BOSS_WARN_RADIUS - this.boss.dist) / (BOSS_WARN_RADIUS - BOSS_ATTACK_RADIUS),
+              ),
+            )
+          : 0,
+        engaged: this.target.type === "boss",
+        respawnAt: this.boss.respawnAt,
+      },
     });
   }
 
@@ -2317,6 +2498,7 @@ export class GameEngine {
       if (!this.inView(r.x, r.y, view)) continue;
       drawables.push({ y: r.y, fn: () => this.drawRemote(ctx, r) });
     }
+    if (this.bossAlive) drawables.push({ y: this.boss.y, fn: () => this.drawBoss(ctx) });
     drawables.push({ y: this.py, fn: () => this.drawPlayer(ctx) });
     drawables.sort((a, b) => a.y - b.y);
     for (const d of drawables) d.fn();
@@ -3127,6 +3309,94 @@ export class GameEngine {
       ctx.fillStyle = mine ? "#8fd98a" : "#e8b26a";
       ctx.fillRect(m.x - 16, m.y - 34 * s, 32 * (m.hp / m.maxHp), 5);
     }
+  }
+
+  /**
+   * DESOLATUS — same primitive-shape technique as every other creature, just
+   * twice the scale of the biggest one, with horns and a spiked greatsword.
+   */
+  private drawBoss(ctx: CanvasRenderingContext2D) {
+    const s = BOSS_SIZE;
+    const x = this.boss.x;
+    const y = this.boss.y;
+    const f = this.boss.facing;
+    const bob = Math.sin(this.time * 2.2) * 3;
+    const flash = this.boss.hitFlash > 0;
+    this.shadow(ctx, x, y + 16 * s, 18 * s);
+
+    // sword, drawn behind the body when he faces away from it
+    const sx = x + f * 20 * s;
+    const grad = ctx.createLinearGradient(sx, y - 60 * s + bob, sx, y + 10 * s + bob);
+    grad.addColorStop(0, "#221024");
+    grad.addColorStop(0.55, "#4a1f5e");
+    grad.addColorStop(1, "#8a4bd0");
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(sx - 5 * s, y + 8 * s + bob);
+    ctx.lineTo(sx - 5 * s, y - 52 * s + bob);
+    ctx.lineTo(sx, y - 64 * s + bob);
+    ctx.lineTo(sx + 5 * s, y - 52 * s + bob);
+    ctx.lineTo(sx + 5 * s, y + 8 * s + bob);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = "#6d2fa8";
+    for (let i = 0; i < 4; i++) {
+      const sy = y - 12 * s - i * 11 * s + bob;
+      ctx.beginPath();
+      ctx.moveTo(sx + f * 5 * s, sy);
+      ctx.lineTo(sx + f * 15 * s, sy - 4 * s);
+      ctx.lineTo(sx + f * 5 * s, sy - 8 * s);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.fillStyle = "#2a1420";
+    ctx.fillRect(sx - 9 * s, y + 6 * s + bob, 18 * s, 4 * s);
+
+    // body
+    ctx.fillStyle = flash ? "#ffffff" : "#7d1620";
+    ctx.beginPath();
+    ctx.roundRect(x - 14 * s, y - 8 * s + bob, 28 * s, 24 * s, 8);
+    ctx.fill();
+    ctx.fillStyle = flash ? "#ffffff" : "#5a0d17";
+    ctx.beginPath();
+    ctx.roundRect(x - 14 * s, y + 4 * s + bob, 28 * s, 12 * s, 8);
+    ctx.fill();
+    // head
+    ctx.fillStyle = flash ? "#ffffff" : "#9c1f2b";
+    ctx.beginPath();
+    ctx.arc(x, y - 20 * s + bob, 15 * s, 0, Math.PI * 2);
+    ctx.fill();
+    // horns
+    ctx.fillStyle = "#2a1018";
+    for (const dir of [-1, 1]) {
+      ctx.beginPath();
+      ctx.moveTo(x + dir * 13 * s, y - 26 * s + bob);
+      ctx.quadraticCurveTo(x + dir * 34 * s, y - 44 * s + bob, x + dir * 22 * s, y - 58 * s + bob);
+      ctx.quadraticCurveTo(x + dir * 26 * s, y - 40 * s + bob, x + dir * 10 * s, y - 32 * s + bob);
+      ctx.closePath();
+      ctx.fill();
+    }
+    // eyes
+    ctx.fillStyle = "#ffd45c";
+    ctx.fillRect(x - 8 * s, y - 23 * s + bob, 5 * s, 3 * s);
+    ctx.fillRect(x + 3 * s, y - 23 * s + bob, 5 * s, 3 * s);
+
+    // nameplate + shared health pool
+    const label = `${BOSS_NAME} · Lv ${BOSS_LEVEL}`;
+    ctx.font = "bold 15px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+    ctx.textAlign = "center";
+    const lw = ctx.measureText(label).width + 16;
+    ctx.fillStyle = "rgba(46,10,16,0.75)";
+    ctx.beginPath();
+    ctx.roundRect(x - lw / 2, y - 84 * s + bob, lw, 20, 9);
+    ctx.fill();
+    ctx.fillStyle = "#ffd9d9";
+    ctx.fillText(label, x, y - 70 * s + bob);
+    const bw = 120;
+    ctx.fillStyle = "rgba(40,20,26,0.5)";
+    ctx.fillRect(x - bw / 2, y - 60 * s + bob, bw, 7);
+    ctx.fillStyle = "#e0483f";
+    ctx.fillRect(x - bw / 2, y - 60 * s + bob, bw * Math.max(0, this.boss.hp / this.boss.maxHp), 7);
   }
 
   private drawNpc(ctx: CanvasRenderingContext2D, npc: NpcDef, live: LiveNpc) {

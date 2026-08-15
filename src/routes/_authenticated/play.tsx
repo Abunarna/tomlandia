@@ -6,6 +6,7 @@ import { GameEngine, clearLegacySave, readLegacySave, type SyncAck } from "@/gam
 import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
 import {
+  attackBoss,
   attackMonster,
   bankGold,
   bankItem,
@@ -94,6 +95,17 @@ const EMPTY: HudSnapshot = {
   nearby: 0,
   buff: null,
   death: null,
+  boss: {
+    name: "DESOLATUS",
+    level: 150,
+    alive: true,
+    hp: 45000,
+    maxHp: 45000,
+    dist: 99999,
+    warn: 0,
+    engaged: false,
+    respawnAt: 0,
+  },
 };
 
 
@@ -187,6 +199,7 @@ function Game() {
       engine.userId = user.id;
       engine.onHarvest = (id, x, y) => harvestNode({ data: { id, x, y } });
       engine.onAttack = (id, x, y) => attackMonster({ data: { id, x, y } });
+      engine.onBossAttack = (x, y, bx, by, passive) => attackBoss({ data: { x, y, bx, by, passive } });
       engine.onFish = (id, x, y) => fishCast({ data: { id, x, y } });
       engine.onPotion = (itemId) => usePotion({ data: { item: itemId } });
       engine.onCraft = (recipe) => craftItem({ data: { recipe } });
@@ -294,6 +307,7 @@ function Game() {
       position: () => ({ x: engine.px, y: engine.py }),
       onNodes: (rows) => engine.applyNodeRows(rows),
       onMonsters: (rows) => engine.applyMonsterRows(rows),
+      onBoss: (row) => engine.applyBossRow(row),
     });
     void net.start();
     return () => net.stop();
@@ -494,6 +508,31 @@ function Game() {
         )}
       </div>
 
+
+      {/* DESOLATUS proximity dread — fades smoothly with distance. */}
+      {hud.boss.warn > 0 && (
+        <div className="pointer-events-none absolute inset-0 z-30">
+          <div
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{
+              opacity: hud.boss.warn,
+              background:
+                "radial-gradient(circle at 50% 50%, rgba(120,0,12,0.12) 20%, rgba(150,10,20,0.55) 100%)",
+            }}
+          />
+          <div
+            className="absolute left-0 right-0 top-[18%] text-center transition-opacity duration-500"
+            style={{ opacity: Math.min(1, hud.boss.warn * 1.4) }}
+          >
+            <p className="animate-pulse font-display text-2xl font-black tracking-[0.2em] text-red-100 drop-shadow-[0_2px_10px_rgba(120,0,10,0.9)]">
+              {hud.boss.name} IS NEAR
+            </p>
+            <p className="mt-1 text-[11px] font-bold uppercase tracking-widest text-red-200/80">
+              {hud.boss.dist}m away · {Math.round((hud.boss.hp / hud.boss.maxHp) * 100)}% hp
+            </p>
+          </div>
+        </div>
+      )}
 
       {death && (
         <div className="absolute inset-0 z-40 grid place-items-center bg-red-950/70 px-6 text-center backdrop-blur-sm animate-in fade-in duration-300">
