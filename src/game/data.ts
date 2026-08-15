@@ -648,32 +648,13 @@ function scatter(kind: NodeKind, bx: number, by: number, spots: [number, number]
   return spots.map(([x, y]) => ({ kind, x: bx + x, y: by + y }));
 }
 
-export const NODE_SPAWNS: NodeSpawn[] = [
-  // Peaceful Fields
-  ...scatter("copper", 0, 0, [[250, 210], [350, 320], [180, 400], [1180, 800]]),
-  ...scatter("oak", 0, 0, [[980, 200], [1120, 330], [880, 380], [240, 830]]),
-  ...scatter("flax", 0, 0, [[430, 620], [520, 560], [150, 250]]),
-  ...scatter("berries", 0, 0, [[1000, 900], [880, 620]]),
-  // Lush Forest
-  ...scatter("iron", TILE_W, 0, [[220, 260], [320, 480], [180, 700], [900, 820]]),
-  ...scatter("willow", TILE_W, 0, [[620, 200], [760, 300], [520, 420]]),
-  ...scatter("maple", TILE_W, 0, [[1050, 240], [1180, 460], [980, 640]]),
-  ...scatter("herbs", TILE_W, 0, [[420, 780], [640, 860], [1200, 800]]),
-  // Sunscorch Desert
-  ...scatter("sandstone", TILE_W * 2, 0, [[240, 240], [400, 420], [200, 700]]),
-  ...scatter("mithril", TILE_W * 2, 0, [[1080, 300], [1180, 620], [900, 820]]),
-  ...scatter("palm", TILE_W * 2, 0, [[620, 780], [780, 860]]),
-  ...scatter("bloom", TILE_W * 2, 0, [[520, 200], [340, 880]]),
-  // Winter Mountain
-  ...scatter("runite", 0, TILE_H, [[260, 260], [420, 420], [220, 720]]),
-  ...scatter("tungsten", 0, TILE_H, [[1080, 300], [1160, 700]]),
-  ...scatter("frostpine", 0, TILE_H, [[640, 220], [780, 380], [560, 700]]),
-  ...scatter("lichen", 0, TILE_H, [[900, 860], [340, 900]]),
-  // Evil Woods (wide: 2 tiles)
-  ...scatter("cursed_rock", TILE_W, TILE_H, [[300, 300], [520, 620], [1500, 400]]),
-  ...scatter("cursed_tree", TILE_W, TILE_H, [[820, 240], [1080, 520], [1900, 700]]),
-  ...scatter("gloomcap", TILE_W, TILE_H, [[640, 840], [1700, 240], [2200, 600]]),
-];
+/**
+ * Spawns are generated at the bottom of this file, once the world geometry
+ * (biomes, lakes, barriers, buildings and roads) is known — every node is
+ * placed inside the biome it belongs to and clear of anything solid.
+ */
+export const NODE_SPAWNS: NodeSpawn[] = [];
+
 
 /* ------------------------------------------------------------------ */
 /* Monsters                                                            */
