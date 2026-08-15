@@ -35,6 +35,16 @@ import {
   type LakeDef,
 } from "./data";
 import { TILE_H, TILE_W } from "./data";
+import {
+  BOSS_ATTACK_RADIUS,
+  BOSS_HP,
+  BOSS_LEVEL,
+  BOSS_MELEE_RADIUS,
+  BOSS_NAME,
+  BOSS_SIZE,
+  BOSS_WARN_RADIUS,
+  desolatusAt,
+} from "./boss";
 import { levelFromXp } from "./progression";
 import { sfx } from "./audio";
 import {
@@ -299,7 +309,8 @@ type Target =
   | { type: "node"; id: number }
   | { type: "monster"; id: number }
   | { type: "npc"; id: NpcRole }
-  | { type: "fish"; id: number };
+  | { type: "fish"; id: number }
+  | { type: "boss" };
 
 const emptySkills = (): Record<SkillId, { xp: number }> =>
   SKILL_IDS.reduce((acc, id) => ({ ...acc, [id]: { xp: 0 } }), {} as Record<SkillId, { xp: number }>);
@@ -349,6 +360,27 @@ export class GameEngine {
   remotes = new Map<string, RemotePlayer>();
   playerName = "Adventurer";
   private leaves: Leaf[] = [];
+
+  /**
+   * DESOLATUS — the shared world boss. Position comes from the deterministic
+   * clock path (zero network cost); only the HP pool is synced.
+   */
+  boss = {
+    x: WORLD_W / 2,
+    y: WORLD_H / 2,
+    facing: 1 as 1 | -1,
+    hp: BOSS_HP,
+    maxHp: BOSS_HP,
+    respawnAt: 0,
+    dist: 99999,
+    pending: false,
+    hitFlash: 0,
+  };
+  private bossAggroCd = 0;
+  /** Server-side boss swing. Reports his computed position for verification. */
+  onBossAttack:
+    | ((x: number, y: number, bx: number, by: number, passive: boolean) => Promise<DamageRes>)
+    | null = null;
 
   private target: Target = { type: "none" };
   private gatherProgress = 0;
@@ -1100,6 +1132,10 @@ export class GameEngine {
     const wy = sy - rect.top + this.cam.y;
 
     let best: { d: number; t: Target } | null = null;
+    if (this.bossAlive) {
+      const d = Math.hypot(this.boss.x - wx, this.boss.y - 30 - wy);
+      if (d < 80) best = { d: 0, t: { type: "boss" } };
+    }
     for (const m of this.monsters) {
       if (m.dead) continue;
       const d = Math.hypot(m.x - wx, m.y - wy);
