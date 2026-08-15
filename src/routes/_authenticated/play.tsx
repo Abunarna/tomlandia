@@ -499,11 +499,29 @@ function Game() {
         </div>
       )}
 
-      {!ready && (
+      {!ready && !loadFailed && (
         <div className="absolute inset-0 z-20 grid place-items-center bg-background">
           <p className="text-sm text-muted-foreground">Loading your adventure…</p>
         </div>
       )}
+
+      {loadFailed && (
+        <div className="absolute inset-0 z-40 grid place-items-center bg-background p-6 text-center">
+          <div className="max-w-xs">
+            <h2 className="font-display text-lg font-bold text-foreground">Couldn't reach your save</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              We stopped the game rather than risk your progress. Check your connection and try again.
+            </p>
+            <button
+              className="mt-4 rounded-2xl bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground"
+              onClick={() => window.location.reload()}
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      )}
+
 
       {claimable && (
         <div className="absolute inset-0 z-30 grid place-items-center bg-background/80 p-6 backdrop-blur-sm">
