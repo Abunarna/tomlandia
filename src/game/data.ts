@@ -1542,7 +1542,7 @@ const SOLID_RECTS = BUILDINGS.map((b) => ({
 const SOLID_DISCS: { x: number; y: number; r: number }[] = [];
 
 /** true when the world point is inside a barrier, a building or a resource node */
-export function blockedAt(x: number, y: number, pad = 10): boolean {
+export function blockedAt(x: number, y: number, pad = 10, wadesRivers = false): boolean {
   for (const bar of BARRIERS) {
     const r = bar.width / 2 + pad;
     if (x < bar.minX - r || x > bar.maxX + r || y < bar.minY - r || y > bar.maxY + r) continue;
@@ -1550,7 +1550,9 @@ export function blockedAt(x: number, y: number, pad = 10): boolean {
       const a = bar.pts[i]!;
       const b = bar.pts[i + 1]!;
       if (distToSeg(x, y, a[0], a[1], b[0], b[1]) < r) {
-        if (bar.id === "great-river" && onBridge(x, y, pad)) break;
+        // the world boss wades straight through the river instead of hunting
+        // for a bridge, so he never gets stuck on a bank
+        if (bar.kind === "river" && (wadesRivers || (bar.id === "great-river" && onBridge(x, y, pad)))) break;
         return true;
       }
     }

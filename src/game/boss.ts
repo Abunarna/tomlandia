@@ -17,15 +17,15 @@ export const BOSS_LEVEL = 150;
 /** 2x the largest existing monster (Frost Giant, size 1.7). */
 export const BOSS_SIZE = 3.4;
 
-/** Half of player walk speed (130 px/s). */
-export const BOSS_SPEED = 65;
+/** A quarter of player walk speed (130 px/s) — he lumbers. */
+export const BOSS_SPEED = 32.5;
 
 /** Screen tint + banner start here. */
 export const BOSS_WARN_RADIUS = 620;
-/** He swings at anything inside this. */
-export const BOSS_ATTACK_RADIUS = 190;
-/** Tap range for the player's own swings. */
-export const BOSS_MELEE_RADIUS = 120;
+/** He swings at anything inside this — the same reach a player has (34px). */
+export const BOSS_ATTACK_RADIUS = 34;
+/** Tap range for the player's own swings — matched, so trades are mutual. */
+export const BOSS_MELEE_RADIUS = 34;
 
 /**
  * Stats, solved against the live formulas (see server RPC for the mirror):
