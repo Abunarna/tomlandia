@@ -27,6 +27,13 @@ export interface MonsterRow {
   respawn_at: string | null;
 }
 
+/** DESOLATUS — one global row. Only his HP is shared state; he roams by clock. */
+export interface BossRow {
+  hp: number;
+  max_hp: number;
+  respawn_at: string | null;
+}
+
 export function worldCellId(x: number, y: number) {
   const cx = Math.max(0, Math.min(COLS - 1, Math.floor(x / CELL_W)));
   const cy = Math.max(0, Math.min(ROWS - 1, Math.floor(y / CELL_H)));
