@@ -23,6 +23,7 @@ import { NPCS, type NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
 import type { Json } from "@/integrations/supabase/types";
 import { Hud } from "@/components/game/Hud";
+import { AutoEat } from "@/components/game/AutoEat";
 import { Panel, type PanelId } from "@/components/game/Panel";
 import { NpcDialog } from "@/components/game/NpcDialog";
 import { WorldMap } from "@/components/game/WorldMap";
@@ -76,6 +77,7 @@ const EMPTY: HudSnapshot = {
   weapon: { id: "wooden_club", plus: 0 },
   armor: { id: "cloth_tunic", plus: 0 },
   food: null,
+  autoEat: { threshold: 0.5, qty: 0, firedAt: 0, cooldownUntil: 0 },
   activity: "Wandering",
   activityProgress: 0,
   quest: null,
@@ -399,6 +401,12 @@ function Game() {
       {/* overlays */}
       <div className="pointer-events-none absolute inset-0 flex flex-col">
         <Hud hud={hud} />
+
+        {!panel && (
+          <div className="pointer-events-none px-3 pt-1">
+            <AutoEat hud={hud} onCycle={() => engineRef.current?.cycleAutoEat()} />
+          </div>
+        )}
 
         {panel ? (
           <>
