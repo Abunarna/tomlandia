@@ -285,7 +285,7 @@ export function NpcDialog({
                         <button
                           disabled={!ok}
                           onClick={() => onCraftAll(r.id)}
-                          className="rounded-xl bg-muted px-3 py-1 text-[11px] font-bold text-muted-foreground disabled:opacity-40 active:scale-95"
+                          className="rounded-xl bg-primary px-3 py-1 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
                         >
                           Make all
                         </button>
