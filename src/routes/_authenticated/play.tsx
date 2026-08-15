@@ -6,6 +6,7 @@ import { GameEngine, clearLegacySave, readLegacySave, type SyncAck } from "@/gam
 import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
 import {
+  attackBoss,
   attackMonster,
   bankGold,
   bankItem,
@@ -198,6 +199,7 @@ function Game() {
       engine.userId = user.id;
       engine.onHarvest = (id, x, y) => harvestNode({ data: { id, x, y } });
       engine.onAttack = (id, x, y) => attackMonster({ data: { id, x, y } });
+      engine.onBossAttack = (x, y, bx, by, passive) => attackBoss({ data: { x, y, bx, by, passive } });
       engine.onFish = (id, x, y) => fishCast({ data: { id, x, y } });
       engine.onPotion = (itemId) => usePotion({ data: { item: itemId } });
       engine.onCraft = (recipe) => craftItem({ data: { recipe } });
@@ -305,6 +307,7 @@ function Game() {
       position: () => ({ x: engine.px, y: engine.py }),
       onNodes: (rows) => engine.applyNodeRows(rows),
       onMonsters: (rows) => engine.applyMonsterRows(rows),
+      onBoss: (row) => engine.applyBossRow(row),
     });
     void net.start();
     return () => net.stop();
