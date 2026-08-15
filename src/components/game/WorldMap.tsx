@@ -139,7 +139,8 @@ export function WorldMap({ position, onClose }: Props) {
   }, [size.w, size.h]);
 
   // Track the player's live position while the map is open.
-  const [player, setPlayer] = useState(() => position());
+  // (player state declared above)
+
   const [boss, setBoss] = useState(() => desolatusAt());
 
   // Track the player's live position while the map is open.
