@@ -990,14 +990,19 @@ for (const t of TOWN_SPECS) {
     buildings.some(
       (b) => x > b.x - 16 && x < b.x + b.w + 16 && y > b.y + b.h * 0.3 - 16 && y < b.y + b.h + 16,
     );
+  const taken: { x: number; y: number }[] = [];
   for (const [role, s] of Object.entries(npcSpots)) {
     if (Math.hypot(s.x - CITY.cx, s.y - CITY.cy) > CITY_OUTER_R) continue;
     let a = Math.atan2(s.y - CITY.cy, s.x - CITY.cx);
-    let r = Math.hypot(s.x - CITY.cx, s.y - CITY.cy);
-    for (let guard = 0; guard < 60 && onBuilding(CITY.cx + Math.cos(a) * r, CITY.cy + Math.sin(a) * r); guard++) {
-      a += 0.09;
+    const r = Math.max(CITY.plazaR + 54, Math.hypot(s.x - CITY.cx, s.y - CITY.cy));
+    const bad = (x: number, y: number) =>
+      onBuilding(x, y) || taken.some((t) => Math.hypot(t.x - x, t.y - y) < 120);
+    for (let guard = 0; guard < 90 && bad(CITY.cx + Math.cos(a) * r, CITY.cy + Math.sin(a) * r); guard++) {
+      a += 0.07;
     }
-    npcSpots[role] = { x: CITY.cx + Math.cos(a) * r, y: CITY.cy + Math.sin(a) * r };
+    const spot = { x: CITY.cx + Math.cos(a) * r, y: CITY.cy + Math.sin(a) * r };
+    taken.push(spot);
+    npcSpots[role] = spot;
   }
 }
 
