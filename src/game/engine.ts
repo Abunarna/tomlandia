@@ -1179,6 +1179,7 @@ export class GameEngine {
 
   stop() {
     cancelAnimationFrame(this.raf);
+    music.stop();
     this.save();
   }
 
