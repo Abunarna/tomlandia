@@ -960,26 +960,31 @@ for (const t of TOWN_SPECS) {
     const plan = [...t.anchors, ...t.fill].slice(0, t.count);
     const gy = city.graveyard;
     const placed: { x: number; y: number; w: number; h: number }[] = [];
+    // walk the ring in slots so every house gets a plot, then jitter each one
+    // hard enough that no two lanes between them ever line up
+    const slots = plan.length;
     plan.forEach((p, i) => {
       const kind = p.kind;
       const w = kind === "tower" ? 76 : kind === "stall" ? 84 : 88 + ((i * 13) % 22);
       const h = kind === "tower" ? 108 : kind === "stall" ? 62 : 70 + ((i * 7) % 18);
       let spot: { x: number; y: number } | null = null;
-      for (let tryI = 0; tryI < 400 && !spot; tryI++) {
+      const baseA = (i / slots) * Math.PI * 2 + 0.35;
+      for (let tryI = 0; tryI < 600 && !spot; tryI++) {
         const s = i * 17.3 + tryI * 1.7;
-        const a = rand01(s) * Math.PI * 2;
-        const r = city.plazaR + 50 + rand01(s + 91) * (city.wallR - city.plazaR - 118);
+        // search outward from this house's own slot, drifting as tries mount
+        const a = baseA + (rand01(s) - 0.5) * ((Math.PI * 2) / slots) * (1 + tryI * 0.02);
+        const r = city.plazaR + 46 + rand01(s + 91) * (city.wallR - city.plazaR - 112);
         const x = city.cx + Math.cos(a) * r;
         const y = city.cy + Math.sin(a) * r;
         if (inGateCorridor(a, city) || cityGateAt(a + 0.34, city) || cityGateAt(a - 0.34, city)) continue;
-        if (onMonument(x, y, Math.max(w, h) / 2 + 30)) continue;
+        if (onMonument(x, y, Math.max(w, h) / 2 + 26)) continue;
         if (gy) {
           const gx = city.cx + gy.dx;
           const gyy = city.cy + gy.dy;
-          if (Math.abs(x - gx) < gy.rx + w / 2 + 18 && Math.abs(y - gyy) < gy.ry + h / 2 + 18) continue;
+          if (Math.abs(x - gx) < gy.rx + w / 2 + 16 && Math.abs(y - gyy) < gy.ry + h / 2 + 16) continue;
         }
         // narrow alleys: neighbours may crowd in, but never overlap
-        const alley = 12 + rand01(s + 33) * 16;
+        const alley = 12 + rand01(s + 33) * 14;
         const clash = placed.some(
           (b) =>
             Math.abs(b.x - x) < (b.w + w) / 2 + alley && Math.abs(b.y - y) < (b.h + h) / 2 + alley,
@@ -988,6 +993,7 @@ for (const t of TOWN_SPECS) {
         spot = { x, y };
       }
       if (!spot) return;
+
       placed.push({ x: spot.x, y: spot.y, w, h });
       buildings.push({
         name: p.name,
