@@ -3602,6 +3602,47 @@ export class GameEngine {
           ctx.fillStyle = ((a * 70) | 0) % 3 === 0 ? "#4f7038" : P.merlon;
           ctx.fillRect(hx - 4, hy - 4, 8, 8);
         }
+      } else if (goth) {
+        // wrought iron set into crumbling stone: whole stretches have fallen,
+        // the railings between them are barbed and rusting
+        for (let a = from; a <= to; a += 0.03) {
+          const wr = cityWallR(a, CITY);
+          const ruin = rand(Math.round(a * 40));
+          const [x, y] = at(a, wr - CITY.wallT / 2 + 2);
+          if (ruin > 0.42) {
+            // standing stone course, chipped
+            ctx.fillStyle = ruin > 0.78 ? P.merlon : P.wallLight;
+            ctx.fillRect(x - 5, y - 5 - (ruin > 0.78 ? 3 : 0), 10, 10);
+          } else {
+            // collapsed to rubble — the ironwork carries the line
+            ctx.fillStyle = "#3d3746";
+            ctx.fillRect(x - 5, y + 1, 10, 5);
+          }
+          const [ix, iy] = at(a, wr);
+          ctx.strokeStyle = "#191620";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(ix, iy + 4);
+          ctx.lineTo(ix, iy - 16);
+          ctx.stroke();
+          ctx.fillStyle = "#191620";
+          ctx.beginPath();
+          ctx.moveTo(ix - 3, iy - 16);
+          ctx.lineTo(ix + 3, iy - 16);
+          ctx.lineTo(ix, iy - 23);
+          ctx.closePath();
+          ctx.fill();
+        }
+        // the rail the spikes hang from
+        ctx.strokeStyle = "#191620";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        for (let a = from; a <= to; a += 0.02) {
+          const [x, y] = at(a, cityWallR(a, CITY));
+          if (a === from) ctx.moveTo(x, y - 13);
+          else ctx.lineTo(x, y - 13);
+        }
+        ctx.stroke();
       } else if (ice) {
         // ice-and-stone: rime-capped merlons with icicles hanging off the outer face
         for (let a = from; a <= to; a += 0.05) {
