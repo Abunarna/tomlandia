@@ -50,3 +50,51 @@ class Sfx {
 }
 
 export const sfx = new Sfx();
+
+/* ---------- looped background music ---------- */
+
+import trackAsset from "@/assets/tomlandia-theme.mp3.asset.json";
+
+class Music {
+  private el: HTMLAudioElement | null = null;
+  private started = false;
+
+  /** Call from a user gesture; safe to call repeatedly. */
+  start() {
+    if (typeof window === "undefined") return;
+    if (!this.el) {
+      const el = new Audio(trackAsset.url);
+      el.loop = true;
+      el.volume = 0.35;
+      el.preload = "auto";
+      this.el = el;
+    }
+    if (!sfx.enabled) return;
+    void this.el.play().then(() => {
+      this.started = true;
+    }).catch(() => {
+      /* autoplay blocked — a later gesture retries */
+    });
+  }
+
+  setEnabled(on: boolean) {
+    if (!this.el) {
+      if (on) this.start();
+      return;
+    }
+    if (on) this.start();
+    else this.el.pause();
+  }
+
+  stop() {
+    this.el?.pause();
+    if (this.el) this.el.currentTime = 0;
+    this.started = false;
+  }
+
+  get playing() {
+    return this.started;
+  }
+}
+
+export const music = new Music();

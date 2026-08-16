@@ -46,7 +46,7 @@ import {
   desolatusAt,
 } from "./boss";
 import { levelFromXp } from "./progression";
-import { sfx } from "./audio";
+import { music, sfx } from "./audio";
 import {
   MARKET_FEE,
   feeFor,
@@ -1179,6 +1179,7 @@ export class GameEngine {
 
   stop() {
     cancelAnimationFrame(this.raf);
+    music.stop();
     this.save();
   }
 
@@ -2309,6 +2310,7 @@ export class GameEngine {
   toggleSound(): boolean {
     sfx.unlock();
     sfx.enabled = !sfx.enabled;
+    music.setEnabled(sfx.enabled);
     if (sfx.enabled) sfx.play("coin");
     this.emitHud(true);
     return sfx.enabled;
@@ -2316,6 +2318,7 @@ export class GameEngine {
 
   unlockAudio() {
     sfx.unlock();
+    music.start();
   }
 
   /* ---------- ambient rendering helpers ---------- */
