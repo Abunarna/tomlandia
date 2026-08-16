@@ -921,7 +921,7 @@ const TOWN_SPECS: TownSpec[] = [
     wall: "#4a4453",
     beam: "#241f2c",
     roofs: ["#2e2836", "#3a3143", "#26222f", "#453a4e", "#332b3d"],
-    anchors: [],
+    anchors: [{ role: "dusk_exchange", name: "Gravehollow Exchange", kind: "stall" }],
     fill: [
       { name: "The Hollow Bell", kind: "inn" },
       { name: "Gravedigger's Shed", kind: "barn" },
@@ -995,6 +995,7 @@ for (const t of TOWN_SPECS) {
       if (!spot) return;
 
       placed.push({ x: spot.x, y: spot.y, w, h });
+      if (p.role) npcSpots[p.role] = { x: spot.x, y: spot.y + h / 2 + 26 };
       buildings.push({
         name: p.name,
         kind,
@@ -1179,7 +1180,8 @@ export type NpcRole =
   | "haven_exchange"
   | "sun_exchange"
   | "brook_exchange"
-  | "frost_exchange";
+  | "frost_exchange"
+  | "dusk_exchange";
 
 export interface NpcDef {
   id: NpcRole;
@@ -1229,6 +1231,7 @@ export const NPCS: NpcDef[] = [
   { id: "sun_exchange", name: "Clerk Amara", title: "Grand Market", ...spot("sun_exchange", TILE_W * 2 + 680, 300), robe: "#e8c98d", hair: "#4d3a26", greeting: "Every caravan's price, all in one book.", services: ["exchange"] },
   { id: "brook_exchange", name: "Clerk Nessa", title: "Grand Market", ...spot("brook_exchange", TILE_W + 700, 540), robe: "#a8cf9b", hair: "#6b5233", greeting: "Small village, big ledger. Trade away.", services: ["exchange"] },
   { id: "frost_exchange", name: "Clerk Bjorn", title: "Grand Market", ...spot("frost_exchange", 640, TILE_H + 560), robe: "#b6cbe0", hair: "#dfe8f2", greeting: "Frost keeps the coin cold and the deals honest.", services: ["exchange"] },
+  { id: "dusk_exchange", name: "Clerk Mordrey", title: "Grand Market", ...spot("dusk_exchange", 4400, 1400), robe: "#9a86b3", hair: "#2b2533", greeting: "The dead keep no ledgers. The living pay up front.", services: ["exchange"] },
 ];
 
 
@@ -1245,6 +1248,7 @@ export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
   sun_exchange: [],
   brook_exchange: [],
   frost_exchange: [],
+  dusk_exchange: [],
   trapper: [],
   innkeeper: [],
   frost_smith: [],
@@ -1392,6 +1396,7 @@ export const NPC_ICONS: Record<NpcRole, NpcIcon> = {
   sun_exchange: { glyph: "\u2696\uFE0E", color: "#e8c98d", label: "Grand Market" },
   brook_exchange: { glyph: "\u2696\uFE0E", color: "#a8cf9b", label: "Grand Market" },
   frost_exchange: { glyph: "\u2696\uFE0E", color: "#b6cbe0", label: "Grand Market" },
+  dusk_exchange: { glyph: "\u2696\uFE0E", color: "#9a86b3", label: "Grand Market" },
 };
 
 /* ------------------------------------------------------------------ */
