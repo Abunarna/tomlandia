@@ -995,7 +995,8 @@ for (const t of TOWN_SPECS) {
       if (!spot) return;
 
       placed.push({ x: spot.x, y: spot.y, w, h });
-      if (p.role) npcSpots[p.role] = { x: spot.x, y: spot.y + h / 2 + 26 };
+      const pRole = (p as { role?: string }).role;
+      if (pRole) npcSpots[pRole] = { x: spot.x, y: spot.y + h / 2 + 26 };
       buildings.push({
         name: p.name,
         kind,
