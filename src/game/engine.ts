@@ -3233,6 +3233,68 @@ export class GameEngine {
         ctx.stroke();
       }
     }
+    // canopy cities: winding forest paths, elevated walkways and rope bridges
+    if (wood) {
+      ctx.lineCap = "round";
+      for (let k = 0; k < 9; k++) {
+        const a0 = (k / 9) * Math.PI * 2 + 0.31;
+        ctx.strokeStyle = P.ring;
+        ctx.lineWidth = 17;
+        ctx.beginPath();
+        for (let t = 0; t <= 1.001; t += 0.08) {
+          const a = a0 + Math.sin(t * Math.PI * 2.4 + k * 1.7) * 0.16;
+          const r = CITY.plazaR + t * (cityWallR(a0, CITY) - 46 - CITY.plazaR);
+          const [x, y] = at(a, r);
+          if (t === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      // planked walkways arcing between the two building rings
+      const walkR = (CITY.ringR[0]! + CITY.ringR[1]!) / 2 + 26;
+      for (let k = 0; k < 6; k++) {
+        const a0 = (k / 6) * Math.PI * 2 + 0.6;
+        const a1 = a0 + 0.42;
+        ctx.strokeStyle = "#6a4f2c";
+        ctx.lineWidth = 13;
+        ctx.beginPath();
+        for (let a = a0; a <= a1; a += 0.03) {
+          const [x, y] = at(a, walkR);
+          if (a === a0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.strokeStyle = "#a07a45";
+        ctx.lineWidth = 3;
+        for (let a = a0; a <= a1; a += 0.035) {
+          const [x1, y1] = at(a, walkR - 6);
+          const [x2, y2] = at(a, walkR + 6);
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+        }
+        // rope handrails
+        ctx.strokeStyle = "rgba(226,206,160,0.75)";
+        ctx.lineWidth = 2;
+        for (const off of [-8, 8]) {
+          ctx.beginPath();
+          for (let a = a0; a <= a1; a += 0.03) {
+            const [x, y] = at(a, walkR + off);
+            if (a === a0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        // support posts at each end
+        ctx.fillStyle = "#4a3620";
+        for (const a of [a0, a1]) {
+          const [x, y] = at(a, walkR);
+          ctx.fillRect(x - 4, y - 4, 8, 12);
+        }
+      }
+      ctx.lineCap = "butt";
+    }
 
     // --- the oasis pool at the heart of a desert city
     if (CITY.oasis) {
