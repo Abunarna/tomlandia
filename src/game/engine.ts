@@ -3138,6 +3138,7 @@ export class GameEngine {
   /** roadside landmarks: pure flavour, no collision and no mechanics */
   private drawWaypoints(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
     for (const wp of WAYPOINTS) {
+      console.log('WPDRAW', wp.name, wp.x, wp.y, JSON.stringify(view));
       if (
         wp.x < view.x - 120 ||
         wp.x > view.x + view.w + 120 ||
