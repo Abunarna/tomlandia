@@ -821,6 +821,7 @@ const TOWN_SPECS: TownSpec[] = [
       { role: "haven_armourer", name: "Shieldwright's Hall", kind: "forge" },
       { role: "haven_upgrader", name: "Whetstone Tower", kind: "tower" },
       { role: "haven_exchange", name: "Grand Market", kind: "stall" },
+      { role: "haven_banker", name: "Haven Vault", kind: "chapel" },
     ],
     fill: [
       { name: "Grand Haven Inn", kind: "inn" },
@@ -873,6 +874,7 @@ const TOWN_SPECS: TownSpec[] = [
       { role: "trapper", name: "Trapper's Hut", kind: "house" },
       { role: "brook_chef", name: "Willow Kitchen", kind: "house" },
       { role: "brook_exchange", name: "Brookside Grand Market", kind: "stall" },
+      { role: "brook_banker", name: "Brookside Vault", kind: "chapel" },
     ],
     fill: [
       { name: "Woodcutter's Lodge", kind: "barn" },
@@ -898,6 +900,7 @@ const TOWN_SPECS: TownSpec[] = [
       { role: "frost_smith", name: "Frostforge Smeltery", kind: "forge" },
       { role: "frost_weaponsmith", name: "Frostforge", kind: "forge" },
       { role: "frost_exchange", name: "Frostmarket Hall", kind: "stall" },
+      { role: "frost_banker", name: "Frostforge Vault", kind: "chapel" },
     ],
     fill: [
       { name: "Hearthspur Lodge", kind: "inn" },
@@ -921,7 +924,10 @@ const TOWN_SPECS: TownSpec[] = [
     wall: "#4a4453",
     beam: "#241f2c",
     roofs: ["#2e2836", "#3a3143", "#26222f", "#453a4e", "#332b3d"],
-    anchors: [{ role: "dusk_exchange", name: "Gravehollow Exchange", kind: "stall" }],
+    anchors: [
+      { role: "dusk_exchange", name: "Gravehollow Exchange", kind: "stall" },
+      { role: "dusk_banker", name: "Gravehollow Vault", kind: "chapel" },
+    ],
     fill: [
       { name: "The Hollow Bell", kind: "inn" },
       { name: "Gravedigger's Shed", kind: "barn" },
@@ -1182,7 +1188,11 @@ export type NpcRole =
   | "sun_exchange"
   | "brook_exchange"
   | "frost_exchange"
-  | "dusk_exchange";
+  | "dusk_exchange"
+  | "haven_banker"
+  | "brook_banker"
+  | "frost_banker"
+  | "dusk_banker";
 
 export interface NpcDef {
   id: NpcRole;
@@ -1233,7 +1243,12 @@ export const NPCS: NpcDef[] = [
   { id: "brook_exchange", name: "Clerk Nessa", title: "Grand Market", ...spot("brook_exchange", TILE_W + 700, 540), robe: "#a8cf9b", hair: "#6b5233", greeting: "Small village, big ledger. Trade away.", services: ["exchange"] },
   { id: "frost_exchange", name: "Clerk Bjorn", title: "Grand Market", ...spot("frost_exchange", 640, TILE_H + 560), robe: "#b6cbe0", hair: "#dfe8f2", greeting: "Frost keeps the coin cold and the deals honest.", services: ["exchange"] },
   { id: "dusk_exchange", name: "Clerk Mordrey", title: "Grand Market", ...spot("dusk_exchange", 4400, 1400), robe: "#9a86b3", hair: "#2b2533", greeting: "The dead keep no ledgers. The living pay up front.", services: ["exchange"] },
+  { id: "haven_banker", name: "Coinmaster Bell", title: "Banker", ...spot("haven_banker", 900, 400), robe: "#d9c07a", hair: "#4a3b2e", greeting: "Your vault travels with you — same coin, any town.", services: ["bank"] },
+  { id: "brook_banker", name: "Coinmaster Wisp", title: "Banker", ...spot("brook_banker", TILE_W + 610, 620), robe: "#bfd9a0", hair: "#6b5233", greeting: "One vault, every branch. Deposit away.", services: ["bank"] },
+  { id: "frost_banker", name: "Coinmaster Hilda", title: "Banker", ...spot("frost_banker", 800, TILE_H + 620), robe: "#c6dcef", hair: "#e6eef7", greeting: "The ice keeps your coin safe wherever you wander.", services: ["bank"] },
+  { id: "dusk_banker", name: "Coinmaster Vex", title: "Banker", ...spot("dusk_banker", 4460, 1300), robe: "#a08cb8", hair: "#2b2533", greeting: "Same vault, darker vault-keeper. Deposit if you dare.", services: ["bank"] },
 ];
+
 
 
 export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
@@ -1245,6 +1260,10 @@ export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
   sun_smith: [],
   weaver: [],
   banker: [],
+  haven_banker: [],
+  brook_banker: [],
+  frost_banker: [],
+  dusk_banker: [],
   haven_exchange: [],
   sun_exchange: [],
   brook_exchange: [],
@@ -1383,6 +1402,10 @@ export const NPC_ICONS: Record<NpcRole, NpcIcon> = {
   sun_smith: { glyph: "\u2692\uFE0E", color: "#f0c268", label: "Smelter" },
   weaver: { glyph: "\u2702\uFE0E", color: "#e8b3d8", label: "Arcane Weaver" },
   banker: { glyph: "\u2605", color: "#d9a95f", label: "Banker" },
+  haven_banker: { glyph: "\u2605", color: "#d9c07a", label: "Banker" },
+  brook_banker: { glyph: "\u2605", color: "#bfd9a0", label: "Banker" },
+  frost_banker: { glyph: "\u2605", color: "#c6dcef", label: "Banker" },
+  dusk_banker: { glyph: "\u2605", color: "#a08cb8", label: "Banker" },
   trapper: { glyph: "\u2691", color: "#b98a5c", label: "Trapper" },
   innkeeper: { glyph: "\u2302", color: "#7fbd93", label: "Innkeeper" },
   frost_smith: { glyph: "\u2744\uFE0E", color: "#a9c6e6", label: "Frostforge Smelter" },
