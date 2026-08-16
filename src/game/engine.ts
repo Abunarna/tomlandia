@@ -3122,7 +3122,19 @@ export class GameEngine {
     const sand = CITY.theme === "sand";
     const wood = CITY.theme === "wood";
     const ice = CITY.theme === "ice";
-    const P = sand
+    const goth = CITY.theme === "gothic";
+    const P = goth
+      ? {
+          plaza: "#544c5e",
+          plazaEdge: "#3b3545",
+          ring: "#4b4456",
+          wallDark: "#2a2532",
+          wallLight: "#5b5468",
+          merlon: "#6b6379",
+          towerDark: "#241f2c",
+          towerLight: "#4d4658",
+        }
+      : sand
       ? {
           plaza: "#e6cd9a",
           plazaEdge: "#cfae79",
@@ -3167,6 +3179,11 @@ export class GameEngine {
         };
     const { cx, cy } = CITY;
     const at = (a: number, r: number): [number, number] => [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+    /** deterministic per-city scatter for props and grime */
+    const rand = (n: number) => {
+      const s = Math.sin(n * 127.1 + CITY.phase * 31.7) * 43758.5453;
+      return s - Math.floor(s);
+    };
 
     // --- moat: a water band, broken by the postern causeways
     if (CITY.moatW > 0) {
@@ -3307,7 +3324,134 @@ export class GameEngine {
       }
       ctx.lineCap = "butt";
     }
+    // the Gravehollow: no ring roads — crooked mud lanes that go nowhere
+    if (goth) {
+      ctx.strokeStyle = "#453e50";
+      ctx.lineCap = "round";
+      for (let i = 0; i < 14; i++) {
+        const a0 = (i / 14) * Math.PI * 2 + 0.2;
+        ctx.lineWidth = 12 + ((i * 5) % 9);
+        ctx.beginPath();
+        let a = a0;
+        for (let r = CITY.plazaR + 10; r < CITY.wallR - 26; r += 22) {
+          a += Math.sin(r * 0.031 + i * 2.1) * 0.075;
+          const [x, y] = at(a, r);
+          if (r === CITY.plazaR + 10) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      // a couple of dead-end cross alleys, because of course
+      for (let i = 0; i < 7; i++) {
+        const a = (i / 7) * Math.PI * 2 + 0.9;
+        const r = CITY.plazaR + 70 + ((i * 47) % 130);
+        ctx.lineWidth = 9;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, a, a + 0.55 + (i % 3) * 0.18);
+        ctx.stroke();
+      }
+      ctx.lineCap = "butt";
+      // dead grass and puddles on the plaza
+      ctx.fillStyle = "rgba(30,26,38,0.35)";
+      for (let i = 0; i < 26; i++) {
+        const a = rand(i * 3.1) * Math.PI * 2;
+        const r = rand(i * 7.7 + 1) * (CITY.plazaR - 12);
+        const [x, y] = at(a, r);
+        ctx.beginPath();
+        ctx.ellipse(x, y, 6 + rand(i + 5) * 12, 4 + rand(i + 9) * 6, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // --- the graveyard quarter: iron railings, leaning stones, a crypt or two
+    if (CITY.graveyard) {
+      const G = CITY.graveyard;
+      const gx = cx + G.dx;
+      const gy = cy + G.dy;
+      ctx.save();
+      ctx.translate(gx, gy);
+      ctx.rotate(G.rot);
+      // sour, trampled ground
+      ctx.fillStyle = "#3f3a48";
+      ctx.beginPath();
+      ctx.ellipse(0, 0, G.rx, G.ry, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(78,92,64,0.35)";
+      for (let i = 0; i < 24; i++) {
+        const a = rand(i * 2.7) * Math.PI * 2;
+        const rr = Math.sqrt(rand(i * 5.3 + 2)) * 0.9;
+        ctx.beginPath();
+        ctx.ellipse(Math.cos(a) * G.rx * rr, Math.sin(a) * G.ry * rr, 9, 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // tombstones in ragged rows, each leaning its own way
+      for (let i = 0; i < 26; i++) {
+        const col = i % 7;
+        const row = (i / 7) | 0;
+        const tx = -G.rx * 0.78 + col * (G.rx * 1.56 / 6) + (rand(i * 9.1) - 0.5) * 14;
+        const ty = -G.ry * 0.55 + row * (G.ry * 1.1 / 3) + (rand(i * 4.3 + 7) - 0.5) * 12;
+        ctx.save();
+        ctx.translate(tx, ty);
+        ctx.rotate((rand(i * 6.7 + 3) - 0.5) * 0.45);
+        ctx.fillStyle = "rgba(20,17,26,0.35)";
+        ctx.beginPath();
+        ctx.ellipse(0, 3, 11, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
+        const style = i % 5;
+        ctx.fillStyle = i % 3 === 0 ? "#8f8a96" : "#7a7684";
+        if (style === 0) {
+          // cross
+          ctx.fillRect(-3, -24, 6, 26);
+          ctx.fillRect(-10, -18, 20, 5);
+        } else if (style === 1) {
+          // broken slab
+          ctx.fillRect(-8, -14, 16, 16);
+          ctx.fillStyle = "#5d596a";
+          ctx.fillRect(-8, -14, 16, 3);
+        } else {
+          // rounded headstone
+          ctx.beginPath();
+          ctx.moveTo(-8, 2);
+          ctx.lineTo(-8, -13);
+          ctx.quadraticCurveTo(0, -24, 8, -13);
+          ctx.lineTo(8, 2);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "rgba(40,36,50,0.5)";
+          ctx.fillRect(-4, -13, 8, 2);
+          ctx.fillRect(-4, -8, 8, 2);
+        }
+        ctx.restore();
+      }
+      // wrought iron railing around the whole plot, with a lychgate on the north
+      ctx.strokeStyle = "#1d1a24";
+      ctx.lineWidth = 3;
+      for (let a = 0; a < Math.PI * 2; a += 0.075) {
+        if (a > 1.35 && a < 1.79) continue; // gap: the way in
+        const x = Math.cos(a) * (G.rx + 12);
+        const y = Math.sin(a) * (G.ry + 12);
+        ctx.beginPath();
+        ctx.moveTo(x, y + 4);
+        ctx.lineTo(x, y - 13);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(x, y - 15, 2.2, 0, Math.PI * 2);
+        ctx.fillStyle = "#1d1a24";
+        ctx.fill();
+      }
+      ctx.beginPath();
+      for (let a = 0; a <= Math.PI * 2 + 0.05; a += 0.05) {
+        const x = Math.cos(a) * (G.rx + 12);
+        const y = Math.sin(a) * (G.ry + 12) - 7;
+        if (a === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
     // ice cities: concentric swept snow rings between the building rings
+
     if (ice) {
       ctx.strokeStyle = P.ring;
       for (const [rr, lw] of [[CITY.plazaR + 46, 20], [CITY.ringR[1]! + 12, 16]] as [number, number][]) {
@@ -3458,6 +3602,47 @@ export class GameEngine {
           ctx.fillStyle = ((a * 70) | 0) % 3 === 0 ? "#4f7038" : P.merlon;
           ctx.fillRect(hx - 4, hy - 4, 8, 8);
         }
+      } else if (goth) {
+        // wrought iron set into crumbling stone: whole stretches have fallen,
+        // the railings between them are barbed and rusting
+        for (let a = from; a <= to; a += 0.03) {
+          const wr = cityWallR(a, CITY);
+          const ruin = rand(Math.round(a * 40));
+          const [x, y] = at(a, wr - CITY.wallT / 2 + 2);
+          if (ruin > 0.42) {
+            // standing stone course, chipped
+            ctx.fillStyle = ruin > 0.78 ? P.merlon : P.wallLight;
+            ctx.fillRect(x - 5, y - 5 - (ruin > 0.78 ? 3 : 0), 10, 10);
+          } else {
+            // collapsed to rubble — the ironwork carries the line
+            ctx.fillStyle = "#3d3746";
+            ctx.fillRect(x - 5, y + 1, 10, 5);
+          }
+          const [ix, iy] = at(a, wr);
+          ctx.strokeStyle = "#191620";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(ix, iy + 4);
+          ctx.lineTo(ix, iy - 16);
+          ctx.stroke();
+          ctx.fillStyle = "#191620";
+          ctx.beginPath();
+          ctx.moveTo(ix - 3, iy - 16);
+          ctx.lineTo(ix + 3, iy - 16);
+          ctx.lineTo(ix, iy - 23);
+          ctx.closePath();
+          ctx.fill();
+        }
+        // the rail the spikes hang from
+        ctx.strokeStyle = "#191620";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        for (let a = from; a <= to; a += 0.02) {
+          const [x, y] = at(a, cityWallR(a, CITY));
+          if (a === from) ctx.moveTo(x, y - 13);
+          else ctx.lineTo(x, y - 13);
+        }
+        ctx.stroke();
       } else if (ice) {
         // ice-and-stone: rime-capped merlons with icicles hanging off the outer face
         for (let a = from; a <= to; a += 0.05) {
@@ -3529,6 +3714,33 @@ export class GameEngine {
           ctx.arc(x + 9, y - 62, 11, 0, Math.PI * 2);
           ctx.fill();
         }
+        // the Gravehollow: gaunt watch-spires with a lantern and a crow
+        if (goth) {
+          ctx.fillStyle = P.towerDark;
+          ctx.beginPath();
+          ctx.moveTo(x - 10, y - 4);
+          ctx.lineTo(x - 7, y - 54);
+          ctx.lineTo(x + 7, y - 54);
+          ctx.lineTo(x + 10, y - 4);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = P.towerLight;
+          ctx.fillRect(x - 5, y - 46, 10, 3);
+          ctx.beginPath();
+          ctx.moveTo(x - 10, y - 52);
+          ctx.lineTo(x, y - 78);
+          ctx.lineTo(x + 10, y - 52);
+          ctx.closePath();
+          ctx.fillStyle = "#1c1824";
+          ctx.fill();
+          // guttering lantern
+          ctx.fillStyle = "rgba(214,168,86,0.5)";
+          ctx.beginPath();
+          ctx.arc(x, y - 40, 9, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#d6a856";
+          ctx.fillRect(x - 2, y - 42, 4, 5);
+        }
         // ice cities: carved ice spires, snow-capped, with icicle skirts
         if (ice) {
           ctx.fillStyle = P.towerLight;
@@ -3559,9 +3771,135 @@ export class GameEngine {
       }
     }
 
-    // --- signature monuments: the sphinx / the Great Oak Hall / the Frozen Hall
+    // --- signature monuments: sphinx / Oak Hall / Frozen Hall / the Cathedral
     const mon = CITY.monument;
-    if (mon && mon.kind === "frozenhall") {
+    if (mon && mon.kind === "cathedral") {
+      const mx = cx + mon.dx;
+      const my = cy + mon.dy;
+      const w = mon.w;
+      const h = mon.h;
+      ctx.save();
+      // long shadow thrown across the plaza
+      ctx.fillStyle = "rgba(14,11,20,0.35)";
+      ctx.beginPath();
+      ctx.ellipse(mx, my + h / 2 + 4, w / 2 + 30, 24, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // stepped plinth
+      ctx.fillStyle = "#3a3444";
+      ctx.fillRect(mx - w / 2 - 14, my + h / 2 - 20, w + 28, 20);
+      ctx.fillStyle = "#4a4356";
+      ctx.fillRect(mx - w / 2 - 6, my + h / 2 - 28, w + 12, 12);
+      // nave — tall, narrow, black stone
+      const naveW = w * 0.62;
+      ctx.fillStyle = "#2b2635";
+      ctx.fillRect(mx - naveW / 2, my - h / 2, naveW, h - 20);
+      // buttressed transepts
+      ctx.fillStyle = "#241f2d";
+      ctx.fillRect(mx - w / 2, my - h / 8, w, h / 2);
+      // flying buttresses
+      ctx.strokeStyle = "#3b3446";
+      ctx.lineWidth = 7;
+      for (const s of [-1, 1]) {
+        for (const dy of [0, 30]) {
+          ctx.beginPath();
+          ctx.moveTo(mx + s * (naveW / 2), my - h / 6 + dy);
+          ctx.quadraticCurveTo(
+            mx + s * (w / 2 - 4),
+            my - h / 8 + dy,
+            mx + s * (w / 2 + 6),
+            my + h / 6 + dy,
+          );
+          ctx.stroke();
+        }
+      }
+      // steep slate roof
+      ctx.fillStyle = "#1c1825";
+      ctx.beginPath();
+      ctx.moveTo(mx - naveW / 2 - 8, my - h / 2 + 6);
+      ctx.lineTo(mx, my - h / 2 - 34);
+      ctx.lineTo(mx + naveW / 2 + 8, my - h / 2 + 6);
+      ctx.closePath();
+      ctx.fill();
+      // twin spires, and a taller central one
+      for (const [sx, top, wide] of [
+        [mx - w / 2 + 16, my - h / 2 - 60, 13],
+        [mx + w / 2 - 16, my - h / 2 - 60, 13],
+        [mx, my - h / 2 - 118, 16],
+      ] as [number, number, number][]) {
+        ctx.fillStyle = "#332c3f";
+        ctx.fillRect(sx - wide, top + 34, wide * 2, my - h / 8 - (top + 34));
+        ctx.fillStyle = "#1b1724";
+        ctx.beginPath();
+        ctx.moveTo(sx - wide - 4, top + 36);
+        ctx.lineTo(sx, top);
+        ctx.lineTo(sx + wide + 4, top + 36);
+        ctx.closePath();
+        ctx.fill();
+        // iron finial
+        ctx.strokeStyle = "#15121c";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(sx, top);
+        ctx.lineTo(sx, top - 14);
+        ctx.moveTo(sx - 6, top - 9);
+        ctx.lineTo(sx + 6, top - 9);
+        ctx.stroke();
+        // narrow lancet window, lit
+        ctx.fillStyle = "rgba(150,84,164,0.55)";
+        ctx.fillRect(sx - 3, top + 52, 6, 16);
+      }
+      // the great rose window
+      const rx = mx;
+      const ry = my - h / 4;
+      ctx.fillStyle = "#5b2f6b";
+      ctx.beginPath();
+      ctx.arc(rx, ry, 26, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#171320";
+      ctx.lineWidth = 3;
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(rx, ry);
+        ctx.lineTo(rx + Math.cos(a) * 26, ry + Math.sin(a) * 26);
+        ctx.stroke();
+      }
+      ctx.beginPath();
+      ctx.arc(rx, ry, 26, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = "#8a4fa0";
+      ctx.beginPath();
+      ctx.arc(rx, ry, 8, 0, Math.PI * 2);
+      ctx.fill();
+      // stained lancets down the nave
+      for (const s of [-1, 1]) {
+        for (let i = 0; i < 3; i++) {
+          ctx.fillStyle = ["#3f5f7d", "#6b2f3f", "#3d6b4b"][i]!;
+          const lx = mx + s * (naveW / 2 - 16) - 5;
+          const ly = my + 4 + i * 22;
+          ctx.beginPath();
+          ctx.moveTo(lx, ly + 16);
+          ctx.lineTo(lx, ly + 5);
+          ctx.quadraticCurveTo(lx + 5, ly - 5, lx + 10, ly + 5);
+          ctx.lineTo(lx + 10, ly + 16);
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+      // arched doors, standing open onto the dark
+      ctx.fillStyle = "#100d16";
+      ctx.beginPath();
+      ctx.moveTo(mx - 22, my + h / 2 - 28);
+      ctx.lineTo(mx - 22, my + h / 6);
+      ctx.quadraticCurveTo(mx, my + h / 12 - 22, mx + 22, my + h / 6);
+      ctx.lineTo(mx + 22, my + h / 2 - 28);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = "#4d4359";
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      ctx.restore();
+    } else if (mon && mon.kind === "frozenhall") {
       const mx = cx + mon.dx;
       const my = cy + mon.dy;
       const w = mon.w;
@@ -3786,12 +4124,26 @@ export class GameEngine {
 
 
   private drawBuilding(ctx: CanvasRenderingContext2D, b: (typeof BUILDINGS)[number]) {
+    // crooked towns lean their houses — spin the canvas about the footprint
+    if (b.rot) {
+      ctx.save();
+      ctx.translate(b.x + b.w / 2, b.y + b.h / 2);
+      ctx.rotate(b.rot);
+      ctx.translate(-(b.x + b.w / 2), -(b.y + b.h / 2));
+      const r = b.rot;
+      (b as { rot?: number }).rot = 0;
+      this.drawBuilding(ctx, b);
+      (b as { rot?: number }).rot = r;
+      ctx.restore();
+      return;
+    }
     const wallTop = b.y + b.h * 0.38;
     const wallH = b.h * 0.62;
     ctx.fillStyle = "rgba(90,70,110,0.16)";
     ctx.beginPath();
     ctx.ellipse(b.x + b.w / 2, b.y + b.h + 4, b.w * 0.5, 9, 0, 0, Math.PI * 2);
     ctx.fill();
+
 
     if (b.kind === "stall") {
       this.drawStall(ctx, b);

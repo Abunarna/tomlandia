@@ -921,7 +921,7 @@ const TOWN_SPECS: TownSpec[] = [
     wall: "#4a4453",
     beam: "#241f2c",
     roofs: ["#2e2836", "#3a3143", "#26222f", "#453a4e", "#332b3d"],
-    anchors: [],
+    anchors: [{ role: "dusk_exchange", name: "Gravehollow Exchange", kind: "stall" }],
     fill: [
       { name: "The Hollow Bell", kind: "inn" },
       { name: "Gravedigger's Shed", kind: "barn" },
@@ -960,26 +960,31 @@ for (const t of TOWN_SPECS) {
     const plan = [...t.anchors, ...t.fill].slice(0, t.count);
     const gy = city.graveyard;
     const placed: { x: number; y: number; w: number; h: number }[] = [];
+    // walk the ring in slots so every house gets a plot, then jitter each one
+    // hard enough that no two lanes between them ever line up
+    const slots = plan.length;
     plan.forEach((p, i) => {
       const kind = p.kind;
-      const w = kind === "tower" ? 88 : kind === "stall" ? 96 : 104 + ((i * 13) % 26);
-      const h = kind === "tower" ? 126 : kind === "stall" ? 70 : 82 + ((i * 7) % 22);
+      const w = kind === "tower" ? 76 : kind === "stall" ? 84 : 88 + ((i * 13) % 22);
+      const h = kind === "tower" ? 108 : kind === "stall" ? 62 : 70 + ((i * 7) % 18);
       let spot: { x: number; y: number } | null = null;
-      for (let tryI = 0; tryI < 400 && !spot; tryI++) {
+      const baseA = (i / slots) * Math.PI * 2 + 0.35;
+      for (let tryI = 0; tryI < 1400 && !spot; tryI++) {
         const s = i * 17.3 + tryI * 1.7;
-        const a = rand01(s) * Math.PI * 2;
-        const r = city.plazaR + 46 + rand01(s + 91) * (city.wallR - city.plazaR - 150);
+        // search outward from this house's own slot, drifting as tries mount
+        const a = baseA + (rand01(s) - 0.5) * ((Math.PI * 2) / slots) * (1 + tryI * 0.06);
+        const r = city.plazaR + 44 + rand01(s + 91) * (city.wallR - city.plazaR - 96);
         const x = city.cx + Math.cos(a) * r;
         const y = city.cy + Math.sin(a) * r;
-        if (inGateCorridor(a, city)) continue;
-        if (onMonument(x, y, Math.max(w, h) / 2 + 30)) continue;
+        if (inGateCorridor(a, city) || cityGateAt(a + 0.18, city) || cityGateAt(a - 0.18, city)) continue;
+        if (onMonument(x, y, Math.max(w, h) / 2 + 26)) continue;
         if (gy) {
           const gx = city.cx + gy.dx;
           const gyy = city.cy + gy.dy;
-          if (Math.abs(x - gx) < gy.rx + w / 2 + 18 && Math.abs(y - gyy) < gy.ry + h / 2 + 18) continue;
+          if (Math.abs(x - gx) < gy.rx + w / 2 + 16 && Math.abs(y - gyy) < gy.ry + h / 2 + 16) continue;
         }
         // narrow alleys: neighbours may crowd in, but never overlap
-        const alley = 16 + rand01(s + 33) * 22;
+        const alley = 12 + rand01(s + 33) * 14;
         const clash = placed.some(
           (b) =>
             Math.abs(b.x - x) < (b.w + w) / 2 + alley && Math.abs(b.y - y) < (b.h + h) / 2 + alley,
@@ -988,7 +993,10 @@ for (const t of TOWN_SPECS) {
         spot = { x, y };
       }
       if (!spot) return;
+
       placed.push({ x: spot.x, y: spot.y, w, h });
+      const pRole = (p as { role?: string }).role;
+      if (pRole) npcSpots[pRole] = { x: spot.x, y: spot.y + h / 2 + 26 };
       buildings.push({
         name: p.name,
         kind,
@@ -1173,7 +1181,8 @@ export type NpcRole =
   | "haven_exchange"
   | "sun_exchange"
   | "brook_exchange"
-  | "frost_exchange";
+  | "frost_exchange"
+  | "dusk_exchange";
 
 export interface NpcDef {
   id: NpcRole;
@@ -1223,6 +1232,7 @@ export const NPCS: NpcDef[] = [
   { id: "sun_exchange", name: "Clerk Amara", title: "Grand Market", ...spot("sun_exchange", TILE_W * 2 + 680, 300), robe: "#e8c98d", hair: "#4d3a26", greeting: "Every caravan's price, all in one book.", services: ["exchange"] },
   { id: "brook_exchange", name: "Clerk Nessa", title: "Grand Market", ...spot("brook_exchange", TILE_W + 700, 540), robe: "#a8cf9b", hair: "#6b5233", greeting: "Small village, big ledger. Trade away.", services: ["exchange"] },
   { id: "frost_exchange", name: "Clerk Bjorn", title: "Grand Market", ...spot("frost_exchange", 640, TILE_H + 560), robe: "#b6cbe0", hair: "#dfe8f2", greeting: "Frost keeps the coin cold and the deals honest.", services: ["exchange"] },
+  { id: "dusk_exchange", name: "Clerk Mordrey", title: "Grand Market", ...spot("dusk_exchange", 4400, 1400), robe: "#9a86b3", hair: "#2b2533", greeting: "The dead keep no ledgers. The living pay up front.", services: ["exchange"] },
 ];
 
 
@@ -1239,6 +1249,7 @@ export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
   sun_exchange: [],
   brook_exchange: [],
   frost_exchange: [],
+  dusk_exchange: [],
   trapper: [],
   innkeeper: [],
   frost_smith: [],
@@ -1386,6 +1397,7 @@ export const NPC_ICONS: Record<NpcRole, NpcIcon> = {
   sun_exchange: { glyph: "\u2696\uFE0E", color: "#e8c98d", label: "Grand Market" },
   brook_exchange: { glyph: "\u2696\uFE0E", color: "#a8cf9b", label: "Grand Market" },
   frost_exchange: { glyph: "\u2696\uFE0E", color: "#b6cbe0", label: "Grand Market" },
+  dusk_exchange: { glyph: "\u2696\uFE0E", color: "#9a86b3", label: "Grand Market" },
 };
 
 /* ------------------------------------------------------------------ */
