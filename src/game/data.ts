@@ -792,6 +792,8 @@ interface TownSpec {
   rings?: number[];
   /** the walled-city geometry this town is laid out inside */
   city?: CityDef;
+  /** lay the houses out crookedly, at odd angles, with maze-like alleys */
+  crooked?: boolean;
   count: number;
   wall: string;
   beam: string;
