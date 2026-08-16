@@ -2394,6 +2394,11 @@ export class GameEngine {
   async listSlot(index: number, qty: number, price: number): Promise<boolean> {
     const slot = this.inv[index];
     if (!slot || !this.onMarketList) return false;
+    if (this.food && slot.id === this.food) {
+      this.pushText(this.px, this.py - 50, "Unequip your snack first", "#ffb4b4");
+      return false;
+    }
+
     const amount = Math.max(1, Math.min(Math.round(qty), slot.qty));
     const unit = Math.max(1, Math.round(price));
     const res = await this.onMarketList(slot.id, amount, unit, slot.plus ?? 0);

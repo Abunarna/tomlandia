@@ -221,11 +221,13 @@ export function MarketTab({
             if (def?.untradable) return null;
             const last = hud.market.lastSold[priceKey(slot.id, slot.plus ?? 0)];
             const rec = recommendedPrice(slot.id, slot.plus ?? 0, last);
+            const equippedFood = hud.food === slot.id;
             return (
               <button
                 key={i}
-                onClick={() => setSelling(i)}
-                className="flex w-full items-center gap-2 rounded-2xl border border-border/70 bg-muted/40 p-2 text-left active:scale-[0.99]"
+                disabled={equippedFood}
+                onClick={() => !equippedFood && setSelling(i)}
+                className={`flex w-full items-center gap-2 rounded-2xl border border-border/70 bg-muted/40 p-2 text-left ${equippedFood ? "opacity-60" : "active:scale-[0.99]"}`}
               >
                 {def ? (
                   <ItemIcon item={def} className="size-8" />
@@ -237,16 +239,21 @@ export function MarketTab({
                     {slot.qty}× {label(slot.id, slot.plus)}
                   </p>
                   <p className="truncate text-[10px] text-muted-foreground">
-                    recommended {rec}g each · {last ? `last sold ${last}g` : "no previous sales"}
+                    {equippedFood
+                      ? "Equipped as auto-snack — unequip it first"
+                      : `recommended ${rec}g each · ${last ? `last sold ${last}g` : "no previous sales"}`}
                   </p>
                 </div>
-                <span className="shrink-0 rounded-xl bg-primary px-2.5 py-1.5 text-[11px] font-bold text-primary-foreground">
+                <span
+                  className={`shrink-0 rounded-xl px-2.5 py-1.5 text-[11px] font-bold ${equippedFood ? "bg-muted text-muted-foreground" : "bg-primary text-primary-foreground"}`}
+                >
                   <span className="flex items-center gap-1">
-                    <Tag className="size-3" /> Sell
+                    <Tag className="size-3" /> {equippedFood ? "Equipped" : "Sell"}
                   </span>
                 </span>
               </button>
             );
+
           })}
           {hud.inv.every((s) => !s || !inCategory(s.id, filter)) && (
             <p className="text-[11px] text-muted-foreground">
