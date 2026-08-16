@@ -1019,6 +1019,7 @@ for (const t of TOWN_SPECS) {
     );
     // the oasis eats the middle of Sunspire's plaza, so traders ring it wider
     const r0 = city.plazaR + (city.oasis ? 34 : 58);
+    const taken: { x: number; y: number }[] = [];
     inCity.forEach(([role], i) => {
       const base = (i / inCity.length) * Math.PI * 2 + 0.25;
       let a = base;
@@ -1026,14 +1027,20 @@ for (const t of TOWN_SPECS) {
       const bad = (ax: number, ar: number) => {
         const x = city.cx + Math.cos(ax) * ar;
         const y = city.cy + Math.sin(ax) * ar;
-        return onBuilding(x, y) || inCityOasis(x, y, 16);
+        return (
+          onBuilding(x, y) ||
+          inCityOasis(x, y, 18) ||
+          taken.some((t) => Math.hypot(t.x - x, t.y - y) < 96)
+        );
       };
       for (let guard = 0; guard < 26; guard++) {
         if (!bad(a, r)) break;
         a = base + (guard % 2 ? -1 : 1) * 0.05 * Math.ceil((guard + 1) / 2);
         r = r0 - (guard > 12 ? 22 : 0);
       }
-      npcSpots[role] = { x: city.cx + Math.cos(a) * r, y: city.cy + Math.sin(a) * r };
+      const seat = { x: city.cx + Math.cos(a) * r, y: city.cy + Math.sin(a) * r };
+      taken.push(seat);
+      npcSpots[role] = seat;
     });
   }
 }

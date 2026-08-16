@@ -96,7 +96,7 @@ const SUNSPIRE: CityDef = {
   moatW: 0,
   phase: 1.7,
   oasis: { dx: -6, dy: 8, rx: 74, ry: 56 },
-  monument: { dx: -196, dy: 128, w: 168, h: 86, kind: "sphinx" },
+  monument: { dx: -388, dy: 185, w: 176, h: 92, kind: "sphinx" },
   gates: [
     // 1 — the caravan gate onto the spine road down to Willowbrook
     { angle: 2.36, half: 0.17, kind: "spine", label: "Caravan Gate", drawbridge: false },
