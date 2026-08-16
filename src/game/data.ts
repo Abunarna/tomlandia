@@ -952,6 +952,58 @@ function inGateCorridor(a: number, c: CityDef) {
 }
 
 for (const t of TOWN_SPECS) {
+  if (t.crooked && t.city) {
+    // ---- the Gravehollow: no ring plan at all. Houses are dropped wherever
+    // they fit at whatever angle they've settled to, leaving the crooked,
+    // deliberately confusing alleys Duskmere is known for.
+    const city = t.city;
+    const plan = [...t.anchors, ...t.fill].slice(0, t.count);
+    const gy = city.graveyard;
+    const placed: { x: number; y: number; w: number; h: number }[] = [];
+    plan.forEach((p, i) => {
+      const kind = p.kind;
+      const w = kind === "tower" ? 88 : kind === "stall" ? 96 : 104 + ((i * 13) % 26);
+      const h = kind === "tower" ? 126 : kind === "stall" ? 70 : 82 + ((i * 7) % 22);
+      let spot: { x: number; y: number } | null = null;
+      for (let tryI = 0; tryI < 400 && !spot; tryI++) {
+        const s = i * 17.3 + tryI * 1.7;
+        const a = rand01(s) * Math.PI * 2;
+        const r = city.plazaR + 46 + rand01(s + 91) * (city.wallR - city.plazaR - 150);
+        const x = city.cx + Math.cos(a) * r;
+        const y = city.cy + Math.sin(a) * r;
+        if (inGateCorridor(a, city)) continue;
+        if (onMonument(x, y, Math.max(w, h) / 2 + 30)) continue;
+        if (gy) {
+          const gx = city.cx + gy.dx;
+          const gyy = city.cy + gy.dy;
+          if (Math.abs(x - gx) < gy.rx + w / 2 + 18 && Math.abs(y - gyy) < gy.ry + h / 2 + 18) continue;
+        }
+        // narrow alleys: neighbours may crowd in, but never overlap
+        const alley = 16 + rand01(s + 33) * 22;
+        const clash = placed.some(
+          (b) =>
+            Math.abs(b.x - x) < (b.w + w) / 2 + alley && Math.abs(b.y - y) < (b.h + h) / 2 + alley,
+        );
+        if (clash) continue;
+        spot = { x, y };
+      }
+      if (!spot) return;
+      placed.push({ x: spot.x, y: spot.y, w, h });
+      buildings.push({
+        name: p.name,
+        kind,
+        x: spot.x - w / 2,
+        y: spot.y - h / 2,
+        w,
+        h,
+        roof: t.roofs[i % t.roofs.length]!,
+        wall: t.wall,
+        beam: t.beam,
+        rot: (rand01(i * 5.9 + 2) - 0.5) * 0.42,
+      });
+    });
+    continue;
+  }
   if (t.rings && t.city) {
     const city = t.city;
     // ---- walled city: buildings ring an open plaza, gate corridors left clear
