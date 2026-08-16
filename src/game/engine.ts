@@ -3120,6 +3120,7 @@ export class GameEngine {
 
   private drawOneCity(ctx: CanvasRenderingContext2D, CITY: CityDef) {
     const sand = CITY.theme === "sand";
+    const wood = CITY.theme === "wood";
     const P = sand
       ? {
           plaza: "#e6cd9a",
@@ -3131,7 +3132,18 @@ export class GameEngine {
           towerDark: "#8f6d34",
           towerLight: "#dcbb7e",
         }
-      : {
+      : wood
+        ? {
+            plaza: "#bfa877",
+            plazaEdge: "#8a7a4c",
+            ring: "#b09a6c",
+            wallDark: "#4a3a22",
+            wallLight: "#7d6136",
+            merlon: "#5f7c40",
+            towerDark: "#43331e",
+            towerLight: "#6f5530",
+          }
+        : {
           plaza: "#c9ae86",
           plazaEdge: "#b1936c",
           ring: "#c4a67c",
