@@ -3786,12 +3786,26 @@ export class GameEngine {
 
 
   private drawBuilding(ctx: CanvasRenderingContext2D, b: (typeof BUILDINGS)[number]) {
+    // crooked towns lean their houses — spin the canvas about the footprint
+    if (b.rot) {
+      ctx.save();
+      ctx.translate(b.x + b.w / 2, b.y + b.h / 2);
+      ctx.rotate(b.rot);
+      ctx.translate(-(b.x + b.w / 2), -(b.y + b.h / 2));
+      const r = b.rot;
+      (b as { rot?: number }).rot = 0;
+      this.drawBuilding(ctx, b);
+      (b as { rot?: number }).rot = r;
+      ctx.restore();
+      return;
+    }
     const wallTop = b.y + b.h * 0.38;
     const wallH = b.h * 0.62;
     ctx.fillStyle = "rgba(90,70,110,0.16)";
     ctx.beginPath();
     ctx.ellipse(b.x + b.w / 2, b.y + b.h + 4, b.w * 0.5, 9, 0, 0, Math.PI * 2);
     ctx.fill();
+
 
     if (b.kind === "stall") {
       this.drawStall(ctx, b);
