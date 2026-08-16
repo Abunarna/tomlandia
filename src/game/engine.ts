@@ -3762,7 +3762,11 @@ export class GameEngine {
       ctx.fillRect(-2, -18, 4, 22);
       ctx.restore();
     }
+    if (this.myEmote && this.myEmote.until > Date.now()) {
+      this.drawEmoteBubble(ctx, x, y - 62 - bob, this.myEmote.e);
+    }
   }
+
 }
 
 /** Resample a polyline so consecutive points are at most `step` apart. */
