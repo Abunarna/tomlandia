@@ -6,6 +6,8 @@ import {
   BIOMES,
   BUILDINGS,
   STREETS,
+  LAKES,
+
   ROAD_RUNS,
   NPCS,
   NPC_ICONS,
@@ -332,6 +334,31 @@ export function WorldMap({ position, onClose }: Props) {
               opacity={0.95}
             />
           ))}
+          {LAKES.map((l) => (
+
+            <path
+              key={`lake-${l.key}`}
+              d={`${l.poly.map(([x, y], i) => `${i === 0 ? "M" : "L"}${sx(x)},${sy(y)}`).join(" ")} Z`}
+              fill={l.style === "winter" ? "#a9d8ea" : l.style === "evil" ? "#3f5c62" : "#5fb2d6"}
+              stroke="rgba(30,60,80,0.45)"
+              strokeWidth={1}
+            />
+          ))}
+          {LAKES.flatMap((l) =>
+            l.jetties.map((j) => (
+              <line
+                key={`jetty-${j.id}`}
+                x1={sx(j.x1)}
+                y1={sy(j.y1)}
+                x2={sx(j.x2)}
+                y2={sy(j.y2)}
+                stroke="#a9793f"
+                strokeWidth={Math.max(1.5, j.hw * scale)}
+                strokeLinecap="round"
+              />
+            )),
+          )}
+
           {ROAD_RUNS.map((r, i) => (
             <path
               key={`road-${i}`}
