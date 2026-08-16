@@ -728,7 +728,17 @@ export type MonsterKind =
   | "wraith"
   | "shadow_beast"
   | "yeti"
-  | "frost_giant";
+  | "frost_giant"
+  | "disgruntled_ram"
+  | "forest_boar"
+  | "forest_lynx"
+  | "dust_jackal"
+  | "scorpion_stalker"
+  | "withered_ghoul"
+  | "bone_reaper"
+  | "frost_wolf"
+  | "ice_wraith"
+  | "ancient_frost_wyrm";
 
 export interface MonsterDefT {
   name: string;
@@ -758,6 +768,17 @@ export const MONSTER_DEFS: Record<MonsterKind, MonsterDefT> = {
   shadow_beast: { name: "Shadow Beast", hp: 820, attack: 84, defense: 42, xp: 1300, gold: [160, 320], drop: "shadow_pelt", dropChance: 0.55, hide: "shadow_pelt", hideXp: 400, body: "#7b6a9c", accent: "#4a3c6d", size: 1.45, ears: "horns" },
   yeti: { name: "Fluffy Yeti", hp: 1500, attack: 130, defense: 62, xp: 2400, gold: [280, 520], drop: "frost_pelt", dropChance: 0.55, hide: "frost_pelt", hideXp: 720, body: "#eef7fd", accent: "#a9d8e6", size: 1.5, ears: "horns" },
   frost_giant: { name: "Frost Giant", hp: 2200, attack: 165, defense: 80, xp: 3400, gold: [400, 780], drop: "tungsten_ore", dropChance: 0.4, hide: "frost_pelt", hideXp: 900, body: "#bcd9ec", accent: "#7fa8c4", size: 1.7, ears: "spikes" },
+  // Phase 2 additions — fill the difficulty-curve gaps between neighbours.
+  disgruntled_ram: { name: "Disgruntled Ram", hp: 13, attack: 3, defense: 1, xp: 20, gold: [2, 7], drop: "ram_horn", dropChance: 0.45, hide: "raw_hide", hideXp: 20, body: "#f0ead6", accent: "#c9a876", size: 1.05, ears: "horns" },
+  forest_boar: { name: "Forest Boar", hp: 36, attack: 7, defense: 3, xp: 57, gold: [6, 17], drop: "boar_tusk", dropChance: 0.45, hide: "raw_hide", hideXp: 28, body: "#8a6a45", accent: "#e6ddc8", size: 1.15, ears: "spikes" },
+  forest_lynx: { name: "Forest Lynx", hp: 88, attack: 15, defense: 7, xp: 141, gold: [15, 34], drop: "lynx_claw", dropChance: 0.45, hide: "thick_hide", hideXp: 65, body: "#b8a888", accent: "#6b5a42", size: 1.15, ears: "horns" },
+  dust_jackal: { name: "Dust Jackal", hp: 184, attack: 26, defense: 13, xp: 300, gold: [31, 68], drop: "jackal_fang", dropChance: 0.45, hide: "thick_hide", hideXp: 130, body: "#d4b382", accent: "#7a5c3a", size: 1.1, ears: "horns" },
+  scorpion_stalker: { name: "Scorpion Stalker", hp: 288, attack: 38, defense: 20, xp: 473, gold: [56, 123], drop: "scorpion_stinger", dropChance: 0.45, hide: "scale_hide", hideXp: 180, body: "#c9963f", accent: "#5a4020", size: 1.25, ears: "spikes" },
+  withered_ghoul: { name: "Withered Ghoul", hp: 445, attack: 53, defense: 27, xp: 714, gold: [92, 200], drop: "ghoul_essence", dropChance: 0.45, hide: "shadow_pelt", hideXp: 250, body: "#7a8a6e", accent: "#3f4a38", size: 1.2, ears: "none" },
+  bone_reaper: { name: "Bone Reaper", hp: 713, attack: 76, defense: 38, xp: 1129, gold: [139, 283], drop: "reaper_bone", dropChance: 0.45, hide: "shadow_pelt", hideXp: 400, body: "#e8e0d0", accent: "#2b2b35", size: 1.3, ears: "spikes" },
+  frost_wolf: { name: "Frost Wolf", hp: 1109, attack: 105, defense: 51, xp: 1766, gold: [212, 408], drop: "frost_fang", dropChance: 0.45, hide: "frost_pelt", hideXp: 600, body: "#dceaf5", accent: "#8fb8d4", size: 1.2, ears: "horns" },
+  ice_wraith: { name: "Ice Wraith", hp: 1817, attack: 146, defense: 70, xp: 2857, gold: [335, 637], drop: "wraith_ice_core", dropChance: 0.45, hide: "frost_pelt", hideXp: 800, body: "#cfe8f5", accent: "#5f9ec4", size: 1.35, ears: "spikes" },
+  ancient_frost_wyrm: { name: "Ancient Frost Wyrm", hp: 3080, attack: 210, defense: 95, xp: 4760, gold: [560, 1092], drop: "wyrm_scale", dropChance: 0.45, hide: "frost_pelt", hideXp: 1000, body: "#a8d4e8", accent: "#5a6fa0", size: 1.9, ears: "spikes" },
 };
 
 /** Approximate combat level derived from a monster's HP and attack. */
@@ -2115,23 +2136,23 @@ const SPAWN_PLAN: Record<BiomeId, BiomePlan> = {
   // square of ground stays the same as the old, smaller map.
   fields: {
     nodes: [["copper", 28], ["oak", 28], ["flax", 24], ["berries", 24]],
-    mobs: [["chicken", 28], ["goblin", 24]],
+    mobs: [["chicken", 28], ["goblin", 24], ["disgruntled_ram", 16]],
   },
   forest: {
     nodes: [["iron", 24], ["willow", 24], ["maple", 20], ["herbs", 24]],
-    mobs: [["wolf", 24], ["bear", 20]],
+    mobs: [["forest_boar", 16], ["wolf", 24], ["forest_lynx", 16], ["bear", 20]],
   },
   desert: {
     nodes: [["sandstone", 22], ["mithril", 18], ["palm", 18], ["bloom", 18]],
-    mobs: [["serpent", 20], ["bandit", 18]],
+    mobs: [["dust_jackal", 16], ["serpent", 20], ["scorpion_stalker", 16], ["bandit", 18]],
   },
   evil: {
     nodes: [["cursed_rock", 18], ["cursed_tree", 18], ["gloomcap", 18]],
-    mobs: [["wraith", 18], ["shadow_beast", 16]],
+    mobs: [["withered_ghoul", 16], ["wraith", 18], ["bone_reaper", 14], ["shadow_beast", 16]],
   },
   winter: {
     nodes: [["runite", 18], ["tungsten", 14], ["frostpine", 18], ["lichen", 16]],
-    mobs: [["yeti", 16], ["frost_giant", 12]],
+    mobs: [["frost_wolf", 16], ["yeti", 16], ["ice_wraith", 14], ["frost_giant", 12], ["ancient_frost_wyrm", 10]],
   },
 };
 
