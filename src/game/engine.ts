@@ -2493,14 +2493,16 @@ export class GameEngine {
     const x = Math.floor(view.x) - M;
     const y = Math.floor(view.y) - M;
     const s = this.dpr;
-    const make = () => {
-      const cv = (c && c.w === w && c.h === h ? null : null) ?? document.createElement("canvas");
+    const reuse = c && c.w === w && c.h === h && c.scale === s;
+    const make = (old: HTMLCanvasElement | null) => {
+      const cv = reuse && old ? old : document.createElement("canvas");
       cv.width = Math.floor(w * s);
       cv.height = Math.floor(h * s);
       return cv;
     };
-    const base = make();
-    const over = make();
+    const base = make(c?.base ?? null);
+    const over = make(c?.over ?? null);
+
     const region = { x, y, w, h };
     const bctx = base.getContext("2d")!;
     bctx.setTransform(s, 0, 0, s, 0, 0);
