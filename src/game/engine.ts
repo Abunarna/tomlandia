@@ -3122,7 +3122,19 @@ export class GameEngine {
     const sand = CITY.theme === "sand";
     const wood = CITY.theme === "wood";
     const ice = CITY.theme === "ice";
-    const P = sand
+    const goth = CITY.theme === "gothic";
+    const P = goth
+      ? {
+          plaza: "#544c5e",
+          plazaEdge: "#3b3545",
+          ring: "#4b4456",
+          wallDark: "#2a2532",
+          wallLight: "#5b5468",
+          merlon: "#6b6379",
+          towerDark: "#241f2c",
+          towerLight: "#4d4658",
+        }
+      : sand
       ? {
           plaza: "#e6cd9a",
           plazaEdge: "#cfae79",
