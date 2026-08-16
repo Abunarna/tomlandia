@@ -7,6 +7,7 @@ import {
   BUILDINGS,
   STREETS,
   ROAD_RUNS,
+  WAYPOINTS,
   NPCS,
   NPC_ICONS,
   WORLD_H,
