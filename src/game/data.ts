@@ -5,6 +5,7 @@ import {
   CITY_OUTER_R,
   SUNSPIRE,
   WILLOWBROOK,
+  FROSTFORGE,
   onMonument,
   cityBlocked,
   cityGateAt,
@@ -880,12 +881,14 @@ const TOWN_SPECS: TownSpec[] = [
     ],
   },
   {
-    cx: 5000,
-    cy: 2500,
-    count: 7,
+    cx: FROSTFORGE.cx,
+    cy: FROSTFORGE.cy,
+    rings: FROSTFORGE.ringR,
+    city: FROSTFORGE,
+    count: 12,
     wall: "#f2f7fd",
     beam: "#6d7f92",
-    roofs: ["#8fb6d9", "#a9c6e6", "#9fb6cc", "#87a7c4"],
+    roofs: ["#8fb6d9", "#a9c6e6", "#9fb6cc", "#87a7c4", "#b9d4ea"],
     anchors: [
       { role: "frost_smith", name: "Frostforge Smeltery", kind: "forge" },
       { role: "frost_weaponsmith", name: "Frostforge", kind: "forge" },
@@ -896,6 +899,11 @@ const TOWN_SPECS: TownSpec[] = [
       { name: "Ice Cellar", kind: "barn" },
       { name: "Furrier's Stall", kind: "stall" },
       { name: "Snow Chapel", kind: "chapel" },
+      { name: "Rimewatch Tower", kind: "tower" },
+      { name: "Glacier Granary", kind: "barn" },
+      { name: "Icecutter's House", kind: "house" },
+      { name: "Skald's Rest", kind: "house" },
+      { name: "Frostwatch Spire", kind: "tower" },
     ],
   },
 ];
@@ -1028,7 +1036,9 @@ for (const t of TOWN_SPECS) {
     );
     // the oasis (Sunspire) and the Great Oak Hall (Willowbrook) eat the middle
     // of the plaza, so traders ring them a little wider
-    const r0 = city.plazaR + (city.oasis || city.monument?.kind === "oakhall" ? 34 : 58);
+    const centreFilled =
+      !!city.oasis || city.monument?.kind === "oakhall" || city.monument?.kind === "frozenhall";
+    const r0 = city.plazaR + (centreFilled ? 34 : 58);
     const taken: { x: number; y: number }[] = [];
     inCity.forEach(([role], i) => {
       const base = (i / inCity.length) * Math.PI * 2 + 0.25;
