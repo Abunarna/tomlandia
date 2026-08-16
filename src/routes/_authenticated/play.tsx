@@ -305,8 +305,8 @@ function Game() {
     if (!engine) return;
     const net = new WorldNet({
       position: () => ({ x: engine.px, y: engine.py }),
-      onNodes: (rows) => engine.applyNodeRows(rows),
-      onMonsters: (rows) => engine.applyMonsterRows(rows),
+      onNodes: (rows, full) => engine.applyNodeRows(rows, full),
+      onMonsters: (rows, full) => engine.applyMonsterRows(rows, full),
       onBoss: (row) => engine.applyBossRow(row),
     });
     void net.start();
