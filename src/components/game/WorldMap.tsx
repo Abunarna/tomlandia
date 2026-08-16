@@ -387,25 +387,36 @@ export function WorldMap({ position, onClose }: Props) {
           ))}
         </svg>
 
-        {BIOMES.filter((b) => b.label).map((b) => (
-          <div
-            key={`label-${b.key}`}
-            className="pointer-events-none absolute z-30 flex flex-col items-center rounded-md px-1 py-0.5"
-            style={{
-              left: sx(b.x + b.w / 2),
-              top: sy(b.y + b.h * 0.32),
-              transform: "translate(-50%,-50%)",
-              background: "rgba(52,40,64,0.55)",
-            }}
-          >
-            <div className="text-center font-display font-bold leading-none text-white" style={{ fontSize: 7 }}>
-              {b.name}
+        {BIOMES.filter((b) => b.label).map((b) => {
+          const bx = b.x + b.w / 2;
+          const by = b.y + b.h / 2;
+          // Anchor each biome label directly above that biome's city.
+          const city = CITIES.reduce((best, c) =>
+            Math.hypot(c.cx - bx, c.cy - by) < Math.hypot(best.cx - bx, best.cy - by) ? c : best,
+          );
+          const lx = city.cx;
+          const ly = city.cy - cityOuterR(city) - 70;
+          return (
+            <div
+              key={`label-${b.key}`}
+              className="pointer-events-none absolute z-30 flex flex-col items-center rounded-md px-1 py-0.5"
+              style={{
+                left: sx(lx),
+                top: sy(ly),
+                transform: "translate(-50%,-100%)",
+                background: "rgba(52,40,64,0.55)",
+              }}
+            >
+              <div className="text-center font-display font-bold leading-none text-white" style={{ fontSize: 10.5 }}>
+                {b.name}
+              </div>
+              <div className="text-center font-bold leading-none text-white/80" style={{ fontSize: 7.5 }}>
+                {b.levels}
+              </div>
             </div>
-            <div className="text-center font-bold leading-none text-white/80" style={{ fontSize: 5 }}>
-              {b.levels}
-            </div>
-          </div>
-        ))}
+          );
+        })}
+
 
 
 
