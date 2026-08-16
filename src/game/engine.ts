@@ -3559,9 +3559,95 @@ export class GameEngine {
       }
     }
 
-    // --- signature monuments: the great sphinx / the Great Oak Hall
+    // --- signature monuments: the sphinx / the Great Oak Hall / the Frozen Hall
     const mon = CITY.monument;
-    if (mon && mon.kind === "oakhall") {
+    if (mon && mon.kind === "frozenhall") {
+      const mx = cx + mon.dx;
+      const my = cy + mon.dy;
+      const w = mon.w;
+      const h = mon.h;
+      ctx.save();
+      // swept snow apron
+      ctx.fillStyle = "rgba(255,255,255,0.55)";
+      ctx.beginPath();
+      ctx.ellipse(mx, my + h / 2 - 6, w / 2 + 26, 26, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // stone footing
+      ctx.fillStyle = "#8496a6";
+      ctx.fillRect(mx - w / 2 - 8, my + h / 2 - 26, w + 16, 26);
+      ctx.fillStyle = "#9dafbd";
+      for (let i = 0; i < 8; i++) ctx.fillRect(mx - w / 2 - 4 + i * (w / 8), my + h / 2 - 22, w / 8 - 8, 18);
+      // hall of carved ice blocks
+      ctx.fillStyle = "#bcdcf0";
+      ctx.fillRect(mx - w / 2, my - h / 5, w, h / 2 + h / 5);
+      ctx.fillStyle = "#d5ecfa";
+      for (let r = 0; r < 4; r++) {
+        for (let i = 0; i < 6; i++) {
+          const off = r % 2 ? 10 : 0;
+          ctx.fillRect(mx - w / 2 + 4 + off + i * (w / 6), my - h / 5 + 5 + r * 17, w / 6 - 9, 12);
+        }
+      }
+      // great doorway with an ice arch
+      ctx.fillStyle = "#5f7f96";
+      ctx.beginPath();
+      ctx.moveTo(mx - 24, my + h / 2 - 26);
+      ctx.lineTo(mx - 24, my + h / 8);
+      ctx.quadraticCurveTo(mx, my - h / 8, mx + 24, my + h / 8);
+      ctx.lineTo(mx + 24, my + h / 2 - 26);
+      ctx.closePath();
+      ctx.fill();
+      // glacial roof
+      ctx.fillStyle = "#a3c9e0";
+      ctx.beginPath();
+      ctx.moveTo(mx - w / 2 - 14, my - h / 5 + 4);
+      ctx.lineTo(mx, my - h / 2 - 10);
+      ctx.lineTo(mx + w / 2 + 14, my - h / 5 + 4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.8)";
+      ctx.beginPath();
+      ctx.moveTo(mx - w / 2 - 14, my - h / 5 + 4);
+      ctx.lineTo(mx, my - h / 2 - 10);
+      ctx.lineTo(mx + 6, my - h / 5 + 4);
+      ctx.closePath();
+      ctx.fill();
+      // icicles along the eaves
+      ctx.fillStyle = "rgba(224,246,255,0.95)";
+      for (let i = 0; i <= 12; i++) {
+        const ix = mx - w / 2 - 12 + i * ((w + 24) / 12);
+        const len = 8 + ((i * 7) % 11);
+        ctx.beginPath();
+        ctx.moveTo(ix - 3, my - h / 5 + 2);
+        ctx.lineTo(ix + 3, my - h / 5 + 2);
+        ctx.lineTo(ix, my - h / 5 + 2 + len);
+        ctx.closePath();
+        ctx.fill();
+      }
+      // twin ice spires flanking the ridge
+      for (const s of [-1, 1]) {
+        const sx = mx + s * (w / 2 - 6);
+        ctx.fillStyle = "#cfe8f8";
+        ctx.beginPath();
+        ctx.moveTo(sx - 12, my - h / 5);
+        ctx.lineTo(sx, my - h / 2 - 62);
+        ctx.lineTo(sx + 12, my - h / 5);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = "rgba(255,255,255,0.7)";
+        ctx.beginPath();
+        ctx.moveTo(sx - 5, my - h / 2 - 24);
+        ctx.lineTo(sx, my - h / 2 - 62);
+        ctx.lineTo(sx + 5, my - h / 2 - 24);
+        ctx.closePath();
+        ctx.fill();
+      }
+      // brazier glow in the doorway — the forge that never goes out
+      ctx.fillStyle = "rgba(255,168,90,0.35)";
+      ctx.beginPath();
+      ctx.arc(mx, my + h / 5, 20, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    } else if (mon && mon.kind === "oakhall") {
       const mx = cx + mon.dx;
       const my = cy + mon.dy;
       const w = mon.w;
