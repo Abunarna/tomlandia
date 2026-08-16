@@ -109,10 +109,41 @@ const SUNSPIRE: CityDef = {
   ],
 };
 
-export const CITIES: CityDef[] = [GRAND_HAVEN, SUNSPIRE];
+/**
+ * Willowbrook, the canopy city of the Lush Forest: a woven palisade of living
+ * hedge and split timber instead of stone, winding walkways between tree-house
+ * clusters, and the Great Oak Hall growing straight out of the plaza.
+ */
+const WILLOWBROOK: CityDef = {
+  key: "willowbrook",
+  name: "Willowbrook",
+  theme: "wood",
+  cx: 1960,
+  cy: 1710,
+  plazaR: 152,
+  ringR: [238, 312],
+  wallR: 326,
+  wallT: 22,
+  moatGap: 0,
+  moatW: 0,
+  phase: 3.4,
+  monument: { dx: 0, dy: 0, w: 190, h: 150, kind: "oakhall" },
+  gates: [
+    // 1 — the fieldward gate, onto the spine road down to Grand Haven
+    { angle: 2.67, half: 0.17, kind: "spine", label: "Fieldward Gate", drawbridge: false },
+    // 2 — the sunward gate, onto the caravan road up to Sunspire
+    { angle: -0.62, half: 0.17, kind: "spine", label: "Sunward Gate", drawbridge: false },
+    // 3 — the lakeside postern, out toward the forest fishing lake
+    { angle: -2.24, half: 0.15, kind: "local", label: "Lakeside Postern", drawbridge: false },
+    // 4 — the bramble postern onto the southern woods
+    { angle: 1.25, half: 0.15, kind: "local", label: "Bramble Postern", drawbridge: false },
+  ],
+};
+
+export const CITIES: CityDef[] = [GRAND_HAVEN, SUNSPIRE, WILLOWBROOK];
 /** Grand Haven stays the default city for the many single-city call sites */
 export const CITY = GRAND_HAVEN;
-export { GRAND_HAVEN, SUNSPIRE };
+export { GRAND_HAVEN, SUNSPIRE, WILLOWBROOK };
 
 /** organic wobble on the wall radius — smooth, deterministic, never self-crossing */
 export function cityWallR(a: number, c: CityDef = CITY): number {
