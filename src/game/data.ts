@@ -6,6 +6,7 @@ import {
   SUNSPIRE,
   WILLOWBROOK,
   FROSTFORGE,
+  DUSKMERE,
   onMonument,
   cityBlocked,
   cityGateAt,
