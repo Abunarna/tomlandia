@@ -331,7 +331,9 @@ export function WorldMap({ position, onClose }: Props) {
               strokeLinejoin="round"
               opacity={0.95}
             />
+          ))}
           {LAKES.map((l) => (
+
             <path
               key={`lake-${l.key}`}
               d={`${l.poly.map(([x, y], i) => `${i === 0 ? "M" : "L"}${sx(x)},${sy(y)}`).join(" ")} Z`}
