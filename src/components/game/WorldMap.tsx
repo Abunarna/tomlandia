@@ -15,6 +15,7 @@ import {
   WORLD_W,
 } from "@/game/data";
 import { BOSS_NAME, desolatusAt } from "@/game/boss";
+import { CITIES, cityOuterR } from "@/game/city";
 
 const MAX_ZOOM = 10;
 /** >1 makes pinch zoom move faster than the raw finger distance ratio. */
