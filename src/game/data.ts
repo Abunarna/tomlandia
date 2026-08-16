@@ -116,6 +116,17 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
     def("scale_hide", "Scaled Hide", 55, "#d9c07a", "resource"),
     def("shadow_pelt", "Shadow Pelt", 90, "#9b86bd", "resource"),
     def("frost_pelt", "Frost Pelt", 140, "#dcecf7", "resource"),
+    // monster trophies (charm family)
+    def("ram_horn", "Ram Horn", 5, "#c9a876", "resource"),
+    def("boar_tusk", "Boar Tusk", 12, "#e6ddc8", "resource"),
+    def("lynx_claw", "Lynx Claw", 24, "#6b5a42", "resource"),
+    def("jackal_fang", "Jackal Fang", 45, "#7a5c3a", "resource"),
+    def("scorpion_stinger", "Scorpion Stinger", 65, "#5a4020", "resource"),
+    def("ghoul_essence", "Ghoul Essence", 95, "#3f4a38", "resource"),
+    def("reaper_bone", "Reaper Bone", 130, "#e8e0d0", "resource"),
+    def("frost_fang", "Frost Fang", 175, "#8fb8d4", "resource"),
+    def("wraith_ice_core", "Wraith Ice Core", 220, "#5f9ec4", "resource"),
+    def("wyrm_scale", "Wyrm Scale", 300, "#a8d4e8", "resource"),
     // materials
     def("copper_bar", "Copper Bar", 18, "#e0a070", "material"),
     def("iron_bar", "Iron Bar", 40, "#b9b2ab", "material"),
