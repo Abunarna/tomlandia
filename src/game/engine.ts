@@ -3714,6 +3714,33 @@ export class GameEngine {
           ctx.arc(x + 9, y - 62, 11, 0, Math.PI * 2);
           ctx.fill();
         }
+        // the Gravehollow: gaunt watch-spires with a lantern and a crow
+        if (goth) {
+          ctx.fillStyle = P.towerDark;
+          ctx.beginPath();
+          ctx.moveTo(x - 10, y - 4);
+          ctx.lineTo(x - 7, y - 54);
+          ctx.lineTo(x + 7, y - 54);
+          ctx.lineTo(x + 10, y - 4);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = P.towerLight;
+          ctx.fillRect(x - 5, y - 46, 10, 3);
+          ctx.beginPath();
+          ctx.moveTo(x - 10, y - 52);
+          ctx.lineTo(x, y - 78);
+          ctx.lineTo(x + 10, y - 52);
+          ctx.closePath();
+          ctx.fillStyle = "#1c1824";
+          ctx.fill();
+          // guttering lantern
+          ctx.fillStyle = "rgba(214,168,86,0.5)";
+          ctx.beginPath();
+          ctx.arc(x, y - 40, 9, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#d6a856";
+          ctx.fillRect(x - 2, y - 42, 4, 5);
+        }
         // ice cities: carved ice spires, snow-capped, with icicle skirts
         if (ice) {
           ctx.fillStyle = P.towerLight;
