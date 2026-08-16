@@ -3423,6 +3423,22 @@ export class GameEngine {
           ctx.fillStyle = "#c98f4a";
           ctx.fill();
         }
+        // canopy cities: the gate towers are living trees with lookout decks
+        if (wood) {
+          ctx.fillStyle = "#5a4227";
+          ctx.fillRect(x - 5, y - 52, 10, 46);
+          ctx.fillStyle = "#6a4f2c";
+          ctx.fillRect(x - 15, y - 40, 30, 7);
+          ctx.fillStyle = "#3f7a45";
+          ctx.beginPath();
+          ctx.arc(x, y - 60, 20, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#59a05c";
+          ctx.beginPath();
+          ctx.arc(x - 7, y - 66, 13, 0, Math.PI * 2);
+          ctx.arc(x + 9, y - 62, 11, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
     }
 
