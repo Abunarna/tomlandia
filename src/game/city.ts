@@ -214,7 +214,7 @@ export function inCityOasis(x: number, y: number, pad = 0): boolean {
 }
 
 /** the monument footprint — solid */
-function onMonument(x: number, y: number, pad = 0): boolean {
+export function onMonument(x: number, y: number, pad = 0): boolean {
   for (const c of CITIES) {
     if (!c.monument) continue;
     const mx = c.cx + c.monument.dx;
