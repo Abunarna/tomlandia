@@ -916,15 +916,14 @@ for (const t of TOWN_SPECS) {
         const role = (p as { role?: string }).role;
         if (role) {
           // traders stand on the plaza side of their own building
-          let sr = r - h / 2 - 52;
+          let sr = Math.max(CITY.plazaR + 54, r - h / 2 - 46);
           let sa = a;
           for (let guard = 0; guard < 30; guard++) {
             const sx = t.cx + Math.cos(sa) * sr;
             const sy = t.cy + Math.sin(sa) * sr;
-            const clash = Object.values(npcSpots).some((s) => Math.hypot(s.x - sx, s.y - sy) < 78);
+            const clash = Object.values(npcSpots).some((s) => Math.hypot(s.x - sx, s.y - sy) < 120);
             if (!clash) break;
-            sa += 0.11;
-            sr -= 1.5;
+            sa += 0.13;
           }
           npcSpots[role] = { x: t.cx + Math.cos(sa) * sr, y: t.cy + Math.sin(sa) * sr };
         }
@@ -996,8 +995,7 @@ for (const t of TOWN_SPECS) {
     let a = Math.atan2(s.y - CITY.cy, s.x - CITY.cx);
     let r = Math.hypot(s.x - CITY.cx, s.y - CITY.cy);
     for (let guard = 0; guard < 60 && onBuilding(CITY.cx + Math.cos(a) * r, CITY.cy + Math.sin(a) * r); guard++) {
-      a += 0.08;
-      r = Math.max(CITY.plazaR + 26, r - 1.5);
+      a += 0.09;
     }
     npcSpots[role] = { x: CITY.cx + Math.cos(a) * r, y: CITY.cy + Math.sin(a) * r };
   }
