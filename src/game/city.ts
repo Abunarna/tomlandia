@@ -49,7 +49,15 @@ export interface CityDef {
   /** interior water feature at the heart of the city (Sunspire's oasis) */
   oasis?: { dx: number; dy: number; rx: number; ry: number };
   /** signature monument: a solid block players walk around */
-  monument?: { dx: number; dy: number; w: number; h: number; kind: "sphinx" | "oakhall" | "frozenhall" };
+  monument?: {
+    dx: number;
+    dy: number;
+    w: number;
+    h: number;
+    kind: "sphinx" | "oakhall" | "frozenhall" | "cathedral";
+  };
+  /** a fenced graveyard quarter — atmosphere only, never blocks movement */
+  graveyard?: { dx: number; dy: number; rx: number; ry: number; rot: number };
   /**
    * a frozen canal fed by a nearby lake — solid ice, so it is decorative only
    * and never blocks movement (world coords).
