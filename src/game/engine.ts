@@ -183,7 +183,22 @@ export interface RemotePlayer {
   act: string;
   seen: number;
   bob: number;
+  /** emote shown above their head, with a local expiry */
+  emote?: { e: string; until: number };
+  /** last emote timestamp we processed from them */
+  eat?: number;
 }
+
+/** The six quick-chat emotes in the radial menu, in clockwise order. */
+export const EMOTES = ["❤️", "😠", "😄", "😛", "noob", "👋"];
+/** Radius of the radial menu (world px) and of each option bubble. */
+const EMOTE_RING = 66;
+const EMOTE_R = 21;
+/** How long the menu stays open, how long an emote shows, spam cooldown. */
+const EMOTE_MENU_MS = 3000;
+const EMOTE_SHOW_MS = 3000;
+const EMOTE_CD_MS = 10000;
+
 
 /** Legacy pre-accounts local save. Read once so old progress can be claimed. */
 export const LEGACY_SAVE_KEY = "tomlandia.save.v1";
@@ -565,6 +580,7 @@ export class GameEngine {
 
   /** What we broadcast to our cell's neighbours. */
   presenceState() {
+    const emo = this.myEmote && this.myEmote.until > Date.now() ? this.myEmote : null;
     return {
       name: this.playerName,
       level: this.lvl("combat"),
@@ -572,6 +588,7 @@ export class GameEngine {
       y: Math.round(this.py),
       f: this.facing,
       act: this.activity,
+      ...(emo ? { emo: emo.e, eat: emo.at } : {}),
     };
   }
 
@@ -585,6 +602,10 @@ export class GameEngine {
       cur.name = p.name;
       cur.level = p.level;
       cur.seen = Date.now();
+      if (p.emo && p.eat && p.eat !== cur.eat) {
+        cur.eat = p.eat;
+        cur.emote = { e: p.emo, until: Date.now() + EMOTE_SHOW_MS };
+      }
     } else {
       this.remotes.set(p.id, {
         id: p.id,
@@ -598,9 +619,37 @@ export class GameEngine {
         act: p.act,
         seen: Date.now(),
         bob: Math.random() * 6,
+        ...(p.emo && p.eat
+          ? { eat: p.eat, emote: { e: p.emo, until: Date.now() + EMOTE_SHOW_MS } }
+          : {}),
       });
     }
   }
+
+  /* ---------- player-to-player emotes ---------- */
+
+  /** Radial menu currently open around a nearby player, if any. */
+  private emoteMenu: { id: string; until: number } | null = null;
+  /** Our own emote (shown locally + broadcast to neighbours). */
+  private myEmote: { e: string; at: number; until: number } | null = null;
+  /** Silent anti-spam gate — deliberately never surfaced in the UI. */
+  private emoteCdUntil = 0;
+
+  /** World-space centres of the six option bubbles around a player. */
+  private emoteSlots(x: number, y: number) {
+    return EMOTES.map((e, i) => {
+      const a = -Math.PI / 2 + (i * Math.PI * 2) / EMOTES.length;
+      return { e, x: x + Math.cos(a) * EMOTE_RING, y: y - 24 + Math.sin(a) * EMOTE_RING };
+    });
+  }
+
+  private sendEmote(e: string) {
+    const now = Date.now();
+    if (now < this.emoteCdUntil) return;
+    this.emoteCdUntil = now + EMOTE_CD_MS;
+    this.myEmote = { e, at: now, until: now + EMOTE_SHOW_MS };
+  }
+
 
   removeRemote(id: string) {
     this.remotes.delete(id);
@@ -1131,7 +1180,34 @@ export class GameEngine {
     const wx = sx - rect.left + this.cam.x;
     const wy = sy - rect.top + this.cam.y;
 
+    // An open emote radial swallows the tap: pick an option, or dismiss it.
+    const menu = this.emoteMenu;
+    if (menu && menu.until > Date.now()) {
+      const who = this.remotes.get(menu.id);
+      if (who) {
+        for (const slot of this.emoteSlots(who.x, who.y)) {
+          if (Math.hypot(slot.x - wx, slot.y - wy) < EMOTE_R + 6) {
+            this.sendEmote(slot.e);
+            this.emoteMenu = null;
+            return;
+          }
+        }
+      }
+      this.emoteMenu = null;
+      return;
+    }
+    this.emoteMenu = null;
+
+    // Tapping another human opens the quick-emote radial around them.
+    for (const r of this.remotes.values()) {
+      if (Math.hypot(r.x - wx, r.y - 12 - wy) < 34) {
+        this.emoteMenu = { id: r.id, until: Date.now() + EMOTE_MENU_MS };
+        return;
+      }
+    }
+
     let best: { d: number; t: Target } | null = null;
+
     if (this.bossAlive) {
       const d = Math.hypot(this.boss.x - wx, this.boss.y - 30 - wy);
       if (d < 80) best = { d: 0, t: { type: "boss" } };
@@ -2582,6 +2658,9 @@ export class GameEngine {
     drawables.push({ y: this.py, fn: () => this.drawPlayer(ctx) });
     drawables.sort((a, b) => a.y - b.y);
     for (const d of drawables) d.fn();
+    this.drawEmoteMenu(ctx);
+
+
 
     for (const p of this.parts) {
       ctx.globalAlpha = Math.max(0, p.life);
@@ -3588,7 +3667,66 @@ export class GameEngine {
     ctx.fill();
     ctx.fillStyle = "#f6f2ff";
     ctx.fillText(label, x, y - 43 - bob);
+    if (r.emote && r.emote.until > Date.now()) {
+      this.drawEmoteBubble(ctx, x, y - 72 - bob, r.emote.e);
+    }
   }
+
+  /** A small emoji/word bubble floating above a player's head. */
+  private drawEmoteBubble(ctx: CanvasRenderingContext2D, x: number, y: number, e: string) {
+    const word = e.length > 2;
+    ctx.font = word
+      ? "bold 15px ui-rounded, 'Baloo 2', system-ui, sans-serif"
+      : "20px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const w = Math.max(34, ctx.measureText(e).width + 16);
+    ctx.fillStyle = "rgba(255,255,255,0.94)";
+    ctx.strokeStyle = "rgba(70,55,70,0.35)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(x - w / 2, y - 15, w, 30, 15);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "#4a3b52";
+    ctx.fillText(e, x, y + 1);
+    ctx.textBaseline = "alphabetic";
+  }
+
+  /** The 6-option radial that follows the player you tapped. */
+  private drawEmoteMenu(ctx: CanvasRenderingContext2D) {
+    const menu = this.emoteMenu;
+    if (!menu) return;
+    if (menu.until <= Date.now()) {
+      this.emoteMenu = null;
+      return;
+    }
+    const who = this.remotes.get(menu.id);
+    if (!who) {
+      this.emoteMenu = null;
+      return;
+    }
+    for (const slot of this.emoteSlots(who.x, who.y)) {
+      ctx.fillStyle = "rgba(255,255,255,0.96)";
+      ctx.strokeStyle = "rgba(70,55,70,0.35)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(slot.x, slot.y, EMOTE_R, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      const word = slot.e.length > 2;
+      ctx.font = word
+        ? "bold 12px ui-rounded, 'Baloo 2', system-ui, sans-serif"
+        : "19px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#4a3b52";
+      ctx.fillText(slot.e, slot.x, slot.y + 1);
+      ctx.textBaseline = "alphabetic";
+    }
+  }
+
+
 
   private drawPlayer(ctx: CanvasRenderingContext2D) {
     const x = this.px;
@@ -3624,7 +3762,11 @@ export class GameEngine {
       ctx.fillRect(-2, -18, 4, 22);
       ctx.restore();
     }
+    if (this.myEmote && this.myEmote.until > Date.now()) {
+      this.drawEmoteBubble(ctx, x, y - 62 - bob, this.myEmote.e);
+    }
   }
+
 }
 
 /** Resample a polyline so consecutive points are at most `step` apart. */
