@@ -1036,7 +1036,7 @@ for (const t of TOWN_SPECS) {
     );
     // the oasis (Sunspire) and the Great Oak Hall (Willowbrook) eat the middle
     // of the plaza, so traders ring them a little wider
-    const r0 = city.plazaR + (city.oasis || city.monument?.kind === "oakhall" ? 34 : 58);
+    const r0 = city.plazaR + (city.oasis || city.monument?.kind !== "sphinx" ? 34 : 58);
     const taken: { x: number; y: number }[] = [];
     inCity.forEach(([role], i) => {
       const base = (i / inCity.length) * Math.PI * 2 + 0.25;
