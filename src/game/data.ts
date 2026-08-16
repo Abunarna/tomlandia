@@ -962,8 +962,8 @@ for (const t of TOWN_SPECS) {
     const placed: { x: number; y: number; w: number; h: number }[] = [];
     plan.forEach((p, i) => {
       const kind = p.kind;
-      const w = kind === "tower" ? 88 : kind === "stall" ? 96 : 104 + ((i * 13) % 26);
-      const h = kind === "tower" ? 126 : kind === "stall" ? 70 : 82 + ((i * 7) % 22);
+      const w = kind === "tower" ? 76 : kind === "stall" ? 84 : 88 + ((i * 13) % 22);
+      const h = kind === "tower" ? 108 : kind === "stall" ? 62 : 70 + ((i * 7) % 18);
       let spot: { x: number; y: number } | null = null;
       for (let tryI = 0; tryI < 400 && !spot; tryI++) {
         const s = i * 17.3 + tryI * 1.7;
@@ -971,7 +971,7 @@ for (const t of TOWN_SPECS) {
         const r = city.plazaR + 50 + rand01(s + 91) * (city.wallR - city.plazaR - 118);
         const x = city.cx + Math.cos(a) * r;
         const y = city.cy + Math.sin(a) * r;
-        if (inGateCorridor(a, city)) continue;
+        if (inGateCorridor(a, city) || cityGateAt(a + 0.34, city) || cityGateAt(a - 0.34, city)) continue;
         if (onMonument(x, y, Math.max(w, h) / 2 + 30)) continue;
         if (gy) {
           const gx = city.cx + gy.dx;
@@ -979,7 +979,7 @@ for (const t of TOWN_SPECS) {
           if (Math.abs(x - gx) < gy.rx + w / 2 + 18 && Math.abs(y - gyy) < gy.ry + h / 2 + 18) continue;
         }
         // narrow alleys: neighbours may crowd in, but never overlap
-        const alley = 16 + rand01(s + 33) * 22;
+        const alley = 12 + rand01(s + 33) * 16;
         const clash = placed.some(
           (b) =>
             Math.abs(b.x - x) < (b.w + w) / 2 + alley && Math.abs(b.y - y) < (b.h + h) / 2 + alley,
