@@ -1026,8 +1026,9 @@ for (const t of TOWN_SPECS) {
       (p, q) =>
         Math.atan2(p[1].y - city.cy, p[1].x - city.cx) - Math.atan2(q[1].y - city.cy, q[1].x - city.cx),
     );
-    // the oasis eats the middle of Sunspire's plaza, so traders ring it wider
-    const r0 = city.plazaR + (city.oasis ? 34 : 58);
+    // the oasis (Sunspire) and the Great Oak Hall (Willowbrook) eat the middle
+    // of the plaza, so traders ring them a little wider
+    const r0 = city.plazaR + (city.oasis || city.monument?.kind === "oakhall" ? 34 : 58);
     const taken: { x: number; y: number }[] = [];
     inCity.forEach(([role], i) => {
       const base = (i / inCity.length) * Math.PI * 2 + 0.25;
@@ -1038,7 +1039,7 @@ for (const t of TOWN_SPECS) {
           const r = r0 + dr;
           const x = city.cx + Math.cos(a) * r;
           const y = city.cy + Math.sin(a) * r;
-          if (onBuilding(x, y) || inCityOasis(x, y, 18)) continue;
+          if (onBuilding(x, y) || inCityOasis(x, y, 18) || onMonument(x, y, 18)) continue;
           const gap = taken.length ? Math.min(...taken.map((t) => Math.hypot(t.x - x, t.y - y))) : 400;
           const score = Math.min(gap, 150) - Math.abs(da) * 40 - Math.abs(dr) * 0.2;
           if (score > best.score) best = { x, y, score };
