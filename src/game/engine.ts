@@ -35,7 +35,7 @@ import {
   type LakeDef,
 } from "./data";
 import { TILE_H, TILE_W } from "./data";
-import { CITY, CITY_OUTER_R, cityGateAt, cityWallR } from "./city";
+import { CITIES, cityGateAt, cityOuterR, cityWallR, type CityDef } from "./city";
 import {
   BOSS_ATTACK_RADIUS,
   BOSS_HP,
@@ -3102,85 +3102,169 @@ export class GameEngine {
     }
   }
 
-  /** Grand Haven — plaza, ring road, spokes, moat, stone wall and its gates */
+  /** the walled cities — plaza, ring road, spokes, water, wall and gates */
   private drawCity(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
-    const R = CITY_OUTER_R + 40;
-    if (
-      CITY.cx - R > view.x + view.w ||
-      CITY.cx + R < view.x ||
-      CITY.cy - R > view.y + view.h ||
-      CITY.cy + R < view.y
-    ) {
-      return;
+    for (const city of CITIES) {
+      const R = cityOuterR(city) + 60;
+      if (
+        city.cx - R > view.x + view.w ||
+        city.cx + R < view.x ||
+        city.cy - R > view.y + view.h ||
+        city.cy + R < view.y
+      ) {
+        continue;
+      }
+      this.drawOneCity(ctx, city);
     }
+  }
+
+  private drawOneCity(ctx: CanvasRenderingContext2D, CITY: CityDef) {
+    const sand = CITY.theme === "sand";
+    const P = sand
+      ? {
+          plaza: "#e6cd9a",
+          plazaEdge: "#cfae79",
+          ring: "#e0c48f",
+          wallDark: "#a8823f",
+          wallLight: "#e2c184",
+          merlon: "#f0d5a0",
+          towerDark: "#8f6d34",
+          towerLight: "#dcbb7e",
+        }
+      : {
+          plaza: "#c9ae86",
+          plazaEdge: "#b1936c",
+          ring: "#c4a67c",
+          wallDark: "#6f6a63",
+          wallLight: "#a8a298",
+          merlon: "#cbc5b9",
+          towerDark: "#5f5a54",
+          towerLight: "#9d968c",
+        };
     const { cx, cy } = CITY;
     const at = (a: number, r: number): [number, number] => [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
 
-    // --- moat: a water band, broken by the three postern causeways
-    for (let a = -Math.PI; a < Math.PI; a += 0.018) {
-      const g = cityGateAt(a);
-      if (g && !g.drawbridge) continue;
-      const inner = cityWallR(a) + CITY.moatGap;
-      const outer = inner + CITY.moatW;
-      const [x1, y1] = at(a, inner);
-      const [x2, y2] = at(a + 0.02, inner);
-      const [x3, y3] = at(a + 0.02, outer);
-      const [x4, y4] = at(a, outer);
-      ctx.fillStyle = "#3c6f96";
-      ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
-      ctx.lineTo(x3, y3);
-      ctx.lineTo(x4, y4);
-      ctx.closePath();
-      ctx.fill();
-      ctx.fillStyle = ((a * 40) | 0) % 3 === 0 ? "rgba(180,220,240,0.22)" : "rgba(20,50,80,0.18)";
-      ctx.fill();
-    }
-    // grassy banks
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = "#6f9464";
-    for (const k of [CITY.moatGap - 2, CITY.moatGap + CITY.moatW + 2]) {
-      ctx.beginPath();
-      for (let a = -Math.PI; a <= Math.PI; a += 0.03) {
-        const [x, y] = at(a, cityWallR(a) + k);
-        if (a === -Math.PI) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+    // --- moat: a water band, broken by the postern causeways
+    if (CITY.moatW > 0) {
+      for (let a = -Math.PI; a < Math.PI; a += 0.018) {
+        const g = cityGateAt(a, CITY);
+        if (g && !g.drawbridge) continue;
+        const inner = cityWallR(a, CITY) + CITY.moatGap;
+        const outer = inner + CITY.moatW;
+        const [x1, y1] = at(a, inner);
+        const [x2, y2] = at(a + 0.02, inner);
+        const [x3, y3] = at(a + 0.02, outer);
+        const [x4, y4] = at(a, outer);
+        ctx.fillStyle = "#3c6f96";
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineTo(x3, y3);
+        ctx.lineTo(x4, y4);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = ((a * 40) | 0) % 3 === 0 ? "rgba(180,220,240,0.22)" : "rgba(20,50,80,0.18)";
+        ctx.fill();
       }
-      ctx.closePath();
-      ctx.stroke();
+      // grassy banks
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = "#6f9464";
+      for (const k of [CITY.moatGap - 2, CITY.moatGap + CITY.moatW + 2]) {
+        ctx.beginPath();
+        for (let a = -Math.PI; a <= Math.PI; a += 0.03) {
+          const [x, y] = at(a, cityWallR(a, CITY) + k);
+          if (a === -Math.PI) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.stroke();
+      }
     }
 
     // --- plaza + ring road + spokes to each gate
-    ctx.fillStyle = "#c9ae86";
+    ctx.fillStyle = P.plaza;
     ctx.beginPath();
     ctx.arc(cx, cy, CITY.plazaR, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = "#b1936c";
+    ctx.strokeStyle = P.plazaEdge;
     ctx.lineWidth = 6;
     ctx.stroke();
 
     const ringMid = (CITY.ringR[0]! + CITY.ringR[1]!) / 2;
-    ctx.strokeStyle = "#c4a67c";
+    ctx.strokeStyle = P.ring;
     ctx.lineWidth = 46;
     ctx.beginPath();
     ctx.arc(cx, cy, ringMid, 0, Math.PI * 2);
     ctx.stroke();
     for (const g of CITY.gates) {
-      const [gx, gy] = at(g.angle, cityWallR(g.angle) + CITY.moatGap + CITY.moatW + 30);
+      const [gx, gy] = at(g.angle, cityWallR(g.angle, CITY) + CITY.moatGap + CITY.moatW + 30);
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.lineTo(gx, gy);
       ctx.lineWidth = g.drawbridge ? 44 : 34;
       ctx.stroke();
     }
+    // sandstone cities get narrow winding medina alleys between the rings
+    if (sand) {
+      ctx.strokeStyle = P.ring;
+      ctx.lineWidth = 15;
+      for (let k = 0; k < 11; k++) {
+        const a0 = (k / 11) * Math.PI * 2 + 0.18;
+        ctx.beginPath();
+        for (let t = 0; t <= 1.001; t += 0.1) {
+          const a = a0 + Math.sin(t * Math.PI * 2 + k) * 0.12;
+          const r = CITY.plazaR + t * (cityWallR(a0, CITY) - 40 - CITY.plazaR);
+          const [x, y] = at(a, r);
+          if (t === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+    }
+
+    // --- the oasis pool at the heart of a desert city
+    if (CITY.oasis) {
+      const ox = cx + CITY.oasis.dx;
+      const oy = cy + CITY.oasis.dy;
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(ox, oy, CITY.oasis.rx + 9, CITY.oasis.ry + 9, 0, 0, Math.PI * 2);
+      ctx.fillStyle = "#cbab74";
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(ox, oy, CITY.oasis.rx, CITY.oasis.ry, 0, 0, Math.PI * 2);
+      ctx.fillStyle = "#2f7f9e";
+      ctx.fill();
+      ctx.clip();
+      ctx.fillStyle = "rgba(160,225,240,0.22)";
+      for (let i = 0; i < 7; i++) {
+        const yy = oy - CITY.oasis.ry + (i * CITY.oasis.ry * 2) / 7 + 6;
+        ctx.fillRect(ox - CITY.oasis.rx + ((i * 17) % 30), yy, 34 + (i % 3) * 12, 4);
+      }
+      ctx.restore();
+      // palms round the pool
+      for (let i = 0; i < 5; i++) {
+        const a = (i / 5) * Math.PI * 2 + 0.7;
+        const px = ox + Math.cos(a) * (CITY.oasis.rx + 26);
+        const py = oy + Math.sin(a) * (CITY.oasis.ry + 24);
+        ctx.fillStyle = "#8a6a3d";
+        ctx.fillRect(px - 3, py - 26, 6, 26);
+        ctx.fillStyle = "#4f9c63";
+        for (let f = 0; f < 5; f++) {
+          const fa = (f / 5) * Math.PI * 2;
+          ctx.beginPath();
+          ctx.ellipse(px + Math.cos(fa) * 12, py - 28 + Math.sin(fa) * 7, 13, 5, fa, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
 
     // --- drawbridge deck over the moat at the primary gate
     const prim = CITY.gates.find((g) => g.drawbridge);
-    if (prim) {
-      const inner = cityWallR(prim.angle) + CITY.moatGap - 6;
+    if (prim && CITY.moatW > 0) {
+      const inner = cityWallR(prim.angle, CITY) + CITY.moatGap - 6;
       const outer = inner + CITY.moatW + 14;
-      const halfW = prim.half * 0.72 * cityWallR(prim.angle);
+      const halfW = prim.half * 0.72 * cityWallR(prim.angle, CITY);
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(prim.angle);
@@ -3202,7 +3286,7 @@ export class GameEngine {
       ctx.beginPath();
       let first = true;
       for (let a = from; a <= to; a += 0.02) {
-        const [x, y] = at(a, cityWallR(a));
+        const [x, y] = at(a, cityWallR(a, CITY));
         if (first) {
           ctx.moveTo(x, y);
           first = false;
@@ -3215,30 +3299,97 @@ export class GameEngine {
       const from = gates[i]!.angle + gates[i]!.half;
       const to = (gates[(i + 1) % gates.length]!.angle - gates[(i + 1) % gates.length]!.half) +
         (i === gates.length - 1 ? Math.PI * 2 : 0);
-      drawArc(from, to, CITY.wallT + 6, "#6f6a63");
-      drawArc(from, to, CITY.wallT - 4, "#a8a298");
+      drawArc(from, to, CITY.wallT + 6, P.wallDark);
+      drawArc(from, to, CITY.wallT - 4, P.wallLight);
       // merlons
       for (let a = from; a <= to; a += 0.06) {
-        const [x, y] = at(a, cityWallR(a) - CITY.wallT / 2 + 2);
-        ctx.fillStyle = "#cbc5b9";
+        const [x, y] = at(a, cityWallR(a, CITY) - CITY.wallT / 2 + 2);
+        ctx.fillStyle = P.merlon;
         ctx.fillRect(x - 4, y - 4, 8, 8);
       }
     }
 
-    // --- gatehouses: a stone tower each side of every opening
+    // --- gatehouses: a tower each side of every opening
     for (const g of CITY.gates) {
       for (const s of [-1, 1]) {
         const a = g.angle + s * g.half;
-        const [x, y] = at(a, cityWallR(a));
-        ctx.fillStyle = "#5f5a54";
+        const [x, y] = at(a, cityWallR(a, CITY));
+        ctx.fillStyle = P.towerDark;
         ctx.beginPath();
-        ctx.arc(x, y, g.drawbridge ? 22 : 17, 0, Math.PI * 2);
+        ctx.arc(x, y, g.kind === "spine" ? 22 : 17, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = "#9d968c";
+        ctx.fillStyle = P.towerLight;
         ctx.beginPath();
-        ctx.arc(x, y - 3, g.drawbridge ? 17 : 13, 0, Math.PI * 2);
+        ctx.arc(x, y - 3, g.kind === "spine" ? 17 : 13, 0, Math.PI * 2);
         ctx.fill();
+        // sandstone cities carry slender minarets on their gatehouses
+        if (sand) {
+          ctx.fillStyle = P.towerLight;
+          ctx.fillRect(x - 6, y - 58, 12, 52);
+          ctx.fillStyle = P.towerDark;
+          ctx.fillRect(x - 8, y - 40, 16, 5);
+          ctx.beginPath();
+          ctx.moveTo(x - 10, y - 56);
+          ctx.lineTo(x, y - 78);
+          ctx.lineTo(x + 10, y - 56);
+          ctx.closePath();
+          ctx.fillStyle = "#c98f4a";
+          ctx.fill();
+        }
       }
+    }
+
+    // --- signature monument: the great sphinx at the caravan approach
+    const mon = CITY.monument;
+    if (mon) {
+      const mx = cx + mon.dx;
+      const my = cy + mon.dy;
+      const w = mon.w;
+      const h = mon.h;
+      ctx.save();
+      ctx.fillStyle = "rgba(90,66,30,0.20)";
+      ctx.beginPath();
+      ctx.ellipse(mx, my + h / 2 - 4, w / 2 + 8, 16, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // plinth
+      ctx.fillStyle = "#c39a55";
+      ctx.fillRect(mx - w / 2, my + h / 2 - 18, w, 18);
+      ctx.fillStyle = "#a97f3f";
+      ctx.fillRect(mx - w / 2, my + h / 2 - 6, w, 6);
+      // couchant body
+      ctx.fillStyle = "#e3bd77";
+      ctx.beginPath();
+      ctx.moveTo(mx - w / 2 + 6, my + h / 2 - 18);
+      ctx.lineTo(mx - w / 2 + 16, my - h / 4);
+      ctx.lineTo(mx + w / 4, my - h / 3);
+      ctx.lineTo(mx + w / 2 - 4, my + h / 2 - 18);
+      ctx.closePath();
+      ctx.fill();
+      // forelegs
+      ctx.fillStyle = "#d7ae68";
+      ctx.fillRect(mx + w / 6, my + 2, w / 3, h / 2 - 20);
+      ctx.fillStyle = "#c39a55";
+      for (let i = 0; i < 3; i++) ctx.fillRect(mx + w / 6 + 6 + i * 12, my + h / 2 - 24, 7, 6);
+      // headdress + head
+      ctx.fillStyle = "#dcb069";
+      ctx.beginPath();
+      ctx.moveTo(mx + w / 4 - 6, my - h / 3);
+      ctx.lineTo(mx + w / 2 - 2, my - h / 2 - 16);
+      ctx.lineTo(mx + w / 2 + 16, my - h / 4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = "#efd096";
+      ctx.beginPath();
+      ctx.ellipse(mx + w / 3 + 6, my - h / 4 - 4, 17, 19, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // striped nemes
+      ctx.fillStyle = "#b9853c";
+      for (let i = 0; i < 3; i++) ctx.fillRect(mx + w / 4 + 2, my - h / 3 + i * 7, 20, 3);
+      // eyes
+      ctx.fillStyle = "#5c4423";
+      ctx.fillRect(mx + w / 3 + 1, my - h / 4 - 7, 5, 4);
+      ctx.fillRect(mx + w / 3 + 13, my - h / 4 - 7, 5, 4);
+      ctx.restore();
     }
   }
 

@@ -1,5 +1,17 @@
 import type { ItemDef, ItemFamily, ItemId, QuestDef, SkillId } from "./types";
-import { CITY, CITY_OUTER_R, cityBlocked, cityGateAt, cityKeepOut, pushOutsideCity } from "./city";
+import {
+  CITIES,
+  CITY,
+  CITY_OUTER_R,
+  SUNSPIRE,
+  cityBlocked,
+  cityGateAt,
+  cityKeepOut,
+  cityOuterR,
+  inCityOasis,
+  pushOutsideCity,
+  type CityDef,
+} from "./city";
 
 /* ------------------------------------------------------------------ */
 /* Items                                                               */
@@ -773,6 +785,8 @@ interface TownSpec {
   cy: number;
   /** walled cities use an organic ring plan instead of the crossroads grid */
   rings?: number[];
+  /** the walled-city geometry this town is laid out inside */
+  city?: CityDef;
   count: number;
   wall: string;
   beam: string;
@@ -786,6 +800,7 @@ const TOWN_SPECS: TownSpec[] = [
     cx: CITY.cx,
     cy: CITY.cy,
     rings: CITY.ringR,
+    city: CITY,
     count: 14,
     wall: "#fdf1dd",
     beam: "#8b6b52",
@@ -810,8 +825,10 @@ const TOWN_SPECS: TownSpec[] = [
     ],
   },
   {
-    cx: 3100,
-    cy: 900,
+    cx: SUNSPIRE.cx,
+    cy: SUNSPIRE.cy,
+    rings: SUNSPIRE.ringR,
+    city: SUNSPIRE,
     count: 13,
     wall: "#fdf0d4",
     beam: "#a8834e",
@@ -879,12 +896,13 @@ const streets: StreetDef[] = [];
 const npcSpots: Record<string, { x: number; y: number }> = {};
 
 /** true when a bearing sits in a gate's approach corridor — kept build-free */
-function inGateCorridor(a: number) {
-  return cityGateAt(a) !== null || cityGateAt(a + 0.2) !== null || cityGateAt(a - 0.2) !== null;
+function inGateCorridor(a: number, c: CityDef) {
+  return cityGateAt(a, c) !== null || cityGateAt(a + 0.2, c) !== null || cityGateAt(a - 0.2, c) !== null;
 }
 
 for (const t of TOWN_SPECS) {
-  if (t.rings) {
+  if (t.rings && t.city) {
+    const city = t.city;
     // ---- walled city: buildings ring an open plaza, gate corridors left clear
     const plan = [...t.anchors, ...t.fill].slice(0, t.count);
     const perRing = [Math.ceil(plan.length * 0.42), plan.length - Math.ceil(plan.length * 0.42)];
@@ -895,7 +913,7 @@ for (const t of TOWN_SPECS) {
         const p = plan[idx];
         if (!p) break;
         let a = (k / n) * Math.PI * 2 + (ri === 0 ? 0.35 : 0.16) + rand01(idx * 3.7 + ri) * 0.12;
-        for (let guard = 0; guard < 24 && inGateCorridor(a); guard++) a += 0.09;
+        for (let guard = 0; guard < 24 && inGateCorridor(a, city); guard++) a += 0.09;
         const r = ringR + (rand01(idx * 5.1 + 3) - 0.5) * 26;
         const kind = p.kind;
         const w = kind === "tower" ? 96 : kind === "stall" ? 104 : LOT_W;
@@ -916,7 +934,7 @@ for (const t of TOWN_SPECS) {
         const role = (p as { role?: string }).role;
         if (role) {
           // traders stand on the plaza side of their own building
-          let sr = Math.max(CITY.plazaR + 54, r - h / 2 - 46);
+          let sr = Math.max(city.plazaR + 54, r - h / 2 - 46);
           let sa = a;
           for (let guard = 0; guard < 30; guard++) {
             const sx = t.cx + Math.cos(sa) * sr;
@@ -983,29 +1001,44 @@ for (const t of TOWN_SPECS) {
   });
 }
 
-// A trader may end up standing where a later building landed; walk each city
-// spot around the plaza until it is on clear cobbles again.
+// A trader may end up standing where a later building landed; seat every city
+// trader evenly around its plaza on clear cobbles.
 {
   const onBuilding = (x: number, y: number) =>
     buildings.some(
-      (b) => x > b.x - 16 && x < b.x + b.w + 16 && y > b.y + b.h * 0.3 - 16 && y < b.y + b.h + 16,
+      (b) => x > b.x - 18 && x < b.x + b.w + 18 && y > b.y - 18 && y < b.y + b.h + 18,
     );
-  const inCity = Object.entries(npcSpots).filter(
-    ([, s]) => Math.hypot(s.x - CITY.cx, s.y - CITY.cy) <= CITY_OUTER_R,
-  );
-  inCity.sort((p, q) => Math.atan2(p[1].y - CITY.cy, p[1].x - CITY.cx) - Math.atan2(q[1].y - CITY.cy, q[1].x - CITY.cx));
-  const r0 = CITY.plazaR + 58;
-  inCity.forEach(([role], i) => {
-    const base = (i / inCity.length) * Math.PI * 2 + 0.25;
-    let a = base;
-    let r = r0;
-    for (let guard = 0; guard < 26; guard++) {
-      if (!onBuilding(CITY.cx + Math.cos(a) * r, CITY.cy + Math.sin(a) * r)) break;
-      a = base + (guard % 2 ? -1 : 1) * 0.05 * Math.ceil((guard + 1) / 2);
-      r = r0 - (guard > 12 ? 22 : 0);
-    }
-    npcSpots[role] = { x: CITY.cx + Math.cos(a) * r, y: CITY.cy + Math.sin(a) * r };
-  });
+  for (const city of CITIES) {
+    const inCity = Object.entries(npcSpots).filter(
+      ([, s]) => Math.hypot(s.x - city.cx, s.y - city.cy) <= cityOuterR(city),
+    );
+    if (!inCity.length) continue;
+    inCity.sort(
+      (p, q) =>
+        Math.atan2(p[1].y - city.cy, p[1].x - city.cx) - Math.atan2(q[1].y - city.cy, q[1].x - city.cx),
+    );
+    // the oasis eats the middle of Sunspire's plaza, so traders ring it wider
+    const r0 = city.plazaR + (city.oasis ? 34 : 58);
+    const taken: { x: number; y: number }[] = [];
+    inCity.forEach(([role], i) => {
+      const base = (i / inCity.length) * Math.PI * 2 + 0.25;
+      let best = { x: city.cx + Math.cos(base) * r0, y: city.cy + Math.sin(base) * r0, score: -1e9 };
+      for (let da = -0.55; da <= 0.55; da += 0.05) {
+        for (const dr of [0, 26, -22, 48]) {
+          const a = base + da;
+          const r = r0 + dr;
+          const x = city.cx + Math.cos(a) * r;
+          const y = city.cy + Math.sin(a) * r;
+          if (onBuilding(x, y) || inCityOasis(x, y, 18)) continue;
+          const gap = taken.length ? Math.min(...taken.map((t) => Math.hypot(t.x - x, t.y - y))) : 400;
+          const score = Math.min(gap, 150) - Math.abs(da) * 40 - Math.abs(dr) * 0.2;
+          if (score > best.score) best = { x, y, score };
+        }
+      }
+      taken.push({ x: best.x, y: best.y });
+      npcSpots[role] = { x: best.x, y: best.y };
+    });
+  }
 }
 
 export const BUILDINGS: BuildingDef[] = buildings;
