@@ -186,10 +186,42 @@ const FROSTFORGE: CityDef = {
   ],
 };
 
-export const CITIES: CityDef[] = [GRAND_HAVEN, SUNSPIRE, WILLOWBROOK, FROSTFORGE];
+/**
+ * Duskmere, the Gravehollow of the Evil Woods: wrought iron and crumbling
+ * stone instead of a proper wall, crooked houses leaning over maze-like
+ * alleys, a fenced graveyard quarter and the black cathedral over it all.
+ */
+const DUSKMERE: CityDef = {
+  key: "duskmere",
+  name: "Duskmere",
+  theme: "gothic",
+  cx: 4400,
+  cy: 1180,
+  plazaR: 150,
+  ringR: [236, 310],
+  wallR: 336,
+  wallT: 22,
+  moatGap: 0,
+  moatW: 0,
+  phase: 4.2,
+  monument: { dx: 0, dy: -8, w: 188, h: 168, kind: "cathedral" },
+  graveyard: { dx: 6, dy: 214, rx: 150, ry: 96, rot: 0.16 },
+  gates: [
+    // 1 — the sunward gate, onto the road west to Sunspire
+    { angle: 2.93, half: 0.17, kind: "spine", label: "Sunward Gate", drawbridge: false },
+    // 2 — the frostward gate, onto the road east to Frostforge
+    { angle: 0.91, half: 0.17, kind: "spine", label: "Frostward Gate", drawbridge: false },
+    // 3 — the lychgate onto the northern hollows
+    { angle: -1.32, half: 0.15, kind: "local", label: "Lychgate", drawbridge: false },
+    // 4 — the carrion postern onto the southern thickets
+    { angle: 1.98, half: 0.14, kind: "local", label: "Carrion Postern", drawbridge: false },
+  ],
+};
+
+export const CITIES: CityDef[] = [GRAND_HAVEN, SUNSPIRE, WILLOWBROOK, FROSTFORGE, DUSKMERE];
 /** Grand Haven stays the default city for the many single-city call sites */
 export const CITY = GRAND_HAVEN;
-export { GRAND_HAVEN, SUNSPIRE, WILLOWBROOK, FROSTFORGE };
+export { GRAND_HAVEN, SUNSPIRE, WILLOWBROOK, FROSTFORGE, DUSKMERE };
 
 /** organic wobble on the wall radius — smooth, deterministic, never self-crossing */
 export function cityWallR(a: number, c: CityDef = CITY): number {
