@@ -3307,6 +3307,66 @@ export class GameEngine {
       }
       ctx.lineCap = "butt";
     }
+    // ice cities: concentric swept snow rings between the building rings
+    if (ice) {
+      ctx.strokeStyle = P.ring;
+      for (const [rr, lw] of [[CITY.plazaR + 46, 20], [CITY.ringR[1]! + 12, 16]] as [number, number][]) {
+        ctx.lineWidth = lw;
+        ctx.beginPath();
+        ctx.arc(cx, cy, rr, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      // drifted snow blown against the inside of the wall
+      ctx.strokeStyle = "rgba(255,255,255,0.55)";
+      ctx.lineWidth = 12;
+      ctx.beginPath();
+      for (let a = -Math.PI; a <= Math.PI; a += 0.03) {
+        const [x, y] = at(a, cityWallR(a, CITY) - CITY.wallT - 8);
+        if (a === -Math.PI) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    // --- the frozen canal, cut up from the mountain lake and in through a gate
+    if (CITY.canal) {
+      const { x1, y1, x2, y2, w } = CITY.canal;
+      const ang = Math.atan2(y2 - y1, x2 - x1);
+      ctx.save();
+      ctx.translate(x1, y1);
+      ctx.rotate(ang);
+      const len = Math.hypot(x2 - x1, y2 - y1);
+      // cut banks of packed snow
+      ctx.fillStyle = "#e9f4fb";
+      ctx.fillRect(0, -w / 2 - 9, len, w + 18);
+      // the ice itself
+      ctx.fillStyle = "#9fc9e2";
+      ctx.fillRect(0, -w / 2, len, w);
+      ctx.fillStyle = "rgba(255,255,255,0.35)";
+      for (let t = 8; t < len; t += 34) ctx.fillRect(t, -w / 2 + 4, 18, 5);
+      // cracks
+      ctx.strokeStyle = "rgba(240,252,255,0.65)";
+      ctx.lineWidth = 2;
+      for (let t = 20; t < len; t += 46) {
+        ctx.beginPath();
+        ctx.moveTo(t, -w / 2 + 3);
+        ctx.lineTo(t + 14, 2);
+        ctx.lineTo(t + 4, w / 2 - 3);
+        ctx.stroke();
+      }
+      // a basin where the canal meets the plaza
+      ctx.restore();
+      ctx.fillStyle = "#e9f4fb";
+      ctx.beginPath();
+      ctx.ellipse(x2, y2, w * 1.15, w * 0.82, ang, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#a8d2e8";
+      ctx.beginPath();
+      ctx.ellipse(x2, y2, w, w * 0.66, ang, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+
 
     // --- the oasis pool at the heart of a desert city
     if (CITY.oasis) {
