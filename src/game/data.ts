@@ -916,15 +916,14 @@ for (const t of TOWN_SPECS) {
         const role = (p as { role?: string }).role;
         if (role) {
           // traders stand on the plaza side of their own building
-          let sr = r - h / 2 - 52;
+          let sr = Math.max(CITY.plazaR + 54, r - h / 2 - 46);
           let sa = a;
           for (let guard = 0; guard < 30; guard++) {
             const sx = t.cx + Math.cos(sa) * sr;
             const sy = t.cy + Math.sin(sa) * sr;
-            const clash = Object.values(npcSpots).some((s) => Math.hypot(s.x - sx, s.y - sy) < 78);
+            const clash = Object.values(npcSpots).some((s) => Math.hypot(s.x - sx, s.y - sy) < 120);
             if (!clash) break;
-            sa += 0.11;
-            sr -= 1.5;
+            sa += 0.13;
           }
           npcSpots[role] = { x: t.cx + Math.cos(sa) * sr, y: t.cy + Math.sin(sa) * sr };
         }
@@ -991,16 +990,22 @@ for (const t of TOWN_SPECS) {
     buildings.some(
       (b) => x > b.x - 16 && x < b.x + b.w + 16 && y > b.y + b.h * 0.3 - 16 && y < b.y + b.h + 16,
     );
-  for (const [role, s] of Object.entries(npcSpots)) {
-    if (Math.hypot(s.x - CITY.cx, s.y - CITY.cy) > CITY_OUTER_R) continue;
-    let a = Math.atan2(s.y - CITY.cy, s.x - CITY.cx);
-    let r = Math.hypot(s.x - CITY.cx, s.y - CITY.cy);
-    for (let guard = 0; guard < 60 && onBuilding(CITY.cx + Math.cos(a) * r, CITY.cy + Math.sin(a) * r); guard++) {
-      a += 0.08;
-      r = Math.max(CITY.plazaR + 26, r - 1.5);
+  const inCity = Object.entries(npcSpots).filter(
+    ([, s]) => Math.hypot(s.x - CITY.cx, s.y - CITY.cy) <= CITY_OUTER_R,
+  );
+  inCity.sort((p, q) => Math.atan2(p[1].y - CITY.cy, p[1].x - CITY.cx) - Math.atan2(q[1].y - CITY.cy, q[1].x - CITY.cx));
+  const r0 = CITY.plazaR + 58;
+  inCity.forEach(([role], i) => {
+    const base = (i / inCity.length) * Math.PI * 2 + 0.25;
+    let a = base;
+    let r = r0;
+    for (let guard = 0; guard < 26; guard++) {
+      if (!onBuilding(CITY.cx + Math.cos(a) * r, CITY.cy + Math.sin(a) * r)) break;
+      a = base + (guard % 2 ? -1 : 1) * 0.05 * Math.ceil((guard + 1) / 2);
+      r = r0 - (guard > 12 ? 22 : 0);
     }
     npcSpots[role] = { x: CITY.cx + Math.cos(a) * r, y: CITY.cy + Math.sin(a) * r };
-  }
+  });
 }
 
 export const BUILDINGS: BuildingDef[] = buildings;

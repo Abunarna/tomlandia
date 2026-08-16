@@ -48,7 +48,7 @@ export const CITY: CityDef = {
   cx: 800,
   cy: 2300,
   plazaR: 96,
-  ringR: [186, 268],
+  ringR: [200, 278],
   wallR: 320,
   wallT: 26,
   moatGap: 30,
