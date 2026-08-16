@@ -2805,6 +2805,7 @@ export class GameEngine {
     }
     ctx.lineWidth = 1;
     this.drawBridges(ctx, view);
+    this.drawWaypoints(ctx, view);
   }
 
   /** wooden plank bridges crossing the Great River */
