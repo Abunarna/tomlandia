@@ -5,6 +5,7 @@ import {
   CITY_OUTER_R,
   SUNSPIRE,
   WILLOWBROOK,
+  FROSTFORGE,
   onMonument,
   cityBlocked,
   cityGateAt,
