@@ -3179,6 +3179,11 @@ export class GameEngine {
         };
     const { cx, cy } = CITY;
     const at = (a: number, r: number): [number, number] => [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+    /** deterministic per-city scatter for props and grime */
+    const rand = (n: number) => {
+      const s = Math.sin(n * 127.1 + CITY.phase * 31.7) * 43758.5453;
+      return s - Math.floor(s);
+    };
 
     // --- moat: a water band, broken by the postern causeways
     if (CITY.moatW > 0) {
