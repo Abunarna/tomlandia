@@ -5,6 +5,7 @@ import {
   BUILDINGS,
   STREETS,
   ROAD_RUNS,
+  WAYPOINTS,
   MAX_PLUS,
   MONSTER_DEFS,
   MONSTER_SPAWNS,
@@ -2805,6 +2806,7 @@ export class GameEngine {
     }
     ctx.lineWidth = 1;
     this.drawBridges(ctx, view);
+    this.drawWaypoints(ctx, view);
   }
 
   /** wooden plank bridges crossing the Great River */
@@ -3071,6 +3073,37 @@ export class GameEngine {
       };
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
+
+      if (run.trail) {
+        // the unmarked shortcut: a scuffed dirt track, no cobbles, no shoulder
+        ctx.save();
+        trace();
+        ctx.strokeStyle = "rgba(120,102,74,0.35)";
+        ctx.lineWidth = run.width + 5;
+        ctx.stroke();
+        trace();
+        ctx.strokeStyle = "#93805d";
+        ctx.lineWidth = run.width;
+        ctx.setLineDash([16, 9]);
+        ctx.stroke();
+        // sparse boot-worn scuffs either side of the ruts
+        ctx.setLineDash([]);
+        for (let i = 0; i < pts.length - 1; i++) {
+          const a = pts[i]!;
+          const b = pts[i + 1]!;
+          const len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+          const ux = (b[0] - a[0]) / len;
+          const uy = (b[1] - a[1]) / len;
+          for (let d = 0; d < len; d += 19) {
+            const off = ((i + d) | 0) % 2 === 0 ? 5 : -5;
+            ctx.fillStyle = "rgba(112,96,68,0.55)";
+            ctx.fillRect(a[0] + ux * d - uy * off - 1.5, a[1] + uy * d + ux * off - 1.5, 3, 3);
+          }
+        }
+        ctx.restore();
+        continue;
+      }
+
       // packed earth shoulder
       trace();
       ctx.strokeStyle = "#8c8a86";
@@ -3101,6 +3134,198 @@ export class GameEngine {
       }
     }
   }
+
+  /** roadside landmarks: pure flavour, no collision and no mechanics */
+  private drawWaypoints(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
+    for (const wp of WAYPOINTS) {
+      if (
+        wp.x < view.x - 120 ||
+        wp.x > view.x + view.w + 120 ||
+        wp.y < view.y - 120 ||
+        wp.y > view.y + view.h + 120
+      )
+        continue;
+      const x = wp.x;
+      const y = wp.y;
+      ctx.save();
+      // trodden earth apron shared by every landmark
+      ctx.fillStyle = "rgba(96,84,62,0.22)";
+      ctx.beginPath();
+      ctx.ellipse(x, y + 8, 46, 22, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (wp.kind === "watchtower") {
+        // a broken stump of a tower, its north face fallen into rubble
+        ctx.fillStyle = "rgba(0,0,0,0.18)";
+        ctx.beginPath();
+        ctx.ellipse(x + 6, y + 10, 30, 12, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#7c7770";
+        ctx.fillRect(x - 22, y - 54, 44, 62);
+        ctx.fillStyle = "#8d887f";
+        ctx.fillRect(x - 22, y - 54, 22, 62);
+        // jagged broken crown
+        ctx.fillStyle = "#6a655f";
+        for (let i = 0; i < 5; i++)
+          ctx.fillRect(x - 22 + i * 9, y - 54 - ((i * 7) % 13), 8, 10 + ((i * 5) % 9));
+        // dark slit window
+        ctx.fillStyle = "#2c2a28";
+        ctx.fillRect(x - 5, y - 34, 9, 15);
+        // rubble at the foot
+        for (const [dx, dy, r] of [
+          [-32, 4, 6],
+          [28, 8, 7],
+          [-26, 12, 4],
+          [34, -2, 4],
+        ] as const) {
+          ctx.fillStyle = "#77726b";
+          ctx.beginPath();
+          ctx.arc(x + dx, y + dy, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        // creeper vines
+        ctx.strokeStyle = "rgba(76,110,62,0.7)";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(x - 18, y + 6);
+        ctx.quadraticCurveTo(x - 12, y - 22, x - 2, y - 40);
+        ctx.stroke();
+      } else if (wp.kind === "stones") {
+        // a ring of leaning monoliths around a mossy altar
+        const n = 8;
+        for (let i = 0; i < n; i++) {
+          const a = (i / n) * Math.PI * 2;
+          const sx = x + Math.cos(a) * 46;
+          const sy = y + Math.sin(a) * 24;
+          const h = 30 + ((i * 7) % 12);
+          const lean = ((i % 3) - 1) * 0.14;
+          ctx.save();
+          ctx.translate(sx, sy);
+          ctx.rotate(lean);
+          ctx.fillStyle = "rgba(0,0,0,0.16)";
+          ctx.beginPath();
+          ctx.ellipse(2, 2, 11, 5, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = i % 2 ? "#9a9a96" : "#8b8b88";
+          ctx.fillRect(-8, -h, 16, h);
+          ctx.fillStyle = "rgba(255,255,255,0.14)";
+          ctx.fillRect(-8, -h, 6, h);
+          ctx.fillStyle = "rgba(84,122,70,0.5)";
+          ctx.fillRect(-8, -6, 16, 6);
+          ctx.restore();
+        }
+        ctx.fillStyle = "#7f7f7b";
+        ctx.beginPath();
+        ctx.ellipse(x, y, 17, 9, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "rgba(90,130,74,0.45)";
+        ctx.beginPath();
+        ctx.ellipse(x, y - 2, 11, 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (wp.kind === "camp") {
+        // a rest camp: spring pool, palms, tent and a banked fire
+        ctx.fillStyle = "#3f8fb5";
+        ctx.beginPath();
+        ctx.ellipse(x + 26, y + 4, 26, 14, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "rgba(255,255,255,0.25)";
+        ctx.beginPath();
+        ctx.ellipse(x + 20, y, 10, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // palms over the pool
+        for (const [px, ph] of [
+          [x + 44, 46],
+          [x + 12, 34],
+        ] as const) {
+          ctx.strokeStyle = "#8a6b42";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.moveTo(px, y);
+          ctx.quadraticCurveTo(px + 4, y - ph / 2, px + 2, y - ph);
+          ctx.stroke();
+          ctx.fillStyle = "#4f8b3f";
+          for (let i = 0; i < 5; i++) {
+            const a = -Math.PI / 2 + (i - 2) * 0.55;
+            ctx.beginPath();
+            ctx.ellipse(px + 2 + Math.cos(a) * 12, y - ph + Math.sin(a) * 8, 13, 5, a, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        // striped tent
+        ctx.fillStyle = "#c9a86a";
+        ctx.beginPath();
+        ctx.moveTo(x - 46, y + 8);
+        ctx.lineTo(x - 20, y + 8);
+        ctx.lineTo(x - 33, y - 26);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = "#a8794a";
+        ctx.beginPath();
+        ctx.moveTo(x - 34, y + 8);
+        ctx.lineTo(x - 20, y + 8);
+        ctx.lineTo(x - 33, y - 26);
+        ctx.closePath();
+        ctx.fill();
+        // fire ring
+        ctx.fillStyle = "#6c6560";
+        ctx.beginPath();
+        ctx.arc(x - 6, y + 12, 9, 0, Math.PI * 2);
+        ctx.fill();
+        const flick = 3 + Math.sin(this.time * 6) * 1.5;
+        ctx.fillStyle = "#e8863a";
+        ctx.beginPath();
+        ctx.ellipse(x - 6, y + 10, 5, flick, 0, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // a crossroad shrine: cairn, lantern post and prayer ribbons
+        ctx.fillStyle = "rgba(0,0,0,0.16)";
+        ctx.beginPath();
+        ctx.ellipse(x, y + 10, 24, 10, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#7a7c86";
+        ctx.beginPath();
+        ctx.moveTo(x - 24, y + 8);
+        ctx.lineTo(x + 24, y + 8);
+        ctx.lineTo(x + 15, y - 16);
+        ctx.lineTo(x - 15, y - 16);
+        ctx.closePath();
+        ctx.fill();
+        // carved stele
+        ctx.fillStyle = "#95979f";
+        ctx.fillRect(x - 9, y - 46, 18, 32);
+        ctx.fillStyle = "#6f717a";
+        ctx.beginPath();
+        ctx.arc(x, y - 46, 9, Math.PI, 0);
+        ctx.fill();
+        ctx.fillStyle = "rgba(40,42,50,0.7)";
+        ctx.fillRect(x - 4, y - 40, 8, 3);
+        ctx.fillRect(x - 4, y - 33, 8, 3);
+        // lantern on a post, glowing softly
+        ctx.strokeStyle = "#6a5b46";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(x + 26, y + 6);
+        ctx.lineTo(x + 26, y - 30);
+        ctx.stroke();
+        const glow = 0.55 + Math.sin(this.time * 2.2) * 0.15;
+        ctx.fillStyle = `rgba(255,206,120,${glow})`;
+        ctx.beginPath();
+        ctx.arc(x + 26, y - 32, 7, 0, Math.PI * 2);
+        ctx.fill();
+        // ribbons
+        ctx.strokeStyle = "rgba(196,88,96,0.8)";
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 3; i++) {
+          ctx.beginPath();
+          ctx.moveTo(x - 14 + i * 5, y - 20);
+          ctx.quadraticCurveTo(x - 22 + i * 5, y - 12, x - 18 + i * 5, y - 4);
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+    }
+  }
+
 
   /** the walled cities — plaza, ring road, spokes, water, wall and gates */
   private drawCity(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
