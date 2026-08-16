@@ -580,6 +580,7 @@ export class GameEngine {
 
   /** What we broadcast to our cell's neighbours. */
   presenceState() {
+    const emo = this.myEmote && this.myEmote.until > Date.now() ? this.myEmote : null;
     return {
       name: this.playerName,
       level: this.lvl("combat"),
@@ -587,6 +588,7 @@ export class GameEngine {
       y: Math.round(this.py),
       f: this.facing,
       act: this.activity,
+      ...(emo ? { emo: emo.e, eat: emo.at } : {}),
     };
   }
 
@@ -600,6 +602,10 @@ export class GameEngine {
       cur.name = p.name;
       cur.level = p.level;
       cur.seen = Date.now();
+      if (p.emo && p.eat && p.eat !== cur.eat) {
+        cur.eat = p.eat;
+        cur.emote = { e: p.emo, until: Date.now() + EMOTE_SHOW_MS };
+      }
     } else {
       this.remotes.set(p.id, {
         id: p.id,
@@ -613,9 +619,37 @@ export class GameEngine {
         act: p.act,
         seen: Date.now(),
         bob: Math.random() * 6,
+        ...(p.emo && p.eat
+          ? { eat: p.eat, emote: { e: p.emo, until: Date.now() + EMOTE_SHOW_MS } }
+          : {}),
       });
     }
   }
+
+  /* ---------- player-to-player emotes ---------- */
+
+  /** Radial menu currently open around a nearby player, if any. */
+  private emoteMenu: { id: string; until: number } | null = null;
+  /** Our own emote (shown locally + broadcast to neighbours). */
+  private myEmote: { e: string; at: number; until: number } | null = null;
+  /** Silent anti-spam gate — deliberately never surfaced in the UI. */
+  private emoteCdUntil = 0;
+
+  /** World-space centres of the six option bubbles around a player. */
+  private emoteSlots(x: number, y: number) {
+    return EMOTES.map((e, i) => {
+      const a = -Math.PI / 2 + (i * Math.PI * 2) / EMOTES.length;
+      return { e, x: x + Math.cos(a) * EMOTE_RING, y: y - 24 + Math.sin(a) * EMOTE_RING };
+    });
+  }
+
+  private sendEmote(e: string) {
+    const now = Date.now();
+    if (now < this.emoteCdUntil) return;
+    this.emoteCdUntil = now + EMOTE_CD_MS;
+    this.myEmote = { e, at: now, until: now + EMOTE_SHOW_MS };
+  }
+
 
   removeRemote(id: string) {
     this.remotes.delete(id);
