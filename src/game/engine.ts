@@ -2598,7 +2598,7 @@ export class GameEngine {
     octx.setTransform(s, 0, 0, s, 0, 0);
     octx.imageSmoothingEnabled = false;
     octx.translate(-x, -y);
-    console.log('ENSURE-TERRAIN', JSON.stringify(region));
+    (window as any).__wplog = [...((window as any).__wplog||[]), 'ENSURE '+JSON.stringify(region)];
     this.drawRoads(octx, region);
     this.drawStreets(octx, region);
     this.drawCity(octx, region);
@@ -2807,7 +2807,7 @@ export class GameEngine {
     }
     ctx.lineWidth = 1;
     this.drawBridges(ctx, view);
-    console.log('BARRIERS-END', JSON.stringify(view));
+    (window as any).__wplog = [...((window as any).__wplog||[]), 'BARRIERS'];
     this.drawWaypoints(ctx, view);
   }
 
@@ -3140,7 +3140,7 @@ export class GameEngine {
   /** roadside landmarks: pure flavour, no collision and no mechanics */
   private drawWaypoints(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
     for (const wp of WAYPOINTS) {
-      console.log('WPDRAW', wp.name, wp.x, wp.y, JSON.stringify(view));
+      (window as any).__wplog = [...((window as any).__wplog||[]), 'WP '+wp.name];
       if (
         wp.x < view.x - 120 ||
         wp.x > view.x + view.w + 120 ||
