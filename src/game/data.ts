@@ -148,8 +148,9 @@ export function item(id: ItemId): ItemDef {
 
 export const TILE_W = 1400;
 export const TILE_H = 1000;
-export const WORLD_W = TILE_W * 3;
-export const WORLD_H = TILE_H * 2;
+/** V2 world: exactly double the old area (4x3 tiles instead of 3x2). */
+export const WORLD_W = TILE_W * 4;
+export const WORLD_H = TILE_H * 3;
 
 export type BiomeId = "fields" | "forest" | "desert" | "evil" | "winter";
 
@@ -254,25 +255,13 @@ interface RegionSpec {
  * size, with a wobble so borders are organic rather than straight).
  */
 const REGION_SPECS: RegionSpec[] = [
-  // towns first — their seeds sit on the plaza so a town always owns its ground
-  { id: "fields", x: 715, y: 310, size: 1.35, plaza: { x: 500, y: 110, w: 430, h: 400 }, pond: { x: 300, y: 700, rx: 120, ry: 64 } },
-  { id: "forest", x: 2020, y: 530, size: 1.3, plaza: { x: 1800, y: 340, w: 440, h: 380 }, pond: { x: 1520, y: 250, rx: 130, ry: 70 } },
-  { id: "desert", x: 3460, y: 325, size: 1.35, plaza: { x: 3230, y: 130, w: 460, h: 390 } },
-  { id: "winter", x: 780, y: 1520, size: 1.3, plaza: { x: 560, y: 1330, w: 440, h: 380 }, pond: { x: 1150, y: 1720, rx: 140, ry: 70 } },
-  // wilderness patches
-  { id: "forest", x: 520, y: 1080, size: 0.85, label: true },
-  { id: "desert", x: 1560, y: 1720, size: 1.0, label: true },
-  { id: "evil", x: 2500, y: 1160, size: 1.15, label: true, pond: { x: 2480, y: 1180, rx: 160, ry: 80 } },
-  { id: "evil", x: 3240, y: 1780, size: 0.95 },
-  { id: "winter", x: 3900, y: 1700, size: 1.0, label: true },
-  { id: "desert", x: 3820, y: 1040, size: 0.95 },
-  { id: "forest", x: 2760, y: 200, size: 0.9 },
-  { id: "winter", x: 220, y: 1840, size: 0.75 },
-  { id: "fields", x: 1900, y: 1420, size: 0.9, label: true },
-  { id: "fields", x: 1180, y: 760, size: 0.8 },
-  { id: "evil", x: 2960, y: 780, size: 0.85 },
-  { id: "forest", x: 1120, y: 1900, size: 0.7 },
-  { id: "fields", x: 2280, y: 1900, size: 0.7 },
+  // V2 — exactly one contiguous territory per biome, laid out as a gentle arc
+  // running south-west to north-east and back down to the south-east.
+  { id: "fields", x: 700, y: 2400, size: 1.05, label: true, plaza: { x: 485, y: 2200, w: 430, h: 400 }, pond: { x: 330, y: 2780, rx: 168, ry: 104 } },
+  { id: "forest", x: 1900, y: 1650, size: 1.0, label: true, plaza: { x: 1685, y: 1460, w: 440, h: 380 }, pond: { x: 1540, y: 1180, rx: 210, ry: 78 } },
+  { id: "desert", x: 3100, y: 900, size: 1.05, label: true, plaza: { x: 2870, y: 705, w: 460, h: 390 } },
+  { id: "evil", x: 4300, y: 1500, size: 1.0, label: true, pond: { x: 4420, y: 1830, rx: 186, ry: 108 } },
+  { id: "winter", x: 5000, y: 2500, size: 1.0, label: true, plaza: { x: 4785, y: 2310, w: 440, h: 380 }, pond: { x: 5210, y: 2760, rx: 168, ry: 96 } },
 ];
 
 /* --- grid partition ------------------------------------------------- */
