@@ -1915,14 +1915,6 @@ function spawnable(x: number, y: number) {
       });
     }
   }
-  // anything that would land inside Grand Haven's wall or moat is nudged
-  // straight out past the far bank rather than dropped
-  for (const c of cands) {
-    if (!cityKeepOut(c.x, c.y)) continue;
-    const p = pushOutsideCity(c.x, c.y);
-    c.x = p.x;
-    c.y = p.y;
-  }
   cands.sort((a, b) => a.k - b.k);
 
   // remaining quota per biome
