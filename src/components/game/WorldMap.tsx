@@ -389,14 +389,14 @@ export function WorldMap({ position, onClose }: Props) {
         </svg>
 
         {BIOMES.filter((b) => b.label).map((b) => {
-          const bx = b.x + b.w / 2;
-          const by = b.y + b.h / 2;
-          // Anchor each biome label directly above that biome's city.
-          const city = CITIES.reduce((best, c) =>
-            Math.hypot(c.cx - bx, c.cy - by) < Math.hypot(best.cx - bx, best.cy - by) ? c : best,
-          );
+          // Each biome label is pinned to its own city — fixed mapping, never
+          // derived from the current view, so labels never swap or drift.
+          const cityKey = BIOME_CITY[b.id];
+          const city = CITIES.find((c) => c.key === cityKey);
+          if (!city) return null;
           const lx = city.cx;
           const ly = city.cy - cityOuterR(city) - 70;
+
           return (
             <div
               key={`label-${b.key}`}
