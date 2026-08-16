@@ -910,7 +910,36 @@ const TOWN_SPECS: TownSpec[] = [
       { name: "Frostwatch Spire", kind: "tower" },
     ],
   },
+  {
+    cx: DUSKMERE.cx,
+    cy: DUSKMERE.cy,
+    rings: DUSKMERE.ringR,
+    city: DUSKMERE,
+    crooked: true,
+    count: 14,
+    wall: "#4a4453",
+    beam: "#241f2c",
+    roofs: ["#2e2836", "#3a3143", "#26222f", "#453a4e", "#332b3d"],
+    anchors: [],
+    fill: [
+      { name: "The Hollow Bell", kind: "inn" },
+      { name: "Gravedigger's Shed", kind: "barn" },
+      { name: "Ossuary", kind: "chapel" },
+      { name: "Bell Tower", kind: "tower" },
+      { name: "Crooked House", kind: "house" },
+      { name: "Leaning House", kind: "house" },
+      { name: "The Shuttered Shop", kind: "stall" },
+      { name: "Candlemaker's", kind: "house" },
+      { name: "Mourner's Rest", kind: "house" },
+      { name: "Charnel Store", kind: "barn" },
+      { name: "Watch of Crows", kind: "tower" },
+      { name: "Sagging Almshouse", kind: "house" },
+      { name: "Rotten Stall", kind: "stall" },
+      { name: "The Last House", kind: "house" },
+    ],
+  },
 ];
+
 
 const buildings: BuildingDef[] = [];
 const streets: StreetDef[] = [];
