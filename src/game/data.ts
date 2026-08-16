@@ -990,22 +990,22 @@ for (const t of TOWN_SPECS) {
     buildings.some(
       (b) => x > b.x - 16 && x < b.x + b.w + 16 && y > b.y + b.h * 0.3 - 16 && y < b.y + b.h + 16,
     );
-  const taken: { x: number; y: number }[] = [];
-  let seat = 0;
-  for (const [role, s] of Object.entries(npcSpots)) {
-    if (Math.hypot(s.x - CITY.cx, s.y - CITY.cy) > CITY_OUTER_R) continue;
-    let a = Math.atan2(s.y - CITY.cy, s.x - CITY.cx);
-    seat++;
-    const r = CITY.plazaR + 54;
-    const bad = (x: number, y: number) =>
-      onBuilding(x, y) || taken.some((t) => Math.hypot(t.x - x, t.y - y) < 120);
-    for (let guard = 0; guard < 90 && bad(CITY.cx + Math.cos(a) * r, CITY.cy + Math.sin(a) * r); guard++) {
-      a += 0.07;
+  const inCity = Object.entries(npcSpots).filter(
+    ([, s]) => Math.hypot(s.x - CITY.cx, s.y - CITY.cy) <= CITY_OUTER_R,
+  );
+  inCity.sort((p, q) => Math.atan2(p[1].y - CITY.cy, p[1].x - CITY.cx) - Math.atan2(q[1].y - CITY.cy, q[1].x - CITY.cx));
+  const r0 = CITY.plazaR + 58;
+  inCity.forEach(([role], i) => {
+    const base = (i / inCity.length) * Math.PI * 2 + 0.25;
+    let a = base;
+    let r = r0;
+    for (let guard = 0; guard < 26; guard++) {
+      if (!onBuilding(CITY.cx + Math.cos(a) * r, CITY.cy + Math.sin(a) * r)) break;
+      a = base + (guard % 2 ? -1 : 1) * 0.05 * Math.ceil((guard + 1) / 2);
+      r = r0 - (guard > 12 ? 22 : 0);
     }
-    const spot = { x: CITY.cx + Math.cos(a) * r, y: CITY.cy + Math.sin(a) * r };
-    taken.push(spot);
-    npcSpots[role] = spot;
-  }
+    npcSpots[role] = { x: CITY.cx + Math.cos(a) * r, y: CITY.cy + Math.sin(a) * r };
+  });
 }
 
 export const BUILDINGS: BuildingDef[] = buildings;
