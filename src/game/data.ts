@@ -1871,7 +1871,6 @@ function nearRoad(x: number, y: number, pad: number) {
 }
 
 function nearTown(x: number, y: number) {
-  if (cityKeepOut(x, y, 70)) return true;
   for (const c of TOWN_CENTERS) if (Math.hypot(x - c.x, y - c.y) < 330) return true;
   for (const s of STREETS) {
     if (x > s.x - 60 && x < s.x + s.w + 60 && y > s.y - 60 && y < s.y + s.h + 60) return true;
@@ -1934,6 +1933,13 @@ function spawnable(x: number, y: number) {
   };
 
   for (const c of cands) {
+    // a spawn that would land in the new walls or moat is nudged out past the
+    // far bank instead of being dropped
+    if (cityKeepOut(c.x, c.y)) {
+      const p = pushOutsideCity(c.x, c.y);
+      c.x = p.x;
+      c.y = p.y;
+    }
     const bid = biomeAt(c.x, c.y).id;
     const w = want.get(bid);
     if (!w) continue;
