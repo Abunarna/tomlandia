@@ -3771,9 +3771,135 @@ export class GameEngine {
       }
     }
 
-    // --- signature monuments: the sphinx / the Great Oak Hall / the Frozen Hall
+    // --- signature monuments: sphinx / Oak Hall / Frozen Hall / the Cathedral
     const mon = CITY.monument;
-    if (mon && mon.kind === "frozenhall") {
+    if (mon && mon.kind === "cathedral") {
+      const mx = cx + mon.dx;
+      const my = cy + mon.dy;
+      const w = mon.w;
+      const h = mon.h;
+      ctx.save();
+      // long shadow thrown across the plaza
+      ctx.fillStyle = "rgba(14,11,20,0.35)";
+      ctx.beginPath();
+      ctx.ellipse(mx, my + h / 2 + 4, w / 2 + 30, 24, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // stepped plinth
+      ctx.fillStyle = "#3a3444";
+      ctx.fillRect(mx - w / 2 - 14, my + h / 2 - 20, w + 28, 20);
+      ctx.fillStyle = "#4a4356";
+      ctx.fillRect(mx - w / 2 - 6, my + h / 2 - 28, w + 12, 12);
+      // nave — tall, narrow, black stone
+      const naveW = w * 0.62;
+      ctx.fillStyle = "#2b2635";
+      ctx.fillRect(mx - naveW / 2, my - h / 2, naveW, h - 20);
+      // buttressed transepts
+      ctx.fillStyle = "#241f2d";
+      ctx.fillRect(mx - w / 2, my - h / 8, w, h / 2);
+      // flying buttresses
+      ctx.strokeStyle = "#3b3446";
+      ctx.lineWidth = 7;
+      for (const s of [-1, 1]) {
+        for (const dy of [0, 30]) {
+          ctx.beginPath();
+          ctx.moveTo(mx + s * (naveW / 2), my - h / 6 + dy);
+          ctx.quadraticCurveTo(
+            mx + s * (w / 2 - 4),
+            my - h / 8 + dy,
+            mx + s * (w / 2 + 6),
+            my + h / 6 + dy,
+          );
+          ctx.stroke();
+        }
+      }
+      // steep slate roof
+      ctx.fillStyle = "#1c1825";
+      ctx.beginPath();
+      ctx.moveTo(mx - naveW / 2 - 8, my - h / 2 + 6);
+      ctx.lineTo(mx, my - h / 2 - 34);
+      ctx.lineTo(mx + naveW / 2 + 8, my - h / 2 + 6);
+      ctx.closePath();
+      ctx.fill();
+      // twin spires, and a taller central one
+      for (const [sx, top, wide] of [
+        [mx - w / 2 + 16, my - h / 2 - 60, 13],
+        [mx + w / 2 - 16, my - h / 2 - 60, 13],
+        [mx, my - h / 2 - 118, 16],
+      ] as [number, number, number][]) {
+        ctx.fillStyle = "#332c3f";
+        ctx.fillRect(sx - wide, top + 34, wide * 2, my - h / 8 - (top + 34));
+        ctx.fillStyle = "#1b1724";
+        ctx.beginPath();
+        ctx.moveTo(sx - wide - 4, top + 36);
+        ctx.lineTo(sx, top);
+        ctx.lineTo(sx + wide + 4, top + 36);
+        ctx.closePath();
+        ctx.fill();
+        // iron finial
+        ctx.strokeStyle = "#15121c";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(sx, top);
+        ctx.lineTo(sx, top - 14);
+        ctx.moveTo(sx - 6, top - 9);
+        ctx.lineTo(sx + 6, top - 9);
+        ctx.stroke();
+        // narrow lancet window, lit
+        ctx.fillStyle = "rgba(150,84,164,0.55)";
+        ctx.fillRect(sx - 3, top + 52, 6, 16);
+      }
+      // the great rose window
+      const rx = mx;
+      const ry = my - h / 4;
+      ctx.fillStyle = "#5b2f6b";
+      ctx.beginPath();
+      ctx.arc(rx, ry, 26, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#171320";
+      ctx.lineWidth = 3;
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(rx, ry);
+        ctx.lineTo(rx + Math.cos(a) * 26, ry + Math.sin(a) * 26);
+        ctx.stroke();
+      }
+      ctx.beginPath();
+      ctx.arc(rx, ry, 26, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = "#8a4fa0";
+      ctx.beginPath();
+      ctx.arc(rx, ry, 8, 0, Math.PI * 2);
+      ctx.fill();
+      // stained lancets down the nave
+      for (const s of [-1, 1]) {
+        for (let i = 0; i < 3; i++) {
+          ctx.fillStyle = ["#3f5f7d", "#6b2f3f", "#3d6b4b"][i]!;
+          const lx = mx + s * (naveW / 2 - 16) - 5;
+          const ly = my + 4 + i * 22;
+          ctx.beginPath();
+          ctx.moveTo(lx, ly + 16);
+          ctx.lineTo(lx, ly + 5);
+          ctx.quadraticCurveTo(lx + 5, ly - 5, lx + 10, ly + 5);
+          ctx.lineTo(lx + 10, ly + 16);
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+      // arched doors, standing open onto the dark
+      ctx.fillStyle = "#100d16";
+      ctx.beginPath();
+      ctx.moveTo(mx - 22, my + h / 2 - 28);
+      ctx.lineTo(mx - 22, my + h / 6);
+      ctx.quadraticCurveTo(mx, my + h / 12 - 22, mx + 22, my + h / 6);
+      ctx.lineTo(mx + 22, my + h / 2 - 28);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = "#4d4359";
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      ctx.restore();
+    } else if (mon && mon.kind === "frozenhall") {
       const mx = cx + mon.dx;
       const my = cy + mon.dy;
       const w = mon.w;
