@@ -482,13 +482,13 @@ interface LakeSpec {
 
 const LAKE_SPECS: LakeSpec[] = [
   // Peaceful Fields — soft and rounded, bright and open
-  { key: "fields", style: "fields", cx: 300, cy: 700, rx: 168, ry: 104, jitter: 0.1, points: 26, rot: 0.15, jettyAngles: [-0.55, 2.5] },
+  { key: "fields", style: "fields", cx: 330, cy: 2780, rx: 168, ry: 104, jitter: 0.1, points: 26, rot: 0.15, jettyAngles: [-0.55, 2.5] },
   // Lush Forest — narrow and elongated, shaded by the canopy
-  { key: "forest", style: "forest", cx: 1520, cy: 250, rx: 210, ry: 78, jitter: 0.16, points: 22, rot: -0.42, jettyAngles: [1.25, 4.3] },
+  { key: "forest", style: "forest", cx: 1540, cy: 1180, rx: 210, ry: 78, jitter: 0.16, points: 22, rot: -0.42, jettyAngles: [1.25, 4.3] },
   // Winter Mountain — angular, ice-rimmed
-  { key: "winter", style: "winter", cx: 1150, cy: 1720, rx: 168, ry: 96, jitter: 0.26, points: 13, rot: 0.3, jettyAngles: [-1.05] },
+  { key: "winter", style: "winter", cx: 5210, cy: 2760, rx: 168, ry: 96, jitter: 0.26, points: 13, rot: 0.3, jettyAngles: [-1.05] },
   // Evil Woods — murky and misshapen
-  { key: "evil", style: "evil", cx: 2480, cy: 1180, rx: 186, ry: 108, jitter: 0.22, points: 17, rot: -0.2, jettyAngles: [2.15] },
+  { key: "evil", style: "evil", cx: 4420, cy: 1830, rx: 186, ry: 108, jitter: 0.22, points: 17, rot: -0.2, jettyAngles: [2.15] },
 ];
 
 /** the same jittered-outline trick the biome patches use, applied to water */
@@ -780,8 +780,8 @@ interface TownSpec {
 
 const TOWN_SPECS: TownSpec[] = [
   {
-    cx: 715,
-    cy: 310,
+    cx: 700,
+    cy: 2400,
     count: 14,
     wall: "#fdf1dd",
     beam: "#8b6b52",
@@ -806,8 +806,8 @@ const TOWN_SPECS: TownSpec[] = [
     ],
   },
   {
-    cx: TILE_W * 2 + 660,
-    cy: 325,
+    cx: 3100,
+    cy: 900,
     count: 13,
     wall: "#fdf0d4",
     beam: "#a8834e",
@@ -831,8 +831,8 @@ const TOWN_SPECS: TownSpec[] = [
     ],
   },
   {
-    cx: TILE_W + 620,
-    cy: 500,
+    cx: 1900,
+    cy: 1650,
     count: 7,
     wall: "#f5f0da",
     beam: "#6f5636",
@@ -850,8 +850,8 @@ const TOWN_SPECS: TownSpec[] = [
     ],
   },
   {
-    cx: 800,
-    cy: TILE_H + 500,
+    cx: 5000,
+    cy: 2500,
     count: 7,
     wall: "#f2f7fd",
     beam: "#6d7f92",
