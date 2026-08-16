@@ -2598,6 +2598,7 @@ export class GameEngine {
     octx.setTransform(s, 0, 0, s, 0, 0);
     octx.imageSmoothingEnabled = false;
     octx.translate(-x, -y);
+    console.log('ENSURE-TERRAIN', JSON.stringify(region));
     this.drawRoads(octx, region);
     this.drawStreets(octx, region);
     this.drawCity(octx, region);
