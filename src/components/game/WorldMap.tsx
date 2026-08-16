@@ -380,6 +380,28 @@ export function WorldMap({ position, onClose }: Props) {
           </div>
         ))}
 
+        {WAYPOINTS.map((wp) => (
+          <div
+            key={wp.id}
+            className="pointer-events-none absolute z-30 flex flex-col items-center"
+            style={{ left: sx(wp.x), top: sy(wp.y), transform: "translate(-50%,-50%)" }}
+          >
+            <div
+              className="rounded-full border border-white/70 bg-amber-200/90 text-center leading-none"
+              style={{ width: 8, height: 8, fontSize: 6 }}
+            >
+              {wp.kind === "watchtower" ? "🗼" : wp.kind === "stones" ? "🪨" : wp.kind === "camp" ? "⛺" : "🕯"}
+            </div>
+            <div
+              className="rounded px-0.5 font-bold leading-none text-white"
+              style={{ fontSize: 5, background: "rgba(52,40,64,0.55)" }}
+            >
+              {wp.name}
+            </div>
+          </div>
+        ))}
+
+
 
         {STREETS.map((s, i) => (
           <div
