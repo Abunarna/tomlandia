@@ -3667,7 +3667,66 @@ export class GameEngine {
     ctx.fill();
     ctx.fillStyle = "#f6f2ff";
     ctx.fillText(label, x, y - 43 - bob);
+    if (r.emote && r.emote.until > Date.now()) {
+      this.drawEmoteBubble(ctx, x, y - 72 - bob, r.emote.e);
+    }
   }
+
+  /** A small emoji/word bubble floating above a player's head. */
+  private drawEmoteBubble(ctx: CanvasRenderingContext2D, x: number, y: number, e: string) {
+    const word = e.length > 2;
+    ctx.font = word
+      ? "bold 15px ui-rounded, 'Baloo 2', system-ui, sans-serif"
+      : "20px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const w = Math.max(34, ctx.measureText(e).width + 16);
+    ctx.fillStyle = "rgba(255,255,255,0.94)";
+    ctx.strokeStyle = "rgba(70,55,70,0.35)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(x - w / 2, y - 15, w, 30, 15);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "#4a3b52";
+    ctx.fillText(e, x, y + 1);
+    ctx.textBaseline = "alphabetic";
+  }
+
+  /** The 6-option radial that follows the player you tapped. */
+  private drawEmoteMenu(ctx: CanvasRenderingContext2D) {
+    const menu = this.emoteMenu;
+    if (!menu) return;
+    if (menu.until <= Date.now()) {
+      this.emoteMenu = null;
+      return;
+    }
+    const who = this.remotes.get(menu.id);
+    if (!who) {
+      this.emoteMenu = null;
+      return;
+    }
+    for (const slot of this.emoteSlots(who.x, who.y)) {
+      ctx.fillStyle = "rgba(255,255,255,0.96)";
+      ctx.strokeStyle = "rgba(70,55,70,0.35)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(slot.x, slot.y, EMOTE_R, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      const word = slot.e.length > 2;
+      ctx.font = word
+        ? "bold 12px ui-rounded, 'Baloo 2', system-ui, sans-serif"
+        : "19px ui-rounded, 'Baloo 2', system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#4a3b52";
+      ctx.fillText(slot.e, slot.x, slot.y + 1);
+      ctx.textBaseline = "alphabetic";
+    }
+  }
+
+
 
   private drawPlayer(ctx: CanvasRenderingContext2D) {
     const x = this.px;
