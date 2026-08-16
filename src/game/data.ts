@@ -976,7 +976,7 @@ for (const t of TOWN_SPECS) {
         const r = city.plazaR + 46 + rand01(s + 91) * (city.wallR - city.plazaR - 112);
         const x = city.cx + Math.cos(a) * r;
         const y = city.cy + Math.sin(a) * r;
-        if (inGateCorridor(a, city) || cityGateAt(a + 0.34, city) || cityGateAt(a - 0.34, city)) continue;
+        if (inGateCorridor(a, city) || cityGateAt(a + 0.18, city) || cityGateAt(a - 0.18, city)) continue;
         if (onMonument(x, y, Math.max(w, h) / 2 + 26)) continue;
         if (gy) {
           const gx = city.cx + gy.dx;
