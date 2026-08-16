@@ -17,7 +17,17 @@ import {
 import { BOSS_NAME, desolatusAt } from "@/game/boss";
 import { CITIES, cityOuterR } from "@/game/city";
 
+/** biome id -> the city that its map label sits above (fixed, never inferred) */
+const BIOME_CITY: Record<string, string> = {
+  fields: "grand-haven",
+  forest: "willowbrook",
+  desert: "sunspire",
+  evil: "duskmere",
+  winter: "frostforge",
+};
+
 const MAX_ZOOM = 10;
+
 /** >1 makes pinch zoom move faster than the raw finger distance ratio. */
 const PINCH_GAIN = 2.2;
 
