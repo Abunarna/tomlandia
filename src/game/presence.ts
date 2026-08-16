@@ -27,7 +27,12 @@ export interface PresencePacket {
   y: number;
   f: number;
   act: string;
+  /** emote glyph currently shown above this player's head (if any) */
+  emo?: string;
+  /** wall-clock ms the emote was triggered (used to de-dupe repeats) */
+  eat?: number;
 }
+
 
 export function cellOf(x: number, y: number): [number, number] {
   return [
