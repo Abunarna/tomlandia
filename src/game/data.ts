@@ -1,4 +1,5 @@
 import type { ItemDef, ItemFamily, ItemId, QuestDef, SkillId } from "./types";
+import { CITY, CITY_OUTER_R, cityBlocked, cityGateAt, cityKeepOut, pushOutsideCity } from "./city";
 
 /* ------------------------------------------------------------------ */
 /* Items                                                               */
@@ -770,6 +771,8 @@ const ROW_Y = [-278, -168, 58, 168];
 interface TownSpec {
   cx: number;
   cy: number;
+  /** walled cities use an organic ring plan instead of the crossroads grid */
+  rings?: number[];
   count: number;
   wall: string;
   beam: string;
@@ -780,8 +783,9 @@ interface TownSpec {
 
 const TOWN_SPECS: TownSpec[] = [
   {
-    cx: 700,
-    cy: 2400,
+    cx: CITY.cx,
+    cy: CITY.cy,
+    rings: CITY.ringR,
     count: 14,
     wall: "#fdf1dd",
     beam: "#8b6b52",
@@ -874,7 +878,62 @@ const buildings: BuildingDef[] = [];
 const streets: StreetDef[] = [];
 const npcSpots: Record<string, { x: number; y: number }> = {};
 
+/** true when a bearing sits in a gate's approach corridor — kept build-free */
+function inGateCorridor(a: number) {
+  return cityGateAt(a) !== null || cityGateAt(a + 0.2) !== null || cityGateAt(a - 0.2) !== null;
+}
+
 for (const t of TOWN_SPECS) {
+  if (t.rings) {
+    // ---- walled city: buildings ring an open plaza, gate corridors left clear
+    const plan = [...t.anchors, ...t.fill].slice(0, t.count);
+    const perRing = [Math.ceil(plan.length * 0.42), plan.length - Math.ceil(plan.length * 0.42)];
+    let idx = 0;
+    t.rings.forEach((ringR, ri) => {
+      const n = perRing[ri] ?? 0;
+      for (let k = 0; k < n; k++) {
+        const p = plan[idx];
+        if (!p) break;
+        let a = (k / n) * Math.PI * 2 + (ri === 0 ? 0.35 : 0.16) + rand01(idx * 3.7 + ri) * 0.12;
+        for (let guard = 0; guard < 24 && inGateCorridor(a); guard++) a += 0.09;
+        const r = ringR + (rand01(idx * 5.1 + 3) - 0.5) * 26;
+        const kind = p.kind;
+        const w = kind === "tower" ? 96 : kind === "stall" ? 104 : LOT_W;
+        const h = kind === "tower" ? 118 : kind === "stall" ? 74 : LOT_H;
+        const bx = t.cx + Math.cos(a) * r - w / 2;
+        const by = t.cy + Math.sin(a) * r - h / 2;
+        buildings.push({
+          name: p.name,
+          kind,
+          x: bx,
+          y: by,
+          w,
+          h,
+          roof: t.roofs[idx % t.roofs.length]!,
+          wall: t.wall,
+          beam: t.beam,
+        });
+        const role = (p as { role?: string }).role;
+        if (role) {
+          // traders stand on the plaza side of their own building
+          let sr = r - h / 2 - 52;
+          let sa = a;
+          for (let guard = 0; guard < 30; guard++) {
+            const sx = t.cx + Math.cos(sa) * sr;
+            const sy = t.cy + Math.sin(sa) * sr;
+            const clash = Object.values(npcSpots).some((s) => Math.hypot(s.x - sx, s.y - sy) < 78);
+            if (!clash) break;
+            sa += 0.11;
+            sr -= 1.5;
+          }
+          npcSpots[role] = { x: t.cx + Math.cos(sa) * sr, y: t.cy + Math.sin(sa) * sr };
+        }
+        idx++;
+      }
+    });
+    continue;
+  }
+
   streets.push({ x: t.cx - 360, y: t.cy - 76, w: 720, h: 140 });
   streets.push({ x: t.cx - 80, y: t.cy - 300, w: 152, h: 580 });
 
@@ -923,6 +982,25 @@ for (const t of TOWN_SPECS) {
 
 
   });
+}
+
+// A trader may end up standing where a later building landed; walk each city
+// spot around the plaza until it is on clear cobbles again.
+{
+  const onBuilding = (x: number, y: number) =>
+    buildings.some(
+      (b) => x > b.x - 16 && x < b.x + b.w + 16 && y > b.y + b.h * 0.3 - 16 && y < b.y + b.h + 16,
+    );
+  for (const [role, s] of Object.entries(npcSpots)) {
+    if (Math.hypot(s.x - CITY.cx, s.y - CITY.cy) > CITY_OUTER_R) continue;
+    let a = Math.atan2(s.y - CITY.cy, s.x - CITY.cx);
+    let r = Math.hypot(s.x - CITY.cx, s.y - CITY.cy);
+    for (let guard = 0; guard < 60 && onBuilding(CITY.cx + Math.cos(a) * r, CITY.cy + Math.sin(a) * r); guard++) {
+      a += 0.08;
+      r = Math.max(CITY.plazaR + 26, r - 1.5);
+    }
+    npcSpots[role] = { x: CITY.cx + Math.cos(a) * r, y: CITY.cy + Math.sin(a) * r };
+  }
 }
 
 export const BUILDINGS: BuildingDef[] = buildings;
@@ -1561,6 +1639,8 @@ export function blockedAt(x: number, y: number, pad = 10, wadesRivers = false): 
   // lakes are water — you can fish from the shore but not walk on them,
   // except along the planked jetties that reach out to the fishing decks
   if (inLake(x, y, 0) && !onJetty(x, y, pad)) return true;
+  // Grand Haven's stone wall and moat — solid except at the four gates
+  if (cityBlocked(x, y, pad)) return true;
   return false;
 }
 
@@ -1853,6 +1933,13 @@ function spawnable(x: number, y: number) {
   };
 
   for (const c of cands) {
+    // a spawn that would land in the new walls or moat is nudged out past the
+    // far bank instead of being dropped
+    if (cityKeepOut(c.x, c.y)) {
+      const p = pushOutsideCity(c.x, c.y);
+      c.x = p.x;
+      c.y = p.y;
+    }
     const bid = biomeAt(c.x, c.y).id;
     const w = want.get(bid);
     if (!w) continue;
