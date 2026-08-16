@@ -337,12 +337,14 @@ export function WorldMap({ position, onClose }: Props) {
               key={`road-${i}`}
               d={r.pts.map(([x, y], k) => `${k === 0 ? "M" : "L"}${sx(x)},${sy(y)}`).join(" ")}
               fill="none"
-              stroke="#a8a5a0"
-              strokeWidth={Math.max(1.5, r.width * scale)}
+              stroke={r.trail ? "#93805d" : "#a8a5a0"}
+              strokeWidth={Math.max(r.trail ? 0.8 : 1.5, r.width * scale)}
+              strokeDasharray={r.trail ? "4 3" : undefined}
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           ))}
+
           {BRIDGES.map((br) => (
             <rect
               key={br.id}
