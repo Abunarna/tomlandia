@@ -64,6 +64,7 @@ export class PresenceNet {
   private channels = new Map<string, RealtimeChannel>();
   /** The channel for our own cell — the only one we broadcast on. */
   private homeKey = "";
+  private joined = new Set<string>();
   private timer: ReturnType<typeof setInterval> | null = null;
   private stopped = false;
 
@@ -101,12 +102,14 @@ export class PresenceNet {
     this.resubscribe(cx, cy);
 
     const home = this.channels.get(this.homeKey);
-    if (home) {
-      void home.send({
-        type: "broadcast",
-        event: "pos",
-        payload: { id: this.userId, ...me } satisfies PresencePacket,
-      });
+    if (home && this.joined.has(this.homeKey)) {
+      void home
+        .send({
+          type: "broadcast",
+          event: "pos",
+          payload: { id: this.userId, ...me } satisfies PresencePacket,
+        })
+        .catch(() => {});
     }
   }
 
