@@ -968,7 +968,7 @@ for (const t of TOWN_SPECS) {
       for (let tryI = 0; tryI < 400 && !spot; tryI++) {
         const s = i * 17.3 + tryI * 1.7;
         const a = rand01(s) * Math.PI * 2;
-        const r = city.plazaR + 46 + rand01(s + 91) * (city.wallR - city.plazaR - 150);
+        const r = city.plazaR + 50 + rand01(s + 91) * (city.wallR - city.plazaR - 118);
         const x = city.cx + Math.cos(a) * r;
         const y = city.cy + Math.sin(a) * r;
         if (inGateCorridor(a, city)) continue;
