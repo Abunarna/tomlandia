@@ -3442,9 +3442,73 @@ export class GameEngine {
       }
     }
 
-    // --- signature monument: the great sphinx at the caravan approach
+    // --- signature monuments: the great sphinx / the Great Oak Hall
     const mon = CITY.monument;
-    if (mon) {
+    if (mon && mon.kind === "oakhall") {
+      const mx = cx + mon.dx;
+      const my = cy + mon.dy;
+      const w = mon.w;
+      const h = mon.h;
+      ctx.save();
+      // roots spilling onto the plaza
+      ctx.fillStyle = "rgba(70,52,26,0.22)";
+      ctx.beginPath();
+      ctx.ellipse(mx, my + h / 2 - 6, w / 2 + 22, 26, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#6b5029";
+      ctx.lineWidth = 7;
+      for (let i = 0; i < 7; i++) {
+        const a = (i / 7) * Math.PI * 2 + 0.4;
+        ctx.beginPath();
+        ctx.moveTo(mx + Math.cos(a) * (w / 3), my + h / 4 + Math.sin(a) * 12);
+        ctx.lineTo(mx + Math.cos(a) * (w / 2 + 26), my + h / 3 + Math.sin(a) * 26);
+        ctx.stroke();
+      }
+      // hall body, built around the trunk
+      ctx.fillStyle = "#8a6b41";
+      ctx.fillRect(mx - w / 2, my - h / 6, w, h / 2 + h / 6);
+      ctx.fillStyle = "#a5834f";
+      for (let i = 0; i < 9; i++) ctx.fillRect(mx - w / 2 + 5 + i * (w / 9), my - h / 6 + 4, w / 9 - 8, h / 2 + h / 6 - 10);
+      // shuttered windows + great door
+      ctx.fillStyle = "#4b3a20";
+      ctx.fillRect(mx - 22, my + h / 6, 44, h / 3 - 4);
+      ctx.fillStyle = "#c8dca0";
+      ctx.fillRect(mx - w / 2 + 22, my + 2, 20, 18);
+      ctx.fillRect(mx + w / 2 - 42, my + 2, 20, 18);
+      // thatched roof
+      ctx.fillStyle = "#4e7a3c";
+      ctx.beginPath();
+      ctx.moveTo(mx - w / 2 - 16, my - h / 6 + 4);
+      ctx.lineTo(mx, my - h / 2 - 8);
+      ctx.lineTo(mx + w / 2 + 16, my - h / 6 + 4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = "#63996a";
+      for (let i = 0; i < 4; i++) {
+        ctx.fillRect(mx - w / 2 + 14 + i * 12, my - h / 6 - 6 - i * 8, w - 28 - i * 24, 5);
+      }
+      // the oak itself bursting through the ridge
+      ctx.fillStyle = "#5f4526";
+      ctx.fillRect(mx - 16, my - h / 2 - 66, 32, 62);
+      ctx.fillStyle = "#3f7a45";
+      ctx.beginPath();
+      ctx.arc(mx, my - h / 2 - 84, 54, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#4f9155";
+      ctx.beginPath();
+      ctx.arc(mx - 38, my - h / 2 - 74, 32, 0, Math.PI * 2);
+      ctx.arc(mx + 40, my - h / 2 - 78, 29, 0, Math.PI * 2);
+      ctx.arc(mx + 4, my - h / 2 - 116, 30, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(190,235,170,0.35)";
+      for (let i = 0; i < 9; i++) {
+        const a = (i / 9) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.arc(mx + Math.cos(a) * 40, my - h / 2 - 84 + Math.sin(a) * 34, 7, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    } else if (mon) {
       const mx = cx + mon.dx;
       const my = cy + mon.dy;
       const w = mon.w;
