@@ -2059,24 +2059,35 @@ export const WAYPOINTS: WaypointDef[] = (() => {
     { kind: "shrine", name: "The Crossroad Shrine", road: `road-${DUSKMERE.key}-${FROSTFORGE.key}` },
   ];
   const out: WaypointDef[] = [];
+  // keep landmarks clear of river crossings so they don't sit on the planks
+  const nearBridge = (x: number, y: number) =>
+    BRIDGES.some((b) => Math.hypot(b.x - x, b.y - y) < b.len * 0.6 + 130);
   for (const p of plan) {
     const road = ROADS.find((r) => r.id === p.road);
     if (!road) continue;
-    // sit just off the verge, on whichever side is clear of water and rock
-    const m = midOfPath(road.pts);
-    let best = { x: m.x, y: m.y, score: -1 };
-    for (const ang of [0, 0.6, -0.6, 1.2, -1.2, 2.4, -2.4, Math.PI]) {
-      for (const dist of [44, 60, 78]) {
-        const x = m.x + Math.cos(ang) * dist;
-        const y = m.y + Math.sin(ang) * dist;
-        if (roadBlocked(x, y) || cityKeepOut(x, y)) continue;
-        const score = dist;
-        if (score > best.score) best = { x, y, score };
+    // sit just off the verge, on whichever side is clear of water, rock and bridges
+    let best = { x: 0, y: 0, score: -1 };
+    // slide along the road from the midpoint until a clean verge shows up
+    for (const t of [0.5, 0.44, 0.56, 0.38, 0.62, 0.32, 0.68]) {
+      const m = midOfPath(road.pts, t);
+      for (const ang of [0, 0.6, -0.6, 1.2, -1.2, 2.4, -2.4, Math.PI]) {
+        for (const dist of [44, 60, 78]) {
+          const x = m.x + Math.cos(ang) * dist;
+          const y = m.y + Math.sin(ang) * dist;
+          if (roadBlocked(x, y) || cityKeepOut(x, y) || nearBridge(x, y)) continue;
+          if (dist > best.score) best = { x, y, score: dist };
+        }
+        if (best.score > 0) break;
       }
       if (best.score > 0) break;
     }
+    if (best.score < 0) {
+      const m = midOfPath(road.pts);
+      best = { x: m.x, y: m.y, score: 0 };
+    }
     out.push({ id: p.road, kind: p.kind, name: p.name, x: Math.round(best.x), y: Math.round(best.y) });
   }
+
   return out;
 })();
 
