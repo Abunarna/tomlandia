@@ -1237,7 +1237,12 @@ export const NPCS: NpcDef[] = [
   { id: "brook_exchange", name: "Clerk Nessa", title: "Grand Market", ...spot("brook_exchange", TILE_W + 700, 540), robe: "#a8cf9b", hair: "#6b5233", greeting: "Small village, big ledger. Trade away.", services: ["exchange"] },
   { id: "frost_exchange", name: "Clerk Bjorn", title: "Grand Market", ...spot("frost_exchange", 640, TILE_H + 560), robe: "#b6cbe0", hair: "#dfe8f2", greeting: "Frost keeps the coin cold and the deals honest.", services: ["exchange"] },
   { id: "dusk_exchange", name: "Clerk Mordrey", title: "Grand Market", ...spot("dusk_exchange", 4400, 1400), robe: "#9a86b3", hair: "#2b2533", greeting: "The dead keep no ledgers. The living pay up front.", services: ["exchange"] },
+  { id: "haven_banker", name: "Coinmaster Bell", title: "Banker", ...spot("haven_banker", 900, 400), robe: "#d9c07a", hair: "#4a3b2e", greeting: "Your vault travels with you — same coin, any town.", services: ["bank"] },
+  { id: "brook_banker", name: "Coinmaster Wisp", title: "Banker", ...spot("brook_banker", TILE_W + 610, 620), robe: "#bfd9a0", hair: "#6b5233", greeting: "One vault, every branch. Deposit away.", services: ["bank"] },
+  { id: "frost_banker", name: "Coinmaster Hilda", title: "Banker", ...spot("frost_banker", 800, TILE_H + 620), robe: "#c6dcef", hair: "#e6eef7", greeting: "The ice keeps your coin safe wherever you wander.", services: ["bank"] },
+  { id: "dusk_banker", name: "Coinmaster Vex", title: "Banker", ...spot("dusk_banker", 4460, 1300), robe: "#a08cb8", hair: "#2b2533", greeting: "Same vault, darker vault-keeper. Deposit if you dare.", services: ["bank"] },
 ];
+
 
 
 export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
