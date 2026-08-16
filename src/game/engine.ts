@@ -183,7 +183,22 @@ export interface RemotePlayer {
   act: string;
   seen: number;
   bob: number;
+  /** emote shown above their head, with a local expiry */
+  emote?: { e: string; until: number };
+  /** last emote timestamp we processed from them */
+  eat?: number;
 }
+
+/** The six quick-chat emotes in the radial menu, in clockwise order. */
+export const EMOTES = ["❤️", "😠", "😄", "😛", "noob", "👋"];
+/** Radius of the radial menu (world px) and of each option bubble. */
+const EMOTE_RING = 66;
+const EMOTE_R = 21;
+/** How long the menu stays open, how long an emote shows, spam cooldown. */
+const EMOTE_MENU_MS = 3000;
+const EMOTE_SHOW_MS = 3000;
+const EMOTE_CD_MS = 10000;
+
 
 /** Legacy pre-accounts local save. Read once so old progress can be claimed. */
 export const LEGACY_SAVE_KEY = "tomlandia.save.v1";
