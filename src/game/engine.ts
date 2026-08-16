@@ -332,6 +332,7 @@ type Target =
 const emptySkills = (): Record<SkillId, { xp: number }> =>
   SKILL_IDS.reduce((acc, id) => ({ ...acc, [id]: { xp: 0 } }), {} as Record<SkillId, { xp: number }>);
 
+if (typeof window !== 'undefined') (window as any).__buildmark = 'v7';
 export class GameEngine {
   private ctx: CanvasRenderingContext2D;
   private canvas: HTMLCanvasElement;
