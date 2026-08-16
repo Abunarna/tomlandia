@@ -122,6 +122,7 @@ export class PresenceNet {
       if (wanted.has(key)) continue;
       void supabase.removeChannel(ch);
       this.channels.delete(key);
+      this.joined.delete(key);
     }
 
     // Join newly adjacent cells.
@@ -137,7 +138,10 @@ export class PresenceNet {
         const p = payload as { id?: string };
         if (p?.id && p.id !== this.userId) this.onLeave(p.id);
       });
-      ch.subscribe();
+      ch.subscribe((status) => {
+        if (status === "SUBSCRIBED") this.joined.add(key);
+        else this.joined.delete(key);
+      });
       this.channels.set(key, ch);
     }
   }
