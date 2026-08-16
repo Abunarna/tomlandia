@@ -64,6 +64,7 @@ export class PresenceNet {
   private channels = new Map<string, RealtimeChannel>();
   /** The channel for our own cell — the only one we broadcast on. */
   private homeKey = "";
+  private joined = new Set<string>();
   private timer: ReturnType<typeof setInterval> | null = null;
   private stopped = false;
 
@@ -86,6 +87,7 @@ export class PresenceNet {
     this.timer = null;
     for (const ch of this.channels.values()) void supabase.removeChannel(ch);
     this.channels.clear();
+    this.joined.clear();
     this.homeKey = "";
   }
 
@@ -101,12 +103,14 @@ export class PresenceNet {
     this.resubscribe(cx, cy);
 
     const home = this.channels.get(this.homeKey);
-    if (home) {
-      void home.send({
-        type: "broadcast",
-        event: "pos",
-        payload: { id: this.userId, ...me } satisfies PresencePacket,
-      });
+    if (home && this.joined.has(this.homeKey)) {
+      void home
+        .send({
+          type: "broadcast",
+          event: "pos",
+          payload: { id: this.userId, ...me } satisfies PresencePacket,
+        })
+        .catch(() => {});
     }
   }
 
@@ -119,6 +123,7 @@ export class PresenceNet {
       if (wanted.has(key)) continue;
       void supabase.removeChannel(ch);
       this.channels.delete(key);
+      this.joined.delete(key);
     }
 
     // Join newly adjacent cells.
@@ -134,7 +139,10 @@ export class PresenceNet {
         const p = payload as { id?: string };
         if (p?.id && p.id !== this.userId) this.onLeave(p.id);
       });
-      ch.subscribe();
+      ch.subscribe((status) => {
+        if (status === "SUBSCRIBED") this.joined.add(key);
+        else this.joined.delete(key);
+      });
       this.channels.set(key, ch);
     }
   }
