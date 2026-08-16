@@ -1,0 +1,1 @@
+UPDATE world_nodes SET respawn_s = respawn_s * 4;
