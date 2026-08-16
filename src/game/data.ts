@@ -1947,16 +1947,53 @@ export interface RoadDef {
   id: string;
   pts: [number, number][];
   width: number;
+  /** unmaintained dirt trail rather than a cobbled trade road */
+  trail?: boolean;
 }
 
+/** the mouth of a named gate, just outside the city's outer bank */
+function gateMouth(c: CityDef, label: string): { x: number; y: number } {
+  const g = c.gates.find((gg) => gg.label === label) ?? c.gates[0]!;
+  const r = cityOuterR(c) + 34;
+  return { x: c.cx + Math.cos(g.angle) * r, y: c.cy + Math.sin(g.angle) * r };
+}
+
+function chain(...stops: { x: number; y: number }[]): [number, number][] {
+  const pts: [number, number][] = [];
+  for (let i = 0; i < stops.length - 1; i++) {
+    const leg = routeBetween(stops[i]!, stops[i + 1]!);
+    if (!leg.length) return [];
+    pts.push(...(i ? leg.slice(1) : leg));
+  }
+  return pts;
+}
+
+/**
+ * The spine: one maintained cobble road per leg, in city order, plus the
+ * unmarked dust trail that cuts the desert corner between Grand Haven and
+ * Sunspire. Decoration and navigation only — roads carry no mechanics.
+ */
 export const ROADS: RoadDef[] = (() => {
   const out: RoadDef[] = [];
-  for (let i = 0; i < TOWN_CENTERS.length; i++) {
-    for (let j = i + 1; j < TOWN_CENTERS.length; j++) {
-      const pts = routeBetween(TOWN_CENTERS[i]!, TOWN_CENTERS[j]!);
-      if (pts.length > 1) out.push({ id: `road-${i}-${j}`, pts, width: 26 });
-    }
+  const spine: [CityDef, CityDef][] = [
+    [CITY, WILLOWBROOK],
+    [WILLOWBROOK, SUNSPIRE],
+    [SUNSPIRE, DUSKMERE],
+    [DUSKMERE, FROSTFORGE],
+  ];
+  for (const [a, b] of spine) {
+    const pts = routeBetween({ x: a.cx, y: a.cy }, { x: b.cx, y: b.cy });
+    if (pts.length > 1) out.push({ id: `road-${a.key}-${b.key}`, pts, width: 26 });
   }
+  // the risky shortcut: postern to gate, straight across open wilderness
+  const trail = chain(
+    { x: CITY.cx, y: CITY.cy },
+    gateMouth(CITY, "Dust Trail Postern"),
+    gateMouth(SUNSPIRE, "Dust Trail Gate"),
+    { x: SUNSPIRE.cx, y: SUNSPIRE.cy },
+  );
+  if (trail.length > 1)
+    out.push({ id: "trail-grand-haven-sunspire", pts: trail, width: 11, trail: true });
   return out;
 })();
 
@@ -1964,18 +2001,85 @@ export const ROADS: RoadDef[] = (() => {
  * Road polylines split so no piece runs across a bridge deck — the bridges
  * draw themselves and must not be covered by cobbles.
  */
-export const ROAD_RUNS: { pts: [number, number][]; width: number }[] = ROADS.flatMap((r) => {
-  const runs: { pts: [number, number][]; width: number }[] = [];
-  let cur: [number, number][] = [];
-  for (const p of r.pts) {
-    if (onBridge(p[0], p[1], -30)) {
-      if (cur.length > 1) runs.push({ pts: cur, width: r.width });
-      cur = [];
-    } else cur.push(p);
+export const ROAD_RUNS: { pts: [number, number][]; width: number; trail?: boolean }[] = ROADS.flatMap(
+  (r) => {
+    const runs: { pts: [number, number][]; width: number; trail?: boolean }[] = [];
+    let cur: [number, number][] = [];
+    for (const p of r.pts) {
+      if (onBridge(p[0], p[1], -30)) {
+        if (cur.length > 1) runs.push({ pts: cur, width: r.width, trail: r.trail });
+        cur = [];
+      } else cur.push(p);
+    }
+    if (cur.length > 1) runs.push({ pts: cur, width: r.width, trail: r.trail });
+    return runs;
+  },
+);
+
+/* ------------------------------------------------------------------ */
+/* Road waypoints — pure flavour landmarks at the midpoint of each leg */
+/* ------------------------------------------------------------------ */
+
+export type WaypointKind = "watchtower" | "stones" | "camp" | "shrine";
+
+export interface WaypointDef {
+  id: string;
+  kind: WaypointKind;
+  name: string;
+  x: number;
+  y: number;
+}
+
+/** point at the halfway mark along a polyline */
+function midOfPath(pts: [number, number][]): { x: number; y: number } {
+  let total = 0;
+  for (let i = 1; i < pts.length; i++)
+    total += Math.hypot(pts[i]![0] - pts[i - 1]![0], pts[i]![1] - pts[i - 1]![1]);
+  let run = 0;
+  for (let i = 1; i < pts.length; i++) {
+    const d = Math.hypot(pts[i]![0] - pts[i - 1]![0], pts[i]![1] - pts[i - 1]![1]);
+    if (run + d >= total / 2) {
+      const t = d ? (total / 2 - run) / d : 0;
+      return {
+        x: pts[i - 1]![0] + (pts[i]![0] - pts[i - 1]![0]) * t,
+        y: pts[i - 1]![1] + (pts[i]![1] - pts[i - 1]![1]) * t,
+      };
+    }
+    run += d;
   }
-  if (cur.length > 1) runs.push({ pts: cur, width: r.width });
-  return runs;
-});
+  const last = pts[pts.length - 1]!;
+  return { x: last[0], y: last[1] };
+}
+
+export const WAYPOINTS: WaypointDef[] = (() => {
+  const plan: { kind: WaypointKind; name: string; road: string }[] = [
+    { kind: "watchtower", name: "The Broken Watch", road: `road-${CITY.key}-${WILLOWBROOK.key}` },
+    { kind: "stones", name: "The Whispering Stones", road: `road-${WILLOWBROOK.key}-${SUNSPIRE.key}` },
+    { kind: "camp", name: "Wayfarer's Oasis", road: `road-${SUNSPIRE.key}-${DUSKMERE.key}` },
+    { kind: "shrine", name: "The Crossroad Shrine", road: `road-${DUSKMERE.key}-${FROSTFORGE.key}` },
+  ];
+  const out: WaypointDef[] = [];
+  for (const p of plan) {
+    const road = ROADS.find((r) => r.id === p.road);
+    if (!road) continue;
+    // sit just off the verge, on whichever side is clear of water and rock
+    const m = midOfPath(road.pts);
+    let best = { x: m.x, y: m.y, score: -1 };
+    for (const ang of [0, 0.6, -0.6, 1.2, -1.2, 2.4, -2.4, Math.PI]) {
+      for (const dist of [44, 60, 78]) {
+        const x = m.x + Math.cos(ang) * dist;
+        const y = m.y + Math.sin(ang) * dist;
+        if (roadBlocked(x, y) || cityKeepOut(x, y)) continue;
+        const score = dist;
+        if (score > best.score) best = { x, y, score };
+      }
+      if (best.score > 0) break;
+    }
+    out.push({ id: p.road, kind: p.kind, name: p.name, x: Math.round(best.x), y: Math.round(best.y) });
+  }
+  return out;
+})();
+
 
 /* ------------------------------------------------------------------ */
 /* Spawn generation — biome aware, obstacle aware                      */
