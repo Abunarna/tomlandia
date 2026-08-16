@@ -3529,6 +3529,33 @@ export class GameEngine {
           ctx.arc(x + 9, y - 62, 11, 0, Math.PI * 2);
           ctx.fill();
         }
+        // ice cities: carved ice spires, snow-capped, with icicle skirts
+        if (ice) {
+          ctx.fillStyle = P.towerLight;
+          ctx.beginPath();
+          ctx.moveTo(x - 11, y - 6);
+          ctx.lineTo(x - 6, y - 62);
+          ctx.lineTo(x + 6, y - 62);
+          ctx.lineTo(x + 11, y - 6);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "rgba(255,255,255,0.75)";
+          ctx.beginPath();
+          ctx.moveTo(x - 9, y - 58);
+          ctx.lineTo(x, y - 82);
+          ctx.lineTo(x + 9, y - 58);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "rgba(190,224,244,0.9)";
+          for (const dx of [-8, 0, 8]) {
+            ctx.beginPath();
+            ctx.moveTo(x + dx - 3, y - 8);
+            ctx.lineTo(x + dx + 3, y - 8);
+            ctx.lineTo(x + dx, y + 4);
+            ctx.closePath();
+            ctx.fill();
+          }
+        }
       }
     }
 
