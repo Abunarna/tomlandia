@@ -1180,7 +1180,34 @@ export class GameEngine {
     const wx = sx - rect.left + this.cam.x;
     const wy = sy - rect.top + this.cam.y;
 
+    // An open emote radial swallows the tap: pick an option, or dismiss it.
+    const menu = this.emoteMenu;
+    if (menu && menu.until > Date.now()) {
+      const who = this.remotes.get(menu.id);
+      if (who) {
+        for (const slot of this.emoteSlots(who.x, who.y)) {
+          if (Math.hypot(slot.x - wx, slot.y - wy) < EMOTE_R + 6) {
+            this.sendEmote(slot.e);
+            this.emoteMenu = null;
+            return;
+          }
+        }
+      }
+      this.emoteMenu = null;
+      return;
+    }
+    this.emoteMenu = null;
+
+    // Tapping another human opens the quick-emote radial around them.
+    for (const r of this.remotes.values()) {
+      if (Math.hypot(r.x - wx, r.y - 12 - wy) < 34) {
+        this.emoteMenu = { id: r.id, until: Date.now() + EMOTE_MENU_MS };
+        return;
+      }
+    }
+
     let best: { d: number; t: Target } | null = null;
+
     if (this.bossAlive) {
       const d = Math.hypot(this.boss.x - wx, this.boss.y - 30 - wy);
       if (d < 80) best = { d: 0, t: { type: "boss" } };
