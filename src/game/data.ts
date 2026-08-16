@@ -969,7 +969,7 @@ for (const t of TOWN_SPECS) {
       const h = kind === "tower" ? 108 : kind === "stall" ? 62 : 70 + ((i * 7) % 18);
       let spot: { x: number; y: number } | null = null;
       const baseA = (i / slots) * Math.PI * 2 + 0.35;
-      for (let tryI = 0; tryI < 600 && !spot; tryI++) {
+      for (let tryI = 0; tryI < 1400 && !spot; tryI++) {
         const s = i * 17.3 + tryI * 1.7;
         // search outward from this house's own slot, drifting as tries mount
         const a = baseA + (rand01(s) - 0.5) * ((Math.PI * 2) / slots) * (1 + tryI * 0.06);
