@@ -1022,25 +1022,21 @@ for (const t of TOWN_SPECS) {
     const taken: { x: number; y: number }[] = [];
     inCity.forEach(([role], i) => {
       const base = (i / inCity.length) * Math.PI * 2 + 0.25;
-      let a = base;
-      let r = r0;
-      const bad = (ax: number, ar: number) => {
-        const x = city.cx + Math.cos(ax) * ar;
-        const y = city.cy + Math.sin(ax) * ar;
-        return (
-          onBuilding(x, y) ||
-          inCityOasis(x, y, 18) ||
-          taken.some((t) => Math.hypot(t.x - x, t.y - y) < 96)
-        );
-      };
-      for (let guard = 0; guard < 26; guard++) {
-        if (!bad(a, r)) break;
-        a = base + (guard % 2 ? -1 : 1) * 0.05 * Math.ceil((guard + 1) / 2);
-        r = r0 - (guard > 12 ? 22 : 0);
+      let best = { x: city.cx + Math.cos(base) * r0, y: city.cy + Math.sin(base) * r0, score: -1e9 };
+      for (let da = -0.55; da <= 0.55; da += 0.05) {
+        for (const dr of [0, 26, -22, 48]) {
+          const a = base + da;
+          const r = r0 + dr;
+          const x = city.cx + Math.cos(a) * r;
+          const y = city.cy + Math.sin(a) * r;
+          if (onBuilding(x, y) || inCityOasis(x, y, 18)) continue;
+          const gap = taken.length ? Math.min(...taken.map((t) => Math.hypot(t.x - x, t.y - y))) : 400;
+          const score = Math.min(gap, 150) - Math.abs(da) * 40 - Math.abs(dr) * 0.2;
+          if (score > best.score) best = { x, y, score };
+        }
       }
-      const seat = { x: city.cx + Math.cos(a) * r, y: city.cy + Math.sin(a) * r };
-      taken.push(seat);
-      npcSpots[role] = seat;
+      taken.push({ x: best.x, y: best.y });
+      npcSpots[role] = { x: best.x, y: best.y };
     });
   }
 }
