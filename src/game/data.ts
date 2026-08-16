@@ -4,6 +4,8 @@ import {
   CITY,
   CITY_OUTER_R,
   SUNSPIRE,
+  WILLOWBROOK,
+  onMonument,
   cityBlocked,
   cityGateAt,
   cityKeepOut,
