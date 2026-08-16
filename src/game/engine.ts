@@ -541,10 +541,37 @@ export class GameEngine {
   }
 
   /** Mirror authoritative node rows (snapshot or realtime) into the world. */
-  applyNodeRows(rows: { id: number; charges: number; respawn_at: string | null }[]) {
+  applyNodeRows(
+    rows: { id: number; charges: number; respawn_at: string | null; kind?: string; x?: number; y?: number }[],
+    full = false,
+  ) {
+    // The database is the source of truth for what exists and where it stands.
+    // A full snapshot rebuilds any row the local spawn table disagrees with, so
+    // regenerated worlds can never drift out of alignment with the server.
+    if (full) {
+      const known = new Set(rows.map((r) => r.id));
+      this.nodes = this.nodes.filter((n) => known.has(n.id));
+    }
     for (const row of rows) {
-      const n = this.nodes[row.id];
-      if (!n) continue;
+      let n = this.nodes.find((c) => c.id === row.id);
+      if (!n) {
+        if (!row.kind || row.x === undefined || row.y === undefined) continue;
+        n = {
+          id: row.id,
+          kind: row.kind as ResNode["kind"],
+          x: row.x,
+          y: row.y,
+          depleted: false,
+          charges: row.charges,
+          respawnAt: 0,
+          pending: false,
+          sway: Math.random() * 6,
+        };
+        this.nodes.push(n);
+      }
+      if (row.kind) n.kind = row.kind as ResNode["kind"];
+      if (typeof row.x === "number") n.x = row.x;
+      if (typeof row.y === "number") n.y = row.y;
       n.charges = row.charges;
       n.respawnAt = row.respawn_at ? Date.parse(row.respawn_at) : 0;
       n.depleted = n.respawnAt > Date.now();
@@ -553,13 +580,66 @@ export class GameEngine {
         this.gatherProgress = 0;
       }
     }
+    if (full) this.nodes.sort((a, b) => a.id - b.id);
   }
 
   /** Mirror authoritative monster rows (snapshot or realtime) into the world. */
-  applyMonsterRows(rows: { id: number; hp: number; tagged_by: string | null; respawn_at: string | null }[]) {
+  applyMonsterRows(
+    rows: {
+      id: number;
+      hp: number;
+      tagged_by: string | null;
+      respawn_at: string | null;
+      kind?: string;
+      x?: number;
+      y?: number;
+    }[],
+    full = false,
+  ) {
+    if (full) {
+      const known = new Set(rows.map((r) => r.id));
+      this.monsters = this.monsters.filter((m) => known.has(m.id));
+    }
     for (const row of rows) {
-      const m = this.monsters[row.id];
-      if (!m) continue;
+      let m = this.monsters.find((c) => c.id === row.id);
+      if (!m) {
+        if (!row.kind || row.x === undefined || row.y === undefined) continue;
+        const kind = row.kind as Monster["kind"];
+        const def = MONSTER_DEFS[kind];
+        if (!def) continue;
+        m = {
+          id: row.id,
+          kind,
+          x: row.x,
+          y: row.y,
+          hx: row.x,
+          hy: row.y,
+          hp: row.hp,
+          maxHp: def.hp,
+          dead: false,
+          respawnAt: 0,
+          taggedBy: null,
+          pending: false,
+          wanderAt: 0,
+          hitFlash: 0,
+        };
+        this.monsters.push(m);
+      }
+      if (row.kind && MONSTER_DEFS[row.kind as Monster["kind"]]) {
+        m.kind = row.kind as Monster["kind"];
+        m.maxHp = MONSTER_DEFS[m.kind].hp;
+      }
+      // Keep the home anchor pinned to the server's spawn point; the live
+      // position follows it whenever the drift would put us out of swing range.
+      if (typeof row.x === "number" && typeof row.y === "number") {
+        const moved = m.hx !== row.x || m.hy !== row.y;
+        m.hx = row.x;
+        m.hy = row.y;
+        if (moved || Math.hypot(m.x - row.x, m.y - row.y) > 90) {
+          m.x = row.x;
+          m.y = row.y;
+        }
+      }
       const prevHp = m.hp;
       m.hp = row.hp;
       m.taggedBy = row.tagged_by;
@@ -577,6 +657,7 @@ export class GameEngine {
         this.target = { type: "none" };
       }
     }
+    if (full) this.monsters.sort((a, b) => a.id - b.id);
   }
 
   /* ---------- phase 7: shared presence ---------- */
@@ -1447,7 +1528,7 @@ export class GameEngine {
       const lostGold = Math.floor(this.gold * 0.1);
       this.hp = Math.ceil(this.maxHp * 0.5);
       this.px = 700;
-      this.py = 620;
+      this.py = 2400;
       this.gold = Math.max(0, this.gold - lostGold);
       this.death = {
         at: Date.now(),
@@ -1566,7 +1647,8 @@ export class GameEngine {
       this.activityProgress = 0;
       if (d <= 2) this.target = { type: "none" };
     } else if (this.target.type === "node") {
-      const n = this.nodes[this.target.id];
+      const tid = this.target.type === "node" ? this.target.id : -1;
+      const n = this.nodes.find((c) => c.id === tid);
       if (!n || n.depleted) {
         this.target = { type: "none" };
       } else {
@@ -1701,7 +1783,8 @@ export class GameEngine {
         }
       }
     } else if (this.target.type === "monster") {
-      const m = this.monsters[this.target.id];
+      const tid = this.target.type === "monster" ? this.target.id : -1;
+      const m = this.monsters.find((c) => c.id === tid);
       if (!m || m.dead) {
         this.target = { type: "none" };
       } else {
@@ -1758,7 +1841,7 @@ export class GameEngine {
                       const lostGold = Math.floor(this.gold * 0.1);
                       this.hp = Math.ceil(this.maxHp * 0.5);
                       this.px = 700;
-                      this.py = 620;
+                      this.py = 2400;
                       this.gold = Math.max(0, this.gold - lostGold);
                       this.death = {
                         at: Date.now(),

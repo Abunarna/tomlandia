@@ -13,6 +13,9 @@ import { CELL_H, CELL_W, COLS, ROWS } from "./presence";
 export interface NodeRow {
   id: number;
   cell: string;
+  kind?: string;
+  x?: number;
+  y?: number;
   charges: number;
   max_charges: number;
   respawn_at: string | null;
@@ -21,6 +24,9 @@ export interface NodeRow {
 export interface MonsterRow {
   id: number;
   cell: string;
+  kind?: string;
+  x?: number;
+  y?: number;
   hp: number;
   max_hp: number;
   tagged_by: string | null;
@@ -56,8 +62,8 @@ function neighbourCells(x: number, y: number): string[] {
 
 interface Sink {
   position: () => { x: number; y: number };
-  onNodes: (rows: NodeRow[]) => void;
-  onMonsters: (rows: MonsterRow[]) => void;
+  onNodes: (rows: NodeRow[], full?: boolean) => void;
+  onMonsters: (rows: MonsterRow[], full?: boolean) => void;
   onBoss?: (row: BossRow) => void;
 }
 
@@ -74,12 +80,12 @@ export class WorldNet {
     this.stopped = false;
     // One cheap full snapshot on join, then per-cell realtime deltas.
     const [nodes, monsters] = await Promise.all([
-      supabase.from("world_nodes").select("id,cell,charges,max_charges,respawn_at"),
-      supabase.from("world_monsters").select("id,cell,hp,max_hp,tagged_by,respawn_at"),
+      supabase.from("world_nodes").select("id,cell,kind,x,y,charges,max_charges,respawn_at"),
+      supabase.from("world_monsters").select("id,cell,kind,x,y,hp,max_hp,tagged_by,respawn_at"),
     ]);
     if (this.stopped) return;
-    if (nodes.data) this.sink.onNodes(nodes.data as NodeRow[]);
-    if (monsters.data) this.sink.onMonsters(monsters.data as MonsterRow[]);
+    if (nodes.data) this.sink.onNodes(nodes.data as NodeRow[], true);
+    if (monsters.data) this.sink.onMonsters(monsters.data as MonsterRow[], true);
 
     // The boss is global, not sharded: he can be anywhere, so everyone follows
     // the single row wherever they stand.
@@ -152,14 +158,14 @@ export class WorldNet {
 
   private async refresh(cells: string[]) {
     const [nodes, monsters] = await Promise.all([
-      supabase.from("world_nodes").select("id,cell,charges,max_charges,respawn_at").in("cell", cells),
+      supabase.from("world_nodes").select("id,cell,kind,x,y,charges,max_charges,respawn_at").in("cell", cells),
       supabase
         .from("world_monsters")
-        .select("id,cell,hp,max_hp,tagged_by,respawn_at")
+        .select("id,cell,kind,x,y,hp,max_hp,tagged_by,respawn_at")
         .in("cell", cells),
     ]);
     if (this.stopped) return;
-    if (nodes.data) this.sink.onNodes(nodes.data as NodeRow[]);
-    if (monsters.data) this.sink.onMonsters(monsters.data as MonsterRow[]);
+    if (nodes.data) this.sink.onNodes(nodes.data as NodeRow[], true);
+    if (monsters.data) this.sink.onMonsters(monsters.data as MonsterRow[], true);
   }
 }
