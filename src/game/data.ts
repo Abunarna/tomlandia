@@ -2007,11 +2007,11 @@ export const ROAD_RUNS: { pts: [number, number][]; width: number; trail?: boolea
     let cur: [number, number][] = [];
     for (const p of r.pts) {
       if (onBridge(p[0], p[1], -30)) {
-        if (cur.length > 1) runs.push({ pts: cur, width: r.width, trail: r.trail });
+        if (cur.length > 1) runs.push({ pts: cur, width: r.width, trail: !!r.trail });
         cur = [];
       } else cur.push(p);
     }
-    if (cur.length > 1) runs.push({ pts: cur, width: r.width, trail: r.trail });
+    if (cur.length > 1) runs.push({ pts: cur, width: r.width, trail: !!r.trail });
     return runs;
   },
 );
