@@ -1647,7 +1647,8 @@ export class GameEngine {
       this.activityProgress = 0;
       if (d <= 2) this.target = { type: "none" };
     } else if (this.target.type === "node") {
-      const n = this.nodes.find((c) => c.id === this.target.id);
+      const tid = this.target.type === "node" ? this.target.id : -1;
+      const n = this.nodes.find((c) => c.id === tid);
       if (!n || n.depleted) {
         this.target = { type: "none" };
       } else {
@@ -1782,7 +1783,8 @@ export class GameEngine {
         }
       }
     } else if (this.target.type === "monster") {
-      const m = this.monsters.find((c) => c.id === this.target.id);
+      const tid = this.target.type === "monster" ? this.target.id : -1;
+      const m = this.monsters.find((c) => c.id === tid);
       if (!m || m.dead) {
         this.target = { type: "none" };
       } else {
