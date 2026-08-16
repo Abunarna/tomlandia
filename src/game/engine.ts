@@ -3375,11 +3375,24 @@ export class GameEngine {
         (i === gates.length - 1 ? Math.PI * 2 : 0);
       drawArc(from, to, CITY.wallT + 6, P.wallDark);
       drawArc(from, to, CITY.wallT - 4, P.wallLight);
-      // merlons
-      for (let a = from; a <= to; a += 0.06) {
-        const [x, y] = at(a, cityWallR(a, CITY) - CITY.wallT / 2 + 2);
-        ctx.fillStyle = P.merlon;
-        ctx.fillRect(x - 4, y - 4, 8, 8);
+      if (wood) {
+        // palisade: pointed stakes with a woven hedge crown
+        for (let a = from; a <= to; a += 0.022) {
+          const wr = cityWallR(a, CITY);
+          const [x, y] = at(a, wr);
+          ctx.fillStyle = ((a * 90) | 0) % 2 === 0 ? "#7d6136" : "#69502b";
+          ctx.fillRect(x - 3, y - 6, 6, 12);
+          const [hx, hy] = at(a, wr - CITY.wallT / 2 - 2);
+          ctx.fillStyle = ((a * 70) | 0) % 3 === 0 ? "#4f7038" : P.merlon;
+          ctx.fillRect(hx - 4, hy - 4, 8, 8);
+        }
+      } else {
+        // merlons
+        for (let a = from; a <= to; a += 0.06) {
+          const [x, y] = at(a, cityWallR(a, CITY) - CITY.wallT / 2 + 2);
+          ctx.fillStyle = P.merlon;
+          ctx.fillRect(x - 4, y - 4, 8, 8);
+        }
       }
     }
 
