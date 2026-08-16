@@ -1647,7 +1647,7 @@ export class GameEngine {
       this.activityProgress = 0;
       if (d <= 2) this.target = { type: "none" };
     } else if (this.target.type === "node") {
-      const n = this.nodes[this.target.id];
+      const n = this.nodes.find((c) => c.id === this.target.id);
       if (!n || n.depleted) {
         this.target = { type: "none" };
       } else {
@@ -1782,7 +1782,7 @@ export class GameEngine {
         }
       }
     } else if (this.target.type === "monster") {
-      const m = this.monsters[this.target.id];
+      const m = this.monsters.find((c) => c.id === this.target.id);
       if (!m || m.dead) {
         this.target = { type: "none" };
       } else {
