@@ -766,6 +766,8 @@ export interface BuildingDef {
   wall: string;
   /** timber-frame beam colour */
   beam: string;
+  /** crooked towns lean their houses; radians, 0 for every orderly city */
+  rot?: number;
 }
 
 /** dirt roads laid between the building blocks of a town */
