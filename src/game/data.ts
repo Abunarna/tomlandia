@@ -1999,22 +1999,57 @@ export const ROADS: RoadDef[] = (() => {
 
 /**
  * Road polylines split so no piece runs across a bridge deck — the bridges
- * draw themselves and must not be covered by cobbles.
+ * draw themselves on top. Each run is extended a little way onto the deck so
+ * the cobbles visually meet (and tuck under) the bridge instead of stopping
+ * short of it.
  */
+const DECK_OVERLAP = 26;
+
+/** point `d` px from `from` toward `to` */
+const towards = (
+  from: [number, number],
+  to: [number, number],
+  d: number,
+): [number, number] => {
+  const dx = to[0] - from[0];
+  const dy = to[1] - from[1];
+  const len = Math.hypot(dx, dy) || 1;
+  const t = Math.min(1, d / len);
+  return [from[0] + dx * t, from[1] + dy * t];
+};
+
 export const ROAD_RUNS: { pts: [number, number][]; width: number; trail?: boolean }[] = ROADS.flatMap(
   (r) => {
     const runs: { pts: [number, number][]; width: number; trail?: boolean }[] = [];
     let cur: [number, number][] = [];
-    for (const p of r.pts) {
+    let pendingHead: [number, number] | null = null;
+    for (let i = 0; i < r.pts.length; i++) {
+      const p = r.pts[i]!;
       if (onBridge(p[0], p[1], -30)) {
+        if (cur.length) {
+          // run the cobbles up to (and slightly under) the bridge deck
+          const tail = cur[cur.length - 1]!;
+          cur.push(towards(tail, p, Math.hypot(p[0] - tail[0], p[1] - tail[1]) + DECK_OVERLAP));
+        }
         if (cur.length > 1) runs.push({ pts: cur, width: r.width, trail: !!r.trail });
         cur = [];
-      } else cur.push(p);
+        pendingHead = p;
+      } else {
+        if (pendingHead) {
+          // start the next run back under the deck we just left
+          cur.push(
+            towards(p, pendingHead, Math.hypot(p[0] - pendingHead[0], p[1] - pendingHead[1]) + DECK_OVERLAP),
+          );
+          pendingHead = null;
+        }
+        cur.push(p);
+      }
     }
     if (cur.length > 1) runs.push({ pts: cur, width: r.width, trail: !!r.trail });
     return runs;
   },
 );
+
 
 /* ------------------------------------------------------------------ */
 /* Road waypoints — pure flavour landmarks at the midpoint of each leg */
