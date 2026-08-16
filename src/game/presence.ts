@@ -87,6 +87,7 @@ export class PresenceNet {
     this.timer = null;
     for (const ch of this.channels.values()) void supabase.removeChannel(ch);
     this.channels.clear();
+    this.joined.clear();
     this.homeKey = "";
   }
 
