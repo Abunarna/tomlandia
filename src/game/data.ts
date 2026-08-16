@@ -821,6 +821,7 @@ const TOWN_SPECS: TownSpec[] = [
       { role: "haven_armourer", name: "Shieldwright's Hall", kind: "forge" },
       { role: "haven_upgrader", name: "Whetstone Tower", kind: "tower" },
       { role: "haven_exchange", name: "Grand Market", kind: "stall" },
+      { role: "haven_banker", name: "Haven Vault", kind: "chapel" },
     ],
     fill: [
       { name: "Grand Haven Inn", kind: "inn" },
@@ -873,6 +874,7 @@ const TOWN_SPECS: TownSpec[] = [
       { role: "trapper", name: "Trapper's Hut", kind: "house" },
       { role: "brook_chef", name: "Willow Kitchen", kind: "house" },
       { role: "brook_exchange", name: "Brookside Grand Market", kind: "stall" },
+      { role: "brook_banker", name: "Brookside Vault", kind: "chapel" },
     ],
     fill: [
       { name: "Woodcutter's Lodge", kind: "barn" },
@@ -898,6 +900,7 @@ const TOWN_SPECS: TownSpec[] = [
       { role: "frost_smith", name: "Frostforge Smeltery", kind: "forge" },
       { role: "frost_weaponsmith", name: "Frostforge", kind: "forge" },
       { role: "frost_exchange", name: "Frostmarket Hall", kind: "stall" },
+      { role: "frost_banker", name: "Frostforge Vault", kind: "chapel" },
     ],
     fill: [
       { name: "Hearthspur Lodge", kind: "inn" },
@@ -921,7 +924,10 @@ const TOWN_SPECS: TownSpec[] = [
     wall: "#4a4453",
     beam: "#241f2c",
     roofs: ["#2e2836", "#3a3143", "#26222f", "#453a4e", "#332b3d"],
-    anchors: [{ role: "dusk_exchange", name: "Gravehollow Exchange", kind: "stall" }],
+    anchors: [
+      { role: "dusk_exchange", name: "Gravehollow Exchange", kind: "stall" },
+      { role: "dusk_banker", name: "Gravehollow Vault", kind: "chapel" },
+    ],
     fill: [
       { name: "The Hollow Bell", kind: "inn" },
       { name: "Gravedigger's Shed", kind: "barn" },
