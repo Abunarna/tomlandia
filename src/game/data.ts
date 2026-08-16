@@ -1416,9 +1416,11 @@ function buildGreatRiver(raw: Barrier[]): { pts: [number, number][]; bridges: Br
     }
   }
 
-  // 4. four bridges, roughly equidistant along the river, on clear banks
+  // 4. six bridges, roughly equidistant along the river, on clear banks.
+  // The V2 world is twice the area, so crossings were increased from four to
+  // six to keep the worst-case detour to a bridge about the same as before.
   const bridges: BridgeDef[] = [];
-  const targets = [0.14, 0.38, 0.62, 0.86];
+  const targets = [0.1, 0.26, 0.42, 0.58, 0.74, 0.9];
   targets.forEach((t, n) => {
     const wantX = WORLD_W * t;
     let idx = 0;
@@ -1750,25 +1752,27 @@ interface BiomePlan {
 
 /** what belongs where, and roughly how much of it across the whole world */
 const SPAWN_PLAN: Record<BiomeId, BiomePlan> = {
+  // V2 — counts doubled alongside the doubled world area so density per
+  // square of ground stays the same as the old, smaller map.
   fields: {
-    nodes: [["copper", 14], ["oak", 14], ["flax", 12], ["berries", 12]],
-    mobs: [["chicken", 14], ["goblin", 12]],
+    nodes: [["copper", 28], ["oak", 28], ["flax", 24], ["berries", 24]],
+    mobs: [["chicken", 28], ["goblin", 24]],
   },
   forest: {
-    nodes: [["iron", 12], ["willow", 12], ["maple", 10], ["herbs", 12]],
-    mobs: [["wolf", 12], ["bear", 10]],
+    nodes: [["iron", 24], ["willow", 24], ["maple", 20], ["herbs", 24]],
+    mobs: [["wolf", 24], ["bear", 20]],
   },
   desert: {
-    nodes: [["sandstone", 11], ["mithril", 9], ["palm", 9], ["bloom", 9]],
-    mobs: [["serpent", 10], ["bandit", 9]],
+    nodes: [["sandstone", 22], ["mithril", 18], ["palm", 18], ["bloom", 18]],
+    mobs: [["serpent", 20], ["bandit", 18]],
   },
   evil: {
-    nodes: [["cursed_rock", 9], ["cursed_tree", 9], ["gloomcap", 9]],
-    mobs: [["wraith", 9], ["shadow_beast", 8]],
+    nodes: [["cursed_rock", 18], ["cursed_tree", 18], ["gloomcap", 18]],
+    mobs: [["wraith", 18], ["shadow_beast", 16]],
   },
   winter: {
-    nodes: [["runite", 9], ["tungsten", 7], ["frostpine", 9], ["lichen", 8]],
-    mobs: [["yeti", 8], ["frost_giant", 6]],
+    nodes: [["runite", 18], ["tungsten", 14], ["frostpine", 18], ["lichen", 16]],
+    mobs: [["yeti", 16], ["frost_giant", 12]],
   },
 };
 
