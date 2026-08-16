@@ -1,10 +1,11 @@
 /**
- * Grand Haven — "The Walled Hearth".
+ * Walled cities — Grand Haven ("The Walled Hearth") and Sunspire ("The Sphinx
+ * City").
  *
- * The city is described purely as geometry so the same definition drives
- * layout, collision and rendering:
+ * A city is described purely as geometry so the same definition drives layout,
+ * collision and rendering:
  *
- *   plaza  ── ring road ── building rings ── stone wall ── moat
+ *   plaza ── ring road ── building rings ── perimeter wall ── (moat)
  *
  * The wall is an organic ring: a radius that wobbles with the angle, using the
  * same "jittered outline" idea the biome edges and lake shores use, just
@@ -25,7 +26,10 @@ export interface CityGate {
 }
 
 export interface CityDef {
+  key: string;
   name: string;
+  /** stone-and-moat hearth, or sandstone medina */
+  theme: "stone" | "sand";
   cx: number;
   cy: number;
   /** open cobbled circle at the heart of town */
@@ -36,15 +40,23 @@ export interface CityDef {
   wallR: number;
   /** wall thickness */
   wallT: number;
-  /** dry berm between wall and water */
+  /** dry berm between wall and water (0 when the city has no moat) */
   moatGap: number;
-  /** width of the water band */
+  /** width of the water band (0 = no moat) */
   moatW: number;
+  /** wobble phase so the two cities don't share an identical silhouette */
+  phase: number;
+  /** interior water feature at the heart of the city (Sunspire's oasis) */
+  oasis?: { dx: number; dy: number; rx: number; ry: number };
+  /** signature monument: a solid block players walk around */
+  monument?: { dx: number; dy: number; w: number; h: number; kind: "sphinx" };
   gates: CityGate[];
 }
 
-export const CITY: CityDef = {
+const GRAND_HAVEN: CityDef = {
+  key: "grand-haven",
   name: "Grand Haven",
+  theme: "stone",
   cx: 800,
   cy: 2300,
   plazaR: 96,
@@ -53,10 +65,11 @@ export const CITY: CityDef = {
   wallT: 26,
   moatGap: 30,
   moatW: 58,
+  phase: 0,
   gates: [
     // 1 — primary: the drawbridge gate, onto the spine road to Willowbrook
     { angle: -0.53, half: 0.17, kind: "spine", label: "Willowbrook Gate", drawbridge: true },
-    // 2 — the unmarked northern trail that will become the desert shortcut
+    // 2 — the unmarked northern trail that becomes the desert shortcut
     { angle: -1.35, half: 0.15, kind: "trail", label: "Dust Trail Postern", drawbridge: false },
     // 3, 4 — local wilderness posterns
     { angle: 1.05, half: 0.15, kind: "local", label: "Meadow Postern", drawbridge: false },
@@ -64,17 +77,62 @@ export const CITY: CityDef = {
   ],
 };
 
+/**
+ * Sunspire sits in the middle of the Sunscorch Desert territory: a sandstone
+ * ring wall, no moat (water is far too precious), a spring-fed oasis on the
+ * plaza and the great sphinx watching the Willowbrook approach.
+ */
+const SUNSPIRE: CityDef = {
+  key: "sunspire",
+  name: "Sunspire",
+  theme: "sand",
+  cx: 3100,
+  cy: 900,
+  plazaR: 118,
+  ringR: [222, 300],
+  wallR: 348,
+  wallT: 24,
+  moatGap: 0,
+  moatW: 0,
+  phase: 1.7,
+  oasis: { dx: -6, dy: 8, rx: 74, ry: 56 },
+  monument: { dx: -196, dy: 128, w: 168, h: 86, kind: "sphinx" },
+  gates: [
+    // 1 — the caravan gate onto the spine road down to Willowbrook
+    { angle: 2.36, half: 0.17, kind: "spine", label: "Caravan Gate", drawbridge: false },
+    // 2 — east, facing the Evil Woods where Duskmere will rise
+    { angle: 0.46, half: 0.16, kind: "spine", label: "Duskward Gate", drawbridge: false },
+    // 3 — the dust-trail shortcut back to Grand Haven's northern postern
+    { angle: 3.02, half: 0.15, kind: "trail", label: "Dust Trail Gate", drawbridge: false },
+    // 4 — local wilderness postern onto the northern dunes
+    { angle: -1.42, half: 0.15, kind: "local", label: "Dune Postern", drawbridge: false },
+  ],
+};
+
+export const CITIES: CityDef[] = [GRAND_HAVEN, SUNSPIRE];
+/** Grand Haven stays the default city for the many single-city call sites */
+export const CITY = GRAND_HAVEN;
+export { GRAND_HAVEN, SUNSPIRE };
+
 /** organic wobble on the wall radius — smooth, deterministic, never self-crossing */
-export function cityWallR(a: number): number {
+export function cityWallR(a: number, c: CityDef = CITY): number {
+  const p = c.phase;
   return (
-    CITY.wallR *
-    (1 + 0.055 * Math.sin(3 * a + 0.9) + 0.035 * Math.sin(5 * a - 0.4) + 0.02 * Math.sin(8 * a + 2.1))
+    c.wallR *
+    (1 +
+      0.055 * Math.sin(3 * a + 0.9 + p) +
+      0.035 * Math.sin(5 * a - 0.4 + p) +
+      0.02 * Math.sin(8 * a + 2.1 + p))
   );
 }
 
 const MAX_WOBBLE = 1.11;
-/** furthest the outer moat bank ever reaches from the plaza */
-export const CITY_OUTER_R = CITY.wallR * MAX_WOBBLE + CITY.moatGap + CITY.moatW;
+/** furthest the outer bank (moat, if any) ever reaches from a city's plaza */
+export function cityOuterR(c: CityDef = CITY): number {
+  return c.wallR * MAX_WOBBLE + c.moatGap + c.moatW;
+}
+/** Grand Haven's outer radius (kept for existing call sites) */
+export const CITY_OUTER_R = cityOuterR(GRAND_HAVEN);
 
 function angDiff(a: number, b: number): number {
   let d = a - b;
@@ -84,42 +142,76 @@ function angDiff(a: number, b: number): number {
 }
 
 /** the gate whose opening covers this bearing, if any */
-export function cityGateAt(a: number): CityGate | null {
-  for (const g of CITY.gates) if (angDiff(a, g.angle) < g.half) return g;
+export function cityGateAt(a: number, c: CityDef = CITY): CityGate | null {
+  for (const g of c.gates) if (angDiff(a, g.angle) < g.half) return g;
   return null;
 }
 
 /** world position of a gate's opening (mid-wall) */
-export function cityGatePos(g: CityGate): { x: number; y: number } {
-  const r = cityWallR(g.angle);
-  return { x: CITY.cx + Math.cos(g.angle) * r, y: CITY.cy + Math.sin(g.angle) * r };
+export function cityGatePos(g: CityGate, c: CityDef = CITY): { x: number; y: number } {
+  const r = cityWallR(g.angle, c);
+  return { x: c.cx + Math.cos(g.angle) * r, y: c.cy + Math.sin(g.angle) * r };
 }
 
-/** a point just outside the moat, straight out from a gate */
-export function cityGateApproach(g: CityGate, out = 60): { x: number; y: number } {
-  const r = cityWallR(g.angle) + CITY.moatGap + CITY.moatW + out;
-  return { x: CITY.cx + Math.cos(g.angle) * r, y: CITY.cy + Math.sin(g.angle) * r };
+/** a point just outside the wall (and moat), straight out from a gate */
+export function cityGateApproach(g: CityGate, out = 60, c: CityDef = CITY): { x: number; y: number } {
+  const r = cityWallR(g.angle, c) + c.moatGap + c.moatW + out;
+  return { x: c.cx + Math.cos(g.angle) * r, y: c.cy + Math.sin(g.angle) * r };
 }
 
-/**
- * Solid wall and un-crossable moat water.
- * Openings: every gate breaks the wall; the moat is bridged by the drawbridge
- * at the primary gate and simply doesn't run across the three posterns, whose
- * approaches are dry causeways.
- */
-export function cityBlocked(x: number, y: number, pad = 10): boolean {
-  const dx = x - CITY.cx;
-  const dy = y - CITY.cy;
+/** the city whose footprint contains this point, if any */
+export function cityAt(x: number, y: number, margin = 0): CityDef | null {
+  for (const c of CITIES) {
+    if (Math.hypot(x - c.cx, y - c.cy) < cityOuterR(c) + margin) return c;
+  }
+  return null;
+}
+
+/** the oasis pool (interior water) — blocks movement, drawn as water */
+export function inCityOasis(x: number, y: number, pad = 0): boolean {
+  for (const c of CITIES) {
+    if (!c.oasis) continue;
+    const ox = c.cx + c.oasis.dx;
+    const oy = c.cy + c.oasis.dy;
+    const rx = c.oasis.rx + pad;
+    const ry = c.oasis.ry + pad;
+    const nx = (x - ox) / rx;
+    const ny = (y - oy) / ry;
+    if (nx * nx + ny * ny < 1) return true;
+  }
+  return false;
+}
+
+/** the monument footprint — solid */
+function onMonument(x: number, y: number, pad = 0): boolean {
+  for (const c of CITIES) {
+    if (!c.monument) continue;
+    const mx = c.cx + c.monument.dx;
+    const my = c.cy + c.monument.dy;
+    if (
+      Math.abs(x - mx) < c.monument.w / 2 + pad &&
+      Math.abs(y - my) < c.monument.h / 2 + pad
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function blockedByCity(c: CityDef, x: number, y: number, pad: number): boolean {
+  const dx = x - c.cx;
+  const dy = y - c.cy;
   const d = Math.hypot(dx, dy);
-  if (d > CITY_OUTER_R + pad || d < CITY.wallR * 0.8 - pad) return false;
+  if (d > cityOuterR(c) + pad || d < c.wallR * 0.8 - pad) return false;
   const a = Math.atan2(dy, dx);
-  const wr = cityWallR(a);
-  const gate = cityGateAt(a);
+  const wr = cityWallR(a, c);
+  const gate = cityGateAt(a, c);
 
-  if (!gate && Math.abs(d - wr) < CITY.wallT / 2 + pad) return true;
+  if (!gate && Math.abs(d - wr) < c.wallT / 2 + pad) return true;
 
-  const inner = wr + CITY.moatGap;
-  const outer = inner + CITY.moatW;
+  if (c.moatW <= 0) return false;
+  const inner = wr + c.moatGap;
+  const outer = inner + c.moatW;
   if (d > inner - pad && d < outer + pad) {
     if (!gate) return true;
     // drawbridge deck is a little narrower than the gate mouth
@@ -129,40 +221,64 @@ export function cityBlocked(x: number, y: number, pad = 10): boolean {
   return false;
 }
 
-/** water for rendering / road planning: the moat band, minus the gate causeways */
+/**
+ * Solid walls, un-crossable moat water, the oasis pool and the sphinx.
+ * Openings: every gate breaks the wall; Grand Haven's moat is bridged by the
+ * drawbridge at the primary gate and simply doesn't run across its posterns.
+ */
+export function cityBlocked(x: number, y: number, pad = 10): boolean {
+  if (inCityOasis(x, y, pad)) return true;
+  if (onMonument(x, y, pad)) return true;
+  for (const c of CITIES) if (blockedByCity(c, x, y, pad)) return true;
+  return false;
+}
+
+/** water for rendering / road planning: moat bands and the oasis */
 export function inCityMoat(x: number, y: number, pad = 0): boolean {
-  const dx = x - CITY.cx;
-  const dy = y - CITY.cy;
-  const d = Math.hypot(dx, dy);
-  if (d > CITY_OUTER_R + pad || d < CITY.wallR * 0.8) return false;
-  const a = Math.atan2(dy, dx);
-  const gate = cityGateAt(a);
-  if (gate && !gate.drawbridge) return false;
-  const inner = cityWallR(a) + CITY.moatGap;
-  return d > inner - pad && d < inner + CITY.moatW + pad;
+  if (inCityOasis(x, y, pad)) return true;
+  for (const c of CITIES) {
+    if (c.moatW <= 0) continue;
+    const dx = x - c.cx;
+    const dy = y - c.cy;
+    const d = Math.hypot(dx, dy);
+    if (d > cityOuterR(c) + pad || d < c.wallR * 0.8) continue;
+    const a = Math.atan2(dy, dx);
+    const gate = cityGateAt(a, c);
+    if (gate && !gate.drawbridge) continue;
+    const inner = cityWallR(a, c) + c.moatGap;
+    if (d > inner - pad && d < inner + c.moatW + pad) return true;
+  }
+  return false;
 }
 
-/** everything a wilderness spawn must stay out of: the city and its moat */
+/** everything a wilderness spawn must stay out of: any city and its moat */
 export function cityKeepOut(x: number, y: number, margin = 80): boolean {
-  return Math.hypot(x - CITY.cx, y - CITY.cy) < CITY_OUTER_R + margin;
+  return CITIES.some((c) => Math.hypot(x - c.cx, y - c.cy) < cityOuterR(c) + margin);
 }
 
-/** push a point radially out past the moat instead of dropping it */
+/** push a point radially out past the city instead of dropping it */
 export function pushOutsideCity(x: number, y: number, margin = 80): { x: number; y: number } {
-  const dx = x - CITY.cx;
-  const dy = y - CITY.cy;
-  const d = Math.hypot(dx, dy) || 1;
-  if (d >= CITY_OUTER_R + margin) return { x, y };
-  const r = CITY_OUTER_R + margin + (d % 37);
-  return { x: CITY.cx + (dx / d) * r, y: CITY.cy + (dy / d) * r };
+  let px = x;
+  let py = y;
+  for (const c of CITIES) {
+    const dx = px - c.cx;
+    const dy = py - c.cy;
+    const d = Math.hypot(dx, dy) || 1;
+    const need = cityOuterR(c) + margin;
+    if (d >= need) continue;
+    const r = need + (d % 37);
+    px = c.cx + (dx / d) * r;
+    py = c.cy + (dy / d) * r;
+  }
+  return { x: px, y: py };
 }
 
 /** the wall outline, sampled — used for drawing */
-export function cityWallPath(step = 0.02): [number, number][] {
+export function cityWallPath(step = 0.02, c: CityDef = CITY): [number, number][] {
   const pts: [number, number][] = [];
   for (let a = -Math.PI; a < Math.PI; a += step) {
-    const r = cityWallR(a);
-    pts.push([CITY.cx + Math.cos(a) * r, CITY.cy + Math.sin(a) * r]);
+    const r = cityWallR(a, c);
+    pts.push([c.cx + Math.cos(a) * r, c.cy + Math.sin(a) * r]);
   }
   return pts;
 }
