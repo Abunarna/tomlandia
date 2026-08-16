@@ -2658,6 +2658,9 @@ export class GameEngine {
     drawables.push({ y: this.py, fn: () => this.drawPlayer(ctx) });
     drawables.sort((a, b) => a.y - b.y);
     for (const d of drawables) d.fn();
+    this.drawEmoteMenu(ctx);
+
+
 
     for (const p of this.parts) {
       ctx.globalAlpha = Math.max(0, p.life);
