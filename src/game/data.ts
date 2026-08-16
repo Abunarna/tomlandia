@@ -972,8 +972,8 @@ for (const t of TOWN_SPECS) {
       for (let tryI = 0; tryI < 600 && !spot; tryI++) {
         const s = i * 17.3 + tryI * 1.7;
         // search outward from this house's own slot, drifting as tries mount
-        const a = baseA + (rand01(s) - 0.5) * ((Math.PI * 2) / slots) * (1 + tryI * 0.02);
-        const r = city.plazaR + 46 + rand01(s + 91) * (city.wallR - city.plazaR - 112);
+        const a = baseA + (rand01(s) - 0.5) * ((Math.PI * 2) / slots) * (1 + tryI * 0.06);
+        const r = city.plazaR + 44 + rand01(s + 91) * (city.wallR - city.plazaR - 96);
         const x = city.cx + Math.cos(a) * r;
         const y = city.cy + Math.sin(a) * r;
         if (inGateCorridor(a, city) || cityGateAt(a + 0.18, city) || cityGateAt(a - 0.18, city)) continue;
