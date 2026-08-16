@@ -28,8 +28,8 @@ export interface CityGate {
 export interface CityDef {
   key: string;
   name: string;
-  /** stone-and-moat hearth, sandstone medina, or timber canopy town */
-  theme: "stone" | "sand" | "wood";
+  /** stone-and-moat hearth, sandstone medina, timber canopy town, or ice hold */
+  theme: "stone" | "sand" | "wood" | "ice";
   cx: number;
   cy: number;
   /** open cobbled circle at the heart of town */
