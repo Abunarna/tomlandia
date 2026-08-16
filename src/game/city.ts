@@ -28,8 +28,8 @@ export interface CityGate {
 export interface CityDef {
   key: string;
   name: string;
-  /** stone-and-moat hearth, or sandstone medina */
-  theme: "stone" | "sand";
+  /** stone-and-moat hearth, sandstone medina, or timber canopy town */
+  theme: "stone" | "sand" | "wood";
   cx: number;
   cy: number;
   /** open cobbled circle at the heart of town */
@@ -49,7 +49,7 @@ export interface CityDef {
   /** interior water feature at the heart of the city (Sunspire's oasis) */
   oasis?: { dx: number; dy: number; rx: number; ry: number };
   /** signature monument: a solid block players walk around */
-  monument?: { dx: number; dy: number; w: number; h: number; kind: "sphinx" };
+  monument?: { dx: number; dy: number; w: number; h: number; kind: "sphinx" | "oakhall" };
   gates: CityGate[];
 }
 
