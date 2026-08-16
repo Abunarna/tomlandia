@@ -145,10 +145,43 @@ const WILLOWBROOK: CityDef = {
   ],
 };
 
-export const CITIES: CityDef[] = [GRAND_HAVEN, SUNSPIRE, WILLOWBROOK];
+/**
+ * Frostforge, the frozen hall of Winter Mountain: an ice-and-stone ring wall,
+ * streets circling the Frozen Hall at the heart of town, and a frozen canal
+ * cut up from the mountain lake and in through the Lakeward Gate.
+ */
+const FROSTFORGE: CityDef = {
+  key: "frostforge",
+  name: "Frostforge",
+  theme: "ice",
+  cx: 5200,
+  cy: 2200,
+  plazaR: 146,
+  ringR: [232, 306],
+  wallR: 330,
+  wallT: 24,
+  moatGap: 0,
+  moatW: 0,
+  phase: 5.1,
+  monument: { dx: 0, dy: 0, w: 196, h: 148, kind: "frozenhall" },
+  // cut from the mountain lake's northern shore, in through the Lakeward Gate
+  canal: { x1: 5209, y1: 2690, x2: 5200, y2: 2352, w: 46 },
+  gates: [
+    // 1 — the duskward gate, facing the Evil Woods where Duskmere will rise
+    { angle: -2.48, half: 0.17, kind: "spine", label: "Duskward Gate", drawbridge: false },
+    // 2 — the lakeward gate, where the frozen canal enters the city
+    { angle: 1.55, half: 0.16, kind: "local", label: "Lakeward Gate", drawbridge: false },
+    // 3 — the crag postern onto the northern peaks
+    { angle: -0.75, half: 0.15, kind: "local", label: "Crag Postern", drawbridge: false },
+    // 4 — the snowfield postern onto the western drifts
+    { angle: 2.85, half: 0.15, kind: "local", label: "Snowfield Postern", drawbridge: false },
+  ],
+};
+
+export const CITIES: CityDef[] = [GRAND_HAVEN, SUNSPIRE, WILLOWBROOK, FROSTFORGE];
 /** Grand Haven stays the default city for the many single-city call sites */
 export const CITY = GRAND_HAVEN;
-export { GRAND_HAVEN, SUNSPIRE, WILLOWBROOK };
+export { GRAND_HAVEN, SUNSPIRE, WILLOWBROOK, FROSTFORGE };
 
 /** organic wobble on the wall radius — smooth, deterministic, never self-crossing */
 export function cityWallR(a: number, c: CityDef = CITY): number {
