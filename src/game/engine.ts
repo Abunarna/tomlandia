@@ -2806,6 +2806,7 @@ export class GameEngine {
     }
     ctx.lineWidth = 1;
     this.drawBridges(ctx, view);
+    console.log('BARRIERS-END', JSON.stringify(view));
     this.drawWaypoints(ctx, view);
   }
 
