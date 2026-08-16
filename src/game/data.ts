@@ -1182,7 +1182,11 @@ export type NpcRole =
   | "sun_exchange"
   | "brook_exchange"
   | "frost_exchange"
-  | "dusk_exchange";
+  | "dusk_exchange"
+  | "haven_banker"
+  | "brook_banker"
+  | "frost_banker"
+  | "dusk_banker";
 
 export interface NpcDef {
   id: NpcRole;
