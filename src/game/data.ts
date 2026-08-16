@@ -1006,7 +1006,7 @@ for (const t of TOWN_SPECS) {
 {
   const onBuilding = (x: number, y: number) =>
     buildings.some(
-      (b) => x > b.x - 16 && x < b.x + b.w + 16 && y > b.y + b.h * 0.3 - 16 && y < b.y + b.h + 16,
+      (b) => x > b.x - 18 && x < b.x + b.w + 18 && y > b.y - 18 && y < b.y + b.h + 18,
     );
   for (const city of CITIES) {
     const inCity = Object.entries(npcSpots).filter(
