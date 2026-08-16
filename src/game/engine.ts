@@ -1528,7 +1528,7 @@ export class GameEngine {
       const lostGold = Math.floor(this.gold * 0.1);
       this.hp = Math.ceil(this.maxHp * 0.5);
       this.px = 700;
-      this.py = 620;
+      this.py = 2400;
       this.gold = Math.max(0, this.gold - lostGold);
       this.death = {
         at: Date.now(),
@@ -1841,7 +1841,7 @@ export class GameEngine {
                       const lostGold = Math.floor(this.gold * 0.1);
                       this.hp = Math.ceil(this.maxHp * 0.5);
                       this.px = 700;
-                      this.py = 620;
+                      this.py = 2400;
                       this.gold = Math.max(0, this.gold - lostGold);
                       this.death = {
                         at: Date.now(),
