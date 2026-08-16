@@ -28,8 +28,8 @@ export interface CityGate {
 export interface CityDef {
   key: string;
   name: string;
-  /** stone-and-moat hearth, or sandstone medina */
-  theme: "stone" | "sand";
+  /** stone-and-moat hearth, sandstone medina, or timber canopy town */
+  theme: "stone" | "sand" | "wood";
   cx: number;
   cy: number;
   /** open cobbled circle at the heart of town */
@@ -49,7 +49,7 @@ export interface CityDef {
   /** interior water feature at the heart of the city (Sunspire's oasis) */
   oasis?: { dx: number; dy: number; rx: number; ry: number };
   /** signature monument: a solid block players walk around */
-  monument?: { dx: number; dy: number; w: number; h: number; kind: "sphinx" };
+  monument?: { dx: number; dy: number; w: number; h: number; kind: "sphinx" | "oakhall" };
   gates: CityGate[];
 }
 
@@ -109,10 +109,41 @@ const SUNSPIRE: CityDef = {
   ],
 };
 
-export const CITIES: CityDef[] = [GRAND_HAVEN, SUNSPIRE];
+/**
+ * Willowbrook, the canopy city of the Lush Forest: a woven palisade of living
+ * hedge and split timber instead of stone, winding walkways between tree-house
+ * clusters, and the Great Oak Hall growing straight out of the plaza.
+ */
+const WILLOWBROOK: CityDef = {
+  key: "willowbrook",
+  name: "Willowbrook",
+  theme: "wood",
+  cx: 1960,
+  cy: 1710,
+  plazaR: 152,
+  ringR: [238, 312],
+  wallR: 326,
+  wallT: 22,
+  moatGap: 0,
+  moatW: 0,
+  phase: 3.4,
+  monument: { dx: 0, dy: 0, w: 190, h: 150, kind: "oakhall" },
+  gates: [
+    // 1 — the fieldward gate, onto the spine road down to Grand Haven
+    { angle: 2.67, half: 0.17, kind: "spine", label: "Fieldward Gate", drawbridge: false },
+    // 2 — the sunward gate, onto the caravan road up to Sunspire
+    { angle: -0.62, half: 0.17, kind: "spine", label: "Sunward Gate", drawbridge: false },
+    // 3 — the lakeside postern, out toward the forest fishing lake
+    { angle: -2.24, half: 0.15, kind: "local", label: "Lakeside Postern", drawbridge: false },
+    // 4 — the bramble postern onto the southern woods
+    { angle: 1.25, half: 0.15, kind: "local", label: "Bramble Postern", drawbridge: false },
+  ],
+};
+
+export const CITIES: CityDef[] = [GRAND_HAVEN, SUNSPIRE, WILLOWBROOK];
 /** Grand Haven stays the default city for the many single-city call sites */
 export const CITY = GRAND_HAVEN;
-export { GRAND_HAVEN, SUNSPIRE };
+export { GRAND_HAVEN, SUNSPIRE, WILLOWBROOK };
 
 /** organic wobble on the wall radius — smooth, deterministic, never self-crossing */
 export function cityWallR(a: number, c: CityDef = CITY): number {
@@ -183,7 +214,7 @@ export function inCityOasis(x: number, y: number, pad = 0): boolean {
 }
 
 /** the monument footprint — solid */
-function onMonument(x: number, y: number, pad = 0): boolean {
+export function onMonument(x: number, y: number, pad = 0): boolean {
   for (const c of CITIES) {
     if (!c.monument) continue;
     const mx = c.cx + c.monument.dx;

@@ -3120,6 +3120,7 @@ export class GameEngine {
 
   private drawOneCity(ctx: CanvasRenderingContext2D, CITY: CityDef) {
     const sand = CITY.theme === "sand";
+    const wood = CITY.theme === "wood";
     const P = sand
       ? {
           plaza: "#e6cd9a",
@@ -3131,7 +3132,18 @@ export class GameEngine {
           towerDark: "#8f6d34",
           towerLight: "#dcbb7e",
         }
-      : {
+      : wood
+        ? {
+            plaza: "#bfa877",
+            plazaEdge: "#8a7a4c",
+            ring: "#b09a6c",
+            wallDark: "#4a3a22",
+            wallLight: "#7d6136",
+            merlon: "#5f7c40",
+            towerDark: "#43331e",
+            towerLight: "#6f5530",
+          }
+        : {
           plaza: "#c9ae86",
           plazaEdge: "#b1936c",
           ring: "#c4a67c",
@@ -3221,6 +3233,68 @@ export class GameEngine {
         ctx.stroke();
       }
     }
+    // canopy cities: winding forest paths, elevated walkways and rope bridges
+    if (wood) {
+      ctx.lineCap = "round";
+      for (let k = 0; k < 9; k++) {
+        const a0 = (k / 9) * Math.PI * 2 + 0.31;
+        ctx.strokeStyle = P.ring;
+        ctx.lineWidth = 17;
+        ctx.beginPath();
+        for (let t = 0; t <= 1.001; t += 0.08) {
+          const a = a0 + Math.sin(t * Math.PI * 2.4 + k * 1.7) * 0.16;
+          const r = CITY.plazaR + t * (cityWallR(a0, CITY) - 46 - CITY.plazaR);
+          const [x, y] = at(a, r);
+          if (t === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      // planked walkways arcing between the two building rings
+      const walkR = (CITY.ringR[0]! + CITY.ringR[1]!) / 2 + 26;
+      for (let k = 0; k < 6; k++) {
+        const a0 = (k / 6) * Math.PI * 2 + 0.6;
+        const a1 = a0 + 0.42;
+        ctx.strokeStyle = "#6a4f2c";
+        ctx.lineWidth = 13;
+        ctx.beginPath();
+        for (let a = a0; a <= a1; a += 0.03) {
+          const [x, y] = at(a, walkR);
+          if (a === a0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.strokeStyle = "#a07a45";
+        ctx.lineWidth = 3;
+        for (let a = a0; a <= a1; a += 0.035) {
+          const [x1, y1] = at(a, walkR - 6);
+          const [x2, y2] = at(a, walkR + 6);
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+        }
+        // rope handrails
+        ctx.strokeStyle = "rgba(226,206,160,0.75)";
+        ctx.lineWidth = 2;
+        for (const off of [-8, 8]) {
+          ctx.beginPath();
+          for (let a = a0; a <= a1; a += 0.03) {
+            const [x, y] = at(a, walkR + off);
+            if (a === a0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        // support posts at each end
+        ctx.fillStyle = "#4a3620";
+        for (const a of [a0, a1]) {
+          const [x, y] = at(a, walkR);
+          ctx.fillRect(x - 4, y - 4, 8, 12);
+        }
+      }
+      ctx.lineCap = "butt";
+    }
 
     // --- the oasis pool at the heart of a desert city
     if (CITY.oasis) {
@@ -3301,11 +3375,24 @@ export class GameEngine {
         (i === gates.length - 1 ? Math.PI * 2 : 0);
       drawArc(from, to, CITY.wallT + 6, P.wallDark);
       drawArc(from, to, CITY.wallT - 4, P.wallLight);
-      // merlons
-      for (let a = from; a <= to; a += 0.06) {
-        const [x, y] = at(a, cityWallR(a, CITY) - CITY.wallT / 2 + 2);
-        ctx.fillStyle = P.merlon;
-        ctx.fillRect(x - 4, y - 4, 8, 8);
+      if (wood) {
+        // palisade: pointed stakes with a woven hedge crown
+        for (let a = from; a <= to; a += 0.022) {
+          const wr = cityWallR(a, CITY);
+          const [x, y] = at(a, wr);
+          ctx.fillStyle = ((a * 90) | 0) % 2 === 0 ? "#7d6136" : "#69502b";
+          ctx.fillRect(x - 3, y - 6, 6, 12);
+          const [hx, hy] = at(a, wr - CITY.wallT / 2 - 2);
+          ctx.fillStyle = ((a * 70) | 0) % 3 === 0 ? "#4f7038" : P.merlon;
+          ctx.fillRect(hx - 4, hy - 4, 8, 8);
+        }
+      } else {
+        // merlons
+        for (let a = from; a <= to; a += 0.06) {
+          const [x, y] = at(a, cityWallR(a, CITY) - CITY.wallT / 2 + 2);
+          ctx.fillStyle = P.merlon;
+          ctx.fillRect(x - 4, y - 4, 8, 8);
+        }
       }
     }
 
@@ -3336,12 +3423,92 @@ export class GameEngine {
           ctx.fillStyle = "#c98f4a";
           ctx.fill();
         }
+        // canopy cities: the gate towers are living trees with lookout decks
+        if (wood) {
+          ctx.fillStyle = "#5a4227";
+          ctx.fillRect(x - 5, y - 52, 10, 46);
+          ctx.fillStyle = "#6a4f2c";
+          ctx.fillRect(x - 15, y - 40, 30, 7);
+          ctx.fillStyle = "#3f7a45";
+          ctx.beginPath();
+          ctx.arc(x, y - 60, 20, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#59a05c";
+          ctx.beginPath();
+          ctx.arc(x - 7, y - 66, 13, 0, Math.PI * 2);
+          ctx.arc(x + 9, y - 62, 11, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
     }
 
-    // --- signature monument: the great sphinx at the caravan approach
+    // --- signature monuments: the great sphinx / the Great Oak Hall
     const mon = CITY.monument;
-    if (mon) {
+    if (mon && mon.kind === "oakhall") {
+      const mx = cx + mon.dx;
+      const my = cy + mon.dy;
+      const w = mon.w;
+      const h = mon.h;
+      ctx.save();
+      // roots spilling onto the plaza
+      ctx.fillStyle = "rgba(70,52,26,0.22)";
+      ctx.beginPath();
+      ctx.ellipse(mx, my + h / 2 - 6, w / 2 + 22, 26, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#6b5029";
+      ctx.lineWidth = 7;
+      for (let i = 0; i < 7; i++) {
+        const a = (i / 7) * Math.PI * 2 + 0.4;
+        ctx.beginPath();
+        ctx.moveTo(mx + Math.cos(a) * (w / 3), my + h / 4 + Math.sin(a) * 12);
+        ctx.lineTo(mx + Math.cos(a) * (w / 2 + 26), my + h / 3 + Math.sin(a) * 26);
+        ctx.stroke();
+      }
+      // hall body, built around the trunk
+      ctx.fillStyle = "#8a6b41";
+      ctx.fillRect(mx - w / 2, my - h / 6, w, h / 2 + h / 6);
+      ctx.fillStyle = "#a5834f";
+      for (let i = 0; i < 9; i++) ctx.fillRect(mx - w / 2 + 5 + i * (w / 9), my - h / 6 + 4, w / 9 - 8, h / 2 + h / 6 - 10);
+      // shuttered windows + great door
+      ctx.fillStyle = "#4b3a20";
+      ctx.fillRect(mx - 22, my + h / 6, 44, h / 3 - 4);
+      ctx.fillStyle = "#c8dca0";
+      ctx.fillRect(mx - w / 2 + 22, my + 2, 20, 18);
+      ctx.fillRect(mx + w / 2 - 42, my + 2, 20, 18);
+      // thatched roof
+      ctx.fillStyle = "#4e7a3c";
+      ctx.beginPath();
+      ctx.moveTo(mx - w / 2 - 16, my - h / 6 + 4);
+      ctx.lineTo(mx, my - h / 2 - 8);
+      ctx.lineTo(mx + w / 2 + 16, my - h / 6 + 4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = "#63996a";
+      for (let i = 0; i < 4; i++) {
+        ctx.fillRect(mx - w / 2 + 14 + i * 12, my - h / 6 - 6 - i * 8, w - 28 - i * 24, 5);
+      }
+      // the oak itself bursting through the ridge
+      ctx.fillStyle = "#5f4526";
+      ctx.fillRect(mx - 16, my - h / 2 - 66, 32, 62);
+      ctx.fillStyle = "#3f7a45";
+      ctx.beginPath();
+      ctx.arc(mx, my - h / 2 - 84, 54, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#4f9155";
+      ctx.beginPath();
+      ctx.arc(mx - 38, my - h / 2 - 74, 32, 0, Math.PI * 2);
+      ctx.arc(mx + 40, my - h / 2 - 78, 29, 0, Math.PI * 2);
+      ctx.arc(mx + 4, my - h / 2 - 116, 30, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(190,235,170,0.35)";
+      for (let i = 0; i < 9; i++) {
+        const a = (i / 9) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.arc(mx + Math.cos(a) * 40, my - h / 2 - 84 + Math.sin(a) * 34, 7, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    } else if (mon) {
       const mx = cx + mon.dx;
       const my = cy + mon.dy;
       const w = mon.w;
