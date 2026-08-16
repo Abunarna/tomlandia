@@ -3458,6 +3458,24 @@ export class GameEngine {
           ctx.fillStyle = ((a * 70) | 0) % 3 === 0 ? "#4f7038" : P.merlon;
           ctx.fillRect(hx - 4, hy - 4, 8, 8);
         }
+      } else if (ice) {
+        // ice-and-stone: rime-capped merlons with icicles hanging off the outer face
+        for (let a = from; a <= to; a += 0.05) {
+          const wr = cityWallR(a, CITY);
+          const [x, y] = at(a, wr - CITY.wallT / 2 + 2);
+          ctx.fillStyle = P.merlon;
+          ctx.fillRect(x - 5, y - 5, 10, 10);
+          ctx.fillStyle = "rgba(255,255,255,0.85)";
+          ctx.fillRect(x - 5, y - 6, 10, 3);
+          const [ix, iy] = at(a, wr + CITY.wallT / 2);
+          ctx.fillStyle = "rgba(214,240,255,0.9)";
+          ctx.beginPath();
+          ctx.moveTo(ix - 3, iy - 2);
+          ctx.lineTo(ix + 3, iy - 2);
+          ctx.lineTo(ix, iy + 9 + (((a * 60) | 0) % 3) * 3);
+          ctx.closePath();
+          ctx.fill();
+        }
       } else {
         // merlons
         for (let a = from; a <= to; a += 0.06) {
