@@ -3319,7 +3319,134 @@ export class GameEngine {
       }
       ctx.lineCap = "butt";
     }
+    // the Gravehollow: no ring roads — crooked mud lanes that go nowhere
+    if (goth) {
+      ctx.strokeStyle = "#453e50";
+      ctx.lineCap = "round";
+      for (let i = 0; i < 14; i++) {
+        const a0 = (i / 14) * Math.PI * 2 + 0.2;
+        ctx.lineWidth = 12 + ((i * 5) % 9);
+        ctx.beginPath();
+        let a = a0;
+        for (let r = CITY.plazaR + 10; r < CITY.wallR - 26; r += 22) {
+          a += Math.sin(r * 0.031 + i * 2.1) * 0.075;
+          const [x, y] = at(a, r);
+          if (r === CITY.plazaR + 10) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      // a couple of dead-end cross alleys, because of course
+      for (let i = 0; i < 7; i++) {
+        const a = (i / 7) * Math.PI * 2 + 0.9;
+        const r = CITY.plazaR + 70 + ((i * 47) % 130);
+        ctx.lineWidth = 9;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, a, a + 0.55 + (i % 3) * 0.18);
+        ctx.stroke();
+      }
+      ctx.lineCap = "butt";
+      // dead grass and puddles on the plaza
+      ctx.fillStyle = "rgba(30,26,38,0.35)";
+      for (let i = 0; i < 26; i++) {
+        const a = rand(i * 3.1) * Math.PI * 2;
+        const r = rand(i * 7.7 + 1) * (CITY.plazaR - 12);
+        const [x, y] = at(a, r);
+        ctx.beginPath();
+        ctx.ellipse(x, y, 6 + rand(i + 5) * 12, 4 + rand(i + 9) * 6, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // --- the graveyard quarter: iron railings, leaning stones, a crypt or two
+    if (CITY.graveyard) {
+      const G = CITY.graveyard;
+      const gx = cx + G.dx;
+      const gy = cy + G.dy;
+      ctx.save();
+      ctx.translate(gx, gy);
+      ctx.rotate(G.rot);
+      // sour, trampled ground
+      ctx.fillStyle = "#3f3a48";
+      ctx.beginPath();
+      ctx.ellipse(0, 0, G.rx, G.ry, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(78,92,64,0.35)";
+      for (let i = 0; i < 24; i++) {
+        const a = rand(i * 2.7) * Math.PI * 2;
+        const rr = Math.sqrt(rand(i * 5.3 + 2)) * 0.9;
+        ctx.beginPath();
+        ctx.ellipse(Math.cos(a) * G.rx * rr, Math.sin(a) * G.ry * rr, 9, 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // tombstones in ragged rows, each leaning its own way
+      for (let i = 0; i < 26; i++) {
+        const col = i % 7;
+        const row = (i / 7) | 0;
+        const tx = -G.rx * 0.78 + col * (G.rx * 1.56 / 6) + (rand(i * 9.1) - 0.5) * 14;
+        const ty = -G.ry * 0.55 + row * (G.ry * 1.1 / 3) + (rand(i * 4.3 + 7) - 0.5) * 12;
+        ctx.save();
+        ctx.translate(tx, ty);
+        ctx.rotate((rand(i * 6.7 + 3) - 0.5) * 0.45);
+        ctx.fillStyle = "rgba(20,17,26,0.35)";
+        ctx.beginPath();
+        ctx.ellipse(0, 3, 11, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
+        const style = i % 5;
+        ctx.fillStyle = i % 3 === 0 ? "#8f8a96" : "#7a7684";
+        if (style === 0) {
+          // cross
+          ctx.fillRect(-3, -24, 6, 26);
+          ctx.fillRect(-10, -18, 20, 5);
+        } else if (style === 1) {
+          // broken slab
+          ctx.fillRect(-8, -14, 16, 16);
+          ctx.fillStyle = "#5d596a";
+          ctx.fillRect(-8, -14, 16, 3);
+        } else {
+          // rounded headstone
+          ctx.beginPath();
+          ctx.moveTo(-8, 2);
+          ctx.lineTo(-8, -13);
+          ctx.quadraticCurveTo(0, -24, 8, -13);
+          ctx.lineTo(8, 2);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "rgba(40,36,50,0.5)";
+          ctx.fillRect(-4, -13, 8, 2);
+          ctx.fillRect(-4, -8, 8, 2);
+        }
+        ctx.restore();
+      }
+      // wrought iron railing around the whole plot, with a lychgate on the north
+      ctx.strokeStyle = "#1d1a24";
+      ctx.lineWidth = 3;
+      for (let a = 0; a < Math.PI * 2; a += 0.075) {
+        if (a > 1.35 && a < 1.79) continue; // gap: the way in
+        const x = Math.cos(a) * (G.rx + 12);
+        const y = Math.sin(a) * (G.ry + 12);
+        ctx.beginPath();
+        ctx.moveTo(x, y + 4);
+        ctx.lineTo(x, y - 13);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(x, y - 15, 2.2, 0, Math.PI * 2);
+        ctx.fillStyle = "#1d1a24";
+        ctx.fill();
+      }
+      ctx.beginPath();
+      for (let a = 0; a <= Math.PI * 2 + 0.05; a += 0.05) {
+        const x = Math.cos(a) * (G.rx + 12);
+        const y = Math.sin(a) * (G.ry + 12) - 7;
+        if (a === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
     // ice cities: concentric swept snow rings between the building rings
+
     if (ice) {
       ctx.strokeStyle = P.ring;
       for (const [rr, lw] of [[CITY.plazaR + 46, 20], [CITY.ringR[1]! + 12, 16]] as [number, number][]) {
