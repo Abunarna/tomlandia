@@ -6,6 +6,8 @@ import {
   BIOMES,
   BUILDINGS,
   STREETS,
+  LAKES,
+
   ROAD_RUNS,
   NPCS,
   NPC_ICONS,
