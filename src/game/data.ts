@@ -2031,15 +2031,15 @@ export interface WaypointDef {
 }
 
 /** point at the halfway mark along a polyline */
-function midOfPath(pts: [number, number][]): { x: number; y: number } {
+function midOfPath(pts: [number, number][], frac = 0.5): { x: number; y: number } {
   let total = 0;
   for (let i = 1; i < pts.length; i++)
     total += Math.hypot(pts[i]![0] - pts[i - 1]![0], pts[i]![1] - pts[i - 1]![1]);
   let run = 0;
   for (let i = 1; i < pts.length; i++) {
     const d = Math.hypot(pts[i]![0] - pts[i - 1]![0], pts[i]![1] - pts[i - 1]![1]);
-    if (run + d >= total / 2) {
-      const t = d ? (total / 2 - run) / d : 0;
+    if (run + d >= total * frac) {
+      const t = d ? (total * frac - run) / d : 0;
       return {
         x: pts[i - 1]![0] + (pts[i]![0] - pts[i - 1]![0]) * t,
         y: pts[i - 1]![1] + (pts[i]![1] - pts[i - 1]![1]) * t,
