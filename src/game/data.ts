@@ -157,6 +157,7 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
     def("mystic_robe", "Mystic Robe", 640, "#d5b7f0", "armor", { defense: 21, attack: 7, speed: 0.16 }),
     def("runite_plate", "Runite Plate", 980, "#95e6d6", "armor", { defense: 27 }),
     def("frostguard_plate", "Frostguard Plate", 1600, "#d3d9e8", "armor", { defense: 38 }),
+    def("wyrmscale_plate", "Wyrmscale Plate", 2200, "#a8d4e8", "armor", { defense: 50 }),
     // food
     def("honey_bun", "Honey Bun", 12, "#f4c56b", "food", { heal: 14 }),
     def("berry_pie", "Berry Pie", 34, "#f19bb0", "food", { heal: 45 }),
