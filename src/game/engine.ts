@@ -2888,10 +2888,11 @@ export class GameEngine {
     }
     if (!bars.length) return;
 
-    // --- long meandering highlight streaks riding the current -----------
-    // Soft expanded blur via layered stroking: build each lane's path once,
-    // then stroke at decreasing widths with rising opacity so the outer edge
-    // fades to transparent while the core stays near full density.
+    // --- soft colour movement riding the current ----------------------
+    // No visible lines: stroke the meandering paths at very large widths
+    // with extremely low opacity so only a diffuse wash of colour drifts
+    // downstream. Multiple faint overlapping passes build up a soft bloom
+    // without ever resolving into a crisp core.
     const laneColor = (lane: number) =>
       lane === 0 ? [255, 255, 255] : lane === 1 ? [220, 246, 255] : [255, 255, 255];
     const laneWidth = (lane: number) => (lane === 0 ? 2.6 : lane === 1 ? 1.9 : 1.3);
@@ -2948,19 +2949,23 @@ export class GameEngine {
           path.lineTo(px, py);
         }
       }
-      // layered soft blur: wide faint halo -> mid -> dense core
+      // diffuse colour wash: many wide, nearly-transparent passes stack
+      // into a soft bloom. Widths are ~4x the old core; opacity is tiny so
+      // no crisp line ever resolves — just drifting colour in the water.
       const [cr, cg, cb] = laneColor(lane);
       const base = lane === 0 ? 0.34 : lane === 1 ? 0.24 : 0.16;
       const w = laneWidth(lane);
-      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${base * 0.18})`;
-      ctx.lineWidth = w * 2.0;
-      ctx.stroke(path);
-      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${base * 0.5})`;
-      ctx.lineWidth = w * 1.4;
-      ctx.stroke(path);
-      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${base})`;
-      ctx.lineWidth = w;
-      ctx.stroke(path);
+      const passes = [
+        { wid: w * 8.0, op: base * 0.022 },
+        { wid: w * 6.0, op: base * 0.03 },
+        { wid: w * 4.5, op: base * 0.04 },
+        { wid: w * 3.2, op: base * 0.05 },
+      ];
+      for (const p of passes) {
+        ctx.strokeStyle = `rgba(${cr},${cg},${cb},${p.op})`;
+        ctx.lineWidth = p.wid;
+        ctx.stroke(path);
+      }
     }
 
 
