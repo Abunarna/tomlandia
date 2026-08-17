@@ -20,6 +20,11 @@ class Sfx {
   private ctx: AudioContext | null = null;
   enabled = true;
 
+  /** Shared WebAudio context (created on first unlock). */
+  get context() {
+    return this.ctx;
+  }
+
   /** Must be called from a user gesture on mobile browsers. */
   unlock() {
     if (typeof window === "undefined") return;
@@ -29,7 +34,9 @@ class Sfx {
       this.ctx = new Ctor();
     }
     if (this.ctx.state === "suspended") void this.ctx.resume();
+    loops.warm();
   }
+
 
   play(id: SfxId) {
     if (!this.enabled || !this.ctx || this.ctx.state !== "running") return;
