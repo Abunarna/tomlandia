@@ -2769,6 +2769,8 @@ export class GameEngine {
       this.lake(ctx, l);
     }
     ctx.drawImage(terrain.over, terrain.x, terrain.y, terrain.w, terrain.h);
+    this.drawRiverFlow(ctx, view);
+
 
 
     this.drawButterflies(ctx);
