@@ -2885,18 +2885,18 @@ export class GameEngine {
       }
 
       if (bar.kind === "river") {
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-        ctx.strokeStyle = "#6fa9c9";
-        ctx.lineWidth = bar.width;
-        ctx.stroke(path);
-        ctx.strokeStyle = "#9fd8ee";
-        ctx.lineWidth = bar.width * 0.66;
-        ctx.stroke(path);
-        ctx.strokeStyle = "rgba(255,255,255,0.5)";
-        ctx.lineWidth = bar.width * 0.16;
-        ctx.stroke(path);
+        const g = riverGeom(bar);
+        // outer bank (dark teal), water body, then a cached depth gradient
+        ctx.fillStyle = "#3f6f83";
+        ctx.fill(g.bank);
+        ctx.fillStyle = "#6fa9c9";
+        ctx.fill(g.water);
+        ctx.fillStyle = riverGradient(ctx, g);
+        ctx.fill(g.water);
+        ctx.fillStyle = "rgba(159,216,238,0.55)";
+        ctx.fill(g.core);
       } else if (bar.kind === "rocks") {
+
         // solid rubble band so the ridge reads as continuous
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
