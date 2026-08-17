@@ -2025,8 +2025,16 @@ export class GameEngine {
       const d = Math.hypot(dx, dy);
       if (d < 3) {
         v.wait = 1 + Math.random() * 4;
-        v.tx = v.hx + (Math.random() - 0.5) * 240;
-        v.ty = v.hy + (Math.random() - 0.5) * 170;
+        const home = CITIES.find((c) => c.cx === v.hx && c.cy === v.hy);
+        if (home) {
+          const s = this.villagerSpot(home);
+          v.tx = s.x;
+          v.ty = s.y;
+        } else {
+          v.tx = v.hx + (Math.random() - 0.5) * 240;
+          v.ty = v.hy + (Math.random() - 0.5) * 170;
+        }
+
       } else {
         const step = Math.min(d, 34 * dt);
         v.x += (dx / d) * step;
