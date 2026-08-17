@@ -110,15 +110,28 @@ export class PresenceNet {
     this.resubscribe(cx, cy);
 
     const home = this.channels.get(this.homeKey);
-    if (home && this.joined.has(this.homeKey)) {
-      void home
-        .send({
-          type: "broadcast",
-          event: "pos",
-          payload: { id: this.userId, ...me } satisfies PresencePacket,
-        })
-        .catch(() => {});
-    }
+    if (!home || !this.joined.has(this.homeKey)) return;
+
+    const now = Date.now();
+    const moved =
+      !this.lastSent ||
+      Math.hypot(me.x - this.lastSent.x, me.y - this.lastSent.y) > POS_EPSILON ||
+      me.f !== this.lastSent.f ||
+      me.act !== this.lastSent.act ||
+      me.emo !== this.lastSent.emo;
+    const heartbeatDue = now - this.lastSentAt >= HEARTBEAT_MS;
+
+    if (!moved && !heartbeatDue) return;
+
+    void home
+      .send({
+        type: "broadcast",
+        event: "pos",
+        payload: { id: this.userId, ...me } satisfies PresencePacket,
+      })
+      .catch(() => {});
+    this.lastSent = me;
+    this.lastSentAt = now;
   }
 
   private resubscribe(cx: number, cy: number) {
