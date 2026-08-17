@@ -360,6 +360,25 @@ export function WorldMap({ position, onClose }: Props) {
             );
           })}
 
+          {/* city moats — same layered river styling as the Great River */}
+          {CITIES.filter((c) => c.moatW > 0).map((c) => {
+            const pts: string[] = [];
+            for (let i = 0; i <= 96; i++) {
+              const a = (i / 96) * Math.PI * 2;
+              const r = cityWallR(a, c) + c.moatGap + c.moatW / 2;
+              pts.push(`${i === 0 ? "M" : "L"}${sx(c.cx + Math.cos(a) * r)},${sy(c.cy + Math.sin(a) * r)}`);
+            }
+            const d = `${pts.join(" ")} Z`;
+            const w = Math.max(2, c.moatW * scale);
+            return (
+              <g key={`moat-${c.key}`} fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <path d={d} stroke="#3f6f83" strokeWidth={w * 1.16} />
+                <path d={d} stroke="#6fa9c9" strokeWidth={w} />
+                <path d={d} stroke="#9fd8ee" strokeWidth={w * 0.45} opacity={0.75} />
+              </g>
+            );
+          })}
+
           {LAKES.map((l) => (
 
             <path
