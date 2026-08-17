@@ -2770,6 +2770,8 @@ export class GameEngine {
     }
     ctx.drawImage(terrain.over, terrain.x, terrain.y, terrain.w, terrain.h);
     this.drawRiverFlow(ctx, view);
+    this.drawMoatFlow(ctx, view);
+
     // bridges are baked into the overlay, so redraw them live on top of the
     // animated water so the wave effects stay visible under, not over, them.
     this.drawBridges(ctx, view);
