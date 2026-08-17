@@ -18,7 +18,6 @@ import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } fr
 import { Route as AuthenticatedPlayRouteImport } from './routes/_authenticated/play'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
-import { Route as ApiPublicRebuildWorldRouteImport } from './routes/api/public/rebuild-world'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -67,11 +66,6 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicRebuildWorldRoute = ApiPublicRebuildWorldRouteImport.update({
-  id: '/api/public/rebuild-world',
-  path: '/api/public/rebuild-world',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,7 +76,6 @@ export interface FileRoutesByFullPath {
   '/play': typeof AuthenticatedPlayRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
-  '/api/public/rebuild-world': typeof ApiPublicRebuildWorldRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -93,7 +86,6 @@ export interface FileRoutesByTo {
   '/play': typeof AuthenticatedPlayRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
-  '/api/public/rebuild-world': typeof ApiPublicRebuildWorldRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,7 +98,6 @@ export interface FileRoutesById {
   '/_authenticated/play': typeof AuthenticatedPlayRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
-  '/api/public/rebuild-world': typeof ApiPublicRebuildWorldRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,7 +110,6 @@ export interface FileRouteTypes {
     | '/play'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
-    | '/api/public/rebuild-world'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -130,7 +120,6 @@ export interface FileRouteTypes {
     | '/play'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
-    | '/api/public/rebuild-world'
   id:
     | '__root__'
     | '/'
@@ -142,7 +131,6 @@ export interface FileRouteTypes {
     | '/_authenticated/play'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
-    | '/api/public/rebuild-world'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -154,7 +142,6 @@ export interface RootRouteChildren {
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
-  ApiPublicRebuildWorldRoute: typeof ApiPublicRebuildWorldRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -222,13 +209,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/rebuild-world': {
-      id: '/api/public/rebuild-world'
-      path: '/api/public/rebuild-world'
-      fullPath: '/api/public/rebuild-world'
-      preLoaderRoute: typeof ApiPublicRebuildWorldRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -253,7 +233,6 @@ const rootRouteChildren: RootRouteChildren = {
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
-  ApiPublicRebuildWorldRoute: ApiPublicRebuildWorldRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
