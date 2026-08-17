@@ -18,6 +18,11 @@ export const ROWS = Math.ceil(WORLD_H / CELL_H);
 const SEND_HZ = 4;
 /** Drop a remote player we have not heard from in this long. */
 export const STALE_MS = 6000;
+/** Send a heartbeat at least this often even when stationary, so we don't
+ *  get dropped by STALE_MS on neighbouring clients. */
+const HEARTBEAT_MS = 2000;
+/** Movement below this many world units is treated as "no change". */
+const POS_EPSILON = 2;
 
 export interface PresencePacket {
   id: string;
@@ -67,6 +72,8 @@ export class PresenceNet {
   private joined = new Set<string>();
   private timer: ReturnType<typeof setInterval> | null = null;
   private stopped = false;
+  private lastSent: Omit<PresencePacket, "id"> | null = null;
+  private lastSentAt = 0;
 
   constructor(
     private userId: string,
@@ -103,15 +110,28 @@ export class PresenceNet {
     this.resubscribe(cx, cy);
 
     const home = this.channels.get(this.homeKey);
-    if (home && this.joined.has(this.homeKey)) {
-      void home
-        .send({
-          type: "broadcast",
-          event: "pos",
-          payload: { id: this.userId, ...me } satisfies PresencePacket,
-        })
-        .catch(() => {});
-    }
+    if (!home || !this.joined.has(this.homeKey)) return;
+
+    const now = Date.now();
+    const moved =
+      !this.lastSent ||
+      Math.hypot(me.x - this.lastSent.x, me.y - this.lastSent.y) > POS_EPSILON ||
+      me.f !== this.lastSent.f ||
+      me.act !== this.lastSent.act ||
+      me.emo !== this.lastSent.emo;
+    const heartbeatDue = now - this.lastSentAt >= HEARTBEAT_MS;
+
+    if (!moved && !heartbeatDue) return;
+
+    void home
+      .send({
+        type: "broadcast",
+        event: "pos",
+        payload: { id: this.userId, ...me } satisfies PresencePacket,
+      })
+      .catch(() => {});
+    this.lastSent = me;
+    this.lastSentAt = now;
   }
 
   private resubscribe(cx: number, cy: number) {
