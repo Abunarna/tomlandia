@@ -47,7 +47,7 @@ import {
   desolatusAt,
 } from "./boss";
 import { levelFromXp } from "./progression";
-import { music, sfx } from "./audio";
+import { loops, music, sfx, type LoopId } from "./audio";
 import {
   MARKET_FEE,
   feeFor,
@@ -405,6 +405,8 @@ export class GameEngine {
   private regenCd = 0;
   private activity = "Wandering";
   private activityProgress = 0;
+  /** looping sound effect for the action in progress this frame */
+  private actionLoop: LoopId | null = null;
   private biome: BiomeDef = BIOMES[0]!;
   private blockedFor = 0;
 
@@ -1339,6 +1341,7 @@ export class GameEngine {
   stop() {
     cancelAnimationFrame(this.raf);
     music.stop();
+    loops.stop();
     this.save();
   }
 
@@ -1628,6 +1631,8 @@ export class GameEngine {
     this.tickRemotes(dt);
     this.tickBoss(dt);
 
+    this.actionLoop = null;
+
     // joystick overrides target
     if (this.joystick.active && (this.joystick.dx || this.joystick.dy)) {
       this.target = { type: "none" };
@@ -1660,6 +1665,8 @@ export class GameEngine {
             return;
           }
           this.activity = `Harvesting ${def.name}`;
+          this.actionLoop =
+            def.skill === "mining" ? "mining" : def.skill === "woodcutting" ? "woodcutting" : "gathering";
           this.gatherProgress += dt / def.time;
           this.activityProgress = this.gatherProgress;
           if (Math.random() < dt * 12) {
@@ -1733,6 +1740,7 @@ export class GameEngine {
             this.activityProgress = 0;
           } else {
             this.activity = "Fishing";
+            this.actionLoop = "fishing";
             this.gatherProgress += dt / FISH_CAST_TIME;
             this.activityProgress = this.gatherProgress;
             if (Math.random() < dt * 4) {
@@ -1791,6 +1799,7 @@ export class GameEngine {
         if (d <= 34) {
           const md = MONSTER_DEFS[m.kind];
           this.activity = `Fighting ${md.name}`;
+          this.actionLoop = "combat";
           this.combatCd -= dt;
           this.activityProgress = 1 - Math.max(0, this.combatCd) / this.attackInterval;
           if (this.combatCd <= 0) {
@@ -1869,6 +1878,7 @@ export class GameEngine {
         const d = this.moveToward(this.boss.x, this.boss.y + 20, dt, 140);
         if (d <= BOSS_MELEE_RADIUS) {
           this.activity = `Fighting ${BOSS_NAME}`;
+          this.actionLoop = "combat";
           this.combatCd -= dt;
           this.activityProgress = 1 - Math.max(0, this.combatCd) / this.attackInterval;
           if (this.combatCd <= 0) {
@@ -1899,6 +1909,8 @@ export class GameEngine {
       this.activity = "Wandering";
       this.activityProgress = 0;
     }
+
+    loops.set(this.actionLoop);
 
     // biome discovery
     const b = biomeAt(this.px, this.py);
