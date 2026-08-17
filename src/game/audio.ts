@@ -35,6 +35,7 @@ class Sfx {
     }
     if (this.ctx.state === "suspended") void this.ctx.resume();
     loops.warm();
+    ambience.start();
   }
 
 
@@ -65,8 +66,8 @@ import trackAsset from "@/assets/tomlandia-theme.mp3.asset.json";
 class Music {
   private el: HTMLAudioElement | null = null;
   private started = false;
-  /** Music has its own mute, independent of SFX. */
-  enabled = true;
+  /** Music has its own mute, independent of SFX. Off by default. */
+  enabled = false;
 
   /** Call from a user gesture; safe to call repeatedly. */
   start() {
@@ -253,3 +254,72 @@ class ActivityLoops {
 
 export const loops = new ActivityLoops();
 
+
+/* ---------- constant background ambience ---------- */
+
+import bgmAsset from "@/assets/BGM.mp3.asset.json";
+
+/**
+ * Always-on ambient bed. Gapless (WebAudio buffer loop), plays for the whole
+ * session and follows the SFX mute — not the music toggle.
+ */
+class Ambience {
+  private src: AudioBufferSourceNode | null = null;
+  private gain: GainNode | null = null;
+  private buf: AudioBuffer | null = null;
+  private loading = false;
+  private want = false;
+
+  start() {
+    this.want = true;
+    if (!sfx.enabled) return;
+    const ctx = sfx.context;
+    if (!ctx || this.src) return;
+    if (!this.buf) {
+      if (this.loading) return;
+      this.loading = true;
+      void (async () => {
+        try {
+          const res = await fetch(bgmAsset.url);
+          this.buf = await ctx.decodeAudioData(await res.arrayBuffer());
+        } catch {
+          /* ignore */
+        }
+        this.loading = false;
+        if (this.want) this.start();
+      })();
+      return;
+    }
+    if (!this.gain) {
+      this.gain = ctx.createGain();
+      this.gain.gain.value = 0.3;
+      this.gain.connect(ctx.destination);
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = this.buf;
+    src.loop = true;
+    src.connect(this.gain);
+    src.start();
+    this.src = src;
+  }
+
+  stop() {
+    this.want = false;
+    if (this.src) {
+      try {
+        this.src.stop();
+      } catch {
+        /* already stopped */
+      }
+      this.src.disconnect();
+      this.src = null;
+    }
+  }
+
+  setEnabled(on: boolean) {
+    if (on) this.start();
+    else this.stop();
+  }
+}
+
+export const ambience = new Ambience();

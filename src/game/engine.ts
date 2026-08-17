@@ -47,7 +47,7 @@ import {
   desolatusAt,
 } from "./boss";
 import { levelFromXp } from "./progression";
-import { loops, music, sfx, type LoopId } from "./audio";
+import { ambience, loops, music, sfx, type LoopId } from "./audio";
 import {
   MARKET_FEE,
   feeFor,
@@ -2491,6 +2491,7 @@ export class GameEngine {
   toggleSound(): boolean {
     sfx.unlock();
     sfx.enabled = !sfx.enabled;
+    ambience.setEnabled(sfx.enabled);
     if (sfx.enabled) sfx.play("coin");
     this.emitHud(true);
     return sfx.enabled;
@@ -2505,6 +2506,7 @@ export class GameEngine {
 
   unlockAudio() {
     sfx.unlock();
+    ambience.start();
     music.start();
   }
 
