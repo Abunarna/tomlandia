@@ -2136,24 +2136,24 @@ const SPAWN_PLAN: Record<BiomeId, BiomePlan> = {
   // V2 — counts doubled alongside the doubled world area so density per
   // square of ground stays the same as the old, smaller map.
   fields: {
-    nodes: [["copper", 28], ["oak", 28], ["flax", 24], ["berries", 24]],
-    mobs: [["chicken", 28], ["goblin", 24], ["disgruntled_ram", 16]],
+    nodes: [["copper", 17], ["oak", 17], ["flax", 14], ["berries", 14]],
+    mobs: [["chicken", 17], ["goblin", 14], ["disgruntled_ram", 10]],
   },
   forest: {
-    nodes: [["iron", 24], ["willow", 24], ["maple", 20], ["herbs", 24]],
-    mobs: [["forest_boar", 16], ["wolf", 24], ["forest_lynx", 16], ["bear", 20]],
+    nodes: [["iron", 14], ["willow", 14], ["maple", 12], ["herbs", 14]],
+    mobs: [["forest_boar", 10], ["wolf", 14], ["forest_lynx", 10], ["bear", 12]],
   },
   desert: {
-    nodes: [["sandstone", 22], ["mithril", 18], ["palm", 18], ["bloom", 18]],
-    mobs: [["dust_jackal", 16], ["serpent", 20], ["scorpion_stalker", 16], ["bandit", 18]],
+    nodes: [["sandstone", 13], ["mithril", 11], ["palm", 11], ["bloom", 11]],
+    mobs: [["dust_jackal", 10], ["serpent", 12], ["scorpion_stalker", 10], ["bandit", 11]],
   },
   evil: {
-    nodes: [["cursed_rock", 18], ["cursed_tree", 18], ["gloomcap", 18]],
-    mobs: [["withered_ghoul", 16], ["wraith", 18], ["bone_reaper", 14], ["shadow_beast", 16]],
+    nodes: [["cursed_rock", 11], ["cursed_tree", 11], ["gloomcap", 11]],
+    mobs: [["withered_ghoul", 10], ["wraith", 11], ["bone_reaper", 8], ["shadow_beast", 10]],
   },
   winter: {
-    nodes: [["runite", 18], ["tungsten", 14], ["frostpine", 18], ["lichen", 16]],
-    mobs: [["frost_wolf", 16], ["yeti", 16], ["ice_wraith", 14], ["frost_giant", 12], ["ancient_frost_wyrm", 10]],
+    nodes: [["runite", 11], ["tungsten", 8], ["frostpine", 11], ["lichen", 10]],
+    mobs: [["frost_wolf", 10], ["yeti", 10], ["ice_wraith", 8], ["frost_giant", 7], ["ancient_frost_wyrm", 6]],
   },
 };
 
@@ -2233,6 +2233,50 @@ function spawnable(x: number, y: number) {
     return best;
   };
 
+  /** stable numeric seed from a kind name */
+  const strSeed = (s: string) => {
+    let h = 0;
+    for (let j = 0; j < s.length; j++) h = (h * 31 + s.charCodeAt(j)) % 100003;
+    return h + 7;
+  };
+
+  // cluster centres: same-kind spawns gravitate toward a few patches per biome
+  const centers = new Map<string, { x: number; y: number }[]>();
+  const addCenters = (bid: string, kind: string, quota: number) => {
+    const count = Math.max(1, Math.round(quota / 6));
+    const seed = strSeed(`${bid}:${kind}`);
+    const pts: { x: number; y: number }[] = [];
+    let t = 0;
+    while (pts.length < count && t < count * 200) {
+      t++;
+      const x = rand01(seed * 1.31 + t * 2.17) * WORLD_W;
+      const y = rand01(seed * 2.71 + t * 3.53 + 19) * WORLD_H;
+      if (biomeAt(x, y).id !== bid) continue;
+      pts.push({ x, y });
+    }
+    if (!pts.length) pts.push({ x: WORLD_W / 2, y: WORLD_H / 2 });
+    centers.set(`${bid}:${kind}`, pts);
+  };
+  for (const [bid, plan] of Object.entries(SPAWN_PLAN)) {
+    for (const [k, q] of plan.nodes) addCenters(bid, k as string, q as number);
+    for (const [k, q] of plan.mobs) addCenters(bid, k as string, q as number);
+  }
+
+  /** nearest-cluster pick among kinds that still have quota */
+  const pickNear = <K extends string>(m: Map<K, number>, bid: string, x: number, y: number): K | null => {
+    let best: K | null = null;
+    let bestD = Infinity;
+    for (const [k, v] of m) {
+      if (v <= 0) continue;
+      const pts = centers.get(`${bid}:${k}`) ?? [];
+      let d = Infinity;
+      for (const p of pts) d = Math.min(d, Math.hypot(x - p.x, y - p.y));
+      if (d < bestD) ((bestD = d), (best = k));
+    }
+    return best;
+  };
+
+
   for (const c of cands) {
     // a spawn that would land in the new walls or moat is nudged out past the
     // far bank instead of being dropped
@@ -2251,8 +2295,10 @@ function spawnable(x: number, y: number) {
 
     // alternate between nodes and monsters, weighted by what is still missing
     const takeNode = nodesLeft > 0 && (mobsLeft === 0 || c.k * (nodesLeft + mobsLeft) < nodesLeft);
+    // mostly cluster by nearest same-kind patch; sometimes fall back to quota
+    const cluster = rand01(c.x * 0.013 + c.y * 0.029 + 3.7) < 0.8;
     if (takeNode) {
-      const kind = pickMost(w.node);
+      const kind = (cluster ? pickNear(w.node, bid, c.x, c.y) : null) ?? pickMost(w.node);
       if (!kind) continue;
       w.node.set(kind, w.node.get(kind)! - 1);
       NODE_SPAWNS.push({ kind, x: Math.round(c.x), y: Math.round(c.y) });
@@ -2262,7 +2308,7 @@ function spawnable(x: number, y: number) {
         r: NODE_DEFS[kind].shape === "bush" ? 11 : 14,
       });
     } else {
-      const kind = pickMost(w.mob);
+      const kind = (cluster ? pickNear(w.mob, bid, c.x, c.y) : null) ?? pickMost(w.mob);
       if (!kind) continue;
       w.mob.set(kind, w.mob.get(kind)! - 1);
       MONSTER_SPAWNS.push({ kind, x: Math.round(c.x), y: Math.round(c.y) });
