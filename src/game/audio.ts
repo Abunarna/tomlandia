@@ -98,3 +98,67 @@ class Music {
 }
 
 export const music = new Music();
+
+/* ---------- looped activity sound effects ---------- */
+
+import miningAsset from "@/assets/mining.mp3.asset.json";
+import loggingAsset from "@/assets/logging.mp3.asset.json";
+import gatherAsset from "@/assets/bush-gather.mp3.asset.json";
+import fishingAsset from "@/assets/fishing.mp3.asset.json";
+import fightingAsset from "@/assets/Fighting.mp3.asset.json";
+
+/** One looping track per ongoing player action. */
+export type LoopId = "mining" | "woodcutting" | "gathering" | "fishing" | "combat";
+
+const LOOP_URLS: Record<LoopId, string> = {
+  mining: miningAsset.url,
+  woodcutting: loggingAsset.url,
+  gathering: gatherAsset.url,
+  fishing: fishingAsset.url,
+  combat: fightingAsset.url,
+};
+
+class ActivityLoops {
+  private els = new Map<LoopId, HTMLAudioElement>();
+  private current: LoopId | null = null;
+
+  private el(id: LoopId) {
+    let el = this.els.get(id);
+    if (!el) {
+      el = new Audio(LOOP_URLS[id]);
+      el.loop = true;
+      el.volume = 0.5;
+      el.preload = "auto";
+      this.els.set(id, el);
+    }
+    return el;
+  }
+
+  /** Start `id` (idempotent) or pass null to stop whatever is playing. */
+  set(id: LoopId | null) {
+    if (typeof window === "undefined") return;
+    if (!sfx.enabled) id = null;
+    if (id === this.current) return;
+    if (this.current) {
+      const prev = this.els.get(this.current);
+      if (prev) {
+        prev.pause();
+        prev.currentTime = 0;
+      }
+    }
+    this.current = id;
+    if (!id) return;
+    const el = this.el(id);
+    el.currentTime = 0;
+    void el.play().catch(() => {
+      /* autoplay blocked until a gesture */
+    });
+  }
+
+  stop() {
+    this.set(null);
+  }
+}
+
+export const loops = new ActivityLoops();
+
