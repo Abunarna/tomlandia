@@ -12,6 +12,7 @@ import {
   cityGateAt,
   cityKeepOut,
   cityOuterR,
+  cityWallR,
   inCityOasis,
   pushOutsideCity,
   type CityDef,
