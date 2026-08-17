@@ -1,0 +1,1 @@
+ALTER FUNCTION public.slot_add(jsonb, integer, text, integer, integer, boolean) SET search_path = public;
