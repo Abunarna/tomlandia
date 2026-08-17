@@ -2491,6 +2491,7 @@ export class GameEngine {
   toggleSound(): boolean {
     sfx.unlock();
     sfx.enabled = !sfx.enabled;
+    ambience.setEnabled(sfx.enabled);
     if (sfx.enabled) sfx.play("coin");
     this.emitHud(true);
     return sfx.enabled;
@@ -2505,6 +2506,7 @@ export class GameEngine {
 
   unlockAudio() {
     sfx.unlock();
+    ambience.start();
     music.start();
   }
 
