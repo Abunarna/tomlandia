@@ -906,7 +906,6 @@ export class GameEngine {
     } catch {
       this.syncing = false;
     }
-    if (toast) this.pushText(this.px, this.py - 40, "Saved", "#9fd6f5");
   }
 
   /** Persist without the "Saved" toast — used after local gold changes. */
@@ -915,7 +914,7 @@ export class GameEngine {
   }
 
   save() {
-    this.pushSave(true);
+    this.pushSave(false);
   }
 
   /** Adopt the server-owned economy fields from an authoritative row. */
