@@ -1797,13 +1797,40 @@ function distToRiver(x: number, y: number) {
   return best;
 }
 
+/**
+ * Grand Haven's moat feeds the Great River: a short channel leaves the moat on
+ * the south-east side and runs east into the river, staying well south of the
+ * Willowbrook road and its bridge.
+ */
+const MOAT_CHANNEL_PTS: [number, number][] = [
+  [1225, 2405],
+  [1310, 2438],
+  [1420, 2444],
+  [1520, 2416],
+  [1600, 2372],
+  [1668, 2336],
+];
+
+const MOAT_CHANNEL: Barrier = {
+  id: "grand-haven-channel",
+  kind: "river",
+  pts: MOAT_CHANNEL_PTS,
+  width: 52,
+  minX: Math.min(...MOAT_CHANNEL_PTS.map((p) => p[0])),
+  minY: Math.min(...MOAT_CHANNEL_PTS.map((p) => p[1])),
+  maxX: Math.max(...MOAT_CHANNEL_PTS.map((p) => p[0])),
+  maxY: Math.max(...MOAT_CHANNEL_PTS.map((p) => p[1])),
+};
+
 export const BARRIERS: Barrier[] = [
   // old river stretches are absorbed; ridges/treelines in the way are washed out
   ...RAW_BARRIERS.filter(
     (b) => b.kind !== "river" && !b.pts.some(([x, y]) => distToRiver(x, y) < b.width / 2 + RIVER_WIDTH / 2),
   ),
   GREAT_RIVER,
+  MOAT_CHANNEL,
 ];
+
 
 /** true when the point stands on a bridge deck (so the river is crossable there) */
 export function onBridge(x: number, y: number, pad = 0): boolean {
