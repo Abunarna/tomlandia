@@ -93,8 +93,7 @@ export function NpcDialog({
           <div className="flex items-center gap-2.5">
             <span className="size-10 shrink-0 rounded-2xl" style={{ backgroundColor: def.robe }} />
             <div>
-              <p className="text-sm font-bold text-foreground">{def.name}</p>
-              <p className="text-[11px] text-muted-foreground">{def.title}</p>
+              <p className="text-sm font-bold text-foreground">{def.title}</p>
             </div>
           </div>
           <button
