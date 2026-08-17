@@ -1920,7 +1920,7 @@ export class GameEngine {
         this.target = { type: "none" };
       } else {
         const d = this.moveToward(live.x, live.y + 16, dt);
-        this.activity = `Visiting ${npc.name}`;
+        this.activity = `Visiting ${npc.title}`;
         this.activityProgress = 0;
         if (d <= 46) {
           this.target = { type: "none" };
