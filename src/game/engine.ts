@@ -3713,24 +3713,27 @@ export class GameEngine {
       }
     }
 
-    // --- drawbridge deck over the moat at the primary gate
-    const prim = CITY.gates.find((g) => g.drawbridge);
-    if (prim && CITY.moatW > 0) {
-      const inner = cityWallR(prim.angle, CITY) + CITY.moatGap - 6;
-      const outer = inner + CITY.moatW + 14;
-      const halfW = prim.half * 0.72 * cityWallR(prim.angle, CITY);
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(prim.angle);
-      ctx.fillStyle = "#8a6440";
-      ctx.fillRect(inner, -halfW, outer - inner, halfW * 2);
-      ctx.fillStyle = "#a97b4f";
-      for (let d = inner + 3; d < outer - 3; d += 12) ctx.fillRect(d, -halfW + 3, 8, halfW * 2 - 6);
-      ctx.fillStyle = "#6c4c30";
-      ctx.fillRect(inner, -halfW - 4, outer - inner, 5);
-      ctx.fillRect(inner, halfW - 1, outer - inner, 5);
-      ctx.restore();
+    // --- wooden bridge decks over the moat at every gate
+    if (CITY.moatW > 0) {
+      for (const g of CITY.gates) {
+        if (!g.drawbridge) continue;
+        const inner = cityWallR(g.angle, CITY) + CITY.moatGap - 6;
+        const outer = inner + CITY.moatW + 14;
+        const halfW = g.half * 0.72 * cityWallR(g.angle, CITY);
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(g.angle);
+        ctx.fillStyle = "#8a6440";
+        ctx.fillRect(inner, -halfW, outer - inner, halfW * 2);
+        ctx.fillStyle = "#a97b4f";
+        for (let d = inner + 3; d < outer - 3; d += 12) ctx.fillRect(d, -halfW + 3, 8, halfW * 2 - 6);
+        ctx.fillStyle = "#6c4c30";
+        ctx.fillRect(inner, -halfW - 4, outer - inner, 5);
+        ctx.fillRect(inner, halfW - 1, outer - inner, 5);
+        ctx.restore();
+      }
     }
+
 
     // --- the wall itself, broken only at the gate mouths
     const drawArc = (from: number, to: number, width: number, colour: string) => {
