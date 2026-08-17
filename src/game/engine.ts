@@ -3029,7 +3029,7 @@ export class GameEngine {
 
   /** the same drifting colour wash, wrapped around a city's moat ring */
   private drawMoatFlow(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
-    const t = this.clock;
+    const t = this.clock / 3;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     for (const CITY of CITIES) {
@@ -3038,14 +3038,14 @@ export class GameEngine {
       if (CITY.cx + R < view.x || CITY.cx - R > view.x + view.w) continue;
       if (CITY.cy + R < view.y || CITY.cy - R > view.y + view.h) continue;
       const hw = CITY.moatW / 2;
-      for (let lane = 0; lane < 3; lane++) {
+      const ringPath = (lane: number, tt: number) => {
         const path = new Path2D();
         const spin = 0.055 - lane * 0.014;
         for (let s = 0; s < 26; s++) {
           const r1 = ((s * 13 + lane * 7) % 17) / 16;
           const r2 = ((s * 29 + lane * 11) % 23) / 22;
           const r3 = ((s * 41 + lane * 5) % 19) / 18;
-          const a0 = (s / 26) * Math.PI * 2 + t * spin + lane * 0.4;
+          const a0 = (s / 26) * Math.PI * 2 + tt * spin + lane * 0.4;
           // leave the drawbridge mouths clear so the decks read on top
           const gate = cityGateAt(a0, CITY);
           if (gate) continue;
@@ -3061,7 +3061,8 @@ export class GameEngine {
           for (let k = 0; k <= steps; k++) {
             const a = a0 + (k / steps) * span;
             const off =
-              (band + (Math.sin(k * w1 + t * 1.9 + ph) * 0.6 + Math.sin(k * w2 - t * 1.2 + ph * 1.7) * 0.4) * amp) * hw;
+              (band + (Math.sin(k * w1 + tt * 1.9 + ph) * 0.6 + Math.sin(k * w2 - tt * 1.2 + ph * 1.7) * 0.4) * amp) *
+              hw;
             const r = cityWallR(a, CITY) + CITY.moatGap + hw + off;
             const x = CITY.cx + Math.cos(a) * r;
             const y = CITY.cy + Math.sin(a) * r;
@@ -3072,9 +3073,27 @@ export class GameEngine {
           }
           path.lineTo(px, py);
         }
+        return path;
+      };
+      for (let lane = 0; lane < 3; lane++) {
         const [cr, cg, cb] = lane === 1 ? [220, 246, 255] : [255, 255, 255];
         const base = lane === 0 ? 0.34 : lane === 1 ? 0.24 : 0.16;
         const w = lane === 0 ? 2.6 : lane === 1 ? 1.9 : 1.3;
+        for (const gh of [
+          { lag: 2.2, fade: 0.55 },
+          { lag: 4.6, fade: 0.28 },
+        ]) {
+          const gpath = ringPath(lane, t - gh.lag);
+          for (const p of [
+            { wid: w * 3.2, op: base * 0.14 * gh.fade },
+            { wid: w * 1.8, op: base * 0.32 * gh.fade },
+          ]) {
+            ctx.strokeStyle = `rgba(${cr},${cg},${cb},${p.op})`;
+            ctx.lineWidth = p.wid;
+            ctx.stroke(gpath);
+          }
+        }
+        const path = ringPath(lane, t);
         for (const p of [
           { wid: w * 4.0, op: base * 0.09 },
           { wid: w * 2.8, op: base * 0.16 },
@@ -3087,6 +3106,7 @@ export class GameEngine {
         }
       }
     }
+
     ctx.lineWidth = 1;
   }
 
