@@ -83,10 +83,10 @@ const GRAND_HAVEN: CityDef = {
     // 1 — primary: the drawbridge gate, onto the spine road to Willowbrook
     { angle: -0.53, half: 0.17, kind: "spine", label: "Willowbrook Gate", drawbridge: true },
     // 2 — the unmarked northern trail that becomes the desert shortcut
-    { angle: -1.35, half: 0.15, kind: "trail", label: "Dust Trail Postern", drawbridge: false },
+    { angle: -1.35, half: 0.15, kind: "trail", label: "Dust Trail Postern", drawbridge: true },
     // 3, 4 — local wilderness posterns
-    { angle: 1.05, half: 0.15, kind: "local", label: "Meadow Postern", drawbridge: false },
-    { angle: 2.75, half: 0.15, kind: "local", label: "Westwatch Postern", drawbridge: false },
+    { angle: 1.05, half: 0.15, kind: "local", label: "Meadow Postern", drawbridge: true },
+    { angle: 2.75, half: 0.15, kind: "local", label: "Westwatch Postern", drawbridge: true },
   ],
 };
 
