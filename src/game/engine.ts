@@ -2488,10 +2488,16 @@ export class GameEngine {
   toggleSound(): boolean {
     sfx.unlock();
     sfx.enabled = !sfx.enabled;
-    music.setEnabled(sfx.enabled);
     if (sfx.enabled) sfx.play("coin");
     this.emitHud(true);
     return sfx.enabled;
+  }
+
+  toggleMusic(): boolean {
+    sfx.unlock();
+    music.setEnabled(!music.enabled);
+    this.emitHud(true);
+    return music.enabled;
   }
 
   unlockAudio() {
@@ -2612,6 +2618,7 @@ export class GameEngine {
         lastSold: { ...this.lastSold },
       },
       soundOn: sfx.enabled,
+      musicOn: music.enabled,
       name: this.playerName,
       nearby: this.remotes.size,
       buff: this.buff ? { ...this.buff } : null,

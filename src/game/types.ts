@@ -173,6 +173,8 @@ export interface HudSnapshot {
     lastSold: Record<string, number>;
   };
   soundOn: boolean;
+  /** Music loop independently muted (false = music paused, SFX still play). */
+  musicOn: boolean;
   /** Phase 7 — your display name and how many real players are nearby. */
   name: string;
   nearby: number;

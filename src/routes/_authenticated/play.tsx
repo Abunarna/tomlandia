@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Backpack, Hammer, Map as MapIcon, Maximize, Minimize, Trophy, Volume2, VolumeX } from "lucide-react";
+import { Backpack, Hammer, Map as MapIcon, Maximize, Minimize, Music, Music2, Trophy, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GameEngine, clearLegacySave, readLegacySave, type SyncAck } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
@@ -91,6 +91,7 @@ const EMPTY: HudSnapshot = {
   phase: "Day",
   market: { listings: [], log: [], fee: 0.05, lastSold: {} },
   soundOn: true,
+  musicOn: true,
   name: "Adventurer",
   nearby: 0,
   buff: null,
@@ -466,6 +467,13 @@ function Game() {
                   onClick={toggleFullscreen}
                 >
                   {isFullscreen ? <Minimize className="size-5" /> : <Maximize className="size-5" />}
+                </OverlayButton>
+                <OverlayButton
+                  label={hud.musicOn ? "Mute music" : "Unmute music"}
+                  active={hud.musicOn}
+                  onClick={() => engineRef.current?.toggleMusic()}
+                >
+                  {hud.musicOn ? <Music2 className="size-5" /> : <Music className="size-5" />}
                 </OverlayButton>
                 <OverlayButton
                   label={hud.soundOn ? "Mute sound" : "Unmute sound"}
