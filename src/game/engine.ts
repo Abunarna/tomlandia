@@ -2923,7 +2923,7 @@ export class GameEngine {
       ctx.stroke();
     }
 
-    // --- long highlight streaks riding the current ----------------------
+    // --- long meandering highlight streaks riding the current -----------
     for (let lane = 0; lane < 3; lane++) {
       ctx.strokeStyle =
         lane === 0 ? "rgba(255,255,255,0.34)" : lane === 1 ? "rgba(220,246,255,0.24)" : "rgba(255,255,255,0.16)";
@@ -2936,31 +2936,53 @@ export class GameEngine {
         for (let s = 0; s < 22; s++) {
           const seed = s * 0.0454 + lane * 0.061;
           const f = ((seed + t * speed) % 1 + 1) % 1;
-          const i = Math.min(n - 3, Math.floor(f * (n - 3)));
-          const a = g.pts[i]!;
-          if (a[0] < view.x - 40 || a[0] > view.x + view.w + 40) continue;
-          if (a[1] < view.y - 40 || a[1] > view.y + view.h + 40) continue;
-          const rush = g.maxW / g.hw[i]!;
-          const j = Math.min(n - 1, i + Math.round(1 + rush));
-          const b = g.pts[j]!;
-          const off =
-            ((((s * 7 + lane * 3) % 13) / 12 - 0.5) * 1.5 + Math.sin(t * 1.1 + s * 1.7) * 0.12) * g.hw[i]!;
-          const ax = a[0] + g.nx[i]! * off;
-          const ay = a[1] + g.ny[i]! * off;
-          const bx = b[0] + g.nx[j]! * off;
-          const by = b[1] + g.ny[j]! * off;
-          const wob = Math.sin(t * 2 + s) * 4;
-          ctx.moveTo(ax, ay);
-          ctx.quadraticCurveTo(
-            (ax + bx) / 2 + g.nx[i]! * wob,
-            (ay + by) / 2 + g.ny[i]! * wob,
-            bx,
-            by,
-          );
+          const i0 = Math.min(n - 3, Math.floor(f * (n - 3)));
+          const a0 = g.pts[i0]!;
+          if (a0[0] < view.x - 60 || a0[0] > view.x + view.w + 60) continue;
+          if (a0[1] < view.y - 60 || a0[1] > view.y + view.h + 60) continue;
+
+          // pseudo-random per-streak character (stable while it travels)
+          const r1 = ((s * 13 + lane * 7) % 17) / 16;
+          const r2 = ((s * 29 + lane * 11) % 23) / 22;
+          const r3 = ((s * 41 + lane * 5) % 19) / 18;
+
+          const rush = g.maxW / g.hw[i0]!;
+          const steps = 5 + Math.round(r1 * 4);
+          const stride = Math.max(1, Math.round((1 + rush) * (0.5 + r2 * 0.6)));
+          // lateral band this streak drifts around
+          const band = (r3 - 0.5) * 1.5;
+          // meander shape: two mismatched frequencies so it never repeats
+          const w1 = 0.55 + r1 * 0.9;
+          const w2 = 1.7 + r2 * 1.6;
+          const amp = 0.14 + r3 * 0.22;
+          const ph = s * 1.7 + lane * 2.3;
+
+          let px = 0;
+          let py = 0;
+          for (let k = 0; k <= steps; k++) {
+            const i = Math.min(n - 1, i0 + k * stride);
+            const u = k;
+            const off =
+              (band +
+                (Math.sin(u * w1 + t * 1.9 + ph) * 0.6 + Math.sin(u * w2 - t * 1.2 + ph * 1.7) * 0.4) * amp) *
+              g.hw[i]!;
+            const x = g.pts[i]![0] + g.nx[i]! * off;
+            const y = g.pts[i]![1] + g.ny[i]! * off;
+            if (k === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              // smooth the polyline into a flowing curve
+              ctx.quadraticCurveTo(px, py, (px + x) / 2, (py + y) / 2);
+            }
+            px = x;
+            py = y;
+          }
+          ctx.lineTo(px, py);
         }
       }
       ctx.stroke();
     }
+
 
     // --- shimmering foam along both banks -------------------------------
     ctx.strokeStyle = "rgba(255,255,255,0.22)";
