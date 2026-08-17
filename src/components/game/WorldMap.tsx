@@ -333,18 +333,33 @@ export function WorldMap({ position, onClose }: Props) {
               strokeWidth={1}
             />
           ))}
-          {BARRIERS.map((bar) => (
-            <path
-              key={bar.id}
-              d={bar.pts.map(([x, y], i) => `${i === 0 ? "M" : "L"}${sx(x)},${sy(y)}`).join(" ")}
-              fill="none"
-              stroke={bar.kind === "river" ? "#79bbdb" : bar.kind === "rocks" ? "#94908b" : "#3f8f6a"}
-              strokeWidth={Math.max(2, bar.width * scale * 0.9)}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              opacity={0.95}
-            />
-          ))}
+          {BARRIERS.map((bar) => {
+            const d = bar.pts.map(([x, y], i) => `${i === 0 ? "M" : "L"}${sx(x)},${sy(y)}`).join(" ");
+            const w = Math.max(2, bar.width * scale * 0.9);
+            if (bar.kind === "river") {
+              // layered dark bank -> water -> soft centre, mirroring the canvas
+              return (
+                <g key={bar.id} fill="none" strokeLinecap="round" strokeLinejoin="round">
+                  <path d={d} stroke="#3f6f83" strokeWidth={w * 1.16} />
+                  <path d={d} stroke="#6fa9c9" strokeWidth={w} />
+                  <path d={d} stroke="#9fd8ee" strokeWidth={w * 0.45} opacity={0.75} />
+                </g>
+              );
+            }
+            return (
+              <path
+                key={bar.id}
+                d={d}
+                fill="none"
+                stroke={bar.kind === "rocks" ? "#94908b" : "#3f8f6a"}
+                strokeWidth={w}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                opacity={0.95}
+              />
+            );
+          })}
+
           {LAKES.map((l) => (
 
             <path
