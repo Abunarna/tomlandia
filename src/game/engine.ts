@@ -2873,7 +2873,53 @@ export class GameEngine {
   }
 
 
+  /** Sparse curved highlights drifting downstream (cheap, cached geometry). */
+  private drawRiverFlow(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
+    const t = this.clock;
+    ctx.lineCap = "round";
+    for (let lane = 0; lane < 2; lane++) {
+      ctx.strokeStyle = lane === 0 ? "rgba(255,255,255,0.30)" : "rgba(220,246,255,0.20)";
+      ctx.beginPath();
+      for (const bar of BARRIERS) {
+        if (bar.kind !== "river") continue;
+        if (bar.minX > view.x + view.w + 80 || bar.maxX < view.x - 80) continue;
+        if (bar.minY > view.y + view.h + 80 || bar.maxY < view.y - 80) continue;
+        const g = riverGeom(bar);
+        const n = g.pts.length;
+        const speed = lane === 0 ? 0.011 : 0.008;
+        for (let s = 0; s < 8; s++) {
+          const seed = s * 0.1237 + lane * 0.061;
+          const f = ((seed + t * speed) % 1 + 1) % 1;
+          const i = Math.min(n - 3, Math.floor(f * (n - 3)));
+          const a = g.pts[i]!;
+          if (a[0] < view.x - 40 || a[0] > view.x + view.w + 40) continue;
+          if (a[1] < view.y - 40 || a[1] > view.y + view.h + 40) continue;
+          // narrower water drifts faster: nudge the sample forward
+          const rush = g.maxW / g.hw[i]!;
+          const j = Math.min(n - 1, i + Math.round(1 + rush));
+          const b = g.pts[j]!;
+          const off = (((s * 7 + lane * 3) % 9) / 8 - 0.5) * 1.3 * g.hw[i]!;
+          const ax = a[0] + g.nx[i]! * off;
+          const ay = a[1] + g.ny[i]! * off;
+          const bx = b[0] + g.nx[j]! * off;
+          const by = b[1] + g.ny[j]! * off;
+          ctx.moveTo(ax, ay);
+          ctx.quadraticCurveTo(
+            (ax + bx) / 2 + g.nx[i]! * 4,
+            (ay + by) / 2 + g.ny[i]! * 4,
+            bx,
+            by,
+          );
+        }
+      }
+      ctx.lineWidth = lane === 0 ? 2.5 : 1.8;
+      ctx.stroke();
+    }
+    ctx.lineWidth = 1;
+  }
+
   private drawBarriers(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
+
     for (const bar of BARRIERS) {
       if (bar.minX > view.x + view.w + 80 || bar.maxX < view.x - 80) continue;
       if (bar.minY > view.y + view.h + 80 || bar.maxY < view.y - 80) continue;
