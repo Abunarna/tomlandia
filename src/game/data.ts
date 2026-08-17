@@ -915,7 +915,6 @@ const TOWN_SPECS: TownSpec[] = [
     beam: "#6f5636",
     roofs: ["#7fbd93", "#b98a5c", "#95c9a4", "#8aa86d", "#6fae86"],
     anchors: [
-      { role: "innkeeper", name: "Willowbrook Inn", kind: "inn" },
       { role: "trapper", name: "Trapper's Hut", kind: "house" },
       { role: "brook_chef", name: "Willow Kitchen", kind: "house" },
       { role: "brook_exchange", name: "Brookside Grand Market", kind: "stall" },
@@ -1220,7 +1219,6 @@ export type NpcRole =
   | "weaver"
   | "banker"
   | "trapper"
-  | "innkeeper"
   | "frost_smith"
   | "haven_weaponsmith"
   | "haven_armourer"
@@ -1315,7 +1313,6 @@ export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
   frost_exchange: [],
   dusk_exchange: [],
   trapper: [],
-  innkeeper: [],
   frost_smith: [],
   haven_weaponsmith: [],
   haven_armourer: [],
