@@ -1045,14 +1045,14 @@ export class GameEngine {
   }
 
   addItem(id: ItemId, qty = 1, plus = 0): boolean {
-    const def = item(id);
-    if (def.stackable) {
-      const slot = this.inv.find((s) => s && s.id === id);
-      if (slot) {
-        slot.qty += qty;
-        return true;
-      }
+    // Everything stacks — gear only merges with identical upgrade levels, so
+    // a Steel Sword +14 stays a distinct stack from a plain Steel Sword.
+    const slot = this.inv.find((s) => s && s.id === id && (s.plus ?? 0) === plus);
+    if (slot) {
+      slot.qty += qty;
+      return true;
     }
+
     const idx = this.inv.findIndex((s) => s === null);
     if (idx === -1) {
       this.pushText(this.px, this.py - 50, "Bag full!", "#f2a1a1");
