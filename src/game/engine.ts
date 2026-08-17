@@ -1142,14 +1142,14 @@ export class GameEngine {
   }
 
   private bankAdd(slot: InvSlot, qty: number): boolean {
-    const def = item(slot.id);
-    if (def.stackable) {
-      const existing = this.bank.items.find((s) => s && s.id === slot.id);
-      if (existing) {
-        existing.qty += qty;
-        return true;
-      }
+    const existing = this.bank.items.find(
+      (s) => s && s.id === slot.id && (s.plus ?? 0) === (slot.plus ?? 0),
+    );
+    if (existing) {
+      existing.qty += qty;
+      return true;
     }
+
     const idx = this.bank.items.findIndex((s) => s === null);
     if (idx === -1) {
       this.pushText(this.px, this.py - 50, "Bank full!", "#f2a1a1");
