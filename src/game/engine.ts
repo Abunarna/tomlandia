@@ -1195,11 +1195,30 @@ export class GameEngine {
     if (def.kind !== "weapon" && def.kind !== "armor") return;
     const prev = def.kind === "weapon" ? this.weapon : this.armor;
     const next: EquipState = { id: slot.id, plus: slot.plus ?? 0 };
+    // Equipping from a stack only takes one piece; the swapped-out item goes
+    // back into the bag (needs a free/matching slot when the stack survives).
+    if (slot.qty > 1) {
+      if (prev) {
+        const room =
+          this.inv.some((s, i) => i !== index && s === null) ||
+          this.inv.some(
+            (s, i) => i !== index && s && s.id === prev.id && (s.plus ?? 0) === (prev.plus ?? 0),
+          );
+        if (!room) {
+          this.pushText(this.px, this.py - 50, "Bag full!", "#f2a1a1");
+          return;
+        }
+      }
+      slot.qty -= 1;
+      if (prev) this.addItem(prev.id, 1, prev.plus);
+    } else {
+      this.inv[index] = prev ? { id: prev.id, qty: 1, plus: prev.plus } : null;
+    }
     if (def.kind === "weapon") this.weapon = next;
     else this.armor = next;
-    this.inv[index] = prev ? { id: prev.id, qty: 1, plus: prev.plus } : null;
     this.emitHud(true);
     this.runGear(this.onEquip ? this.onEquip(index) : null);
+
   }
 
 
