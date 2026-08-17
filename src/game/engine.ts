@@ -2889,11 +2889,14 @@ export class GameEngine {
     if (!bars.length) return;
 
     // --- long meandering highlight streaks riding the current -----------
+    // Soft expanded blur via layered stroking: build each lane's path once,
+    // then stroke at decreasing widths with rising opacity so the outer edge
+    // fades to transparent while the core stays near full density.
+    const laneColor = (lane: number) =>
+      lane === 0 ? [255, 255, 255] : lane === 1 ? [220, 246, 255] : [255, 255, 255];
+    const laneWidth = (lane: number) => (lane === 0 ? 2.6 : lane === 1 ? 1.9 : 1.3);
     for (let lane = 0; lane < 3; lane++) {
-      ctx.strokeStyle =
-        lane === 0 ? "rgba(255,255,255,0.34)" : lane === 1 ? "rgba(220,246,255,0.24)" : "rgba(255,255,255,0.16)";
-      ctx.lineWidth = lane === 0 ? 2.6 : lane === 1 ? 1.9 : 1.3;
-      ctx.beginPath();
+      const path = new Path2D();
       for (const bar of bars) {
         const g = riverGeom(bar);
         const n = g.pts.length;
@@ -2934,18 +2937,30 @@ export class GameEngine {
             const x = g.pts[i]![0] + g.nx[i]! * off;
             const y = g.pts[i]![1] + g.ny[i]! * off;
             if (k === 0) {
-              ctx.moveTo(x, y);
+              path.moveTo(x, y);
             } else {
               // smooth the polyline into a flowing curve
-              ctx.quadraticCurveTo(px, py, (px + x) / 2, (py + y) / 2);
+              path.quadraticCurveTo(px, py, (px + x) / 2, (py + y) / 2);
             }
             px = x;
             py = y;
           }
-          ctx.lineTo(px, py);
+          path.lineTo(px, py);
         }
       }
-      ctx.stroke();
+      // layered soft blur: wide faint halo -> mid -> dense core
+      const [cr, cg, cb] = laneColor(lane);
+      const base = lane === 0 ? 0.34 : lane === 1 ? 0.24 : 0.16;
+      const w = laneWidth(lane);
+      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${base * 0.18})`;
+      ctx.lineWidth = w * 2.0;
+      ctx.stroke(path);
+      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${base * 0.5})`;
+      ctx.lineWidth = w * 1.4;
+      ctx.stroke(path);
+      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${base})`;
+      ctx.lineWidth = w;
+      ctx.stroke(path);
     }
 
 
