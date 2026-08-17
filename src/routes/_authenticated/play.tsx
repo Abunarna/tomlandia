@@ -91,6 +91,7 @@ const EMPTY: HudSnapshot = {
   phase: "Day",
   market: { listings: [], log: [], fee: 0.05, lastSold: {} },
   soundOn: true,
+  musicOn: true,
   name: "Adventurer",
   nearby: 0,
   buff: null,

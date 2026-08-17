@@ -2618,6 +2618,7 @@ export class GameEngine {
         lastSold: { ...this.lastSold },
       },
       soundOn: sfx.enabled,
+      musicOn: music.enabled,
       name: this.playerName,
       nearby: this.remotes.size,
       buff: this.buff ? { ...this.buff } : null,
