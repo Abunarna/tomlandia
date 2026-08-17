@@ -72,6 +72,8 @@ export class PresenceNet {
   private joined = new Set<string>();
   private timer: ReturnType<typeof setInterval> | null = null;
   private stopped = false;
+  private lastSent: Omit<PresencePacket, "id"> | null = null;
+  private lastSentAt = 0;
 
   constructor(
     private userId: string,
