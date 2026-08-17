@@ -3515,32 +3515,30 @@ export class GameEngine {
       return s - Math.floor(s);
     };
 
-    // --- moat: a water band, broken by the postern causeways
+    // --- moat: styled exactly like the Great River (bank, water, bright core)
     if (CITY.moatW > 0) {
-      for (let a = -Math.PI; a < Math.PI; a += 0.018) {
-        const g = cityGateAt(a, CITY);
-        if (g && !g.drawbridge) continue;
-        const inner = cityWallR(a, CITY) + CITY.moatGap;
-        const outer = inner + CITY.moatW;
-        const [x1, y1] = at(a, inner);
-        const [x2, y2] = at(a + 0.02, inner);
-        const [x3, y3] = at(a + 0.02, outer);
-        const [x4, y4] = at(a, outer);
-        ctx.fillStyle = "#3c6f96";
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.lineTo(x3, y3);
-        ctx.lineTo(x4, y4);
-        ctx.closePath();
-        ctx.fill();
-        ctx.fillStyle = ((a * 40) | 0) % 3 === 0 ? "rgba(180,220,240,0.22)" : "rgba(20,50,80,0.18)";
-        ctx.fill();
+      const mid = new Path2D();
+      for (let a = -Math.PI; a <= Math.PI + 0.03; a += 0.03) {
+        const [x, y] = at(a, cityWallR(a, CITY) + CITY.moatGap + CITY.moatW / 2);
+        if (a === -Math.PI) mid.moveTo(x, y);
+        else mid.lineTo(x, y);
       }
+      mid.closePath();
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "#3f6f83";
+      ctx.lineWidth = CITY.moatW + 12;
+      ctx.stroke(mid);
+      ctx.strokeStyle = "#6fa9c9";
+      ctx.lineWidth = CITY.moatW;
+      ctx.stroke(mid);
+      ctx.strokeStyle = "rgba(159,216,238,0.5)";
+      ctx.lineWidth = CITY.moatW * 0.42;
+      ctx.stroke(mid);
       // grassy banks
       ctx.lineWidth = 6;
       ctx.strokeStyle = "#6f9464";
-      for (const k of [CITY.moatGap - 2, CITY.moatGap + CITY.moatW + 2]) {
+      for (const k of [CITY.moatGap - 4, CITY.moatGap + CITY.moatW + 4]) {
         ctx.beginPath();
         for (let a = -Math.PI; a <= Math.PI; a += 0.03) {
           const [x, y] = at(a, cityWallR(a, CITY) + k);
@@ -3551,6 +3549,7 @@ export class GameEngine {
         ctx.stroke();
       }
     }
+
 
     // --- plaza + ring road + spokes to each gate
     ctx.fillStyle = P.plaza;
