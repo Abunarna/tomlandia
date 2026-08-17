@@ -2136,24 +2136,24 @@ const SPAWN_PLAN: Record<BiomeId, BiomePlan> = {
   // V2 — counts doubled alongside the doubled world area so density per
   // square of ground stays the same as the old, smaller map.
   fields: {
-    nodes: [["copper", 28], ["oak", 28], ["flax", 24], ["berries", 24]],
-    mobs: [["chicken", 28], ["goblin", 24], ["disgruntled_ram", 16]],
+    nodes: [["copper", 17], ["oak", 17], ["flax", 14], ["berries", 14]],
+    mobs: [["chicken", 17], ["goblin", 14], ["disgruntled_ram", 10]],
   },
   forest: {
-    nodes: [["iron", 24], ["willow", 24], ["maple", 20], ["herbs", 24]],
-    mobs: [["forest_boar", 16], ["wolf", 24], ["forest_lynx", 16], ["bear", 20]],
+    nodes: [["iron", 14], ["willow", 14], ["maple", 12], ["herbs", 14]],
+    mobs: [["forest_boar", 10], ["wolf", 14], ["forest_lynx", 10], ["bear", 12]],
   },
   desert: {
-    nodes: [["sandstone", 22], ["mithril", 18], ["palm", 18], ["bloom", 18]],
-    mobs: [["dust_jackal", 16], ["serpent", 20], ["scorpion_stalker", 16], ["bandit", 18]],
+    nodes: [["sandstone", 13], ["mithril", 11], ["palm", 11], ["bloom", 11]],
+    mobs: [["dust_jackal", 10], ["serpent", 12], ["scorpion_stalker", 10], ["bandit", 11]],
   },
   evil: {
-    nodes: [["cursed_rock", 18], ["cursed_tree", 18], ["gloomcap", 18]],
-    mobs: [["withered_ghoul", 16], ["wraith", 18], ["bone_reaper", 14], ["shadow_beast", 16]],
+    nodes: [["cursed_rock", 11], ["cursed_tree", 11], ["gloomcap", 11]],
+    mobs: [["withered_ghoul", 10], ["wraith", 11], ["bone_reaper", 8], ["shadow_beast", 10]],
   },
   winter: {
-    nodes: [["runite", 18], ["tungsten", 14], ["frostpine", 18], ["lichen", 16]],
-    mobs: [["frost_wolf", 16], ["yeti", 16], ["ice_wraith", 14], ["frost_giant", 12], ["ancient_frost_wyrm", 10]],
+    nodes: [["runite", 11], ["tungsten", 8], ["frostpine", 11], ["lichen", 10]],
+    mobs: [["frost_wolf", 10], ["yeti", 10], ["ice_wraith", 8], ["frost_giant", 7], ["ancient_frost_wyrm", 6]],
   },
 };
 
