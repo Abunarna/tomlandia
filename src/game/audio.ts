@@ -58,6 +58,8 @@ import trackAsset from "@/assets/tomlandia-theme.mp3.asset.json";
 class Music {
   private el: HTMLAudioElement | null = null;
   private started = false;
+  /** Music has its own mute, independent of SFX. */
+  enabled = true;
 
   /** Call from a user gesture; safe to call repeatedly. */
   start() {
@@ -65,11 +67,11 @@ class Music {
     if (!this.el) {
       const el = new Audio(trackAsset.url);
       el.loop = true;
-      el.volume = 0.35;
+      el.volume = 0.175;
       el.preload = "auto";
       this.el = el;
     }
-    if (!sfx.enabled) return;
+    if (!this.enabled) return;
     void this.el.play().then(() => {
       this.started = true;
     }).catch(() => {
@@ -78,12 +80,16 @@ class Music {
   }
 
   setEnabled(on: boolean) {
+    this.enabled = on;
     if (!this.el) {
       if (on) this.start();
       return;
     }
     if (on) this.start();
-    else this.el.pause();
+    else {
+      this.el.pause();
+      this.started = false;
+    }
   }
 
   stop() {
