@@ -2233,6 +2233,50 @@ function spawnable(x: number, y: number) {
     return best;
   };
 
+  /** stable numeric seed from a kind name */
+  const strSeed = (s: string) => {
+    let h = 0;
+    for (let j = 0; j < s.length; j++) h = (h * 31 + s.charCodeAt(j)) % 100003;
+    return h + 7;
+  };
+
+  // cluster centres: same-kind spawns gravitate toward a few patches per biome
+  const centers = new Map<string, { x: number; y: number }[]>();
+  const addCenters = (bid: string, kind: string, quota: number) => {
+    const count = Math.max(1, Math.round(quota / 6));
+    const seed = strSeed(`${bid}:${kind}`);
+    const pts: { x: number; y: number }[] = [];
+    let t = 0;
+    while (pts.length < count && t < count * 200) {
+      t++;
+      const x = rand01(seed * 1.31 + t * 2.17) * WORLD_W;
+      const y = rand01(seed * 2.71 + t * 3.53 + 19) * WORLD_H;
+      if (biomeAt(x, y).id !== bid) continue;
+      pts.push({ x, y });
+    }
+    if (!pts.length) pts.push({ x: WORLD_W / 2, y: WORLD_H / 2 });
+    centers.set(`${bid}:${kind}`, pts);
+  };
+  for (const [bid, plan] of Object.entries(SPAWN_PLAN)) {
+    for (const [k, q] of plan.nodes) addCenters(bid, k as string, q as number);
+    for (const [k, q] of plan.mobs) addCenters(bid, k as string, q as number);
+  }
+
+  /** nearest-cluster pick among kinds that still have quota */
+  const pickNear = <K extends string>(m: Map<K, number>, bid: string, x: number, y: number): K | null => {
+    let best: K | null = null;
+    let bestD = Infinity;
+    for (const [k, v] of m) {
+      if (v <= 0) continue;
+      const pts = centers.get(`${bid}:${k}`) ?? [];
+      let d = Infinity;
+      for (const p of pts) d = Math.min(d, Math.hypot(x - p.x, y - p.y));
+      if (d < bestD) ((bestD = d), (best = k));
+    }
+    return best;
+  };
+
+
   for (const c of cands) {
     // a spawn that would land in the new walls or moat is nudged out past the
     // far bank instead of being dropped
