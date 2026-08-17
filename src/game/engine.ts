@@ -2768,8 +2768,10 @@ export class GameEngine {
       if (l.cx - l.rx > view.x + w || l.cx + l.rx < view.x || l.cy - l.ry > view.y + h || l.cy + l.ry < view.y) continue;
       this.lake(ctx, l);
     }
-    ctx.drawImage(terrain.over, terrain.x, terrain.y, terrain.w, terrain.h);
+    // river flow renders before the overlay layer so bridges (baked into the
+    // overlay) sit on top of the animated water instead of beneath it.
     this.drawRiverFlow(ctx, view);
+    ctx.drawImage(terrain.over, terrain.x, terrain.y, terrain.w, terrain.h);
 
 
 
