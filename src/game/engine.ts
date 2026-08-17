@@ -4981,3 +4981,123 @@ function densify(pts: [number, number][], step: number): [number, number][] {
   if (last) out.push([last[0], last[1]]);
   return out;
 }
+
+/* ---------------- river geometry (precomputed once per barrier) ------------- */
+
+interface RiverGeom {
+  /** densified centreline */
+  pts: [number, number][];
+  /** unit normals per point */
+  nx: number[];
+  ny: number[];
+  /** smoothed half-width per point (water) */
+  hw: number[];
+  bank: Path2D;
+  water: Path2D;
+  core: Path2D;
+  minW: number;
+  maxW: number;
+  bbox: { x0: number; y0: number; x1: number; y1: number };
+  grad?: { ctx: CanvasRenderingContext2D; g: CanvasGradient };
+}
+
+const RIVER_CACHE = new Map<string, RiverGeom>();
+
+/** Fill a closed polygon from an offset band, smoothed with quadratic joins. */
+function bandPath(pts: [number, number][], nx: number[], ny: number[], hw: number[], k: number) {
+  const left: [number, number][] = [];
+  const right: [number, number][] = [];
+  for (let i = 0; i < pts.length; i++) {
+    const w = hw[i]! * k;
+    const [x, y] = pts[i]!;
+    left.push([x + nx[i]! * w, y + ny[i]! * w]);
+    right.push([x - nx[i]! * w, y - ny[i]! * w]);
+  }
+  const ring = [...left, ...right.reverse()];
+  const p = new Path2D();
+  p.moveTo((ring[0]![0] + ring[ring.length - 1]![0]) / 2, (ring[0]![1] + ring[ring.length - 1]![1]) / 2);
+  for (let i = 0; i < ring.length; i++) {
+    const cur = ring[i]!;
+    const next = ring[(i + 1) % ring.length]!;
+    p.quadraticCurveTo(cur[0], cur[1], (cur[0] + next[0]) / 2, (cur[1] + next[1]) / 2);
+  }
+  p.closePath();
+  return p;
+}
+
+/** Build (once) the filled bank/water geometry for a river barrier. */
+function riverGeom(bar: (typeof BARRIERS)[number]): RiverGeom {
+  const hit = RIVER_CACHE.get(bar.id);
+  if (hit) return hit;
+
+  const pts = densify(bar.pts, Math.max(14, bar.width * 0.5));
+  const n = pts.length;
+  const nx: number[] = new Array(n);
+  const ny: number[] = new Array(n);
+  for (let i = 0; i < n; i++) {
+    const a = pts[Math.max(0, i - 1)]!;
+    const b = pts[Math.min(n - 1, i + 1)]!;
+    const dx = b[0] - a[0];
+    const dy = b[1] - a[1];
+    const len = Math.hypot(dx, dy) || 1;
+    nx[i] = -dy / len;
+    ny[i] = dx / len;
+  }
+
+  // deterministic width jitter, then the same moving-average smoothing the
+  // world generator uses for biome/lake outlines
+  const raw: number[] = new Array(n);
+  for (let i = 0; i < n; i++) {
+    const s = Math.sin(i * 0.37 + 1.3) * 0.5 + Math.sin(i * 0.11 + 4.1) * 0.5;
+    raw[i] = 1 + s * 0.22;
+  }
+  for (let pass = 0; pass < 4; pass++) {
+    for (let i = 1; i < n - 1; i++) raw[i] = (raw[i - 1]! + raw[i]! * 2 + raw[i + 1]!) / 4;
+  }
+  // taper the ends so the mouth doesn't flare
+  const hw = raw.map((m) => (bar.width / 2) * m);
+  let minW = Infinity;
+  let maxW = 0;
+  let x0 = Infinity;
+  let y0 = Infinity;
+  let x1 = -Infinity;
+  let y1 = -Infinity;
+  for (let i = 0; i < n; i++) {
+    minW = Math.min(minW, hw[i]!);
+    maxW = Math.max(maxW, hw[i]!);
+    x0 = Math.min(x0, pts[i]![0]);
+    y0 = Math.min(y0, pts[i]![1]);
+    x1 = Math.max(x1, pts[i]![0]);
+    y1 = Math.max(y1, pts[i]![1]);
+  }
+
+  const geom: RiverGeom = {
+    pts,
+    nx,
+    ny,
+    hw,
+    bank: bandPath(pts, nx, ny, hw, 1.16),
+    water: bandPath(pts, nx, ny, hw, 1),
+    core: bandPath(pts, nx, ny, hw, 0.5),
+    minW,
+    maxW,
+    bbox: { x0, y0, x1, y1 },
+  };
+  RIVER_CACHE.set(bar.id, geom);
+  return geom;
+}
+
+/** Cached across-stream depth gradient (rebuilt only if the context changes). */
+function riverGradient(ctx: CanvasRenderingContext2D, g: RiverGeom) {
+  if (g.grad && g.grad.ctx === ctx) return g.grad.g;
+  const { x0, y0, x1, y1 } = g.bbox;
+  const horiz = x1 - x0 > y1 - y0;
+  const grad = horiz
+    ? ctx.createLinearGradient(0, y0, 0, y1)
+    : ctx.createLinearGradient(x0, 0, x1, 0);
+  grad.addColorStop(0, "rgba(63,111,131,0.35)");
+  grad.addColorStop(0.5, "rgba(159,216,238,0.30)");
+  grad.addColorStop(1, "rgba(63,111,131,0.35)");
+  g.grad = { ctx, g: grad };
+  return grad;
+}
