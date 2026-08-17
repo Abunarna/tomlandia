@@ -3188,13 +3188,36 @@ export class GameEngine {
     ctx.ellipse(l.cx, l.cy, l.rx * 0.62, l.ry * 0.6, 0, 0, Math.PI * 2);
     ctx.fill();
 
+    // rolling wave crests across the surface
+    const crest =
+      l.style === "evil" ? "rgba(196,178,236,0.16)" : l.style === "winter" ? "rgba(255,255,255,0.30)" : "rgba(255,255,255,0.22)";
+    ctx.strokeStyle = crest;
+    ctx.lineCap = "round";
+    for (let row = 0; row < 9; row++) {
+      const drift = (this.time * 6 + row * 37) % (l.ry * 2 + 40);
+      const y = l.cy - l.ry - 20 + drift;
+      ctx.lineWidth = 1.2 + (row % 3) * 0.6;
+      ctx.beginPath();
+      for (let k = 0; k <= 12; k++) {
+        const x = l.cx - l.rx + (k / 12) * l.rx * 2;
+        const yy = y + Math.sin(this.time * 1.6 + k * 0.9 + row) * 3.2;
+        if (k === 0) ctx.moveTo(x, yy);
+        else ctx.lineTo(x, yy);
+      }
+      ctx.stroke();
+    }
+
     // glints
     ctx.fillStyle = l.style === "evil" ? "rgba(190,170,230,0.18)" : "rgba(255,255,255,0.35)";
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 22; i++) {
       const x = l.cx - l.rx + ((i * 137) % (l.rx * 2));
       const y = l.cy - l.ry + ((i * 89) % (l.ry * 2));
-      ctx.fillRect(x, y + Math.sin(this.time * 1.2 + i) * 2, 12, 3);
+      const a = 0.5 + 0.5 * Math.sin(this.time * 2.2 + i);
+      ctx.globalAlpha = 0.35 + a * 0.65;
+      ctx.fillRect(x, y + Math.sin(this.time * 1.2 + i) * 3, 10 + a * 5, 3);
     }
+    ctx.globalAlpha = 1;
+
 
     if (l.style === "evil") {
       ctx.fillStyle = "rgba(200,190,220,0.16)";
