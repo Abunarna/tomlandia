@@ -2769,6 +2769,8 @@ export class GameEngine {
       this.lake(ctx, l);
     }
     ctx.drawImage(terrain.over, terrain.x, terrain.y, terrain.w, terrain.h);
+    this.drawRiverFlow(ctx, view);
+
 
 
     this.drawButterflies(ctx);
@@ -2871,7 +2873,53 @@ export class GameEngine {
   }
 
 
+  /** Sparse curved highlights drifting downstream (cheap, cached geometry). */
+  private drawRiverFlow(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
+    const t = this.clock;
+    ctx.lineCap = "round";
+    for (let lane = 0; lane < 2; lane++) {
+      ctx.strokeStyle = lane === 0 ? "rgba(255,255,255,0.30)" : "rgba(220,246,255,0.20)";
+      ctx.beginPath();
+      for (const bar of BARRIERS) {
+        if (bar.kind !== "river") continue;
+        if (bar.minX > view.x + view.w + 80 || bar.maxX < view.x - 80) continue;
+        if (bar.minY > view.y + view.h + 80 || bar.maxY < view.y - 80) continue;
+        const g = riverGeom(bar);
+        const n = g.pts.length;
+        const speed = lane === 0 ? 0.011 : 0.008;
+        for (let s = 0; s < 8; s++) {
+          const seed = s * 0.1237 + lane * 0.061;
+          const f = ((seed + t * speed) % 1 + 1) % 1;
+          const i = Math.min(n - 3, Math.floor(f * (n - 3)));
+          const a = g.pts[i]!;
+          if (a[0] < view.x - 40 || a[0] > view.x + view.w + 40) continue;
+          if (a[1] < view.y - 40 || a[1] > view.y + view.h + 40) continue;
+          // narrower water drifts faster: nudge the sample forward
+          const rush = g.maxW / g.hw[i]!;
+          const j = Math.min(n - 1, i + Math.round(1 + rush));
+          const b = g.pts[j]!;
+          const off = (((s * 7 + lane * 3) % 9) / 8 - 0.5) * 1.3 * g.hw[i]!;
+          const ax = a[0] + g.nx[i]! * off;
+          const ay = a[1] + g.ny[i]! * off;
+          const bx = b[0] + g.nx[j]! * off;
+          const by = b[1] + g.ny[j]! * off;
+          ctx.moveTo(ax, ay);
+          ctx.quadraticCurveTo(
+            (ax + bx) / 2 + g.nx[i]! * 4,
+            (ay + by) / 2 + g.ny[i]! * 4,
+            bx,
+            by,
+          );
+        }
+      }
+      ctx.lineWidth = lane === 0 ? 2.5 : 1.8;
+      ctx.stroke();
+    }
+    ctx.lineWidth = 1;
+  }
+
   private drawBarriers(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
+
     for (const bar of BARRIERS) {
       if (bar.minX > view.x + view.w + 80 || bar.maxX < view.x - 80) continue;
       if (bar.minY > view.y + view.h + 80 || bar.maxY < view.y - 80) continue;
@@ -2885,18 +2933,18 @@ export class GameEngine {
       }
 
       if (bar.kind === "river") {
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-        ctx.strokeStyle = "#6fa9c9";
-        ctx.lineWidth = bar.width;
-        ctx.stroke(path);
-        ctx.strokeStyle = "#9fd8ee";
-        ctx.lineWidth = bar.width * 0.66;
-        ctx.stroke(path);
-        ctx.strokeStyle = "rgba(255,255,255,0.5)";
-        ctx.lineWidth = bar.width * 0.16;
-        ctx.stroke(path);
+        const g = riverGeom(bar);
+        // outer bank (dark teal), water body, then a cached depth gradient
+        ctx.fillStyle = "#3f6f83";
+        ctx.fill(g.bank);
+        ctx.fillStyle = "#6fa9c9";
+        ctx.fill(g.water);
+        ctx.fillStyle = riverGradient(ctx, g);
+        ctx.fill(g.water);
+        ctx.fillStyle = "rgba(159,216,238,0.55)";
+        ctx.fill(g.core);
       } else if (bar.kind === "rocks") {
+
         // solid rubble band so the ridge reads as continuous
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
@@ -4980,4 +5028,124 @@ function densify(pts: [number, number][], step: number): [number, number][] {
   const last = pts[pts.length - 1];
   if (last) out.push([last[0], last[1]]);
   return out;
+}
+
+/* ---------------- river geometry (precomputed once per barrier) ------------- */
+
+interface RiverGeom {
+  /** densified centreline */
+  pts: [number, number][];
+  /** unit normals per point */
+  nx: number[];
+  ny: number[];
+  /** smoothed half-width per point (water) */
+  hw: number[];
+  bank: Path2D;
+  water: Path2D;
+  core: Path2D;
+  minW: number;
+  maxW: number;
+  bbox: { x0: number; y0: number; x1: number; y1: number };
+  grad?: { ctx: CanvasRenderingContext2D; g: CanvasGradient };
+}
+
+const RIVER_CACHE = new Map<string, RiverGeom>();
+
+/** Fill a closed polygon from an offset band, smoothed with quadratic joins. */
+function bandPath(pts: [number, number][], nx: number[], ny: number[], hw: number[], k: number) {
+  const left: [number, number][] = [];
+  const right: [number, number][] = [];
+  for (let i = 0; i < pts.length; i++) {
+    const w = hw[i]! * k;
+    const [x, y] = pts[i]!;
+    left.push([x + nx[i]! * w, y + ny[i]! * w]);
+    right.push([x - nx[i]! * w, y - ny[i]! * w]);
+  }
+  const ring = [...left, ...right.reverse()];
+  const p = new Path2D();
+  p.moveTo((ring[0]![0] + ring[ring.length - 1]![0]) / 2, (ring[0]![1] + ring[ring.length - 1]![1]) / 2);
+  for (let i = 0; i < ring.length; i++) {
+    const cur = ring[i]!;
+    const next = ring[(i + 1) % ring.length]!;
+    p.quadraticCurveTo(cur[0], cur[1], (cur[0] + next[0]) / 2, (cur[1] + next[1]) / 2);
+  }
+  p.closePath();
+  return p;
+}
+
+/** Build (once) the filled bank/water geometry for a river barrier. */
+function riverGeom(bar: (typeof BARRIERS)[number]): RiverGeom {
+  const hit = RIVER_CACHE.get(bar.id);
+  if (hit) return hit;
+
+  const pts = densify(bar.pts, Math.max(14, bar.width * 0.5));
+  const n = pts.length;
+  const nx: number[] = new Array(n);
+  const ny: number[] = new Array(n);
+  for (let i = 0; i < n; i++) {
+    const a = pts[Math.max(0, i - 1)]!;
+    const b = pts[Math.min(n - 1, i + 1)]!;
+    const dx = b[0] - a[0];
+    const dy = b[1] - a[1];
+    const len = Math.hypot(dx, dy) || 1;
+    nx[i] = -dy / len;
+    ny[i] = dx / len;
+  }
+
+  // deterministic width jitter, then the same moving-average smoothing the
+  // world generator uses for biome/lake outlines
+  const raw: number[] = new Array(n);
+  for (let i = 0; i < n; i++) {
+    const s = Math.sin(i * 0.37 + 1.3) * 0.5 + Math.sin(i * 0.11 + 4.1) * 0.5;
+    raw[i] = 1 + s * 0.22;
+  }
+  for (let pass = 0; pass < 4; pass++) {
+    for (let i = 1; i < n - 1; i++) raw[i] = (raw[i - 1]! + raw[i]! * 2 + raw[i + 1]!) / 4;
+  }
+  // taper the ends so the mouth doesn't flare
+  const hw = raw.map((m) => (bar.width / 2) * m);
+  let minW = Infinity;
+  let maxW = 0;
+  let x0 = Infinity;
+  let y0 = Infinity;
+  let x1 = -Infinity;
+  let y1 = -Infinity;
+  for (let i = 0; i < n; i++) {
+    minW = Math.min(minW, hw[i]!);
+    maxW = Math.max(maxW, hw[i]!);
+    x0 = Math.min(x0, pts[i]![0]);
+    y0 = Math.min(y0, pts[i]![1]);
+    x1 = Math.max(x1, pts[i]![0]);
+    y1 = Math.max(y1, pts[i]![1]);
+  }
+
+  const geom: RiverGeom = {
+    pts,
+    nx,
+    ny,
+    hw,
+    bank: bandPath(pts, nx, ny, hw, 1.16),
+    water: bandPath(pts, nx, ny, hw, 1),
+    core: bandPath(pts, nx, ny, hw, 0.5),
+    minW,
+    maxW,
+    bbox: { x0, y0, x1, y1 },
+  };
+  RIVER_CACHE.set(bar.id, geom);
+  return geom;
+}
+
+/** Cached across-stream depth gradient (rebuilt only if the context changes). */
+function riverGradient(ctx: CanvasRenderingContext2D, g: RiverGeom) {
+  if (g.grad && g.grad.ctx === ctx) return g.grad.g;
+  const { x0, y0, x1, y1 } = g.bbox;
+  const horiz = x1 - x0 > y1 - y0;
+  const grad = horiz
+    ? ctx.createLinearGradient(0, y0, 0, y1)
+    : ctx.createLinearGradient(x0, 0, x1, 0);
+  grad.addColorStop(0, "rgba(63,111,131,0.35)");
+  grad.addColorStop(0.5, "rgba(159,216,238,0.30)");
+  grad.addColorStop(1, "rgba(63,111,131,0.35)");
+  g.grad = { ctx, g: grad };
+  return grad;
 }
