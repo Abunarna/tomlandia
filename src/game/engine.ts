@@ -2880,7 +2880,8 @@ export class GameEngine {
 
   /** Dense drifting crests + highlight streaks (cheap, cached geometry). */
   private drawRiverFlow(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
-    const t = this.clock;
+    // 3x slower than before: every animated term reads this eased clock
+    const t = this.clock / 3;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
 
@@ -2901,7 +2902,9 @@ export class GameEngine {
     const laneColor = (lane: number) =>
       lane === 0 ? [255, 255, 255] : lane === 1 ? [220, 246, 255] : [255, 255, 255];
     const laneWidth = (lane: number) => (lane === 0 ? 2.6 : lane === 1 ? 1.9 : 1.3);
-    for (let lane = 0; lane < 3; lane++) {
+
+    /** Build one lane's streak path at an arbitrary time (used for ghosts). */
+    const lanePath = (lane: number, tt: number) => {
       const path = new Path2D();
       for (const bar of bars) {
         const g = riverGeom(bar);
@@ -2909,7 +2912,7 @@ export class GameEngine {
         const speed = 0.013 - lane * 0.003;
         for (let s = 0; s < 22; s++) {
           const seed = s * 0.0454 + lane * 0.061;
-          const f = ((seed + t * speed) % 1 + 1) % 1;
+          const f = ((seed + tt * speed) % 1 + 1) % 1;
           const i0 = Math.min(n - 3, Math.floor(f * (n - 3)));
           const a0 = g.pts[i0]!;
           if (a0[0] < view.x - 60 || a0[0] > view.x + view.w + 60) continue;
@@ -2938,7 +2941,7 @@ export class GameEngine {
             const u = k;
             const off =
               (band +
-                (Math.sin(u * w1 + t * 1.9 + ph) * 0.6 + Math.sin(u * w2 - t * 1.2 + ph * 1.7) * 0.4) * amp) *
+                (Math.sin(u * w1 + tt * 1.9 + ph) * 0.6 + Math.sin(u * w2 - tt * 1.2 + ph * 1.7) * 0.4) * amp) *
               g.hw[i]!;
             const x = g.pts[i]![0] + g.nx[i]! * off;
             const y = g.pts[i]![1] + g.ny[i]! * off;
@@ -2954,12 +2957,36 @@ export class GameEngine {
           path.lineTo(px, py);
         }
       }
+      return path;
+    };
+
+    // ghost trail: two cheap echoes of where each streak just was, so the
+    // wash smears behind itself instead of sliding as a hard shape.
+    const GHOST = [
+      { lag: 2.2, fade: 0.55 },
+      { lag: 4.6, fade: 0.28 },
+    ];
+
+    for (let lane = 0; lane < 3; lane++) {
       // diffuse colour wash: wide, low-opacity passes stack into a soft
       // bloom. Halfway between crisp core and full wash — visible as gentle
       // colour movement without resolving into hard lines.
       const [cr, cg, cb] = laneColor(lane);
       const base = lane === 0 ? 0.34 : lane === 1 ? 0.24 : 0.16;
       const w = laneWidth(lane);
+      // ghosts first (behind), then the live streaks on top
+      for (const gh of GHOST) {
+        const gpath = lanePath(lane, t - gh.lag);
+        for (const p of [
+          { wid: w * 3.2, op: base * 0.14 * gh.fade },
+          { wid: w * 1.8, op: base * 0.32 * gh.fade },
+        ]) {
+          ctx.strokeStyle = `rgba(${cr},${cg},${cb},${p.op})`;
+          ctx.lineWidth = p.wid;
+          ctx.stroke(gpath);
+        }
+      }
+      const path = lanePath(lane, t);
       const passes = [
         { wid: w * 4.0, op: base * 0.09 },
         { wid: w * 2.8, op: base * 0.16 },
@@ -2998,6 +3025,7 @@ export class GameEngine {
     ctx.stroke();
     ctx.lineWidth = 1;
   }
+
 
   /** the same drifting colour wash, wrapped around a city's moat ring */
   private drawMoatFlow(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
