@@ -1734,13 +1734,16 @@ export class GameEngine {
       } else {
         const d = this.moveToward(sp.x, sp.y, dt);
         if (d <= 26) {
+          // Keep the ambient fishing loop running for the whole time the
+          // player stands on the jetty — don't cut it during the short
+          // "waiting for a bite" breather between catches.
+          this.actionLoop = "fishing";
           if (this.fishCd > 0) {
             this.fishCd -= dt;
             this.activity = "Waiting for a bite";
             this.activityProgress = 0;
           } else {
             this.activity = "Fishing";
-            this.actionLoop = "fishing";
             this.gatherProgress += dt / FISH_CAST_TIME;
             this.activityProgress = this.gatherProgress;
             if (Math.random() < dt * 4) {
