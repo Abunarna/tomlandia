@@ -3416,18 +3416,9 @@ export class GameEngine {
     ctx.beginPath();
     ctx.arc(cx, cy, ringMid, 0, Math.PI * 2);
     ctx.stroke();
-    // stone cities keep only the plaza and ring road — the bare radial spokes
+    // every city keeps only the plaza and ring road — the bare radial spokes
     // read as ugly untextured smears over everything else
-    if (CITY.theme !== "stone") {
-      for (const g of CITY.gates) {
-        const [gx, gy] = at(g.angle, cityWallR(g.angle, CITY) + CITY.moatGap + CITY.moatW + 30);
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(gx, gy);
-        ctx.lineWidth = g.drawbridge ? 44 : 34;
-        ctx.stroke();
-      }
-    }
+
     // sandstone cities get narrow winding medina alleys between the rings
     if (sand) {
       ctx.strokeStyle = P.ring;
