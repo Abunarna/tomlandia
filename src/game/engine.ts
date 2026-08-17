@@ -2949,17 +2949,17 @@ export class GameEngine {
           path.lineTo(px, py);
         }
       }
-      // diffuse colour wash: many wide, nearly-transparent passes stack
-      // into a soft bloom. Widths are ~4x the old core; opacity is tiny so
-      // no crisp line ever resolves — just drifting colour in the water.
+      // diffuse colour wash: wide, low-opacity passes stack into a soft
+      // bloom. Halfway between crisp core and full wash — visible as gentle
+      // colour movement without resolving into hard lines.
       const [cr, cg, cb] = laneColor(lane);
       const base = lane === 0 ? 0.34 : lane === 1 ? 0.24 : 0.16;
       const w = laneWidth(lane);
       const passes = [
-        { wid: w * 8.0, op: base * 0.022 },
-        { wid: w * 6.0, op: base * 0.03 },
-        { wid: w * 4.5, op: base * 0.04 },
-        { wid: w * 3.2, op: base * 0.05 },
+        { wid: w * 4.0, op: base * 0.09 },
+        { wid: w * 2.8, op: base * 0.16 },
+        { wid: w * 2.0, op: base * 0.28 },
+        { wid: w * 1.4, op: base * 0.45 },
       ];
       for (const p of passes) {
         ctx.strokeStyle = `rgba(${cr},${cg},${cb},${p.op})`;
