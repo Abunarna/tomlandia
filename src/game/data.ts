@@ -1076,10 +1076,14 @@ for (const t of TOWN_SPECS) {
         if (!p) break;
         let a = (k / n) * Math.PI * 2 + (ri === 0 ? 0.35 : 0.16) + rand01(idx * 3.7 + ri) * 0.12;
         for (let guard = 0; guard < 24 && inGateCorridor(a, city); guard++) a += 0.09;
-        const r = ringR + (rand01(idx * 5.1 + 3) - 0.5) * 26;
         const kind = p.kind;
         const w = kind === "tower" ? 96 : kind === "stall" ? 104 : LOT_W;
         const h = kind === "tower" ? 118 : kind === "stall" ? 74 : LOT_H;
+        // stagger neighbours in and out so houses never sit shoulder to shoulder
+        let r = ringR + (k % 2 ? 15 : -15) + (rand01(idx * 5.1 + 3) - 0.5) * 18;
+        // and always leave a clear lane between the houses and the city wall
+        const maxR = cityWallR(a, city) - city.wallT / 2 - Math.max(w, h) / 2 - 26;
+        if (r > maxR) r = maxR;
         const bx = t.cx + Math.cos(a) * r - w / 2;
         const by = t.cy + Math.sin(a) * r - h / 2;
         buildings.push({
