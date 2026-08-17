@@ -47,7 +47,7 @@ import {
   desolatusAt,
 } from "./boss";
 import { levelFromXp } from "./progression";
-import { loops, music, sfx, type LoopId } from "./audio";
+import { ambience, loops, music, sfx, type LoopId } from "./audio";
 import {
   MARKET_FEE,
   feeFor,
