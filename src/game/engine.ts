@@ -4801,14 +4801,17 @@ export class GameEngine {
       ctx.textBaseline = "alphabetic";
     }
 
-    ctx.font = "bold 11px ui-rounded, system-ui, sans-serif";
+    // Profession-only nameplate, styled like creature nameplates.
+    const npcLabel = npc.title;
+    ctx.font = "bold 11px ui-rounded, 'Baloo 2', system-ui, sans-serif";
     ctx.textAlign = "center";
-    ctx.fillStyle = "rgba(70,55,70,0.7)";
-    ctx.fillText(npc.name, x, y + 32);
-    // Role / title under the name in bold.
-    ctx.font = "bold 10px ui-rounded, system-ui, sans-serif";
-    ctx.fillStyle = "rgba(95,74,92,0.92)";
-    ctx.fillText(npc.title, x, y + 44);
+    const nw = ctx.measureText(npcLabel).width + 12;
+    ctx.fillStyle = "rgba(52,40,64,0.55)";
+    ctx.beginPath();
+    ctx.roundRect(x - nw / 2, y + 24, nw, 16, 8);
+    ctx.fill();
+    ctx.fillStyle = "#f6f2ff";
+    ctx.fillText(npcLabel, x, y + 35);
   }
 
   private drawRemote(ctx: CanvasRenderingContext2D, r: RemotePlayer) {
