@@ -2888,41 +2888,6 @@ export class GameEngine {
     }
     if (!bars.length) return;
 
-    // --- transverse wave crests sweeping downstream ---------------------
-    for (let band = 0; band < 3; band++) {
-      ctx.strokeStyle =
-        band === 0 ? "rgba(255,255,255,0.26)" : band === 1 ? "rgba(206,240,255,0.20)" : "rgba(63,111,131,0.18)";
-      ctx.lineWidth = band === 2 ? 3 : 2.2;
-      ctx.beginPath();
-      for (const bar of bars) {
-        const g = riverGeom(bar);
-        const n = g.pts.length;
-        const speed = 0.05 + band * 0.014;
-        const count = 26;
-        for (let s = 0; s < count; s++) {
-          const f = (((s / count + band * 0.13) + t * speed / 10) % 1 + 1) % 1;
-          const i = Math.min(n - 4, Math.floor(f * (n - 4)));
-          const a = g.pts[i]!;
-          if (a[0] < view.x - 60 || a[0] > view.x + view.w + 60) continue;
-          if (a[1] < view.y - 60 || a[1] > view.y + view.h + 60) continue;
-          const hw = g.hw[i]! * 0.86;
-          const nxv = g.nx[i]!;
-          const nyv = g.ny[i]!;
-          // crest bows slightly downstream in the middle
-          const bow = 5 + Math.sin(t * 1.6 + s) * 2.5;
-          const dx = -nyv;
-          const dy = nxv;
-          const lx = a[0] + nxv * hw;
-          const ly = a[1] + nyv * hw;
-          const rx = a[0] - nxv * hw;
-          const ry = a[1] - nyv * hw;
-          ctx.moveTo(lx, ly);
-          ctx.quadraticCurveTo(a[0] + dx * bow, a[1] + dy * bow, rx, ry);
-        }
-      }
-      ctx.stroke();
-    }
-
     // --- long meandering highlight streaks riding the current -----------
     for (let lane = 0; lane < 3; lane++) {
       ctx.strokeStyle =
