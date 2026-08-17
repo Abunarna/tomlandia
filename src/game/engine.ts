@@ -803,26 +803,32 @@ export class GameEngine {
     n.ty = n.y;
   }
 
+  /** a free-to-stand spot inside a town's plaza / ring road area */
+  private villagerSpot(c: CityDef): { x: number; y: number } {
+    const maxR = Math.max(c.plazaR + 30, c.ringR[0]! - 10);
+    for (let i = 0; i < 60; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const r = 24 + Math.random() * (maxR - 24);
+      const x = c.cx + Math.cos(a) * r;
+      const y = c.cy + Math.sin(a) * r;
+      if (!blockedAt(x, y, 12)) return { x, y };
+    }
+    return { x: c.cx, y: c.cy };
+  }
+
   private spawnVillagers() {
-    const towns: [number, number][] = [
-      [700, 300],
-      [TILE_W * 2 + 690, 320],
-      [TILE_W + 740, 570],
-      [740, TILE_H + 330],
-    ];
     const robes = ["#f2c6d8", "#9fd6b8", "#f5d78a", "#bcd9ec", "#e0bff0", "#f6c9a8"];
     const hairs = ["#5c3a2e", "#3f5f78", "#8a6a45", "#e6e0ef", "#6b4f7a"];
-    for (const [tx, ty] of towns) {
-      for (let i = 0; i < 4; i++) {
-        const x = tx + (Math.random() - 0.5) * 220;
-        const y = ty + (Math.random() - 0.5) * 160;
+    for (const c of CITIES) {
+      for (let i = 0; i < 5; i++) {
+        const s = this.villagerSpot(c);
         this.villagers.push({
-          x,
-          y,
-          hx: tx,
-          hy: ty,
-          tx: x,
-          ty: y,
+          x: s.x,
+          y: s.y,
+          hx: c.cx,
+          hy: c.cy,
+          tx: s.x,
+          ty: s.y,
           wait: Math.random() * 3,
           robe: robes[Math.floor(Math.random() * robes.length)]!,
           hair: hairs[Math.floor(Math.random() * hairs.length)]!,
@@ -830,6 +836,7 @@ export class GameEngine {
       }
     }
   }
+
 
 
   /* ---------- persistence ---------- */
