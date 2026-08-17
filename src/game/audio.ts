@@ -131,11 +131,106 @@ const LOOP_URLS: Record<LoopId, string> = {
   combat: fightingAsset.url,
 };
 
+/**
+ * Gapless looping via WebAudio: the whole clip is decoded into a buffer and
+ * played through a looping AudioBufferSourceNode. HTMLAudioElement `loop`
+ * re-seeks the decoder each pass (and mp3 encoder padding adds silence), which
+ * is what produced the audible break between loops.
+ */
 class ActivityLoops {
+  private buffers = new Map<LoopId, AudioBuffer>();
+  private loading = new Map<LoopId, Promise<AudioBuffer | null>>();
+  private src: AudioBufferSourceNode | null = null;
+  private gain: GainNode | null = null;
+  /** Fallback elements when WebAudio is unavailable. */
   private els = new Map<LoopId, HTMLAudioElement>();
   private current: LoopId | null = null;
 
-  private el(id: LoopId) {
+  /** Pre-decode every loop so the first play starts instantly. */
+  warm() {
+    for (const id of Object.keys(LOOP_URLS) as LoopId[]) void this.buffer(id);
+  }
+
+  private buffer(id: LoopId): Promise<AudioBuffer | null> {
+    const have = this.buffers.get(id);
+    if (have) return Promise.resolve(have);
+    let p = this.loading.get(id);
+    if (!p) {
+      p = (async () => {
+        const ctx = sfx.context;
+        if (!ctx) return null;
+        try {
+          const res = await fetch(LOOP_URLS[id]);
+          const buf = await ctx.decodeAudioData(await res.arrayBuffer());
+          this.buffers.set(id, buf);
+          return buf;
+        } catch {
+          return null;
+        }
+      })();
+      this.loading.set(id, p);
+    }
+    return p;
+  }
+
+  private stopNode() {
+    if (this.src) {
+      try {
+        this.src.stop();
+      } catch {
+        /* already stopped */
+      }
+      this.src.disconnect();
+      this.src = null;
+    }
+  }
+
+  /** Start `id` (idempotent) or pass null to stop whatever is playing. */
+  set(id: LoopId | null) {
+    if (typeof window === "undefined") return;
+    if (!sfx.enabled) id = null;
+    if (id === this.current) return;
+
+    // stop whatever is currently running (WebAudio node or fallback element)
+    this.stopNode();
+    if (this.current) {
+      const prev = this.els.get(this.current);
+      if (prev) {
+        prev.pause();
+        prev.currentTime = 0;
+      }
+    }
+
+    this.current = id;
+    if (!id) return;
+
+    const ctx = sfx.context;
+    if (!ctx) {
+      this.playElement(id);
+      return;
+    }
+    void this.buffer(id).then((buf) => {
+      // player may have switched action while decoding
+      if (this.current !== id) return;
+      if (!buf) {
+        this.playElement(id);
+        return;
+      }
+      if (!this.gain) {
+        this.gain = ctx.createGain();
+        this.gain.gain.value = 0.5;
+        this.gain.connect(ctx.destination);
+      }
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.loop = true;
+      src.connect(this.gain);
+      src.start();
+      this.src = src;
+    });
+  }
+
+  private playElement(id: LoopId) {
     let el = this.els.get(id);
     if (!el) {
       el = new Audio(LOOP_URLS[id]);
@@ -144,24 +239,6 @@ class ActivityLoops {
       el.preload = "auto";
       this.els.set(id, el);
     }
-    return el;
-  }
-
-  /** Start `id` (idempotent) or pass null to stop whatever is playing. */
-  set(id: LoopId | null) {
-    if (typeof window === "undefined") return;
-    if (!sfx.enabled) id = null;
-    if (id === this.current) return;
-    if (this.current) {
-      const prev = this.els.get(this.current);
-      if (prev) {
-        prev.pause();
-        prev.currentTime = 0;
-      }
-    }
-    this.current = id;
-    if (!id) return;
-    const el = this.el(id);
     el.currentTime = 0;
     void el.play().catch(() => {
       /* autoplay blocked until a gesture */
@@ -172,6 +249,7 @@ class ActivityLoops {
     this.set(null);
   }
 }
+
 
 export const loops = new ActivityLoops();
 
