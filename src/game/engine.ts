@@ -2873,50 +2873,121 @@ export class GameEngine {
   }
 
 
-  /** Sparse curved highlights drifting downstream (cheap, cached geometry). */
+  /** Dense drifting crests + highlight streaks (cheap, cached geometry). */
   private drawRiverFlow(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
     const t = this.clock;
     ctx.lineCap = "round";
-    for (let lane = 0; lane < 2; lane++) {
-      ctx.strokeStyle = lane === 0 ? "rgba(255,255,255,0.30)" : "rgba(220,246,255,0.20)";
+    ctx.lineJoin = "round";
+
+    const bars: (typeof BARRIERS)[number][] = [];
+    for (const bar of BARRIERS) {
+      if (bar.kind !== "river") continue;
+      if (bar.minX > view.x + view.w + 80 || bar.maxX < view.x - 80) continue;
+      if (bar.minY > view.y + view.h + 80 || bar.maxY < view.y - 80) continue;
+      bars.push(bar);
+    }
+    if (!bars.length) return;
+
+    // --- transverse wave crests sweeping downstream ---------------------
+    for (let band = 0; band < 3; band++) {
+      ctx.strokeStyle =
+        band === 0 ? "rgba(255,255,255,0.26)" : band === 1 ? "rgba(206,240,255,0.20)" : "rgba(63,111,131,0.18)";
+      ctx.lineWidth = band === 2 ? 3 : 2.2;
       ctx.beginPath();
-      for (const bar of BARRIERS) {
-        if (bar.kind !== "river") continue;
-        if (bar.minX > view.x + view.w + 80 || bar.maxX < view.x - 80) continue;
-        if (bar.minY > view.y + view.h + 80 || bar.maxY < view.y - 80) continue;
+      for (const bar of bars) {
         const g = riverGeom(bar);
         const n = g.pts.length;
-        const speed = lane === 0 ? 0.011 : 0.008;
-        for (let s = 0; s < 8; s++) {
-          const seed = s * 0.1237 + lane * 0.061;
+        const speed = 0.05 + band * 0.014;
+        const count = 26;
+        for (let s = 0; s < count; s++) {
+          const f = (((s / count + band * 0.13) + t * speed / 10) % 1 + 1) % 1;
+          const i = Math.min(n - 4, Math.floor(f * (n - 4)));
+          const a = g.pts[i]!;
+          if (a[0] < view.x - 60 || a[0] > view.x + view.w + 60) continue;
+          if (a[1] < view.y - 60 || a[1] > view.y + view.h + 60) continue;
+          const hw = g.hw[i]! * 0.86;
+          const nxv = g.nx[i]!;
+          const nyv = g.ny[i]!;
+          // crest bows slightly downstream in the middle
+          const bow = 5 + Math.sin(t * 1.6 + s) * 2.5;
+          const dx = -nyv;
+          const dy = nxv;
+          const lx = a[0] + nxv * hw;
+          const ly = a[1] + nyv * hw;
+          const rx = a[0] - nxv * hw;
+          const ry = a[1] - nyv * hw;
+          ctx.moveTo(lx, ly);
+          ctx.quadraticCurveTo(a[0] + dx * bow, a[1] + dy * bow, rx, ry);
+        }
+      }
+      ctx.stroke();
+    }
+
+    // --- long highlight streaks riding the current ----------------------
+    for (let lane = 0; lane < 3; lane++) {
+      ctx.strokeStyle =
+        lane === 0 ? "rgba(255,255,255,0.34)" : lane === 1 ? "rgba(220,246,255,0.24)" : "rgba(255,255,255,0.16)";
+      ctx.lineWidth = lane === 0 ? 2.6 : lane === 1 ? 1.9 : 1.3;
+      ctx.beginPath();
+      for (const bar of bars) {
+        const g = riverGeom(bar);
+        const n = g.pts.length;
+        const speed = 0.013 - lane * 0.003;
+        for (let s = 0; s < 22; s++) {
+          const seed = s * 0.0454 + lane * 0.061;
           const f = ((seed + t * speed) % 1 + 1) % 1;
           const i = Math.min(n - 3, Math.floor(f * (n - 3)));
           const a = g.pts[i]!;
           if (a[0] < view.x - 40 || a[0] > view.x + view.w + 40) continue;
           if (a[1] < view.y - 40 || a[1] > view.y + view.h + 40) continue;
-          // narrower water drifts faster: nudge the sample forward
           const rush = g.maxW / g.hw[i]!;
           const j = Math.min(n - 1, i + Math.round(1 + rush));
           const b = g.pts[j]!;
-          const off = (((s * 7 + lane * 3) % 9) / 8 - 0.5) * 1.3 * g.hw[i]!;
+          const off =
+            ((((s * 7 + lane * 3) % 13) / 12 - 0.5) * 1.5 + Math.sin(t * 1.1 + s * 1.7) * 0.12) * g.hw[i]!;
           const ax = a[0] + g.nx[i]! * off;
           const ay = a[1] + g.ny[i]! * off;
           const bx = b[0] + g.nx[j]! * off;
           const by = b[1] + g.ny[j]! * off;
+          const wob = Math.sin(t * 2 + s) * 4;
           ctx.moveTo(ax, ay);
           ctx.quadraticCurveTo(
-            (ax + bx) / 2 + g.nx[i]! * 4,
-            (ay + by) / 2 + g.ny[i]! * 4,
+            (ax + bx) / 2 + g.nx[i]! * wob,
+            (ay + by) / 2 + g.ny[i]! * wob,
             bx,
             by,
           );
         }
       }
-      ctx.lineWidth = lane === 0 ? 2.5 : 1.8;
       ctx.stroke();
     }
+
+    // --- shimmering foam along both banks -------------------------------
+    ctx.strokeStyle = "rgba(255,255,255,0.22)";
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    for (const bar of bars) {
+      const g = riverGeom(bar);
+      const n = g.pts.length;
+      for (let s = 0; s < 30; s++) {
+        const f = ((s / 30 + t * 0.006) % 1 + 1) % 1;
+        const i = Math.min(n - 3, Math.floor(f * (n - 3)));
+        const a = g.pts[i]!;
+        if (a[0] < view.x - 40 || a[0] > view.x + view.w + 40) continue;
+        if (a[1] < view.y - 40 || a[1] > view.y + view.h + 40) continue;
+        const side = s % 2 === 0 ? 1 : -1;
+        const hw = g.hw[i]! * (0.94 + Math.sin(t * 3 + s * 2.1) * 0.03);
+        const j = Math.min(n - 1, i + 2);
+        const b = g.pts[j]!;
+        ctx.moveTo(a[0] + g.nx[i]! * hw * side, a[1] + g.ny[i]! * hw * side);
+        ctx.lineTo(b[0] + g.nx[j]! * hw * side, b[1] + g.ny[j]! * hw * side);
+      }
+    }
+    ctx.stroke();
     ctx.lineWidth = 1;
   }
+
+
 
   private drawBarriers(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
 
@@ -3117,13 +3188,36 @@ export class GameEngine {
     ctx.ellipse(l.cx, l.cy, l.rx * 0.62, l.ry * 0.6, 0, 0, Math.PI * 2);
     ctx.fill();
 
+    // rolling wave crests across the surface
+    const crest =
+      l.style === "evil" ? "rgba(196,178,236,0.16)" : l.style === "winter" ? "rgba(255,255,255,0.30)" : "rgba(255,255,255,0.22)";
+    ctx.strokeStyle = crest;
+    ctx.lineCap = "round";
+    for (let row = 0; row < 9; row++) {
+      const drift = (this.time * 6 + row * 37) % (l.ry * 2 + 40);
+      const y = l.cy - l.ry - 20 + drift;
+      ctx.lineWidth = 1.2 + (row % 3) * 0.6;
+      ctx.beginPath();
+      for (let k = 0; k <= 12; k++) {
+        const x = l.cx - l.rx + (k / 12) * l.rx * 2;
+        const yy = y + Math.sin(this.time * 1.6 + k * 0.9 + row) * 3.2;
+        if (k === 0) ctx.moveTo(x, yy);
+        else ctx.lineTo(x, yy);
+      }
+      ctx.stroke();
+    }
+
     // glints
     ctx.fillStyle = l.style === "evil" ? "rgba(190,170,230,0.18)" : "rgba(255,255,255,0.35)";
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 22; i++) {
       const x = l.cx - l.rx + ((i * 137) % (l.rx * 2));
       const y = l.cy - l.ry + ((i * 89) % (l.ry * 2));
-      ctx.fillRect(x, y + Math.sin(this.time * 1.2 + i) * 2, 12, 3);
+      const a = 0.5 + 0.5 * Math.sin(this.time * 2.2 + i);
+      ctx.globalAlpha = 0.35 + a * 0.65;
+      ctx.fillRect(x, y + Math.sin(this.time * 1.2 + i) * 3, 10 + a * 5, 3);
     }
+    ctx.globalAlpha = 1;
+
 
     if (l.style === "evil") {
       ctx.fillStyle = "rgba(200,190,220,0.16)";
