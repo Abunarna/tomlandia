@@ -18,6 +18,11 @@ export const ROWS = Math.ceil(WORLD_H / CELL_H);
 const SEND_HZ = 4;
 /** Drop a remote player we have not heard from in this long. */
 export const STALE_MS = 6000;
+/** Send a heartbeat at least this often even when stationary, so we don't
+ *  get dropped by STALE_MS on neighbouring clients. */
+const HEARTBEAT_MS = 2000;
+/** Movement below this many world units is treated as "no change". */
+const POS_EPSILON = 2;
 
 export interface PresencePacket {
   id: string;
