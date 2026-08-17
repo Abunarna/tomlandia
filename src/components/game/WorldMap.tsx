@@ -15,7 +15,7 @@ import {
   WORLD_W,
 } from "@/game/data";
 import { BOSS_NAME, desolatusAt } from "@/game/boss";
-import { CITIES, cityOuterR } from "@/game/city";
+import { CITIES, cityOuterR, cityWallR } from "@/game/city";
 
 /** biome id -> the city that its map label sits above (fixed, never inferred) */
 const BIOME_CITY: Record<string, string> = {
