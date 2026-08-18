@@ -57,7 +57,7 @@ function Title() {
     <main className="flex min-h-[100dvh] flex-col items-center justify-center bg-background px-6 text-center">
       <h1 className="font-display text-5xl font-extrabold text-foreground">Tomlandia</h1>
       <p className="mt-3 max-w-xs text-sm text-muted-foreground">
-        A cozy pixel world of mining, woodcutting, crafting and gentle adventure.
+        Welcome to Abunarnia
       </p>
       {!checking && (
         <button
