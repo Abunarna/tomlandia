@@ -153,6 +153,15 @@ export interface HudSnapshot {
   food: ItemId | null;
   /** auto-snack widget state */
   autoEat: { threshold: number; qty: number; firedAt: number; cooldownUntil: number };
+  /** auto-potion widget state */
+  autoPotionState: {
+    on: boolean;
+    item: ItemId | null;
+    qty: number;
+    hits: number;
+    maxHits: number;
+    firedAt: number;
+  };
   activity: string;
   activityProgress: number;
   quest: HudQuest | null;

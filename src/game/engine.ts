@@ -364,6 +364,12 @@ export class GameEngine {
   private autoEatCdUntil = 0;
   /** wall-clock ms of the last auto-eat trigger (drives the glow pulse) */
   private autoEatFiredAt = 0;
+  /** auto-potion toggle — drink a strength potion at the start of a fight */
+  autoPotion = false;
+  /** hits the current buff started with (drives the widget ring) */
+  private buffMaxHits = 0;
+  /** wall-clock ms of the last auto-potion trigger (drives the glow pulse) */
+  private autoPotionFiredAt = 0;
 
   private nodes: ResNode[] = [];
   private monsters: Monster[] = [];
@@ -498,6 +504,11 @@ export class GameEngine {
 
     this.load(opts?.initialSave ?? null);
     this.biome = biomeAt(this.px, this.py);
+    try {
+      this.autoPotion = localStorage.getItem("tomlandia.autoPotion") === "1";
+    } catch {
+      /* storage unavailable */
+    }
     this.resize();
   }
 
@@ -1530,6 +1541,52 @@ export class GameEngine {
   }
 
 
+  /** Flip the auto-potion widget on/off. */
+  toggleAutoPotion() {
+    this.autoPotion = !this.autoPotion;
+    try {
+      localStorage.setItem("tomlandia.autoPotion", this.autoPotion ? "1" : "0");
+    } catch {
+      /* storage unavailable */
+    }
+    this.pushText(
+      this.px,
+      this.py - 40,
+      this.autoPotion ? "Auto-potion on" : "Auto-potion off",
+      "#e7c7ff",
+    );
+    if (this.autoPotion) this.autoDrink();
+    this.emitHud(true);
+  }
+
+  /** Strongest potion currently in the bag, if any. */
+  private bestPotionSlot(): number {
+    let best = -1;
+    let dmg = -1;
+    for (let i = 0; i < this.inv.length; i++) {
+      const s = this.inv[i];
+      if (!s) continue;
+      const def = item(s.id);
+      if (def.kind !== "potion" || !def.dmgBoost) continue;
+      if (def.dmgBoost > dmg) {
+        dmg = def.dmgBoost;
+        best = i;
+      }
+    }
+    return best;
+  }
+
+  /** Drink the next potion when auto-potion is on and no buff is running. */
+  private autoDrink() {
+    if (!this.autoPotion) return;
+    if (this.buff && this.buff.hits > 0) return;
+    if (this.potionPending) return;
+    const idx = this.bestPotionSlot();
+    if (idx < 0) return;
+    this.autoPotionFiredAt = Date.now();
+    this.useSlot(idx);
+  }
+
   /* ---------- DESOLATUS ---------- */
 
   get bossAlive() {
@@ -1828,6 +1885,7 @@ export class GameEngine {
           const md = MONSTER_DEFS[m.kind];
           this.activity = `Fighting ${md.name}`;
           this.actionLoop = "combat";
+          this.autoDrink();
           this.combatCd -= dt;
           this.activityProgress = 1 - Math.max(0, this.combatCd) / this.attackInterval;
           if (this.combatCd <= 0) {
@@ -1859,6 +1917,10 @@ export class GameEngine {
                   if (res.buff) {
                     const hits = Number(res.buff.hits) || 0;
                     this.buff = hits > 0 ? { dmg: Number(res.buff.dmg) || 0, hits } : null;
+                    if (!this.buff) {
+                      this.buffMaxHits = 0;
+                      this.autoDrink();
+                    } else if (hits > this.buffMaxHits) this.buffMaxHits = hits;
                   }
                   this.applyServerState(res.state);
 
@@ -2349,7 +2411,10 @@ export class GameEngine {
           this.potionPending = false;
           if (!res.ok) return;
           this.applyServerState(res.state);
-          if (res.buff) this.buff = { dmg: Number(res.buff.dmg) || 0, hits: Number(res.buff.hits) || 0 };
+          if (res.buff) {
+            this.buff = { dmg: Number(res.buff.dmg) || 0, hits: Number(res.buff.hits) || 0 };
+            this.buffMaxHits = Math.max(this.buff.hits, 1);
+          }
           this.pushText(this.px, this.py - 46, `+${this.buff?.dmg ?? 0} dmg`, "#e7c7ff");
           sfx.play("gather");
           this.emitHud(true);
@@ -2626,6 +2691,18 @@ export class GameEngine {
         firedAt: this.autoEatFiredAt,
         cooldownUntil: this.autoEatCdUntil,
       },
+      autoPotionState: (() => {
+        const idx = this.bestPotionSlot();
+        const id = idx >= 0 ? this.inv[idx]!.id : null;
+        return {
+          on: this.autoPotion,
+          item: id,
+          qty: id ? this.countItem(id) : 0,
+          hits: this.buff?.hits ?? 0,
+          maxHits: this.buffMaxHits,
+          firedAt: this.autoPotionFiredAt,
+        };
+      })(),
       activity: this.activity,
       activityProgress: this.activityProgress,
       quest: this.quest
