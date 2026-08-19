@@ -504,6 +504,11 @@ export class GameEngine {
 
     this.load(opts?.initialSave ?? null);
     this.biome = biomeAt(this.px, this.py);
+    try {
+      this.autoPotion = localStorage.getItem("tomlandia.autoPotion") === "1";
+    } catch {
+      /* storage unavailable */
+    }
     this.resize();
   }
 
