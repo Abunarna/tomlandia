@@ -192,7 +192,9 @@ export const TILE_W = 1400;
 export const TILE_H = 1000;
 /** V2 world: exactly double the old area (4x3 tiles instead of 3x2). */
 export const WORLD_W = TILE_W * 4;
-export const WORLD_H = TILE_H * 3;
+/** V2.1 — the map was extended ~25% south so it reads less like a strip. */
+export const CORE_H = TILE_H * 3;
+export const WORLD_H = 3750;
 
 export type BiomeId = "fields" | "forest" | "desert" | "evil" | "winter";
 
@@ -2232,7 +2234,7 @@ function spawnable(x: number, y: number) {
   const step = 64;
   const cands: { x: number; y: number; k: number }[] = [];
   let i = 0;
-  for (let y = 120; y < WORLD_H - 120; y += step) {
+  for (let y = 120; y < CORE_H - 120; y += step) {
     for (let x = 120; x < WORLD_W - 120; x += step) {
       i++;
       cands.push({
@@ -2277,11 +2279,11 @@ function spawnable(x: number, y: number) {
     while (pts.length < count && t < count * 200) {
       t++;
       const x = rand01(seed * 1.31 + t * 2.17) * WORLD_W;
-      const y = rand01(seed * 2.71 + t * 3.53 + 19) * WORLD_H;
+      const y = rand01(seed * 2.71 + t * 3.53 + 19) * CORE_H;
       if (biomeAt(x, y).id !== bid) continue;
       pts.push({ x, y });
     }
-    if (!pts.length) pts.push({ x: WORLD_W / 2, y: WORLD_H / 2 });
+    if (!pts.length) pts.push({ x: WORLD_W / 2, y: CORE_H / 2 });
     centers.set(`${bid}:${kind}`, pts);
   };
   for (const [bid, plan] of Object.entries(SPAWN_PLAN)) {
@@ -2338,6 +2340,55 @@ function spawnable(x: number, y: number) {
       const kind = (cluster ? pickNear(w.mob, bid, c.x, c.y) : null) ?? pickMost(w.mob);
       if (!kind) continue;
       w.mob.set(kind, w.mob.get(kind)! - 1);
+      MONSTER_SPAWNS.push({ kind, x: Math.round(c.x), y: Math.round(c.y) });
+    }
+    placed.push({ x: c.x, y: c.y });
+  }
+})();
+
+/**
+ * Southern extension — the map grew ~25% downward, so scatter a simple,
+ * deterministic mix of that biome's own nodes and monsters across the new
+ * ground. Kept intentionally rough: these systems are due for a rework.
+ */
+(() => {
+  const step = 70;
+  const cands: { x: number; y: number; k: number }[] = [];
+  let i = 0;
+  for (let y = CORE_H - 40; y < WORLD_H - 120; y += step) {
+    for (let x = 120; x < WORLD_W - 120; x += step) {
+      i++;
+      cands.push({
+        x: x + (rand01(i * 2.3 + 41) - 0.5) * step * 0.8,
+        y: y + (rand01(i * 4.7 + 71) - 0.5) * step * 0.8,
+        k: rand01(i * 9.1 + 13),
+      });
+    }
+  }
+  cands.sort((a, b) => a.k - b.k);
+
+  for (const c of cands) {
+    if (cityKeepOut(c.x, c.y)) continue;
+    if (c.y < CORE_H - 30) continue;
+    if (!spawnable(c.x, c.y)) continue;
+    // thin the field out so density roughly matches the rest of the world
+    if (rand01(c.x * 0.011 + c.y * 0.043 + 9) > 0.45) continue;
+    const bid = biomeAt(c.x, c.y).id;
+    const plan = SPAWN_PLAN[bid];
+    if (!plan) continue;
+    // roughly 55% nodes / 45% monsters, kind picked deterministically
+    if (c.k * 1000 - Math.floor(c.k * 1000) < 0.55) {
+      const list = plan.nodes;
+      const kind = list[Math.floor(rand01(c.x * 0.017 + c.y * 0.031) * list.length) % list.length]![0] as NodeKind;
+      NODE_SPAWNS.push({ kind, x: Math.round(c.x), y: Math.round(c.y) });
+      SOLID_DISCS.push({
+        x: Math.round(c.x),
+        y: Math.round(c.y) + (NODE_DEFS[kind].shape === "tree" ? 8 : 2),
+        r: NODE_DEFS[kind].shape === "bush" ? 11 : 14,
+      });
+    } else {
+      const list = plan.mobs;
+      const kind = list[Math.floor(rand01(c.x * 0.023 + c.y * 0.019 + 5) * list.length) % list.length]![0] as MonsterKind;
       MONSTER_SPAWNS.push({ kind, x: Math.round(c.x), y: Math.round(c.y) });
     }
     placed.push({ x: c.x, y: c.y });
