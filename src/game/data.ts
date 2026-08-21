@@ -336,32 +336,59 @@ const CELL_OWNER: number[] = (() => {
     }
   }
 
-  // Majority smoothing: absorb teeth along a seam so the border reads as one
-  // long sweeping curve rather than a staircase. Uses a wide (5x5) kernel and
-  // many passes so even large-scale kinks are ironed out.
-  for (let pass = 0; pass < 24; pass++) {
-    const src = out.slice();
-    for (let gy = 0; gy < GY; gy++) {
-      for (let gx = 0; gx < GX; gx++) {
-        const votes = new Map<number, number>();
-        for (let dy = -2; dy <= 2; dy++) {
-          for (let dx = -2; dx <= 2; dx++) {
-            const nx = gx + dx;
-            const ny = gy + dy;
-            if (nx < 0 || ny < 0 || nx >= GX || ny >= GY) continue;
-            const o = src[ny * GX + nx]!;
-            const w = 1 / (1 + Math.hypot(dx, dy));
-            votes.set(o, (votes.get(o) ?? 0) + w);
+  // Heavy border smoothing without ever leaving a gap: blur each region's
+  // membership into a soft field, then hand every cell to the strongest
+  // field. The partition stays exact while the seams become long arcs.
+  {
+    const R = REGION_SPECS.length;
+    let fields = Array.from({ length: R }, (_, i) =>
+      Float32Array.from(out, (o) => (o === i ? 1 : 0)),
+    );
+    const blur = (src: Float32Array, radius: number) => {
+      const tmp = new Float32Array(GX * GY);
+      const dst = new Float32Array(GX * GY);
+      for (let gy = 0; gy < GY; gy++) {
+        for (let gx = 0; gx < GX; gx++) {
+          let s = 0;
+          let w = 0;
+          for (let d = -radius; d <= radius; d++) {
+            const nx = Math.max(0, Math.min(GX - 1, gx + d));
+            s += src[gy * GX + nx]!;
+            w++;
           }
+          tmp[gy * GX + gx] = s / w;
         }
-
-        let win = src[gy * GX + gx]!;
-        let bestVotes = -1;
-        for (const [o, v] of votes) if (v > bestVotes) [win, bestVotes] = [o, v];
-        out[gy * GX + gx] = win;
       }
+      for (let gy = 0; gy < GY; gy++) {
+        for (let gx = 0; gx < GX; gx++) {
+          let s = 0;
+          let w = 0;
+          for (let d = -radius; d <= radius; d++) {
+            const ny = Math.max(0, Math.min(GY - 1, gy + d));
+            s += tmp[ny * GX + gx]!;
+            w++;
+          }
+          dst[gy * GX + gx] = s / w;
+        }
+      }
+      return dst;
+    };
+    // three box passes ~= a wide Gaussian (roughly 500 world px)
+    for (let pass = 0; pass < 3; pass++) fields = fields.map((f) => blur(f, 5));
+    for (let c = 0; c < out.length; c++) {
+      let win = out[c]!;
+      let bestV = -Infinity;
+      for (let i = 0; i < R; i++) {
+        const v = fields[i]![c]!;
+        if (v > bestV) {
+          bestV = v;
+          win = i;
+        }
+      }
+      out[c] = win;
     }
   }
+
 
 
   // Keep every region a single solid blob: any island of cells that isn't
