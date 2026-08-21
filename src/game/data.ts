@@ -507,7 +507,8 @@ function traceRegion(idx: number): [number, number][] {
     }
     if (loop.length > best.length) best = loop;
   }
-  return best.length ? best : [[0, 0]];
+  if (!best.length) return [[0, 0]];
+  return chaikin(collapseCollinear(pinEdges(best)), 3);
 }
 
 export const BIOMES: BiomeDef[] = REGION_SPECS.map((r, i) => {
