@@ -4865,19 +4865,17 @@ export class GameEngine {
         ctx.imageSmoothingEnabled = smooth;
       }
     } else {
-      const sway = Math.sin(this.time * 1.8 + n.sway) * 2;
-      ctx.fillStyle = def.color;
-      ctx.beginPath();
-      ctx.arc(n.x + sway, n.y + 2, 20, 0, Math.PI * 2);
-      ctx.fill();
-      if (!n.depleted) {
-        ctx.fillStyle = def.accent;
-        for (let i = 0; i < 5; i++) {
-          const a = (i / 5) * Math.PI * 2 + n.sway;
-          ctx.beginPath();
-          ctx.arc(n.x + sway + Math.cos(a) * 11, n.y + 2 + Math.sin(a) * 8, 4, 0, Math.PI * 2);
-          ctx.fill();
-        }
+      // 10x8 pixel-art bush, nearest-neighbour scaled so it stays crisp
+      const sprite = bushSprite(BUSH_PALETTE_BY_NODE[n.kind] ?? "berry");
+      if (sprite) {
+        const px = 5; // world px per art pixel
+        const w = 10 * px;
+        const h = 8 * px;
+        const sway = Math.sin(this.time * 1.8 + n.sway) * 2;
+        const smooth = ctx.imageSmoothingEnabled;
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(sprite, Math.round(n.x + sway - w / 2), Math.round(n.y + 22 - h), w, h);
+        ctx.imageSmoothingEnabled = smooth;
       }
     }
     if (!n.depleted) {
