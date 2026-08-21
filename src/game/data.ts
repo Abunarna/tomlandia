@@ -459,20 +459,6 @@ function chaikin(pts: [number, number][], iterations: number): [number, number][
   return cur;
 }
 
-/** drop points that lie on a straight run between their neighbours */
-function collapseCollinear(pts: [number, number][]): [number, number][] {
-  if (pts.length < 3) return pts;
-  const out: [number, number][] = [];
-  for (let i = 0; i < pts.length; i++) {
-    const p = pts[(i - 1 + pts.length) % pts.length]!;
-    const c = pts[i]!;
-    const n = pts[(i + 1) % pts.length]!;
-    const cross = (c[0] - p[0]) * (n[1] - p[1]) - (c[1] - p[1]) * (n[0] - p[0]);
-    if (Math.abs(cross) > 1) out.push(c);
-  }
-  return out.length >= 3 ? out : pts;
-}
-
 /**
  * Windowed averaging along a closed loop. This is what turns the remaining
  * cell-scale kinks into long sweeping arcs. Points that started on a world
