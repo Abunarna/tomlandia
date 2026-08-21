@@ -35,6 +35,7 @@ import {
   type LakeDef,
 } from "./data";
 import { TILE_H, TILE_W } from "./data";
+import { biomePattern, onBiomeTileReady } from "./biome-tiles";
 import { CITIES, cityGateAt, cityOuterR, cityWallR, type CityDef } from "./city";
 import {
   BOSS_ATTACK_RADIUS,
