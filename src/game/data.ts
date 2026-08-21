@@ -1824,14 +1824,9 @@ const MOAT_CHANNEL: Barrier = {
   maxY: Math.max(...MOAT_CHANNEL_PTS.map((p) => p[1])),
 };
 
-export const BARRIERS: Barrier[] = [
-  // old river stretches are absorbed; ridges/treelines in the way are washed out
-  ...RAW_BARRIERS.filter(
-    (b) => b.kind !== "river" && !b.pts.some(([x, y]) => distToRiver(x, y) < b.width / 2 + RIVER_WIDTH / 2),
-  ),
-  GREAT_RIVER,
-  MOAT_CHANNEL,
-];
+// Only water blocks movement now: the old rocky ridges and treelines that
+// walled off biome borders are gone (they rendered poorly and served no purpose).
+export const BARRIERS: Barrier[] = [GREAT_RIVER, MOAT_CHANNEL];
 
 
 /** true when the point stands on a bridge deck (so the river is crossable there) */
