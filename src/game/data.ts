@@ -319,9 +319,9 @@ const CELL_OWNER: number[] = (() => {
   const out = new Array<number>(GX * GY);
   for (let gy = 0; gy < GY; gy++) {
     for (let gx = 0; gx < GX; gx++) {
-      // wobble the sample point (shared by all seeds, so regions stay solid)
-      const sx = (gx + 0.5) * CELL + (rand01(gx * 3.1 + gy * 7.7) - 0.5) * 150;
-      const sy = (gy + 0.5) * CELL + (rand01(gx * 5.3 + gy * 2.9 + 11) - 0.5) * 150;
+      // very light wobble: borders drift gently instead of zig-zagging
+      const sx = (gx + 0.5) * CELL + (rand01(gx * 3.1 + gy * 7.7) - 0.5) * 30;
+      const sy = (gy + 0.5) * CELL + (rand01(gx * 5.3 + gy * 2.9 + 11) - 0.5) * 30;
       let best = 0;
       let bestD = Infinity;
       for (let i = 0; i < REGION_SPECS.length; i++) {
@@ -335,6 +335,31 @@ const CELL_OWNER: number[] = (() => {
       out[gy * GX + gx] = best;
     }
   }
+
+  // Majority smoothing: absorb single-cell teeth along a seam so the border
+  // reads as one sweeping curve rather than a staircase.
+  for (let pass = 0; pass < 3; pass++) {
+    const src = out.slice();
+    for (let gy = 0; gy < GY; gy++) {
+      for (let gx = 0; gx < GX; gx++) {
+        const votes = new Map<number, number>();
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const nx = gx + dx;
+            const ny = gy + dy;
+            if (nx < 0 || ny < 0 || nx >= GX || ny >= GY) continue;
+            const o = src[ny * GX + nx]!;
+            votes.set(o, (votes.get(o) ?? 0) + (dx === 0 && dy === 0 ? 1.5 : 1));
+          }
+        }
+        let win = src[gy * GX + gx]!;
+        let bestVotes = -1;
+        for (const [o, v] of votes) if (v > bestVotes) [win, bestVotes] = [o, v];
+        out[gy * GX + gx] = win;
+      }
+    }
+  }
+
 
   // Keep every region a single solid blob: any island of cells that isn't
   // connected to its own seed is handed to the neighbouring region, so no
@@ -398,13 +423,53 @@ const CELL_OWNER: number[] = (() => {
 })();
 
 
-/** grid vertex -> world point, nudged so borders are jagged, edges pinned */
+/** grid vertex -> world point, barely nudged, world edges pinned */
 function vertex(gx: number, gy: number): [number, number] {
-  const amp = 34;
+  const amp = 4;
   const x = gx === 0 ? 0 : gx === GX ? WORLD_W : gx * CELL + (rand01(gx * 12.9 + gy * 4.3) - 0.5) * 2 * amp;
   const y = gy === 0 ? 0 : gy === GY ? WORLD_H : gy * CELL + (rand01(gx * 6.7 + gy * 19.1 + 3) - 0.5) * 2 * amp;
   return [x, y];
 }
+
+/** snap points that sit on a world edge back onto it exactly */
+function pinEdges(pts: [number, number][]): [number, number][] {
+  return pts.map(([x, y]) => [
+    x < 1.5 ? 0 : x > WORLD_W - 1.5 ? WORLD_W : x,
+    y < 1.5 ? 0 : y > WORLD_H - 1.5 ? WORLD_H : y,
+  ] as [number, number]);
+}
+
+/** Chaikin corner cutting on a closed loop: staircase -> sweeping curve */
+function chaikin(pts: [number, number][], iterations: number): [number, number][] {
+  let cur = pts;
+  for (let it = 0; it < iterations; it++) {
+    if (cur.length < 4) break;
+    const next: [number, number][] = [];
+    for (let i = 0; i < cur.length; i++) {
+      const a = cur[i]!;
+      const b = cur[(i + 1) % cur.length]!;
+      next.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25]);
+      next.push([a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]);
+    }
+    cur = pinEdges(next);
+  }
+  return cur;
+}
+
+/** drop points that lie on a straight run between their neighbours */
+function collapseCollinear(pts: [number, number][]): [number, number][] {
+  if (pts.length < 3) return pts;
+  const out: [number, number][] = [];
+  for (let i = 0; i < pts.length; i++) {
+    const p = pts[(i - 1 + pts.length) % pts.length]!;
+    const c = pts[i]!;
+    const n = pts[(i + 1) % pts.length]!;
+    const cross = (c[0] - p[0]) * (n[1] - p[1]) - (c[1] - p[1]) * (n[0] - p[0]);
+    if (Math.abs(cross) > 1) out.push(c);
+  }
+  return out.length >= 3 ? out : pts;
+}
+
 
 const owner = (gx: number, gy: number) =>
   gx < 0 || gy < 0 || gx >= GX || gy >= GY ? -1 : CELL_OWNER[gy * GX + gx]!;
@@ -442,7 +507,8 @@ function traceRegion(idx: number): [number, number][] {
     }
     if (loop.length > best.length) best = loop;
   }
-  return best.length ? best : [[0, 0]];
+  if (!best.length) return [[0, 0]];
+  return chaikin(collapseCollinear(pinEdges(best)), 3);
 }
 
 export const BIOMES: BiomeDef[] = REGION_SPECS.map((r, i) => {
