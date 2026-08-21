@@ -1788,16 +1788,6 @@ const GREAT_RIVER: Barrier = {
   maxY: Math.max(...riverYs),
 };
 
-/** distance from a point to the Great River polyline */
-function distToRiver(x: number, y: number) {
-  let best = Infinity;
-  for (let i = 0; i < GREAT.pts.length - 1; i++) {
-    const a = GREAT.pts[i]!;
-    const b = GREAT.pts[i + 1]!;
-    best = Math.min(best, distToSeg(x, y, a[0], a[1], b[0], b[1]));
-  }
-  return best;
-}
 
 /**
  * Grand Haven's moat feeds the Great River: a short channel leaves the moat on
