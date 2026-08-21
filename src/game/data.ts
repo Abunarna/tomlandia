@@ -339,7 +339,7 @@ const CELL_OWNER: number[] = (() => {
   // Majority smoothing: absorb teeth along a seam so the border reads as one
   // long sweeping curve rather than a staircase. Uses a wide (5x5) kernel and
   // many passes so even large-scale kinks are ironed out.
-  for (let pass = 0; pass < 10; pass++) {
+  for (let pass = 0; pass < 24; pass++) {
     const src = out.slice();
     for (let gy = 0; gy < GY; gy++) {
       for (let gx = 0; gx < GX; gx++) {
@@ -569,7 +569,7 @@ function traceRegion(idx: number): [number, number][] {
   // densify with corner cutting, then average over a wide window so the
   // outline becomes long sweeping arcs instead of angled runs
   const cut = chaikin(pinEdges(best), 2);
-  return pinEdges(inflateLoop(smoothLoop(cut, 14, 3), 34));
+  return pinEdges(inflateLoop(smoothLoop(cut, 5, 2), 10));
 }
 
 export const BIOMES: BiomeDef[] = REGION_SPECS.map((r, i) => {
