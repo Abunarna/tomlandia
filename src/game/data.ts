@@ -569,7 +569,7 @@ function traceRegion(idx: number): [number, number][] {
   // densify with corner cutting, then average over a wide window so the
   // outline becomes long sweeping arcs instead of angled runs
   const cut = chaikin(pinEdges(best), 2);
-  return pinEdges(smoothLoop(cut, 14, 3));
+  return pinEdges(inflateLoop(smoothLoop(cut, 14, 3), 34));
 }
 
 export const BIOMES: BiomeDef[] = REGION_SPECS.map((r, i) => {
