@@ -1,10 +1,12 @@
 import fieldsTile from "@/assets/biome-fields.jpg.asset.json";
 import forestTile from "@/assets/biome-forest.jpg.asset.json";
+import desertTile from "@/assets/biome-desert.jpg.asset.json";
 
 /** biome id -> tileable ground texture (added one biome at a time) */
 const TILE_SRC: Record<string, string> = {
   fields: fieldsTile.url,
   forest: forestTile.url,
+  desert: desertTile.url,
 };
 
 /** how many world pixels one tile covers */
