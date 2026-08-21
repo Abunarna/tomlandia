@@ -1,5 +1,6 @@
 import { Shield, Sword } from "lucide-react";
 import type { ItemDef, ItemFamily } from "@/game/types";
+import { OreRock, orePaletteFor } from "./OreRock";
 
 /* Shared look: solid fill from the item colour, subtle dark outline, light highlight. */
 const STROKE = "rgba(0,0,0,0.35)";
