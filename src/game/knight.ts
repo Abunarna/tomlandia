@@ -172,7 +172,11 @@ export class KnightRig {
     const next: KnightAnim = moving ? "walk" : "idle";
     if (this.base === next) return;
     this.base = next;
-    if (!this.oneShot) this.setAnim(next);
+    // Only swap the visible animation while a locomotion animation is showing.
+    // If an action animation (attack / mine / chop / loot) is running, remember
+    // the new base silently so the action keeps looping without resetting.
+    const inLocomotion = this.anim === "idle" || this.anim === "walk";
+    if (!this.oneShot && inLocomotion) this.setAnim(next);
   }
 
   /** Play a one-shot (attack / loot) or a repeating action (mine / chop). */
