@@ -473,6 +473,45 @@ function collapseCollinear(pts: [number, number][]): [number, number][] {
   return out.length >= 3 ? out : pts;
 }
 
+/**
+ * Windowed averaging along a closed loop. This is what turns the remaining
+ * cell-scale kinks into long sweeping arcs. Points that started on a world
+ * edge are kept on that edge so regions still reach the map border.
+ */
+function smoothLoop(pts: [number, number][], radius: number, passes: number): [number, number][] {
+  if (pts.length < radius * 2 + 3) return pts;
+  const onLeft = pts.map((p) => p[0] <= 0.5);
+  const onRight = pts.map((p) => p[0] >= WORLD_W - 0.5);
+  const onTop = pts.map((p) => p[1] <= 0.5);
+  const onBottom = pts.map((p) => p[1] >= WORLD_H - 0.5);
+  let cur = pts;
+  for (let pass = 0; pass < passes; pass++) {
+    const n = cur.length;
+    const next: [number, number][] = new Array(n);
+    for (let i = 0; i < n; i++) {
+      let sx = 0;
+      let sy = 0;
+      let w = 0;
+      for (let d = -radius; d <= radius; d++) {
+        const p = cur[(i + d + n) % n]!;
+        const k = 1 - Math.abs(d) / (radius + 1);
+        sx += p[0] * k;
+        sy += p[1] * k;
+        w += k;
+      }
+      let x = sx / w;
+      let y = sy / w;
+      if (onLeft[i]) x = 0;
+      if (onRight[i]) x = WORLD_W;
+      if (onTop[i]) y = 0;
+      if (onBottom[i]) y = WORLD_H;
+      next[i] = [x, y];
+    }
+    cur = next;
+  }
+  return cur;
+}
+
 
 const owner = (gx: number, gy: number) =>
   gx < 0 || gy < 0 || gx >= GX || gy >= GY ? -1 : CELL_OWNER[gy * GX + gx]!;
