@@ -20,8 +20,8 @@ import lootAsset from "@/assets/knight/loot_strip.png.asset.json";
 
 export type KnightAnim = "idle" | "walk" | "attack" | "mine" | "chop" | "loot";
 
-export const FRAME_W = 256;
-export const FRAME_H = 256;
+export const FRAME_W = 384;
+export const FRAME_H = 384;
 
 interface AnimDef {
   frames: number;
@@ -41,27 +41,28 @@ export const KNIGHT_ANIMS: Record<KnightAnim, AnimDef> = {
 };
 
 /**
- * Fixed foot baseline (y, in source-frame pixels) per animation.
- * One constant per animation — never per frame — so the standing foot stays
- * on the same world baseline and the knight cannot jitter.
+ * Shared foot baseline (y, in source-frame pixels) for every animation.
+ * The new pack uses one uniform 384x384 cell with a common anchor.
  */
 export const FOOT_Y: Record<KnightAnim, number> = {
-  idle: 205,
-  walk: 198,
-  attack: 203,
-  mine: 206,
-  chop: 191,
-  loot: 165,
+  idle: 300,
+  walk: 300,
+  attack: 300,
+  mine: 300,
+  chop: 300,
+  loot: 300,
 };
 
 /** Fixed horizontal pivot (source-frame pixels). */
-const PIVOT_X = 128;
+const PIVOT_X = 192;
 
 /** Global multiplier applied to every knight animation's FPS. 0.75 = 75% speed. */
 const KNIGHT_ANIMATION_SPEED = 0.75;
 
-/** Renderer-side upscale applied to the requested draw size. */
-const SCALE = 2;
+/** Renderer-side scale applied to the requested draw size. */
+const KNIGHT_RENDER_SCALE = 1.34;
+const SCALE = KNIGHT_RENDER_SCALE;
+
 
 
 /** Overlay masks you still need to supply (served from /public). */
@@ -241,9 +242,11 @@ export class KnightRig {
     const frame = Math.min(this.frameOverride ?? this.frame, def.frames - 1);
     const sx = frame * FRAME_W;
 
-    // one fixed cell size, one fixed pivot: horizontal centre + per-animation
-    // foot baseline. No per-frame offsets, so nothing can jitter.
-    const d = Math.round(size * SCALE);
+    // one fixed cell size, one fixed pivot: horizontal centre + shared foot
+    // baseline. No per-frame offsets, so nothing can jitter.
+    // The render scale is expressed against a 256px reference cell so the
+    // knight's on-screen pixel size is independent of the padded 384px canvas.
+    const d = Math.round(size * SCALE * (FRAME_H / 256));
     const s = d / FRAME_H;
     const dx = Math.round(x - PIVOT_X * s);
     const dy = Math.round(y - FOOT_Y[this.anim] * s);
