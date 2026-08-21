@@ -357,6 +357,10 @@ export class GameEngine {
   /* ---- knight sprite rig (base + armour overlay + weapon overlay) ---- */
   private rig = new KnightRig();
   private lastDt = 0;
+  /** actual per-frame movement of the player, used to pick idle vs walk */
+  private prevPx = 0;
+  private prevPy = 0;
+  private isMoving = false;
   /** debug overrides — null means "follow the equipped item" */
   debugArmorColor: string | null = null;
   debugWeaponColor: string | null = null;
@@ -1745,6 +1749,8 @@ export class GameEngine {
 
   private update(dt: number) {
     const now = this.time;
+    this.prevPx = this.px;
+    this.prevPy = this.py;
     this.tickRemotes(dt);
     this.tickBoss(dt);
 
@@ -2034,6 +2040,11 @@ export class GameEngine {
       this.activity = "Wandering";
       this.activityProgress = 0;
     }
+
+    // actual movement this frame (velocity-based, tiny deadzone)
+    const mvx = dt > 0 ? (this.px - this.prevPx) / dt : 0;
+    const mvy = dt > 0 ? (this.py - this.prevPy) / dt : 0;
+    this.isMoving = Math.abs(mvx) > 0.01 || Math.abs(mvy) > 0.01;
 
     loops.set(this.actionLoop);
 
@@ -5256,9 +5267,7 @@ export class GameEngine {
       rig.update(this.lastDt);
       return;
     }
-    const walking =
-      this.activity === "Walking" || this.activity === "Wandering" || this.activity === "Approaching";
-    rig.setLocomotion(walking);
+    rig.setLocomotion(this.isMoving);
     if (this.activity.startsWith("Fighting")) rig.play("attack", { repeat: true });
     else if (this.actionLoop === "mining") rig.play("mine", { repeat: true });
     else if (this.actionLoop === "woodcutting") rig.play("chop", { repeat: true });
