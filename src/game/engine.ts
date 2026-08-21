@@ -3317,11 +3317,17 @@ export class GameEngine {
     ctx.save();
     ctx.clip(path);
 
-    const g = ctx.createLinearGradient(0, b.y, 0, b.y + b.h);
-    g.addColorStop(0, b.top);
-    g.addColorStop(1, b.bottom);
-    ctx.fillStyle = g;
-    ctx.fillRect(b.x - 40, b.y - 40, b.w + 80, b.h + 80);
+    const tile = biomePattern(ctx, b.id);
+    if (tile) {
+      ctx.fillStyle = tile;
+      ctx.fillRect(b.x - 40, b.y - 40, b.w + 80, b.h + 80);
+    } else {
+      const g = ctx.createLinearGradient(0, b.y, 0, b.y + b.h);
+      g.addColorStop(0, b.top);
+      g.addColorStop(1, b.bottom);
+      ctx.fillStyle = g;
+      ctx.fillRect(b.x - 40, b.y - 40, b.w + 80, b.h + 80);
+    }
 
     // town plaza
     if (b.plaza) {
@@ -3333,20 +3339,24 @@ export class GameEngine {
       ctx.globalAlpha = 1;
     }
 
-    // grass tufts / dunes / snow speckles
-    ctx.fillStyle = b.grass;
-    for (let i = 0; i < 120; i++) {
-      const x = b.x + ((i * 271) % b.w);
-      const y = b.y + ((i * 419) % b.h);
-      ctx.fillRect(x, y, 3, 6);
-      ctx.fillRect(x + 5, y + 2, 3, 5);
+    // grass tufts / dunes / snow speckles (the tiled biomes carry their own)
+    if (!tile) {
+      ctx.fillStyle = b.grass;
+      for (let i = 0; i < 120; i++) {
+        const x = b.x + ((i * 271) % b.w);
+        const y = b.y + ((i * 419) % b.h);
+        ctx.fillRect(x, y, 3, 6);
+        ctx.fillRect(x + 5, y + 2, 3, 5);
+      }
+      ctx.fillStyle = "rgba(255,255,255,0.16)";
+      for (let i = 0; i < 50; i++) {
+        const x = b.x + ((i * 137) % b.w);
+        const y = b.y + ((i * 233) % b.h);
+        ctx.fillRect(x, y, 18, 4);
+      }
     }
-    ctx.fillStyle = "rgba(255,255,255,0.16)";
-    for (let i = 0; i < 50; i++) {
-      const x = b.x + ((i * 137) % b.w);
-      const y = b.y + ((i * 233) % b.h);
-      ctx.fillRect(x, y, 18, 4);
-    }
+
+
 
 
     ctx.restore();
