@@ -319,9 +319,9 @@ const CELL_OWNER: number[] = (() => {
   const out = new Array<number>(GX * GY);
   for (let gy = 0; gy < GY; gy++) {
     for (let gx = 0; gx < GX; gx++) {
-      // wobble the sample point (shared by all seeds, so regions stay solid)
-      const sx = (gx + 0.5) * CELL + (rand01(gx * 3.1 + gy * 7.7) - 0.5) * 150;
-      const sy = (gy + 0.5) * CELL + (rand01(gx * 5.3 + gy * 2.9 + 11) - 0.5) * 150;
+      // very light wobble: borders drift gently instead of zig-zagging
+      const sx = (gx + 0.5) * CELL + (rand01(gx * 3.1 + gy * 7.7) - 0.5) * 30;
+      const sy = (gy + 0.5) * CELL + (rand01(gx * 5.3 + gy * 2.9 + 11) - 0.5) * 30;
       let best = 0;
       let bestD = Infinity;
       for (let i = 0; i < REGION_SPECS.length; i++) {
@@ -335,6 +335,31 @@ const CELL_OWNER: number[] = (() => {
       out[gy * GX + gx] = best;
     }
   }
+
+  // Majority smoothing: absorb single-cell teeth along a seam so the border
+  // reads as one sweeping curve rather than a staircase.
+  for (let pass = 0; pass < 3; pass++) {
+    const src = out.slice();
+    for (let gy = 0; gy < GY; gy++) {
+      for (let gx = 0; gx < GX; gx++) {
+        const votes = new Map<number, number>();
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const nx = gx + dx;
+            const ny = gy + dy;
+            if (nx < 0 || ny < 0 || nx >= GX || ny >= GY) continue;
+            const o = src[ny * GX + nx]!;
+            votes.set(o, (votes.get(o) ?? 0) + (dx === 0 && dy === 0 ? 1.5 : 1));
+          }
+        }
+        let win = src[gy * GX + gx]!;
+        let bestVotes = -1;
+        for (const [o, v] of votes) if (v > bestVotes) [win, bestVotes] = [o, v];
+        out[gy * GX + gx] = win;
+      }
+    }
+  }
+
 
   // Keep every region a single solid blob: any island of cells that isn't
   // connected to its own seed is handed to the neighbouring region, so no
