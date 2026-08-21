@@ -1,5 +1,6 @@
 import { Shield, Sword } from "lucide-react";
 import type { ItemDef, ItemFamily } from "@/game/types";
+import { OreRock, orePaletteFor } from "./OreRock";
 
 /* Shared look: solid fill from the item colour, subtle dark outline, light highlight. */
 const STROKE = "rgba(0,0,0,0.35)";
@@ -191,6 +192,10 @@ export function ItemIcon({ item, className = "size-9" }: { item: ItemDef; classN
 
   if (family === "weapon" || family === "armor") {
     return <GearBadge kind={family} color={item.color} className={className} />;
+  }
+
+  if (family === "ore") {
+    return <OreRock palette={orePaletteFor(item.id)} className={className} />;
   }
 
   const Shape = SHAPES[family] ?? Ore;
