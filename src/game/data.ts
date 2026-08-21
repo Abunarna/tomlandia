@@ -423,13 +423,53 @@ const CELL_OWNER: number[] = (() => {
 })();
 
 
-/** grid vertex -> world point, nudged so borders are jagged, edges pinned */
+/** grid vertex -> world point, barely nudged, world edges pinned */
 function vertex(gx: number, gy: number): [number, number] {
-  const amp = 34;
+  const amp = 4;
   const x = gx === 0 ? 0 : gx === GX ? WORLD_W : gx * CELL + (rand01(gx * 12.9 + gy * 4.3) - 0.5) * 2 * amp;
   const y = gy === 0 ? 0 : gy === GY ? WORLD_H : gy * CELL + (rand01(gx * 6.7 + gy * 19.1 + 3) - 0.5) * 2 * amp;
   return [x, y];
 }
+
+/** snap points that sit on a world edge back onto it exactly */
+function pinEdges(pts: [number, number][]): [number, number][] {
+  return pts.map(([x, y]) => [
+    x < 1.5 ? 0 : x > WORLD_W - 1.5 ? WORLD_W : x,
+    y < 1.5 ? 0 : y > WORLD_H - 1.5 ? WORLD_H : y,
+  ] as [number, number]);
+}
+
+/** Chaikin corner cutting on a closed loop: staircase -> sweeping curve */
+function chaikin(pts: [number, number][], iterations: number): [number, number][] {
+  let cur = pts;
+  for (let it = 0; it < iterations; it++) {
+    if (cur.length < 4) break;
+    const next: [number, number][] = [];
+    for (let i = 0; i < cur.length; i++) {
+      const a = cur[i]!;
+      const b = cur[(i + 1) % cur.length]!;
+      next.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25]);
+      next.push([a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]);
+    }
+    cur = pinEdges(next);
+  }
+  return cur;
+}
+
+/** drop points that lie on a straight run between their neighbours */
+function collapseCollinear(pts: [number, number][]): [number, number][] {
+  if (pts.length < 3) return pts;
+  const out: [number, number][] = [];
+  for (let i = 0; i < pts.length; i++) {
+    const p = pts[(i - 1 + pts.length) % pts.length]!;
+    const c = pts[i]!;
+    const n = pts[(i + 1) % pts.length]!;
+    const cross = (c[0] - p[0]) * (n[1] - p[1]) - (c[1] - p[1]) * (n[0] - p[0]);
+    if (Math.abs(cross) > 1) out.push(c);
+  }
+  return out.length >= 3 ? out : pts;
+}
+
 
 const owner = (gx: number, gy: number) =>
   gx < 0 || gy < 0 || gx >= GX || gy >= GY ? -1 : CELL_OWNER[gy * GX + gx]!;
