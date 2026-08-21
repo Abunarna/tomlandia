@@ -472,6 +472,46 @@ export function biomeAt(x: number, y: number): BiomeDef {
   return BIOMES[CELL_OWNER[gy * GX + gx]!]!;
 }
 
+/** width (in seed-distance units) of the crossfade band either side of a seam */
+const BLEND_BAND = 150;
+
+/**
+ * Blend signal for biome seams: reuses the very same wobbled nearest-seed
+ * distances the partition was generated from, so the fade follows the real
+ * jittered border instead of a straight line.
+ *
+ * Returns the index of the *second* nearest region and how strongly its
+ * texture should bleed over this point (0 deep inside the owner's ground,
+ * 0.5 right on the seam).
+ */
+export function biomeBlendAt(x: number, y: number): { second: number; alpha: number } {
+  const gx = Math.max(0, Math.min(GX - 1, Math.floor(x / CELL)));
+  const gy = Math.max(0, Math.min(GY - 1, Math.floor(y / CELL)));
+  const sx = x + (rand01(gx * 3.1 + gy * 7.7) - 0.5) * 150;
+  const sy = y + (rand01(gx * 5.3 + gy * 2.9 + 11) - 0.5) * 150;
+  let first = -1;
+  let d1 = Infinity;
+  let second = -1;
+  let d2 = Infinity;
+  for (let i = 0; i < REGION_SPECS.length; i++) {
+    const r = REGION_SPECS[i]!;
+    const d = Math.hypot(sx - r.x, sy - r.y) / r.size;
+    if (d < d1) {
+      second = first;
+      d2 = d1;
+      first = i;
+      d1 = d;
+    } else if (d < d2) {
+      second = i;
+      d2 = d;
+    }
+  }
+  if (second < 0) return { second: -1, alpha: 0 };
+  const t = Math.min(1, (d2 - d1) / BLEND_BAND);
+  return { second, alpha: (1 - t) * 0.5 };
+}
+
+
 
 
 
