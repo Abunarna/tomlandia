@@ -1788,16 +1788,6 @@ const GREAT_RIVER: Barrier = {
   maxY: Math.max(...riverYs),
 };
 
-/** distance from a point to the Great River polyline */
-function distToRiver(x: number, y: number) {
-  let best = Infinity;
-  for (let i = 0; i < GREAT.pts.length - 1; i++) {
-    const a = GREAT.pts[i]!;
-    const b = GREAT.pts[i + 1]!;
-    best = Math.min(best, distToSeg(x, y, a[0], a[1], b[0], b[1]));
-  }
-  return best;
-}
 
 /**
  * Grand Haven's moat feeds the Great River: a short channel leaves the moat on
@@ -1824,14 +1814,9 @@ const MOAT_CHANNEL: Barrier = {
   maxY: Math.max(...MOAT_CHANNEL_PTS.map((p) => p[1])),
 };
 
-export const BARRIERS: Barrier[] = [
-  // old river stretches are absorbed; ridges/treelines in the way are washed out
-  ...RAW_BARRIERS.filter(
-    (b) => b.kind !== "river" && !b.pts.some(([x, y]) => distToRiver(x, y) < b.width / 2 + RIVER_WIDTH / 2),
-  ),
-  GREAT_RIVER,
-  MOAT_CHANNEL,
-];
+// Only water blocks movement now: the old rocky ridges and treelines that
+// walled off biome borders are gone (they rendered poorly and served no purpose).
+export const BARRIERS: Barrier[] = [GREAT_RIVER, MOAT_CHANNEL];
 
 
 /** true when the point stands on a bridge deck (so the river is crossable there) */

@@ -3202,77 +3202,16 @@ export class GameEngine {
       if (bar.minX > view.x + view.w + 80 || bar.maxX < view.x - 80) continue;
       if (bar.minY > view.y + view.h + 80 || bar.maxY < view.y - 80) continue;
 
-      const path = new Path2D();
-      path.moveTo(bar.pts[0]![0], bar.pts[0]![1]);
-      for (let i = 1; i < bar.pts.length; i++) {
-        const cur = bar.pts[i]!;
-        const prev = bar.pts[i - 1]!;
-        path.quadraticCurveTo(prev[0], prev[1], (prev[0] + cur[0]) / 2, (prev[1] + cur[1]) / 2);
-      }
-
-      if (bar.kind === "river") {
-        const g = riverGeom(bar);
-        // outer bank (dark teal), water body, then a cached depth gradient
-        ctx.fillStyle = "#3f6f83";
-        ctx.fill(g.bank);
-        ctx.fillStyle = "#6fa9c9";
-        ctx.fill(g.water);
-        ctx.fillStyle = riverGradient(ctx, g);
-        ctx.fill(g.water);
-        ctx.fillStyle = "rgba(159,216,238,0.55)";
-        ctx.fill(g.core);
-      } else if (bar.kind === "rocks") {
-
-        // solid rubble band so the ridge reads as continuous
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-        ctx.strokeStyle = "#7e7974";
-        ctx.lineWidth = bar.width * 0.9;
-        ctx.stroke(path);
-        const pts = densify(bar.pts, bar.width * 0.34);
-        for (let i = 0; i < pts.length; i++) {
-          const [x, y] = pts[i]!;
-          const r = bar.width * (0.42 + ((i * 37) % 11) / 40);
-          ctx.fillStyle = "#8f8a85";
-          ctx.beginPath();
-          ctx.ellipse(x, y + 6, r, r * 0.72, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = "#b3ada6";
-          ctx.beginPath();
-          ctx.ellipse(x - r * 0.15, y - r * 0.15, r * 0.7, r * 0.5, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = "rgba(255,255,255,0.5)";
-          ctx.beginPath();
-          ctx.ellipse(x - r * 0.3, y - r * 0.35, r * 0.28, r * 0.18, 0, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      } else {
-        // shaded undergrowth band beneath the trunks
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-        ctx.strokeStyle = "rgba(52,86,62,0.55)";
-        ctx.lineWidth = bar.width * 0.85;
-        ctx.stroke(path);
-        const pts = densify(bar.pts, bar.width * 0.32);
-        for (let i = 0; i < pts.length; i++) {
-          const [x, y] = pts[i]!;
-          const r = bar.width * (0.4 + ((i * 53) % 9) / 36);
-          ctx.fillStyle = "rgba(60,80,60,0.18)";
-          ctx.beginPath();
-          ctx.ellipse(x, y + r * 0.7, r * 0.85, r * 0.3, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = "#6b4a30";
-          ctx.fillRect(x - 4, y, 8, r * 0.7);
-          ctx.fillStyle = "#3f8f6a";
-          ctx.beginPath();
-          ctx.arc(x, y - r * 0.1, r * 0.72, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = "#54ab7f";
-          ctx.beginPath();
-          ctx.arc(x - r * 0.2, y - r * 0.3, r * 0.45, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
+      const g = riverGeom(bar);
+      // outer bank (dark teal), water body, then a cached depth gradient
+      ctx.fillStyle = "#3f6f83";
+      ctx.fill(g.bank);
+      ctx.fillStyle = "#6fa9c9";
+      ctx.fill(g.water);
+      ctx.fillStyle = riverGradient(ctx, g);
+      ctx.fill(g.water);
+      ctx.fillStyle = "rgba(159,216,238,0.55)";
+      ctx.fill(g.core);
     }
     ctx.lineWidth = 1;
     this.drawBridges(ctx, view);
