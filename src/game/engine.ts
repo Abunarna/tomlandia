@@ -17,6 +17,8 @@ import {
   WORLD_H,
   WORLD_W,
   biomeAt,
+  biomeBlendAt,
+
   blockedAt,
   ITEMS,
   item,
