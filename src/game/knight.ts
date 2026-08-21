@@ -57,6 +57,9 @@ export const FOOT_Y: Record<KnightAnim, number> = {
 /** Fixed horizontal pivot (source-frame pixels). */
 const PIVOT_X = 128;
 
+/** Global multiplier applied to every knight animation's FPS. 0.75 = 75% speed. */
+const KNIGHT_ANIMATION_SPEED = 0.75;
+
 /** Renderer-side upscale applied to the requested draw size. */
 const SCALE = 2;
 
@@ -195,7 +198,7 @@ export class KnightRig {
     if (this.frameOverride !== null) return;
     const def = KNIGHT_ANIMS[this.anim];
     this.t += dt;
-    const step = 1 / def.fps;
+    const step = 1 / (def.fps * KNIGHT_ANIMATION_SPEED);
 
     while (this.t >= step) {
       this.t -= step;
