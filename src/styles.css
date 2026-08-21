@@ -164,3 +164,45 @@
     font-family: var(--font-display);
   }
 }
+
+/* --- 16x16 pure-CSS pixel-art ore rock ---------------------------------- */
+/* The wrapper is a container; 1em == one art pixel so it scales to any box. */
+.fantasy-ore {
+  width: 100%;
+  height: 100%;
+  font-size: calc(100cqmin / 16);
+  image-rendering: pixelated;
+  position: relative;
+  display: inline-block;
+}
+
+.fantasy-ore::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1em;
+  height: 1em;
+  box-shadow:
+6em 1em #1d1c24, 7em 1em #1d1c24, 8em 1em #1d1c24,
+    5em 2em #1d1c24, 6em 2em #87889c, 7em 2em #b0b2c9, 8em 2em #68697a, 9em 2em #1d1c24,
+    4em 3em #1d1c24, 5em 3em #b0b2c9, 6em 3em var(--ore-light), 7em 3em var(--ore-mid), 8em 3em var(--ore-dark), 9em 3em #484954, 10em 3em #1d1c24,
+    3em 4em #1d1c24, 4em 4em #87889c, 5em 4em var(--ore-mid), 6em 4em var(--ore-light), 7em 4em var(--ore-dark), 8em 4em #68697a, 9em 4em #484954, 10em 4em #33343d, 11em 4em #1d1c24,
+    3em 5em #1d1c24, 4em 5em #68697a, 5em 5em var(--ore-dark), 6em 5em var(--ore-deep), 7em 5em #484954, 8em 5em #33343d, 9em 5em var(--ore-light), 10em 5em var(--ore-mid), 11em 5em #1d1c24,
+    2em 6em #1d1c24, 3em 6em #87889c, 4em 6em #484954, 5em 6em #484954, 6em 6em var(--ore-light), 7em 6em var(--ore-mid), 8em 6em var(--ore-dark), 9em 6em var(--ore-dark), 10em 6em var(--ore-deep), 11em 6em #1d1c24,
+    2em 7em #1d1c24, 3em 7em #b0b2c9, 4em 7em #68697a, 5em 7em var(--ore-mid), 6em 7em var(--ore-mid), 7em 7em var(--ore-dark), 8em 7em #33343d, 9em 7em #33343d, 10em 7em #1d1c24, 11em 7em #1d1c24,
+    2em 8em #1d1c24, 3em 8em #68697a, 4em 8em var(--ore-light), 5em 8em var(--ore-dark), 6em 8em var(--ore-deep), 7em 8em #33343d, 8em 8em var(--ore-light), 9em 8em var(--ore-mid), 10em 8em var(--ore-dark), 11em 8em #1d1c24,
+    2em 9em #1d1c24, 3em 9em #484954, 4em 9em var(--ore-dark), 5em 9em var(--ore-deep), 6em 9em #484954, 7em 9em var(--ore-mid), 8em 9em var(--ore-mid), 9em 9em var(--ore-deep), 10em 9em #33343d, 11em 9em #1d1c24,
+    3em 10em #1d1c24, 4em 10em #484954, 5em 10em #33343d, 6em 10em var(--ore-light), 7em 10em var(--ore-dark), 8em 10em var(--ore-deep), 9em 10em #33343d, 10em 10em #1d1c24,
+    3em 11em #1d1c24, 4em 11em #33343d, 5em 11em var(--ore-dark), 6em 11em var(--ore-dark), 7em 11em var(--ore-deep), 8em 11em #33343d, 9em 11em #1d1c24,
+    4em 12em #1d1c24, 5em 12em #33343d, 6em 12em #33343d, 7em 12em #1d1c24, 8em 12em #1d1c24,
+    5em 13em #1d1c24, 6em 13em #1d1c24;
+}
+
+/* Preset metal palettes */
+.ore-copper   { --ore-light: #ffe2b3; --ore-mid: #ff9e43; --ore-dark: #d65c18; --ore-deep: #803008; }
+.ore-gold     { --ore-light: #fff3a3; --ore-mid: #ffd700; --ore-dark: #c59b27; --ore-deep: #785a00; }
+.ore-iron     { --ore-light: #f1f5f9; --ore-mid: #94a3b8; --ore-dark: #475569; --ore-deep: #1e293b; }
+.ore-emerald  { --ore-light: #a7f3d0; --ore-mid: #10b981; --ore-dark: #047857; --ore-deep: #064e3b; }
+.ore-amethyst { --ore-light: #f0abfc; --ore-mid: #c084fc; --ore-dark: #7e22ce; --ore-deep: #4c1d95; }
+.ore-mithril  { --ore-light: #e0f2fe; --ore-mid: #38bdf8; --ore-dark: #0284c7; --ore-deep: #075985; }
