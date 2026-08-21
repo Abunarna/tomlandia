@@ -374,7 +374,7 @@ const CELL_OWNER: number[] = (() => {
       return dst;
     };
     // three box passes ~= a wide Gaussian (roughly 500 world px)
-    for (let pass = 0; pass < 3; pass++) fields = fields.map((f) => blur(f, 8));
+    for (let pass = 0; pass < 3; pass++) fields = fields.map((f) => blur(f, 4));
     for (let c = 0; c < out.length; c++) {
       let win = out[c]!;
       let bestV = -Infinity;
