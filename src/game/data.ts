@@ -464,6 +464,36 @@ function chaikin(pts: [number, number][], iterations: number): [number, number][
  * cell-scale kinks into long sweeping arcs. Points that started on a world
  * edge are kept on that edge so regions still reach the map border.
  */
+/**
+ * Push a closed loop outward along its normals. Wide averaging shrinks a
+ * region slightly, which would leave hairline gaps between neighbours; a
+ * small outward offset makes them overlap instead.
+ */
+function inflateLoop(pts: [number, number][], d: number): [number, number][] {
+  const n = pts.length;
+  if (n < 4) return pts;
+  let area = 0;
+  for (let i = 0; i < n; i++) {
+    const a = pts[i]!;
+    const b = pts[(i + 1) % n]!;
+    area += a[0] * b[1] - b[0] * a[1];
+  }
+  const sign = area > 0 ? 1 : -1;
+  return pts.map((p, i) => {
+    const a = pts[(i - 1 + n) % n]!;
+    const b = pts[(i + 1) % n]!;
+    const tx = b[0] - a[0];
+    const ty = b[1] - a[1];
+    const len = Math.hypot(tx, ty) || 1;
+    const nx = (ty / len) * sign;
+    const ny = (-tx / len) * sign;
+    return [
+      Math.max(0, Math.min(WORLD_W, p[0] + nx * d)),
+      Math.max(0, Math.min(WORLD_H, p[1] + ny * d)),
+    ] as [number, number];
+  });
+}
+
 function smoothLoop(pts: [number, number][], radius: number, passes: number): [number, number][] {
   if (pts.length < radius * 2 + 3) return pts;
   const onLeft = pts.map((p) => p[0] <= 0.5);
