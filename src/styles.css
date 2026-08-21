@@ -281,3 +281,59 @@
   --leaf-light: #bae6fd; --leaf-mid: #38bdf8; --leaf-dark: #0284c7; --leaf-deep: #0c4a6e;
   --bark-light: #94a3b8; --bark-mid: #475569; --bark-dark: #1e293b;
 }
+
+.fantasy-bush {
+  width: 100%;
+  height: 100%;
+  font-size: calc(100cqmin / 10);
+  image-rendering: pixelated;
+  position: relative;
+  display: inline-block;
+  --leaf-highlight: #82e091;
+  --leaf-light: #5cc46c;
+  --leaf-mid: #2d7238;
+  --leaf-dark: #1b4320;
+  --berry-light: #ff80df;
+  --berry-mid: #e036a6;
+  --berry-dark: #7a1555;
+}
+
+.fantasy-bush::after {
+  content: '';
+  position: absolute;
+  top: 1em;
+  left: 0;
+  width: 1em;
+  height: 1em;
+  box-shadow:
+    3em 0em var(--leaf-dark), 4em 0em var(--leaf-mid), 5em 0em var(--leaf-mid), 6em 0em var(--leaf-dark),
+    2em 1em var(--leaf-dark), 3em 1em var(--leaf-light), 4em 1em var(--leaf-highlight), 5em 1em var(--leaf-light), 6em 1em var(--leaf-mid), 7em 1em var(--leaf-dark),
+    1em 2em var(--leaf-dark), 2em 2em var(--leaf-light), 3em 2em var(--berry-light), 4em 2em var(--berry-mid), 5em 2em var(--leaf-mid), 6em 2em var(--berry-light), 7em 2em var(--berry-mid), 8em 2em var(--leaf-dark),
+    1em 3em var(--leaf-dark), 2em 3em var(--leaf-mid), 3em 3em var(--berry-mid), 4em 3em var(--berry-dark), 5em 3em var(--leaf-light), 6em 3em var(--berry-mid), 7em 3em var(--berry-dark), 8em 3em var(--leaf-dark),
+    0em 4em var(--leaf-dark), 1em 4em var(--berry-light), 2em 4em var(--berry-mid), 3em 4em var(--leaf-mid), 4em 4em var(--berry-light), 5em 4em var(--berry-mid), 6em 4em var(--leaf-mid), 7em 4em var(--berry-light), 8em 4em var(--berry-mid), 9em 4em var(--leaf-dark),
+    0em 5em var(--leaf-dark), 1em 5em var(--berry-mid), 2em 5em var(--berry-dark), 3em 5em var(--leaf-light), 4em 5em var(--berry-mid), 5em 5em var(--berry-dark), 6em 5em var(--leaf-dark), 7em 5em var(--berry-mid), 8em 5em var(--berry-dark), 9em 5em var(--leaf-dark),
+    1em 6em var(--leaf-dark), 2em 6em var(--leaf-mid), 3em 6em var(--leaf-dark), 4em 6em var(--leaf-mid), 5em 6em var(--leaf-dark), 6em 6em var(--leaf-mid), 7em 6em var(--leaf-dark), 8em 6em var(--leaf-dark),
+    2em 7em var(--leaf-dark), 3em 7em var(--leaf-dark), 4em 7em var(--leaf-dark), 5em 7em var(--leaf-dark), 6em 7em var(--leaf-dark), 7em 7em var(--leaf-dark);
+}
+
+.bush-berry {
+  --leaf-highlight: #82e091; --leaf-light: #5cc46c; --leaf-mid: #2d7238; --leaf-dark: #1b4320; --berry-light: #ff80df; --berry-mid: #e036a6; --berry-dark: #7a1555;
+}
+
+.bush-blueberry {
+  --leaf-highlight: #86efac; --leaf-light: #4ade80; --leaf-mid: #166534; --leaf-dark: #052e16; --berry-light: #93c5fd; --berry-mid: #3b82f6; --berry-dark: #1e3a8a;
+}
+
+.bush-golden {
+  --leaf-highlight: #fef08a; --leaf-light: #fde047; --leaf-mid: #ca8a04; --leaf-dark: #713f12; --berry-light: #fed7aa; --berry-mid: #f97316; --berry-dark: #9a3412;
+}
+
+.bush-frost {
+  --leaf-highlight: #e0f2fe; --leaf-light: #7dd3fc; --leaf-mid: #0284c7; --leaf-dark: #0369a1; --berry-light: #ffffff; --berry-mid: #a5f3fc; --berry-dark: #155e75;
+}
+
+.bush-toxic {
+  --leaf-highlight: #f0abfc; --leaf-light: #d8b4fe; --leaf-mid: #7e22ce; --leaf-dark: #3b0764; --berry-light: #bef264; --berry-mid: #84cc16; --berry-dark: #365314;
+}
+
+
