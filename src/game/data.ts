@@ -374,7 +374,7 @@ const CELL_OWNER: number[] = (() => {
       return dst;
     };
     // three box passes ~= a wide Gaussian (roughly 500 world px)
-    for (let pass = 0; pass < 3; pass++) fields = fields.map((f) => blur(f, 5));
+    for (let pass = 0; pass < 3; pass++) fields = fields.map((f) => blur(f, 8));
     for (let c = 0; c < out.length; c++) {
       let win = out[c]!;
       let bestV = -Infinity;
@@ -596,7 +596,7 @@ function traceRegion(idx: number): [number, number][] {
   // densify with corner cutting, then average over a wide window so the
   // outline becomes long sweeping arcs instead of angled runs
   const cut = chaikin(pinEdges(best), 2);
-  return pinEdges(inflateLoop(smoothLoop(cut, 5, 2), 10));
+  return pinEdges(inflateLoop(smoothLoop(cut, 8, 2), 16));
 }
 
 export const BIOMES: BiomeDef[] = REGION_SPECS.map((r, i) => {
