@@ -2932,9 +2932,7 @@ export class GameEngine {
     this.drawLeaves(ctx);
     ctx.restore();
 
-    // biome tint + day/night + soft vignette
-    ctx.fillStyle = this.biome.tint;
-    ctx.fillRect(0, 0, w, h);
+    // day/night + soft vignette
     this.drawDayNight(ctx, w, h);
     const v = ctx.createRadialGradient(w / 2, h / 2, h * 0.3, w / 2, h / 2, h * 0.85);
     v.addColorStop(0, "rgba(255,255,235,0)");
