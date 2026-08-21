@@ -336,29 +336,59 @@ const CELL_OWNER: number[] = (() => {
     }
   }
 
-  // Majority smoothing: absorb single-cell teeth along a seam so the border
-  // reads as one sweeping curve rather than a staircase.
-  for (let pass = 0; pass < 3; pass++) {
-    const src = out.slice();
-    for (let gy = 0; gy < GY; gy++) {
-      for (let gx = 0; gx < GX; gx++) {
-        const votes = new Map<number, number>();
-        for (let dy = -1; dy <= 1; dy++) {
-          for (let dx = -1; dx <= 1; dx++) {
-            const nx = gx + dx;
-            const ny = gy + dy;
-            if (nx < 0 || ny < 0 || nx >= GX || ny >= GY) continue;
-            const o = src[ny * GX + nx]!;
-            votes.set(o, (votes.get(o) ?? 0) + (dx === 0 && dy === 0 ? 1.5 : 1));
+  // Heavy border smoothing without ever leaving a gap: blur each region's
+  // membership into a soft field, then hand every cell to the strongest
+  // field. The partition stays exact while the seams become long arcs.
+  {
+    const R = REGION_SPECS.length;
+    let fields = Array.from({ length: R }, (_, i) =>
+      Float32Array.from(out, (o) => (o === i ? 1 : 0)),
+    );
+    const blur = (src: Float32Array, radius: number) => {
+      const tmp = new Float32Array(GX * GY);
+      const dst = new Float32Array(GX * GY);
+      for (let gy = 0; gy < GY; gy++) {
+        for (let gx = 0; gx < GX; gx++) {
+          let s = 0;
+          let w = 0;
+          for (let d = -radius; d <= radius; d++) {
+            const nx = Math.max(0, Math.min(GX - 1, gx + d));
+            s += src[gy * GX + nx]!;
+            w++;
           }
+          tmp[gy * GX + gx] = s / w;
         }
-        let win = src[gy * GX + gx]!;
-        let bestVotes = -1;
-        for (const [o, v] of votes) if (v > bestVotes) [win, bestVotes] = [o, v];
-        out[gy * GX + gx] = win;
       }
+      for (let gy = 0; gy < GY; gy++) {
+        for (let gx = 0; gx < GX; gx++) {
+          let s = 0;
+          let w = 0;
+          for (let d = -radius; d <= radius; d++) {
+            const ny = Math.max(0, Math.min(GY - 1, gy + d));
+            s += tmp[ny * GX + gx]!;
+            w++;
+          }
+          dst[gy * GX + gx] = s / w;
+        }
+      }
+      return dst;
+    };
+    // three box passes ~= a wide Gaussian (roughly 500 world px)
+    for (let pass = 0; pass < 3; pass++) fields = fields.map((f) => blur(f, 4));
+    for (let c = 0; c < out.length; c++) {
+      let win = out[c]!;
+      let bestV = -Infinity;
+      for (let i = 0; i < R; i++) {
+        const v = fields[i]![c]!;
+        if (v > bestV) {
+          bestV = v;
+          win = i;
+        }
+      }
+      out[c] = win;
     }
   }
+
 
 
   // Keep every region a single solid blob: any island of cells that isn't
@@ -433,11 +463,15 @@ function vertex(gx: number, gy: number): [number, number] {
 
 /** snap points that sit on a world edge back onto it exactly */
 function pinEdges(pts: [number, number][]): [number, number][] {
+  // Wide snap: smoothing rounds off the world corners, which would leave the
+  // backdrop showing through. Anything close to an edge is pulled onto it.
+  const T = 70;
   return pts.map(([x, y]) => [
-    x < 1.5 ? 0 : x > WORLD_W - 1.5 ? WORLD_W : x,
-    y < 1.5 ? 0 : y > WORLD_H - 1.5 ? WORLD_H : y,
+    x < T ? 0 : x > WORLD_W - T ? WORLD_W : x,
+    y < T ? 0 : y > WORLD_H - T ? WORLD_H : y,
   ] as [number, number]);
 }
+
 
 /** Chaikin corner cutting on a closed loop: staircase -> sweeping curve */
 function chaikin(pts: [number, number][], iterations: number): [number, number][] {
@@ -456,18 +490,73 @@ function chaikin(pts: [number, number][], iterations: number): [number, number][
   return cur;
 }
 
-/** drop points that lie on a straight run between their neighbours */
-function collapseCollinear(pts: [number, number][]): [number, number][] {
-  if (pts.length < 3) return pts;
-  const out: [number, number][] = [];
-  for (let i = 0; i < pts.length; i++) {
-    const p = pts[(i - 1 + pts.length) % pts.length]!;
-    const c = pts[i]!;
-    const n = pts[(i + 1) % pts.length]!;
-    const cross = (c[0] - p[0]) * (n[1] - p[1]) - (c[1] - p[1]) * (n[0] - p[0]);
-    if (Math.abs(cross) > 1) out.push(c);
+/**
+ * Windowed averaging along a closed loop. This is what turns the remaining
+ * cell-scale kinks into long sweeping arcs. Points that started on a world
+ * edge are kept on that edge so regions still reach the map border.
+ */
+/**
+ * Push a closed loop outward along its normals. Wide averaging shrinks a
+ * region slightly, which would leave hairline gaps between neighbours; a
+ * small outward offset makes them overlap instead.
+ */
+function inflateLoop(pts: [number, number][], d: number): [number, number][] {
+  const n = pts.length;
+  if (n < 4) return pts;
+  let area = 0;
+  for (let i = 0; i < n; i++) {
+    const a = pts[i]!;
+    const b = pts[(i + 1) % n]!;
+    area += a[0] * b[1] - b[0] * a[1];
   }
-  return out.length >= 3 ? out : pts;
+  const sign = area > 0 ? 1 : -1;
+  return pts.map((p, i) => {
+    const a = pts[(i - 1 + n) % n]!;
+    const b = pts[(i + 1) % n]!;
+    const tx = b[0] - a[0];
+    const ty = b[1] - a[1];
+    const len = Math.hypot(tx, ty) || 1;
+    const nx = (ty / len) * sign;
+    const ny = (-tx / len) * sign;
+    return [
+      Math.max(0, Math.min(WORLD_W, p[0] + nx * d)),
+      Math.max(0, Math.min(WORLD_H, p[1] + ny * d)),
+    ] as [number, number];
+  });
+}
+
+function smoothLoop(pts: [number, number][], radius: number, passes: number): [number, number][] {
+  if (pts.length < radius * 2 + 3) return pts;
+  const onLeft = pts.map((p) => p[0] <= 0.5);
+  const onRight = pts.map((p) => p[0] >= WORLD_W - 0.5);
+  const onTop = pts.map((p) => p[1] <= 0.5);
+  const onBottom = pts.map((p) => p[1] >= WORLD_H - 0.5);
+  let cur = pts;
+  for (let pass = 0; pass < passes; pass++) {
+    const n = cur.length;
+    const next: [number, number][] = new Array(n);
+    for (let i = 0; i < n; i++) {
+      let sx = 0;
+      let sy = 0;
+      let w = 0;
+      for (let d = -radius; d <= radius; d++) {
+        const p = cur[(i + d + n) % n]!;
+        const k = 1 - Math.abs(d) / (radius + 1);
+        sx += p[0] * k;
+        sy += p[1] * k;
+        w += k;
+      }
+      let x = sx / w;
+      let y = sy / w;
+      if (onLeft[i]) x = 0;
+      if (onRight[i]) x = WORLD_W;
+      if (onTop[i]) y = 0;
+      if (onBottom[i]) y = WORLD_H;
+      next[i] = [x, y];
+    }
+    cur = next;
+  }
+  return cur;
 }
 
 
@@ -508,7 +597,10 @@ function traceRegion(idx: number): [number, number][] {
     if (loop.length > best.length) best = loop;
   }
   if (!best.length) return [[0, 0]];
-  return chaikin(collapseCollinear(pinEdges(best)), 3);
+  // densify with corner cutting, then average over a wide window so the
+  // outline becomes long sweeping arcs instead of angled runs
+  const cut = chaikin(pinEdges(best), 2);
+  return pinEdges(inflateLoop(smoothLoop(cut, 8, 2), 28));
 }
 
 export const BIOMES: BiomeDef[] = REGION_SPECS.map((r, i) => {
