@@ -357,6 +357,10 @@ export class GameEngine {
   /* ---- knight sprite rig (base + armour overlay + weapon overlay) ---- */
   private rig = new KnightRig();
   private lastDt = 0;
+  /** actual per-frame movement of the player, used to pick idle vs walk */
+  private prevPx = 0;
+  private prevPy = 0;
+  private isMoving = false;
   /** debug overrides — null means "follow the equipped item" */
   debugArmorColor: string | null = null;
   debugWeaponColor: string | null = null;
