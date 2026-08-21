@@ -2041,6 +2041,11 @@ export class GameEngine {
       this.activityProgress = 0;
     }
 
+    // actual movement this frame (velocity-based, tiny deadzone)
+    const mvx = dt > 0 ? (this.px - this.prevPx) / dt : 0;
+    const mvy = dt > 0 ? (this.py - this.prevPy) / dt : 0;
+    this.isMoving = Math.abs(mvx) > 0.01 || Math.abs(mvy) > 0.01;
+
     loops.set(this.actionLoop);
 
     // biome discovery
