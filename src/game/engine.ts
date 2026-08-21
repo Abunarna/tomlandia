@@ -47,6 +47,7 @@ import {
   desolatusAt,
 } from "./boss";
 import { levelFromXp } from "./progression";
+import { ORE_PALETTE_BY_NODE, oreSprite } from "./ore-sprite";
 import { ambience, loops, music, sfx, type LoopId } from "./audio";
 import {
   MARKET_FEE,
