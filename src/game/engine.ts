@@ -48,6 +48,7 @@ import {
   desolatusAt,
 } from "./boss";
 import { levelFromXp } from "./progression";
+import { BUSH_PALETTE_BY_NODE, bushSprite } from "./bush-sprite";
 import { ORE_PALETTE_BY_NODE, oreSprite } from "./ore-sprite";
 import { TREE_PALETTE_BY_NODE, treeSprite } from "./tree-sprite";
 import { ambience, loops, music, sfx, type LoopId } from "./audio";

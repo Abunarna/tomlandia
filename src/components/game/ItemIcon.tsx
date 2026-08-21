@@ -1,6 +1,7 @@
 import { Shield, Sword } from "lucide-react";
 import type { ItemDef, ItemFamily } from "@/game/types";
 import { OreRock, orePaletteFor } from "./OreRock";
+import { PixelBush, bushPaletteFor } from "./PixelBush";
 import { PixelTree, treePaletteFor } from "./PixelTree";
 
 /* Shared look: solid fill from the item colour, subtle dark outline, light highlight. */
@@ -201,6 +202,10 @@ export function ItemIcon({ item, className = "size-9" }: { item: ItemDef; classN
 
   if (family === "log") {
     return <PixelTree palette={treePaletteFor(item.id)} className={className} />;
+  }
+
+  if (family === "herb" || family === "berries") {
+    return <PixelBush palette={bushPaletteFor(item.id)} className={className} />;
   }
 
   const Shape = SHAPES[family] ?? Ore;
