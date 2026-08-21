@@ -4851,17 +4851,18 @@ export class GameEngine {
         ctx.imageSmoothingEnabled = smooth;
       }
     } else if (def.shape === "tree") {
-      ctx.fillStyle = def.color;
-      ctx.fillRect(n.x - 7, n.y - 10, 14, 32);
-      const sway = Math.sin(this.time * 1.4 + n.sway) * 3;
-      ctx.fillStyle = n.depleted ? "#9ab389" : def.accent;
-      ctx.beginPath();
-      ctx.arc(n.x + sway, n.y - 30, 30, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(n.x + sway - 16, n.y - 18, 18, 0, Math.PI * 2);
-      ctx.arc(n.x + sway + 16, n.y - 18, 18, 0, Math.PI * 2);
-      ctx.fill();
+      // 16x20 pixel-art tree, nearest-neighbour scaled so it stays crisp
+      const sprite = treeSprite(TREE_PALETTE_BY_NODE[n.kind] ?? "oak");
+      if (sprite) {
+        const px = 4.4; // world px per art pixel
+        const w = 16 * px;
+        const h = 20 * px;
+        const sway = Math.sin(this.time * 1.4 + n.sway) * 2;
+        const smooth = ctx.imageSmoothingEnabled;
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(sprite, Math.round(n.x + sway - w / 2), Math.round(n.y + 22 - h), w, h);
+        ctx.imageSmoothingEnabled = smooth;
+      }
     } else {
       const sway = Math.sin(this.time * 1.8 + n.sway) * 2;
       ctx.fillStyle = def.color;
