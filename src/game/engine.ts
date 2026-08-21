@@ -4895,7 +4895,7 @@ export class GameEngine {
       // 16x20 pixel-art tree, nearest-neighbour scaled so it stays crisp
       const sprite = treeSprite(TREE_PALETTE_BY_NODE[n.kind] ?? "oak");
       if (sprite) {
-        const px = 4.4; // world px per art pixel
+        const px = 6.6; // world px per art pixel
         const w = 16 * px;
         const h = 20 * px;
         const sway = Math.sin(this.time * 1.4 + n.sway) * 2;
