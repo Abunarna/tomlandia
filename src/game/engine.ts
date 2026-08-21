@@ -47,6 +47,7 @@ import {
   desolatusAt,
 } from "./boss";
 import { levelFromXp } from "./progression";
+import { ORE_PALETTE_BY_NODE, oreSprite } from "./ore-sprite";
 import { ambience, loops, music, sfx, type LoopId } from "./audio";
 import {
   MARKET_FEE,
@@ -4888,20 +4889,15 @@ export class GameEngine {
     if (n.depleted) ctx.globalAlpha = 0.35;
     this.shadow(ctx, n.x, n.y + 20, 22);
     if (def.shape === "rock") {
-      ctx.fillStyle = def.color;
-      ctx.beginPath();
-      ctx.moveTo(n.x - 24, n.y + 20);
-      ctx.lineTo(n.x - 14, n.y - 14);
-      ctx.lineTo(n.x + 10, n.y - 20);
-      ctx.lineTo(n.x + 24, n.y + 20);
-      ctx.closePath();
-      ctx.fill();
-      ctx.fillStyle = "rgba(255,255,255,0.35)";
-      ctx.fillRect(n.x - 12, n.y - 10, 12, 8);
-      if (!n.depleted) {
-        ctx.fillStyle = def.accent;
-        ctx.fillRect(n.x - 4, n.y + 2, 8, 8);
-        ctx.fillRect(n.x + 8, n.y - 4, 6, 6);
+      // 16x16 pixel-art rock, scaled up with nearest-neighbour so it stays crisp
+      const sprite = oreSprite(ORE_PALETTE_BY_NODE[n.kind] ?? "iron");
+      if (sprite) {
+        const px = 3.4; // world px per art pixel
+        const w = 16 * px;
+        const smooth = ctx.imageSmoothingEnabled;
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(sprite, Math.round(n.x - w / 2), Math.round(n.y + 22 - w), w, w);
+        ctx.imageSmoothingEnabled = smooth;
       }
     } else if (def.shape === "tree") {
       ctx.fillStyle = def.color;
