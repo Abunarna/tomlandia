@@ -3314,7 +3314,95 @@ export class GameEngine {
   }
 
 
+  /** scratch surfaces reused by the seam blend so rebuilds allocate nothing */
+  private seamScratch: HTMLCanvasElement | null = null;
+  private seamMask: HTMLCanvasElement | null = null;
+
+  /**
+   * Feathers the ~4 biome-to-biome seams inside the cached terrain layer:
+   * each neighbouring biome's texture is painted back over the border with an
+   * alpha ramp driven by the same nearest-seed distances the partition came
+   * from, so the two grounds crossfade along the real jittered boundary.
+   * Runs only when the terrain cache is rebuilt — zero per-frame cost.
+   */
+  private blendBiomeSeams(ctx: CanvasRenderingContext2D, region: { x: number; y: number; w: number; h: number }, s: number) {
+    const STEP = 16;
+    const mw = Math.ceil(region.w / STEP) + 1;
+    const mh = Math.ceil(region.h / STEP) + 1;
+
+    // sample the blend signal once for the whole region
+    const second = new Int8Array(mw * mh);
+    const alpha = new Uint8Array(mw * mh);
+    const present = new Set<number>();
+    for (let j = 0; j < mh; j++) {
+      for (let i = 0; i < mw; i++) {
+        const b = biomeBlendAt(region.x + i * STEP, region.y + j * STEP);
+        const a = Math.round(b.alpha * 255);
+        if (a <= 2 || b.second < 0) continue;
+        second[j * mw + i] = b.second;
+        alpha[j * mw + i] = a;
+        present.add(b.second);
+      }
+    }
+    if (!present.size) return;
+
+    const scratch = (this.seamScratch ??= document.createElement("canvas"));
+    const mask = (this.seamMask ??= document.createElement("canvas"));
+    if (scratch.width !== ctx.canvas.width || scratch.height !== ctx.canvas.height) {
+      scratch.width = ctx.canvas.width;
+      scratch.height = ctx.canvas.height;
+    }
+    if (mask.width !== mw || mask.height !== mh) {
+      mask.width = mw;
+      mask.height = mh;
+    }
+    const sctx = scratch.getContext("2d")!;
+    const mctx = mask.getContext("2d", { willReadFrequently: true })!;
+
+    for (const idx of present) {
+      const b = BIOMES[idx];
+      if (!b) continue;
+
+      // per-biome alpha mask, upscaled with smoothing to get a soft ramp
+      const img = mctx.createImageData(mw, mh);
+      for (let p = 0; p < mw * mh; p++) {
+        if (second[p] !== idx) continue;
+        img.data[p * 4] = 255;
+        img.data[p * 4 + 1] = 255;
+        img.data[p * 4 + 2] = 255;
+        img.data[p * 4 + 3] = alpha[p]!;
+      }
+      mctx.putImageData(img, 0, 0);
+
+      sctx.setTransform(1, 0, 0, 1, 0, 0);
+      sctx.clearRect(0, 0, scratch.width, scratch.height);
+      sctx.setTransform(s, 0, 0, s, 0, 0);
+      sctx.imageSmoothingEnabled = false;
+      sctx.translate(-region.x, -region.y);
+      const tile = biomePattern(sctx, b.id);
+      if (tile) sctx.fillStyle = tile;
+      else {
+        const g = sctx.createLinearGradient(0, b.y, 0, b.y + b.h);
+        g.addColorStop(0, b.top);
+        g.addColorStop(1, b.bottom);
+        sctx.fillStyle = g;
+      }
+      sctx.fillRect(region.x, region.y, region.w, region.h);
+
+      sctx.globalCompositeOperation = "destination-in";
+      sctx.imageSmoothingEnabled = true;
+      sctx.drawImage(mask, region.x - STEP / 2, region.y - STEP / 2, mw * STEP, mh * STEP);
+      sctx.globalCompositeOperation = "source-over";
+
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.drawImage(scratch, 0, 0);
+      ctx.restore();
+    }
+  }
+
   private drawBiome(ctx: CanvasRenderingContext2D, b: BiomeDef) {
+
     const path = this.biomePath(b);
     ctx.save();
     ctx.clip(path);
