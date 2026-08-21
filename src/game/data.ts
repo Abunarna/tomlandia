@@ -336,22 +336,25 @@ const CELL_OWNER: number[] = (() => {
     }
   }
 
-  // Majority smoothing: absorb single-cell teeth along a seam so the border
-  // reads as one sweeping curve rather than a staircase.
-  for (let pass = 0; pass < 3; pass++) {
+  // Majority smoothing: absorb teeth along a seam so the border reads as one
+  // long sweeping curve rather than a staircase. Uses a wide (5x5) kernel and
+  // many passes so even large-scale kinks are ironed out.
+  for (let pass = 0; pass < 10; pass++) {
     const src = out.slice();
     for (let gy = 0; gy < GY; gy++) {
       for (let gx = 0; gx < GX; gx++) {
         const votes = new Map<number, number>();
-        for (let dy = -1; dy <= 1; dy++) {
-          for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -2; dy <= 2; dy++) {
+          for (let dx = -2; dx <= 2; dx++) {
             const nx = gx + dx;
             const ny = gy + dy;
             if (nx < 0 || ny < 0 || nx >= GX || ny >= GY) continue;
             const o = src[ny * GX + nx]!;
-            votes.set(o, (votes.get(o) ?? 0) + (dx === 0 && dy === 0 ? 1.5 : 1));
+            const w = 1 / (1 + Math.hypot(dx, dy));
+            votes.set(o, (votes.get(o) ?? 0) + w);
           }
         }
+
         let win = src[gy * GX + gx]!;
         let bestVotes = -1;
         for (const [o, v] of votes) if (v > bestVotes) [win, bestVotes] = [o, v];
