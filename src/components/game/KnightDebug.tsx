@@ -4,20 +4,32 @@
  * Safe to delete once the equipment system is verified.
  */
 import { useState } from "react";
-import type { KnightAnim } from "@/game/knight";
+import { KNIGHT_ANIMS, type KnightAnim } from "@/game/knight";
 
 const ANIMS: KnightAnim[] = ["idle", "walk", "attack", "mine", "chop", "loot"];
 
 export function KnightDebug({
   onAnim,
   onColor,
+  onFrame,
 }: {
   onAnim: (a: KnightAnim | null) => void;
   onColor: (kind: "armor" | "weapon", color: string | null) => void;
+  onFrame?: (frame: number | null) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [armor, setArmor] = useState("#8fa7c7");
   const [weapon, setWeapon] = useState("#d9dee6");
+  const [inspect, setInspect] = useState<KnightAnim>("idle");
+  const [frame, setFrame] = useState(0);
+
+  const step = (delta: number) => {
+    const total = KNIGHT_ANIMS[inspect].frames;
+    const next = (frame + delta + total) % total;
+    setFrame(next);
+    onAnim(inspect);
+    onFrame?.(next);
+  };
 
   return (
     <div className="pointer-events-auto absolute left-2 top-24 z-40 text-xs">
@@ -36,7 +48,10 @@ export function KnightDebug({
               <button
                 key={a}
                 type="button"
-                onClick={() => onAnim(a)}
+                onClick={() => {
+                  onFrame?.(null);
+                  onAnim(a);
+                }}
                 className="rounded-md border border-border/60 px-1 py-1 capitalize"
               >
                 {a}
@@ -45,11 +60,62 @@ export function KnightDebug({
           </div>
           <button
             type="button"
-            onClick={() => onAnim(null)}
+            onClick={() => {
+              onFrame?.(null);
+              onAnim(null);
+            }}
             className="w-full rounded-md border border-border/60 px-1 py-1"
           >
             Auto (follow gameplay)
           </button>
+
+          <div className="space-y-1 rounded-lg border border-border/60 p-1">
+            <div className="font-semibold">Frame inspector</div>
+            <select
+              value={inspect}
+              onChange={(e) => {
+                const a = e.target.value as KnightAnim;
+                setInspect(a);
+                setFrame(0);
+                onAnim(a);
+                onFrame?.(0);
+              }}
+              className="w-full rounded-md border border-border/60 bg-transparent px-1 py-1 capitalize"
+            >
+              {ANIMS.map((a) => (
+                <option key={a} value={a} className="capitalize">
+                  {a}
+                </option>
+              ))}
+            </select>
+            <div className="text-center font-mono">
+              {inspect} — frame {frame} / {KNIGHT_ANIMS[inspect].frames - 1}
+            </div>
+            <div className="flex gap-1">
+              <button
+                type="button"
+                onClick={() => step(-1)}
+                className="flex-1 rounded-md border border-border/60 px-1 py-1"
+              >
+                ◀ Prev
+              </button>
+              <button
+                type="button"
+                onClick={() => step(1)}
+                className="flex-1 rounded-md border border-border/60 px-1 py-1"
+              >
+                Next ▶
+              </button>
+            </div>
+            <button
+              type="button"
+              onClick={() => onFrame?.(null)}
+              className="w-full rounded-md border border-border/60 px-1 py-1"
+            >
+              Resume playback
+            </button>
+          </div>
+
 
           <label className="flex items-center justify-between gap-2">
             Armour colour
