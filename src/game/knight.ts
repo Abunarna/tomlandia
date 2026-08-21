@@ -32,13 +32,34 @@ interface AnimDef {
 
 /** From the supplied animation_manifest.json. */
 export const KNIGHT_ANIMS: Record<KnightAnim, AnimDef> = {
-  idle: { frames: 4, fps: 4, loop: true, url: idleAsset.url },
-  walk: { frames: 6, fps: 9, loop: true, url: walkAsset.url },
+  idle: { frames: 4, fps: 2, loop: true, url: idleAsset.url },
+  walk: { frames: 6, fps: 8, loop: true, url: walkAsset.url },
   attack: { frames: 6, fps: 12, loop: false, url: attackAsset.url },
   mine: { frames: 6, fps: 10, loop: false, url: mineAsset.url },
   chop: { frames: 6, fps: 10, loop: false, url: chopAsset.url },
   loot: { frames: 5, fps: 7, loop: false, url: lootAsset.url },
 };
+
+/**
+ * Fixed foot baseline (y, in source-frame pixels) per animation.
+ * One constant per animation — never per frame — so the standing foot stays
+ * on the same world baseline and the knight cannot jitter.
+ */
+export const FOOT_Y: Record<KnightAnim, number> = {
+  idle: 205,
+  walk: 198,
+  attack: 203,
+  mine: 206,
+  chop: 191,
+  loot: 165,
+};
+
+/** Fixed horizontal pivot (source-frame pixels). */
+const PIVOT_X = 128;
+
+/** Renderer-side upscale applied to the requested draw size. */
+const SCALE = 2;
+
 
 /** Overlay masks you still need to supply (served from /public). */
 export const OVERLAY_PATHS: Record<"armor" | "weapon", Record<KnightAnim, string>> = {
@@ -134,10 +155,13 @@ export interface EquipVisual {
 export class KnightRig {
   anim: KnightAnim = "idle";
   frame = 0;
+  /** debug: when set, the rig holds this frame and stops advancing */
+  frameOverride: number | null = null;
   private t = 0;
   /** animation returned to when a one-shot finishes */
   private base: KnightAnim = "idle";
   private oneShot = false;
+
 
   /** Loop animation driven by gameplay (idle / walk). */
   setLocomotion(moving: boolean) {
@@ -168,9 +192,11 @@ export class KnightRig {
   }
 
   update(dt: number) {
+    if (this.frameOverride !== null) return;
     const def = KNIGHT_ANIMS[this.anim];
     this.t += dt;
     const step = 1 / def.fps;
+
     while (this.t >= step) {
       this.t -= step;
       this.frame++;
@@ -209,19 +235,25 @@ export class KnightRig {
     const baseImg = load(def.url);
     if (!baseImg) return false;
 
-    const sx = this.frame * FRAME_W;
-    // integer-friendly destination geometry so pixels stay square and stable
-    const d = Math.round(size);
-    const dx = Math.round(x) - Math.round(d / 2);
-    const dy = Math.round(y) - d + Math.round(d * 0.12); // feet sit slightly inside the frame
+    const frame = Math.min(this.frameOverride ?? this.frame, def.frames - 1);
+    const sx = frame * FRAME_W;
+
+    // one fixed cell size, one fixed pivot: horizontal centre + per-animation
+    // foot baseline. No per-frame offsets, so nothing can jitter.
+    const d = Math.round(size * SCALE);
+    const s = d / FRAME_H;
+    const dx = Math.round(x - PIVOT_X * s);
+    const dy = Math.round(y - FOOT_Y[this.anim] * s);
 
     const prevSmooth = ctx.imageSmoothingEnabled;
     ctx.imageSmoothingEnabled = false;
     ctx.save();
-    if (facing === -1) {
+    // source art faces LEFT: draw as-is when facing left, mirror when facing right
+    if (facing === 1) {
       ctx.translate(dx * 2 + d, 0);
       ctx.scale(-1, 1);
     }
+
     const drawLayer = (src: CanvasImageSource) => {
       ctx.drawImage(src, sx, 0, FRAME_W, FRAME_H, dx, dy, d, d);
     };

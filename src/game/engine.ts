@@ -370,7 +370,14 @@ export class GameEngine {
 
   setDebugAnim(anim: KnightAnim | null) {
     this.debugAnim = anim;
+    if (!anim) this.rig.frameOverride = null;
   }
+
+  /** Debug frame stepper: null resumes normal playback. */
+  setDebugFrame(frame: number | null) {
+    this.rig.frameOverride = frame;
+  }
+
 
   skills = emptySkills();
   inv: (InvSlot | null)[] = new Array(INV_SIZE).fill(null);
