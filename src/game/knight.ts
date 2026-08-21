@@ -57,6 +57,9 @@ export const FOOT_Y: Record<KnightAnim, number> = {
 /** Fixed horizontal pivot (source-frame pixels). */
 const PIVOT_X = 128;
 
+/** Global multiplier applied to every knight animation's FPS. 0.75 = 75% speed. */
+const KNIGHT_ANIMATION_SPEED = 0.75;
+
 /** Renderer-side upscale applied to the requested draw size. */
 const SCALE = 2;
 
