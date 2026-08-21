@@ -206,3 +206,78 @@
 .ore-emerald  { --ore-light: #a7f3d0; --ore-mid: #10b981; --ore-dark: #047857; --ore-deep: #064e3b; }
 .ore-amethyst { --ore-light: #f0abfc; --ore-mid: #c084fc; --ore-dark: #7e22ce; --ore-deep: #4c1d95; }
 .ore-mithril  { --ore-light: #e0f2fe; --ore-mid: #38bdf8; --ore-dark: #0284c7; --ore-deep: #075985; }
+
+.fantasy-tree {
+  width: 100%;
+  height: 100%;
+  font-size: calc(100cqmin / 20);
+  image-rendering: pixelated;
+  position: relative;
+  display: inline-block;
+  --leaf-light: #85e05d;
+  --leaf-mid: #2e9e42;
+  --leaf-dark: #145a2d;
+  --leaf-deep: #093318;
+  --bark-light: #a06535;
+  --bark-mid: #6d3d16;
+  --bark-dark: #3a1f09;
+}
+
+.fantasy-tree::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 2em;
+  width: 1em;
+  height: 1em;
+  box-shadow:
+    6em 1em var(--leaf-light), 7em 1em var(--leaf-light), 8em 1em var(--leaf-mid), 9em 1em var(--leaf-dark),
+    4em 2em var(--leaf-light), 5em 2em var(--leaf-light), 6em 2em var(--leaf-light), 7em 2em var(--leaf-mid), 8em 2em var(--leaf-mid), 9em 2em var(--leaf-dark), 10em 2em var(--leaf-dark), 11em 2em var(--leaf-deep),
+    3em 3em var(--leaf-light), 4em 3em var(--leaf-light), 5em 3em var(--leaf-mid), 6em 3em var(--leaf-mid), 7em 3em var(--leaf-mid), 8em 3em var(--leaf-dark), 9em 3em var(--leaf-dark), 10em 3em var(--leaf-dark), 11em 3em var(--leaf-deep), 12em 3em var(--leaf-deep),
+    2em 4em var(--leaf-light), 3em 4em var(--leaf-light), 4em 4em var(--leaf-mid), 5em 4em var(--leaf-mid), 6em 4em var(--leaf-mid), 7em 4em var(--leaf-dark), 8em 4em var(--leaf-dark), 9em 4em var(--leaf-dark), 10em 4em var(--leaf-deep), 11em 4em var(--leaf-deep), 12em 4em var(--leaf-deep), 13em 4em var(--leaf-deep),
+    2em 5em var(--leaf-light), 3em 5em var(--leaf-mid), 4em 5em var(--leaf-mid), 5em 5em var(--leaf-light), 6em 5em var(--leaf-mid), 7em 5em var(--leaf-dark), 8em 5em var(--leaf-dark), 9em 5em var(--leaf-dark), 10em 5em var(--leaf-dark), 11em 5em var(--leaf-deep), 12em 5em var(--leaf-deep), 13em 5em var(--leaf-deep),
+    1em 6em var(--leaf-light), 2em 6em var(--leaf-mid), 3em 6em var(--leaf-mid), 4em 6em var(--leaf-mid), 5em 6em var(--leaf-mid), 6em 6em var(--leaf-dark), 7em 6em var(--leaf-dark), 8em 6em var(--leaf-dark), 9em 6em var(--leaf-dark), 10em 6em var(--leaf-deep), 11em 6em var(--leaf-deep), 12em 6em var(--leaf-deep), 13em 6em var(--leaf-deep), 14em 6em var(--leaf-deep),
+    1em 7em var(--leaf-mid), 2em 7em var(--leaf-mid), 3em 7em var(--leaf-mid), 4em 7em var(--leaf-dark), 5em 7em var(--leaf-dark), 6em 7em var(--leaf-dark), 7em 7em var(--leaf-dark), 8em 7em var(--leaf-dark), 9em 7em var(--leaf-deep), 10em 7em var(--leaf-deep), 11em 7em var(--leaf-deep), 12em 7em var(--leaf-deep), 13em 7em var(--leaf-deep), 14em 7em var(--leaf-deep),
+    1em 8em var(--leaf-mid), 2em 8em var(--leaf-mid), 3em 8em var(--leaf-dark), 4em 8em var(--leaf-dark), 5em 8em var(--leaf-dark), 6em 8em var(--leaf-dark), 7em 8em var(--leaf-deep), 8em 8em var(--leaf-deep), 9em 8em var(--leaf-deep), 10em 8em var(--leaf-deep), 11em 8em var(--leaf-deep), 12em 8em var(--leaf-deep), 13em 8em var(--leaf-deep), 14em 8em var(--leaf-deep),
+    1em 9em var(--leaf-dark), 2em 9em var(--leaf-dark), 3em 9em var(--leaf-dark), 4em 9em var(--leaf-dark), 5em 9em var(--leaf-dark), 6em 9em var(--leaf-deep), 7em 9em var(--leaf-deep), 8em 9em var(--leaf-deep), 9em 9em var(--leaf-deep), 10em 9em var(--leaf-deep), 11em 9em var(--leaf-deep), 12em 9em var(--leaf-deep), 13em 9em var(--leaf-deep), 14em 9em var(--leaf-deep),
+    2em 10em var(--leaf-dark), 3em 10em var(--leaf-dark), 4em 10em var(--leaf-dark), 5em 10em var(--leaf-dark), 6em 10em var(--leaf-deep), 7em 10em var(--leaf-deep), 8em 10em var(--leaf-deep), 9em 10em var(--leaf-deep), 10em 10em var(--leaf-deep), 11em 10em var(--leaf-deep), 12em 10em var(--leaf-deep), 13em 10em var(--leaf-deep),
+    2em 11em var(--leaf-dark), 3em 11em var(--leaf-dark), 4em 11em var(--leaf-dark), 5em 11em var(--leaf-deep), 6em 11em var(--leaf-deep), 7em 11em var(--leaf-deep), 8em 11em var(--leaf-deep), 9em 11em var(--leaf-deep), 10em 11em var(--leaf-deep), 11em 11em var(--leaf-deep), 12em 11em var(--leaf-deep), 13em 11em var(--leaf-deep),
+    3em 12em var(--leaf-dark), 4em 12em var(--leaf-dark), 5em 12em var(--leaf-deep), 6em 12em var(--leaf-deep), 7em 12em var(--leaf-deep), 8em 12em var(--leaf-deep), 9em 12em var(--leaf-deep), 10em 12em var(--leaf-deep), 11em 12em var(--leaf-deep), 12em 12em var(--leaf-deep),
+    4em 13em var(--leaf-deep), 5em 13em var(--leaf-deep), 6em 13em var(--leaf-deep), 7em 13em var(--leaf-deep), 8em 13em var(--leaf-deep), 9em 13em var(--leaf-deep), 10em 13em var(--leaf-deep), 11em 13em var(--leaf-deep),
+    7em 14em var(--bark-light), 8em 14em var(--bark-mid), 9em 14em var(--bark-dark),
+    7em 15em var(--bark-light), 8em 15em var(--bark-mid), 9em 15em var(--bark-dark),
+    7em 16em var(--bark-light), 8em 16em var(--bark-mid), 9em 16em var(--bark-dark),
+    7em 17em var(--bark-light), 8em 17em var(--bark-mid), 9em 17em var(--bark-dark),
+    6em 18em var(--bark-light), 7em 18em var(--bark-mid), 8em 18em var(--bark-mid), 9em 18em var(--bark-dark), 10em 18em var(--bark-dark),
+    5em 19em var(--bark-mid), 6em 19em var(--bark-mid), 7em 19em var(--bark-mid), 8em 19em var(--bark-dark), 9em 19em var(--bark-dark), 11em 19em var(--bark-dark);
+}
+
+.tree-oak {
+  --leaf-light: #85e05d; --leaf-mid: #2e9e42; --leaf-dark: #145a2d; --leaf-deep: #093318;
+  --bark-light: #a06535; --bark-mid: #6d3d16; --bark-dark: #3a1f09;
+}
+
+.tree-birch {
+  --leaf-light: #facc15; --leaf-mid: #eab308; --leaf-dark: #ca8a04; --leaf-deep: #854d0e;
+  --bark-light: #f8fafc; --bark-mid: #cbd5e1; --bark-dark: #475569;
+}
+
+.tree-autumn {
+  --leaf-light: #ffb703; --leaf-mid: #fb8500; --leaf-dark: #d62828; --leaf-deep: #780000;
+  --bark-light: #8d5b4c; --bark-mid: #5a3a31; --bark-dark: #2d1b16;
+}
+
+.tree-cherry {
+  --leaf-light: #fbcfe8; --leaf-mid: #f472b6; --leaf-dark: #db2777; --leaf-deep: #831843;
+  --bark-light: #7c2d12; --bark-mid: #451a03; --bark-dark: #1c0a00;
+}
+
+.tree-magic {
+  --leaf-light: #c084fc; --leaf-mid: #a855f7; --leaf-dark: #7e22ce; --leaf-deep: #3b0764;
+  --bark-light: #64748b; --bark-mid: #334155; --bark-dark: #0f172a;
+}
+
+.tree-frost {
+  --leaf-light: #bae6fd; --leaf-mid: #38bdf8; --leaf-dark: #0284c7; --leaf-deep: #0c4a6e;
+  --bark-light: #94a3b8; --bark-mid: #475569; --bark-dark: #1e293b;
+}
