@@ -193,6 +193,10 @@ export function ItemIcon({ item, className = "size-9" }: { item: ItemDef; classN
     return <GearBadge kind={family} color={item.color} className={className} />;
   }
 
+  if (family === "ore") {
+    return <OreRock palette={orePaletteFor(item.id)} className={className} />;
+  }
+
   const Shape = SHAPES[family] ?? Ore;
   return (
     <span className={`grid shrink-0 place-items-center rounded-xl bg-muted/60 ${className}`} title={item.name}>
