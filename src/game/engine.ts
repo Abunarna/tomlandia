@@ -461,6 +461,9 @@ export class GameEngine {
       onPersist?: (s: SaveState, rev: number | null) => PromiseLike<SyncAck | null>;
     },
   ) {
+    onBiomeTileReady(() => {
+      this.terrainCache = null;
+    });
     this.persist = opts?.onPersist ?? null;
     this.rev = opts?.initialRev ?? null;
     this.canvas = canvas;
