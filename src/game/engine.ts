@@ -1749,6 +1749,8 @@ export class GameEngine {
 
   private update(dt: number) {
     const now = this.time;
+    this.prevPx = this.px;
+    this.prevPy = this.py;
     this.tickRemotes(dt);
     this.tickBoss(dt);
 
