@@ -3451,12 +3451,6 @@ export class GameEngine {
 
     ctx.restore();
 
-    // soft shoreline so edges read as organic, not cut out
-    ctx.save();
-    ctx.strokeStyle = "rgba(255,255,255,0.22)";
-    ctx.lineWidth = 6;
-    ctx.stroke(path);
-    ctx.restore();
 
     // biome label
     if (b.label) {
