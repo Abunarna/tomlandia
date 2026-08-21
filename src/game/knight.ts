@@ -242,9 +242,11 @@ export class KnightRig {
     const frame = Math.min(this.frameOverride ?? this.frame, def.frames - 1);
     const sx = frame * FRAME_W;
 
-    // one fixed cell size, one fixed pivot: horizontal centre + per-animation
-    // foot baseline. No per-frame offsets, so nothing can jitter.
-    const d = Math.round(size * SCALE);
+    // one fixed cell size, one fixed pivot: horizontal centre + shared foot
+    // baseline. No per-frame offsets, so nothing can jitter.
+    // The render scale is expressed against a 256px reference cell so the
+    // knight's on-screen pixel size is independent of the padded 384px canvas.
+    const d = Math.round(size * SCALE * (FRAME_H / 256));
     const s = d / FRAME_H;
     const dx = Math.round(x - PIVOT_X * s);
     const dy = Math.round(y - FOOT_Y[this.anim] * s);
