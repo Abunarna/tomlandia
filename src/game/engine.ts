@@ -2820,6 +2820,8 @@ export class GameEngine {
       if (b.x > region.x + w || b.x + b.w < region.x || b.y > region.y + h || b.y + b.h < region.y) continue;
       this.drawBiome(bctx, b);
     }
+    this.blendBiomeSeams(bctx, region, s);
+
     const octx = over.getContext("2d")!;
     octx.setTransform(s, 0, 0, s, 0, 0);
     octx.imageSmoothingEnabled = false;
