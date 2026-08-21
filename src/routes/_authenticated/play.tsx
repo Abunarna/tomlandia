@@ -26,6 +26,7 @@ import type { Json } from "@/integrations/supabase/types";
 import { Hud } from "@/components/game/Hud";
 import { AutoEat } from "@/components/game/AutoEat";
 import { AutoPotion } from "@/components/game/AutoPotion";
+import { KnightDebug } from "@/components/game/KnightDebug";
 import { Panel, type PanelId } from "@/components/game/Panel";
 import { NpcDialog } from "@/components/game/NpcDialog";
 import { WorldMap } from "@/components/game/WorldMap";
@@ -418,6 +419,10 @@ function Game() {
       {/* overlays */}
       <div className="pointer-events-none absolute inset-0 flex flex-col">
         <Hud hud={hud} />
+        <KnightDebug
+          onAnim={(a) => engineRef.current?.setDebugAnim(a)}
+          onColor={(k, c) => engineRef.current?.setDebugColor(k, c)}
+        />
 
         {!panel && (
           <div className="pointer-events-none px-3 pt-1">

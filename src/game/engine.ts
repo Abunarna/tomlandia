@@ -52,6 +52,7 @@ import { BUSH_PALETTE_BY_NODE, bushSprite } from "./bush-sprite";
 import { ORE_PALETTE_BY_NODE, oreSprite } from "./ore-sprite";
 import { TREE_PALETTE_BY_NODE, treeSprite } from "./tree-sprite";
 import { ambience, loops, music, sfx, type LoopId } from "./audio";
+import { KnightRig, preloadKnight, type KnightAnim } from "./knight";
 import {
   MARKET_FEE,
   feeFor,
@@ -352,6 +353,24 @@ export class GameEngine {
   gold = 0;
   facing = 1;
   private moveT = 0;
+
+  /* ---- knight sprite rig (base + armour overlay + weapon overlay) ---- */
+  private rig = new KnightRig();
+  private lastDt = 0;
+  /** debug overrides — null means "follow the equipped item" */
+  debugArmorColor: string | null = null;
+  debugWeaponColor: string | null = null;
+  /** debug animation lock — null means "follow gameplay" */
+  debugAnim: KnightAnim | null = null;
+
+  setDebugColor(kind: "armor" | "weapon", color: string | null) {
+    if (kind === "armor") this.debugArmorColor = color;
+    else this.debugWeaponColor = color;
+  }
+
+  setDebugAnim(anim: KnightAnim | null) {
+    this.debugAnim = anim;
+  }
 
   skills = emptySkills();
   inv: (InvSlot | null)[] = new Array(INV_SIZE).fill(null);
@@ -1369,11 +1388,13 @@ export class GameEngine {
   /* ---------- loop ---------- */
 
   start() {
+    preloadKnight();
     this.last = performance.now();
     const loop = (t: number) => {
       const dt = Math.min(0.05, (t - this.last) / 1000);
       this.last = t;
       this.time += dt;
+      this.lastDt = dt;
       this.update(dt);
       this.render();
       this.raf = requestAnimationFrame(loop);
@@ -5214,12 +5235,54 @@ export class GameEngine {
 
 
 
+  /** Pick the animation the rig should be showing this frame. */
+  private syncRig() {
+    const rig = this.rig;
+    if (this.debugAnim) {
+      const a = this.debugAnim;
+      if (a === "idle" || a === "walk") {
+        rig.setLocomotion(a === "walk");
+        rig.release();
+      } else {
+        rig.play(a, { repeat: true });
+      }
+      rig.update(this.lastDt);
+      return;
+    }
+    const walking =
+      this.activity === "Walking" || this.activity === "Wandering" || this.activity === "Approaching";
+    rig.setLocomotion(walking);
+    if (this.activity.startsWith("Fighting")) rig.play("attack", { repeat: true });
+    else if (this.actionLoop === "mining") rig.play("mine", { repeat: true });
+    else if (this.actionLoop === "woodcutting") rig.play("chop", { repeat: true });
+    else if (this.actionLoop === "gathering" || this.actionLoop === "fishing") rig.play("loot", { repeat: true });
+    else if (!rig.busy) rig.release();
+    rig.update(this.lastDt);
+  }
+
+  /** Play a one-shot animation (attack swing, loot pickup) from gameplay code. */
+  playPlayerAnim(anim: KnightAnim) {
+    this.rig.play(anim);
+  }
+
   private drawPlayer(ctx: CanvasRenderingContext2D) {
     const x = this.px;
     const y = this.py;
     const walking = this.activity === "Walking" || this.activity === "Wandering" || this.activity === "Approaching";
     const bob = walking ? Math.abs(Math.sin(this.moveT)) * 3 : Math.sin(this.time * 2) * 1.4;
     this.shadow(ctx, x, y + 16, 16);
+
+    this.syncRig();
+    const armorColor = this.debugArmorColor ?? (this.armor ? item(this.armor.id).color : undefined);
+    const weaponColor = this.debugWeaponColor ?? (this.weapon ? item(this.weapon.id).color : undefined);
+    if (this.rig.draw(ctx, x, y + 16, this.facing as 1 | -1, 72, armorColor, weaponColor)) {
+      if (this.myEmote && this.myEmote.until > Date.now()) {
+        this.drawEmoteBubble(ctx, x, y - 62, this.myEmote.e);
+      }
+      return;
+    }
+    // fallback vector knight while the sprite sheets are still loading
+
     // body
     ctx.fillStyle = this.armor ? item(this.armor.id).color : "#f2c6d8";
     ctx.beginPath();
