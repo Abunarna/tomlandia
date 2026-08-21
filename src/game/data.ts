@@ -463,11 +463,15 @@ function vertex(gx: number, gy: number): [number, number] {
 
 /** snap points that sit on a world edge back onto it exactly */
 function pinEdges(pts: [number, number][]): [number, number][] {
+  // Wide snap: smoothing rounds off the world corners, which would leave the
+  // backdrop showing through. Anything close to an edge is pulled onto it.
+  const T = 70;
   return pts.map(([x, y]) => [
-    x < 1.5 ? 0 : x > WORLD_W - 1.5 ? WORLD_W : x,
-    y < 1.5 ? 0 : y > WORLD_H - 1.5 ? WORLD_H : y,
+    x < T ? 0 : x > WORLD_W - T ? WORLD_W : x,
+    y < T ? 0 : y > WORLD_H - T ? WORLD_H : y,
   ] as [number, number]);
 }
+
 
 /** Chaikin corner cutting on a closed loop: staircase -> sweeping curve */
 function chaikin(pts: [number, number][], iterations: number): [number, number][] {
