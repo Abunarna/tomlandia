@@ -2,6 +2,7 @@ import fieldsTile from "@/assets/biome-fields.jpg.asset.json";
 import forestTile from "@/assets/biome-forest.jpg.asset.json";
 import desertTile from "@/assets/biome-desert.jpg.asset.json";
 import evilTile from "@/assets/biome-evil.jpg.asset.json";
+import winterTile from "@/assets/biome-winter.jpg.asset.json";
 
 /** biome id -> tileable ground texture (added one biome at a time) */
 const TILE_SRC: Record<string, string> = {
@@ -9,6 +10,7 @@ const TILE_SRC: Record<string, string> = {
   forest: forestTile.url,
   desert: desertTile.url,
   evil: evilTile.url,
+  winter: winterTile.url,
 };
 
 /** how many world pixels one tile covers */
