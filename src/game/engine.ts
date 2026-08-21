@@ -5267,9 +5267,7 @@ export class GameEngine {
       rig.update(this.lastDt);
       return;
     }
-    const walking =
-      this.activity === "Walking" || this.activity === "Wandering" || this.activity === "Approaching";
-    rig.setLocomotion(walking);
+    rig.setLocomotion(this.isMoving);
     if (this.activity.startsWith("Fighting")) rig.play("attack", { repeat: true });
     else if (this.actionLoop === "mining") rig.play("mine", { repeat: true });
     else if (this.actionLoop === "woodcutting") rig.play("chop", { repeat: true });
