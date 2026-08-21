@@ -422,7 +422,9 @@ function Game() {
         <KnightDebug
           onAnim={(a) => engineRef.current?.setDebugAnim(a)}
           onColor={(k, c) => engineRef.current?.setDebugColor(k, c)}
+          onFrame={(f) => engineRef.current?.setDebugFrame(f)}
         />
+
 
         {!panel && (
           <div className="pointer-events-none px-3 pt-1">
