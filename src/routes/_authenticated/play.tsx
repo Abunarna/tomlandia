@@ -63,6 +63,8 @@ const EMPTY: HudSnapshot = {
   level: 1,
   region: "Peaceful Fields",
   regionLevel: "1-15",
+  px: 700,
+  py: 2400,
   skills: {
     mining: { ...blank },
     woodcutting: { ...blank },
