@@ -2078,7 +2078,9 @@ export function blockedAt(x: number, y: number, pad = 10, wadesRivers = false): 
   if (inLake(x, y, 0) && !onJetty(x, y, pad)) return true;
   // Grand Haven's stone wall and moat — solid except at the four gates
   if (cityBlocked(x, y, pad)) return true;
+  if (onLandmark(x, y, pad)) return true;
   return false;
+
 }
 
 /** true when the point stands on a jetty deck (so it is walkable over water) */
