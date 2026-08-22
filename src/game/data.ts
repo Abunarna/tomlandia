@@ -1443,7 +1443,7 @@ export const LANDMARKS: LandmarkDef[] = [
     y: 1991,
     w: 128,
     h: 256,
-    solid: { dx: 0, dy: 58, w: 84, h: 70 },
+    solid: { dx: 0, dy: 82, w: 96, h: 44 },
   },
   {
     id: "tower2",
@@ -1451,7 +1451,7 @@ export const LANDMARKS: LandmarkDef[] = [
     y: 2320,
     w: 128,
     h: 256,
-    solid: { dx: 0, dy: 58, w: 84, h: 70 },
+    solid: { dx: 0, dy: 82, w: 96, h: 44 },
   },
   {
     id: "tower3",
@@ -1459,7 +1459,7 @@ export const LANDMARKS: LandmarkDef[] = [
     y: 2608,
     w: 128,
     h: 256,
-    solid: { dx: 0, dy: 58, w: 84, h: 70 },
+    solid: { dx: 0, dy: 82, w: 96, h: 44 },
   },
   {
     id: "tower4",
@@ -1467,7 +1467,7 @@ export const LANDMARKS: LandmarkDef[] = [
     y: 2332,
     w: 128,
     h: 256,
-    solid: { dx: 0, dy: 58, w: 84, h: 70 },
+    solid: { dx: 0, dy: 82, w: 96, h: 44 },
   },
 
 ];
