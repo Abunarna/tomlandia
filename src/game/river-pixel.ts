@@ -75,7 +75,11 @@ export const RIVER_PRESETS: Record<"fine" | "sprite" | "coarse", Omit<RiverConfi
 };
 
 export const riverConfig: RiverConfig = {
-  ...RIVER_PRESETS.sprite,
+  ...RIVER_PRESETS.fine,
+  cell: 2,
+  bankPx: 2,
+  density: 0.033,
+  fps: 4,
   animate: true,
   palette: { ...RIVER_PALETTE },
 };
