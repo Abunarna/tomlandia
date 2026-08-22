@@ -3044,6 +3044,7 @@ export class GameEngine {
       this.lake(ctx, l);
     }
     ctx.drawImage(terrain.over, terrain.x, terrain.y, terrain.w, terrain.h);
+    drawGroundDecals(ctx, view);
     this.drawRiverFlow(ctx, view);
     this.drawMoatFlow(ctx, view);
 
