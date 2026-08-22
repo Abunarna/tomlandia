@@ -1327,7 +1327,21 @@ for (const t of TOWN_SPECS) {
   });
 }
 
+// Grand Haven is being rebuilt from external pixel-art assets: clear every
+// procedurally drawn structure inside its walls. Traders keep their plaza
+// spots (re-seated just below).
+{
+  const gh = GRAND_HAVEN;
+  for (let i = buildings.length - 1; i >= 0; i--) {
+    const b = buildings[i]!;
+    const cx = b.x + b.w / 2;
+    const cy = b.y + b.h / 2;
+    if (Math.hypot(cx - gh.cx, cy - gh.cy) <= cityOuterR(gh)) buildings.splice(i, 1);
+  }
+}
+
 // A trader may end up standing where a later building landed; seat every city
+
 // trader evenly around its plaza on clear cobbles.
 {
   const onBuilding = (x: number, y: number) =>
