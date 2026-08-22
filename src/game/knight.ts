@@ -62,6 +62,20 @@ const PIVOT_X = 192;
 /** Global multiplier applied to every knight animation's FPS. 0.75 = 75% speed. */
 const KNIGHT_ANIMATION_SPEED = 0.75;
 
+/**
+ * Per-animation speed multiplier applied on top of the global multiplier.
+ * mine/chop are halved so their swing cadence matches the audio loops more
+ * closely; every other animation uses 1.0 (no change).
+ */
+const KNIGHT_ANIM_SPEED_MULT: Record<KnightAnim, number> = {
+  idle: 1,
+  walk: 1,
+  attack: 1,
+  mine: 0.5,
+  chop: 0.5,
+  loot: 1,
+};
+
 /** Renderer-side scale applied to the requested draw size. */
 const KNIGHT_RENDER_SCALE = 1.34;
 const SCALE = KNIGHT_RENDER_SCALE;
