@@ -405,8 +405,13 @@ function Game() {
     <main className="relative h-[100dvh] w-full overflow-hidden bg-background">
       <h1 className="sr-only">Tomlandia — a cozy pixel idle RPG</h1>
       {username && (
-        <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full border border-border/60 bg-card/85 px-3 py-1 text-xs font-semibold text-foreground backdrop-blur-md">
-          {username}
+        <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-1">
+          <div className="rounded-full border border-border/60 bg-card/85 px-3 py-0.5 text-[11px] font-semibold tabular-nums text-muted-foreground backdrop-blur-md">
+            {hud.px}, {hud.py}
+          </div>
+          <div className="rounded-full border border-border/60 bg-card/85 px-3 py-1 text-xs font-semibold text-foreground backdrop-blur-md">
+            {username}
+          </div>
         </div>
       )}
 
