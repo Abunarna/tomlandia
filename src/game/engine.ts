@@ -5184,24 +5184,29 @@ export class GameEngine {
     const x = r.x;
     const y = r.y;
     this.shadow(ctx, x, y + 16, 15);
-    ctx.globalAlpha = 0.96;
-    // body — cool tone so other players read as distinct from you
-    ctx.fillStyle = "#b7d4f5";
-    ctx.beginPath();
-    ctx.roundRect(x - 11, y - 8 - bob, 22, 24, 7);
-    ctx.fill();
-    ctx.fillStyle = "#ffe0c2";
-    ctx.beginPath();
-    ctx.arc(x, y - 20 - bob, 15, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#43506b";
-    ctx.beginPath();
-    ctx.arc(x, y - 24 - bob, 15, Math.PI, 0);
-    ctx.fill();
-    ctx.fillStyle = "#4a3b52";
-    ctx.fillRect(x - 6 * r.f, y - 21 - bob, 3, 4);
-    ctx.fillRect(x + 2 * r.f, y - 21 - bob, 3, 4);
-    ctx.globalAlpha = 1;
+    const rig = (r.rig ??= new KnightRig());
+    const drew = rig.draw(ctx, x, y + 16, (r.f >= 0 ? 1 : -1) as 1 | -1, 72);
+    if (!drew) {
+      ctx.globalAlpha = 0.96;
+      // fallback avatar while the sprite strips are still loading
+      ctx.fillStyle = "#b7d4f5";
+      ctx.beginPath();
+      ctx.roundRect(x - 11, y - 8 - bob, 22, 24, 7);
+      ctx.fill();
+      ctx.fillStyle = "#ffe0c2";
+      ctx.beginPath();
+      ctx.arc(x, y - 20 - bob, 15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#43506b";
+      ctx.beginPath();
+      ctx.arc(x, y - 24 - bob, 15, Math.PI, 0);
+      ctx.fill();
+      ctx.fillStyle = "#4a3b52";
+      ctx.fillRect(x - 6 * r.f, y - 21 - bob, 3, 4);
+      ctx.fillRect(x + 2 * r.f, y - 21 - bob, 3, 4);
+      ctx.globalAlpha = 1;
+    }
+
 
     // nameplate
     const label = `${r.name} · Lv ${r.level}`;
