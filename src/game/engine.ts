@@ -106,6 +106,48 @@ if (typeof window !== "undefined") {
   bridgeImg.src = bridgeAsset.url;
 }
 
+/**
+ * Flat ground decals: painted on top of the terrain/road layers but under all
+ * y-sorted objects (buildings, NPCs, creatures, players).
+ */
+const GROUND_DECALS: { url: string; x: number; y: number; w: number; h: number }[] = [
+  { url: groundTownAsset.url, x: 817, y: 2213, w: 560, h: 560 },
+];
+const decalImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
+if (typeof window !== "undefined") {
+  for (const d of GROUND_DECALS) {
+    if (decalImgs.has(d.url)) continue;
+    const img = new Image();
+    const entry = { img, ready: false };
+    img.onload = () => {
+      entry.ready = true;
+    };
+    img.src = d.url;
+    decalImgs.set(d.url, entry);
+  }
+}
+
+function drawGroundDecals(
+  ctx: CanvasRenderingContext2D,
+  view: { x: number; y: number; w: number; h: number },
+) {
+  for (const d of GROUND_DECALS) {
+    if (
+      d.x - d.w / 2 > view.x + view.w ||
+      d.x + d.w / 2 < view.x ||
+      d.y - d.h / 2 > view.y + view.h ||
+      d.y + d.h / 2 < view.y
+    )
+      continue;
+    const e = decalImgs.get(d.url);
+    if (!e || !e.ready) continue;
+    const smooth = ctx.imageSmoothingEnabled;
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(e.img, d.x - d.w / 2, d.y - d.h / 2, d.w, d.h);
+    ctx.imageSmoothingEnabled = smooth;
+  }
+}
+
 /** Landmark sprites, keyed by landmark id. */
 const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url, house2: house2Asset.url, house3: house3Asset.url, castle: castleAsset.url, tower1: towerAsset.url, tower2: towerAsset.url, tower3: towerAsset.url, tower4: towerAsset.url };
 const landmarkImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
