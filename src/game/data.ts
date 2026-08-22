@@ -1413,6 +1413,15 @@ export const LANDMARKS: LandmarkDef[] = [
     h: 320,
     solid: { dx: 0, dy: 78, w: 160, h: 150 },
   },
+  {
+    id: "house2",
+    x: 955,
+    y: 2097,
+    w: 160,
+    h: 240,
+    solid: { dx: 0, dy: 62, w: 132, h: 92 },
+  },
+
 ];
 
 /** true when the point sits inside a landmark's solid footprint */
