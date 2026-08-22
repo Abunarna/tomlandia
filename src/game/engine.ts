@@ -3,6 +3,8 @@ import {
   BRIDGES,
   BIOMES,
   BUILDINGS,
+  LANDMARKS,
+
   STREETS,
   ROAD_RUNS,
   MAX_PLUS,
