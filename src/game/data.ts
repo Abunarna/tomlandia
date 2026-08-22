@@ -302,7 +302,7 @@ interface RegionSpec {
 const REGION_SPECS: RegionSpec[] = [
   // V2 — exactly one contiguous territory per biome, laid out as a gentle arc
   // running south-west to north-east and back down to the south-east.
-  { id: "fields", x: 700, y: 2400, size: 1.2, label: true, plaza: { x: 485, y: 2200, w: 430, h: 400 }, pond: { x: 330, y: 2780, rx: 168, ry: 104 } },
+  { id: "fields", x: 700, y: 2400, size: 1.2, label: true, pond: { x: 330, y: 2780, rx: 168, ry: 104 } },
   { id: "forest", x: 1900, y: 1650, size: 0.95, label: true, plaza: { x: 1685, y: 1460, w: 440, h: 380 }, pond: { x: 1540, y: 1180, rx: 210, ry: 78 } },
   { id: "desert", x: 3100, y: 900, size: 1.1, label: true, plaza: { x: 2870, y: 705, w: 460, h: 390 } },
   { id: "evil", x: 4300, y: 1500, size: 1.0, label: true, pond: { x: 4420, y: 1830, rx: 186, ry: 108 } },
