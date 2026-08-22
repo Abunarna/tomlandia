@@ -3026,6 +3026,18 @@ export class GameEngine {
       drawables.push({ y: b.y + b.h, fn: () => this.drawBuilding(ctx, b) });
     }
 
+    for (const l of LANDMARKS) {
+      if (
+        l.x - l.w / 2 > view.x + w ||
+        l.x + l.w / 2 < view.x ||
+        l.y - l.h / 2 > view.y + h ||
+        l.y + l.h / 2 < view.y
+      )
+        continue;
+      drawables.push({ y: l.y + l.h / 2, fn: () => drawLandmarkSprite(ctx, l) });
+    }
+
+
     for (const n of this.nodes) {
       if (!this.inView(n.x, n.y, view)) continue;
       drawables.push({ y: n.y, fn: () => this.drawNode(ctx, n) });
