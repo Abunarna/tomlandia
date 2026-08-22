@@ -3039,12 +3039,13 @@ export class GameEngine {
     const view = { x: this.cam.x, y: this.cam.y, w, h };
     const terrain = this.ensureTerrain(view);
     ctx.drawImage(terrain.base, terrain.x, terrain.y, terrain.w, terrain.h);
+    drawGroundDecals(ctx, view);
     for (const l of LAKES) {
       if (l.cx - l.rx > view.x + w || l.cx + l.rx < view.x || l.cy - l.ry > view.y + h || l.cy + l.ry < view.y) continue;
       this.lake(ctx, l);
     }
     ctx.drawImage(terrain.over, terrain.x, terrain.y, terrain.w, terrain.h);
-    drawGroundDecals(ctx, view);
+
     this.drawRiverFlow(ctx, view);
     this.drawMoatFlow(ctx, view);
 
