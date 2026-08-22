@@ -87,6 +87,7 @@ export function setRiverConfig(patch: Partial<RiverConfig>) {
   Object.assign(riverConfig, patch);
   if (patch.palette) riverConfig.palette = { ...riverConfig.palette, ...patch.palette };
   MASKS.clear();
+  LAKE_MASKS.clear();
   riverVersion++;
 }
 
