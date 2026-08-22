@@ -4109,7 +4109,7 @@ export class GameEngine {
       }
     }
 
-    // --- wooden bridge decks over the moat at every gate
+    // --- bridge decks over the moat at every gate
     if (CITY.moatW > 0) {
       for (const g of CITY.gates) {
         if (!g.drawbridge) continue;
@@ -4119,16 +4119,27 @@ export class GameEngine {
         ctx.save();
         ctx.translate(cx, cy);
         ctx.rotate(g.angle);
-        ctx.fillStyle = "#8a6440";
-        ctx.fillRect(inner, -halfW, outer - inner, halfW * 2);
-        ctx.fillStyle = "#a97b4f";
-        for (let d = inner + 3; d < outer - 3; d += 12) ctx.fillRect(d, -halfW + 3, 8, halfW * 2 - 6);
-        ctx.fillStyle = "#6c4c30";
-        ctx.fillRect(inner, -halfW - 4, outer - inner, 5);
-        ctx.fillRect(inner, halfW - 1, outer - inner, 5);
+        // the sprite's long axis is its local Y, so line it up with the radius
+        const span = outer - inner;
+        const deckLen = Math.max(span + 30, (halfW * 2) / BRIDGE_ASPECT);
+        ctx.save();
+        ctx.translate((inner + outer) / 2, 0);
+        ctx.rotate(Math.PI / 2);
+        const drew = drawBridgeSprite(ctx, deckLen);
+        ctx.restore();
+        if (!drew) {
+          ctx.fillStyle = "#8a6440";
+          ctx.fillRect(inner, -halfW, span, halfW * 2);
+          ctx.fillStyle = "#a97b4f";
+          for (let d = inner + 3; d < outer - 3; d += 12) ctx.fillRect(d, -halfW + 3, 8, halfW * 2 - 6);
+          ctx.fillStyle = "#6c4c30";
+          ctx.fillRect(inner, -halfW - 4, span, 5);
+          ctx.fillRect(inner, halfW - 1, span, 5);
+        }
         ctx.restore();
       }
     }
+
 
 
     // --- the wall itself, broken only at the gate mouths
