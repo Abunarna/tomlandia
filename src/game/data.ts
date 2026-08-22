@@ -1914,8 +1914,10 @@ function buildGreatRiver(raw: Barrier[]): { pts: [number, number][]; bridges: Br
       x,
       y,
       angle: Math.atan2(b[1] - a[1], b[0] - a[0]),
-      len: RIVER_WIDTH + 46,
-      width: 62,
+      // the sprite is drawn whole at 52:90, so the walkable deck follows that
+      // ratio: length across the water, width along the bank.
+      len: RIVER_WIDTH + 56,
+      width: Math.round((RIVER_WIDTH + 56 + 28) * (52 / 90)),
     });
   });
 
