@@ -2292,8 +2292,9 @@ export class GameEngine {
           v.tx = s.x;
           v.ty = s.y;
         } else {
-          v.tx = v.hx + (Math.random() - 0.5) * 240;
-          v.ty = v.hy + (Math.random() - 0.5) * 170;
+          const t = nudgeClear(v.hx + (Math.random() - 0.5) * 240, v.hy + (Math.random() - 0.5) * 170, 12, 10);
+          v.tx = t.x;
+          v.ty = t.y;
         }
 
       } else {
