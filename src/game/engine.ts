@@ -3974,6 +3974,11 @@ export class GameEngine {
 
 
     // --- the wall itself, broken only at the gate mouths
+    // Grand Haven now uses custom asset buildings/towers, so its procedural
+    // grey defensive wall is skipped (the moat and gates remain).
+    if (CITY.key === "grand-haven") {
+      return;
+    }
     const drawArc = (from: number, to: number, width: number, colour: string) => {
       ctx.strokeStyle = colour;
       ctx.lineWidth = width;
