@@ -72,6 +72,7 @@ import monasteryAsset from "@/assets/monastery.png.asset.json";
 import house2Asset from "@/assets/house2.png.asset.json";
 import house3Asset from "@/assets/house3.png.asset.json";
 import castleAsset from "@/assets/castle.png.asset.json";
+import towerAsset from "@/assets/tower.png.asset.json";
 
 import {
   MARKET_FEE,
@@ -105,7 +106,7 @@ if (typeof window !== "undefined") {
 }
 
 /** Landmark sprites, keyed by landmark id. */
-const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url, house2: house2Asset.url, house3: house3Asset.url, castle: castleAsset.url };
+const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url, house2: house2Asset.url, house3: house3Asset.url, castle: castleAsset.url, tower1: towerAsset.url, tower2: towerAsset.url, tower3: towerAsset.url, tower4: towerAsset.url };
 const landmarkImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
 if (typeof window !== "undefined") {
   for (const [id, url] of Object.entries(LANDMARK_SRC)) {
