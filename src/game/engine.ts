@@ -810,8 +810,28 @@ export class GameEngine {
         r.y += dy * k;
       }
       if (Math.abs(dx) + Math.abs(dy) > 1.5) r.bob += dt * 9;
+      this.syncRemoteRig(r, Math.abs(dx) + Math.abs(dy) > 1.5, dt);
     }
   }
+
+  /** Drive a remote player's knight rig from their broadcast activity. */
+  private syncRemoteRig(r: RemotePlayer, moving: boolean, dt: number) {
+    const rig = (r.rig ??= new KnightRig());
+    rig.setLocomotion(moving);
+    const act = r.act || "";
+    if (act.startsWith("Fighting")) rig.play("attack", { repeat: true });
+    else if (act.startsWith("Harvesting")) {
+      const anim: KnightAnim = /Rock|Vein/i.test(act)
+        ? "mine"
+        : /Tree|Palm|Frostpine/i.test(act)
+          ? "chop"
+          : "loot";
+      rig.play(anim, { repeat: true });
+    } else if (act === "Fishing" || act === "Waiting for a bite") rig.play("loot", { repeat: true });
+    else if (!rig.busy) rig.release();
+    rig.update(dt);
+  }
+
 
   private spawnNpcs() {
     this.npcState = NPCS.map((n) => ({
