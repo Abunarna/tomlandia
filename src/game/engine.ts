@@ -193,6 +193,8 @@ export interface RemotePlayer {
   emote?: { e: string; until: number };
   /** last emote timestamp we processed from them */
   eat?: number;
+  /** knight sprite rig, created lazily on first tick */
+  rig?: KnightRig;
 }
 
 /** The six quick-chat emotes in the radial menu, in clockwise order. */
