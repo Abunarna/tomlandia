@@ -2786,6 +2786,8 @@ export class GameEngine {
       level: this.lvl("combat"),
       region: this.biome.name,
       regionLevel: this.biome.levels,
+      px: Math.round(this.px),
+      py: Math.round(this.py),
       skills,
       inv: this.inv.map((s) => (s ? { ...s } : null)),
       bank: {

@@ -144,6 +144,9 @@ export interface HudSnapshot {
   gold: number;
   level: number;
   region: string;
+  /** Player world coordinates, for the on-screen readout. */
+  px: number;
+  py: number;
   regionLevel: string;
   skills: Record<SkillId, { level: number; xp: number; progress: number; into: number; need: number }>;
   inv: (InvSlot | null)[];
