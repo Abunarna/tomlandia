@@ -53,6 +53,7 @@ import { ORE_PALETTE_BY_NODE, oreSprite } from "./ore-sprite";
 import { TREE_PALETTE_BY_NODE, treeSprite } from "./tree-sprite";
 import { ambience, loops, music, sfx, type LoopId } from "./audio";
 import { KnightRig, preloadKnight, type KnightAnim } from "./knight";
+import bridgeAsset from "@/assets/bridge.png.asset.json";
 import {
   MARKET_FEE,
   feeFor,
@@ -66,6 +67,35 @@ import {
 } from "./market";
 import { STALE_MS, type PresencePacket } from "./presence";
 import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
+
+/**
+ * The pixel-art bridge sprite, drawn whole at every water crossing.
+ * Source art is 52 x 90 (across x along); it is only ever scaled uniformly.
+ */
+const BRIDGE_SRC_W = 52;
+const BRIDGE_SRC_H = 90;
+export const BRIDGE_ASPECT = BRIDGE_SRC_W / BRIDGE_SRC_H;
+let bridgeImg: HTMLImageElement | null = null;
+let bridgeReady = false;
+if (typeof window !== "undefined") {
+  bridgeImg = new Image();
+  bridgeImg.onload = () => {
+    bridgeReady = true;
+  };
+  bridgeImg.src = bridgeAsset.url;
+}
+
+/** draw the bridge sprite centred at the current transform, long axis on local Y */
+function drawBridgeSprite(ctx: CanvasRenderingContext2D, len: number) {
+  if (!bridgeImg || !bridgeReady) return false;
+  const w = len * BRIDGE_ASPECT;
+  const smooth = ctx.imageSmoothingEnabled;
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(bridgeImg, -w / 2, -len / 2, w, len);
+  ctx.imageSmoothingEnabled = smooth;
+  return true;
+}
+
 
 /**
  * Phase 9 — the server owns progression. Every action routine returns the
@@ -3278,36 +3308,35 @@ export class GameEngine {
     this.drawBridges(ctx, view);
   }
 
-  /** wooden plank bridges crossing the Great River */
+  /** pixel-art bridges crossing the Great River */
   private drawBridges(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
     for (const br of BRIDGES) {
       if (!this.inView(br.x, br.y, view)) continue;
       ctx.save();
       ctx.translate(br.x, br.y);
       ctx.rotate(br.angle);
-      const halfLen = br.len / 2 + 14; // across the river (local Y)
+      const deckLen = br.len + 28; // across the river (local Y)
+      const halfLen = deckLen / 2;
       const halfW = br.width / 2; // along the river (local X)
 
       // shadow on the water
       ctx.fillStyle = "rgba(30,50,70,0.25)";
       ctx.fillRect(-halfW + 3, -halfLen + 4, br.width, halfLen * 2);
-      // deck
-      ctx.fillStyle = "#8b6239";
-      ctx.fillRect(-halfW, -halfLen, br.width, halfLen * 2);
-      // planks
-      ctx.fillStyle = "#a9793f";
-      for (let y = -halfLen + 3; y < halfLen - 3; y += 11) {
-        ctx.fillRect(-halfW + 2, y, br.width - 4, 8);
-      }
-      // rails
-      ctx.fillStyle = "#6f4a2a";
-      ctx.fillRect(-halfW - 3, -halfLen, 5, halfLen * 2);
-      ctx.fillRect(halfW - 2, -halfLen, 5, halfLen * 2);
-      for (let y = -halfLen; y <= halfLen; y += 26) {
-        ctx.fillRect(-halfW - 4, y, 7, 6);
-        ctx.fillRect(halfW - 3, y, 7, 6);
+
+      if (!drawBridgeSprite(ctx, deckLen)) {
+        // fallback while the sprite loads
+        ctx.fillStyle = "#8b6239";
+        ctx.fillRect(-halfW, -halfLen, br.width, halfLen * 2);
+        ctx.fillStyle = "#a9793f";
+        for (let y = -halfLen + 3; y < halfLen - 3; y += 11) {
+          ctx.fillRect(-halfW + 2, y, br.width - 4, 8);
+        }
+        ctx.fillStyle = "#6f4a2a";
+        ctx.fillRect(-halfW - 3, -halfLen, 5, halfLen * 2);
+        ctx.fillRect(halfW - 2, -halfLen, 5, halfLen * 2);
       }
       ctx.restore();
+
     }
   }
 
@@ -4080,7 +4109,7 @@ export class GameEngine {
       }
     }
 
-    // --- wooden bridge decks over the moat at every gate
+    // --- bridge decks over the moat at every gate
     if (CITY.moatW > 0) {
       for (const g of CITY.gates) {
         if (!g.drawbridge) continue;
@@ -4090,16 +4119,27 @@ export class GameEngine {
         ctx.save();
         ctx.translate(cx, cy);
         ctx.rotate(g.angle);
-        ctx.fillStyle = "#8a6440";
-        ctx.fillRect(inner, -halfW, outer - inner, halfW * 2);
-        ctx.fillStyle = "#a97b4f";
-        for (let d = inner + 3; d < outer - 3; d += 12) ctx.fillRect(d, -halfW + 3, 8, halfW * 2 - 6);
-        ctx.fillStyle = "#6c4c30";
-        ctx.fillRect(inner, -halfW - 4, outer - inner, 5);
-        ctx.fillRect(inner, halfW - 1, outer - inner, 5);
+        // the sprite's long axis is its local Y, so line it up with the radius
+        const span = outer - inner;
+        const deckLen = Math.max(span + 30, (halfW * 2) / BRIDGE_ASPECT);
+        ctx.save();
+        ctx.translate((inner + outer) / 2, 0);
+        ctx.rotate(Math.PI / 2);
+        const drew = drawBridgeSprite(ctx, deckLen);
+        ctx.restore();
+        if (!drew) {
+          ctx.fillStyle = "#8a6440";
+          ctx.fillRect(inner, -halfW, span, halfW * 2);
+          ctx.fillStyle = "#a97b4f";
+          for (let d = inner + 3; d < outer - 3; d += 12) ctx.fillRect(d, -halfW + 3, 8, halfW * 2 - 6);
+          ctx.fillStyle = "#6c4c30";
+          ctx.fillRect(inner, -halfW - 4, span, 5);
+          ctx.fillRect(inner, halfW - 1, span, 5);
+        }
         ctx.restore();
       }
     }
+
 
 
     // --- the wall itself, broken only at the gate mouths
