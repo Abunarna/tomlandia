@@ -220,7 +220,7 @@ export class KnightRig {
     if (this.frameOverride !== null) return;
     const def = KNIGHT_ANIMS[this.anim];
     this.t += dt;
-    const step = 1 / (def.fps * KNIGHT_ANIMATION_SPEED);
+    const step = 1 / (def.fps * KNIGHT_ANIMATION_SPEED * KNIGHT_ANIM_SPEED_MULT[this.anim]);
 
     while (this.t >= step) {
       this.t -= step;
