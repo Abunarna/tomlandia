@@ -128,13 +128,6 @@ function drawLandmarkSprite(
   const smooth = ctx.imageSmoothingEnabled;
   ctx.imageSmoothingEnabled = false;
   ctx.save();
-  // soft contact shadow so it sits on the ground
-  ctx.globalAlpha = 0.22;
-  ctx.fillStyle = "#000";
-  ctx.beginPath();
-  ctx.ellipse(l.x, l.y + l.h / 2 - 12, l.w * 0.34, 16, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.globalAlpha = 1;
   ctx.drawImage(e.img, l.x - l.w / 2, l.y - l.h / 2, l.w, l.h);
   ctx.restore();
   ctx.imageSmoothingEnabled = smooth;
@@ -3744,10 +3737,6 @@ export class GameEngine {
         ctx.save();
         ctx.translate(tx, ty);
         ctx.rotate((rand(i * 6.7 + 3) - 0.5) * 0.45);
-        ctx.fillStyle = "rgba(20,17,26,0.35)";
-        ctx.beginPath();
-        ctx.ellipse(0, 3, 11, 4, 0, 0, Math.PI * 2);
-        ctx.fill();
         const style = i % 5;
         ctx.fillStyle = i % 3 === 0 ? "#8f8a96" : "#7a7684";
         if (style === 0) {
@@ -4144,11 +4133,6 @@ export class GameEngine {
       const w = mon.w;
       const h = mon.h;
       ctx.save();
-      // long shadow thrown across the plaza
-      ctx.fillStyle = "rgba(14,11,20,0.35)";
-      ctx.beginPath();
-      ctx.ellipse(mx, my + h / 2 + 4, w / 2 + 30, 24, 0, 0, Math.PI * 2);
-      ctx.fill();
       // stepped plinth
       ctx.fillStyle = "#3a3444";
       ctx.fillRect(mx - w / 2 - 14, my + h / 2 - 20, w + 28, 20);
@@ -4504,10 +4488,6 @@ export class GameEngine {
     }
     const wallTop = b.y + b.h * 0.38;
     const wallH = b.h * 0.62;
-    ctx.fillStyle = "rgba(90,70,110,0.16)";
-    ctx.beginPath();
-    ctx.ellipse(b.x + b.w / 2, b.y + b.h + 4, b.w * 0.5, 9, 0, 0, Math.PI * 2);
-    ctx.fill();
 
 
     if (b.kind === "stall") {
@@ -4722,11 +4702,8 @@ export class GameEngine {
     }
   }
 
-  private shadow(ctx: CanvasRenderingContext2D, x: number, y: number, r: number) {
-    ctx.fillStyle = "rgba(80,60,100,0.18)";
-    ctx.beginPath();
-    ctx.ellipse(x, y, r, r * 0.4, 0, 0, Math.PI * 2);
-    ctx.fill();
+  private shadow(_ctx: CanvasRenderingContext2D, _x: number, _y: number, _r: number) {
+    /* contact shadows removed */
   }
 
   private drawNode(ctx: CanvasRenderingContext2D, n: ResNode) {
