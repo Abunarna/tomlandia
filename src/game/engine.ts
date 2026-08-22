@@ -69,6 +69,35 @@ import { STALE_MS, type PresencePacket } from "./presence";
 import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId, type QuestState, type SaveState, type SkillId } from "./types";
 
 /**
+ * The pixel-art bridge sprite, drawn whole at every water crossing.
+ * Source art is 52 x 90 (across x along); it is only ever scaled uniformly.
+ */
+const BRIDGE_SRC_W = 52;
+const BRIDGE_SRC_H = 90;
+export const BRIDGE_ASPECT = BRIDGE_SRC_W / BRIDGE_SRC_H;
+let bridgeImg: HTMLImageElement | null = null;
+let bridgeReady = false;
+if (typeof window !== "undefined") {
+  bridgeImg = new Image();
+  bridgeImg.onload = () => {
+    bridgeReady = true;
+  };
+  bridgeImg.src = bridgeAsset.url;
+}
+
+/** draw the bridge sprite centred at the current transform, long axis on local Y */
+function drawBridgeSprite(ctx: CanvasRenderingContext2D, len: number) {
+  if (!bridgeImg || !bridgeReady) return false;
+  const w = len * BRIDGE_ASPECT;
+  const smooth = ctx.imageSmoothingEnabled;
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(bridgeImg, -w / 2, -len / 2, w, len);
+  ctx.imageSmoothingEnabled = smooth;
+  return true;
+}
+
+
+/**
  * Phase 9 — the server owns progression. Every action routine returns the
  * player's authoritative inventory / gold / skill XP, which replaces whatever
  * the client thought it had.
