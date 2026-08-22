@@ -101,6 +101,45 @@ if (typeof window !== "undefined") {
   bridgeImg.src = bridgeAsset.url;
 }
 
+/** Landmark sprites, keyed by landmark id. */
+const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url };
+const landmarkImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
+if (typeof window !== "undefined") {
+  for (const [id, url] of Object.entries(LANDMARK_SRC)) {
+    const img = new Image();
+    const entry = { img, ready: false };
+    img.onload = () => {
+      entry.ready = true;
+    };
+    img.src = url;
+    landmarkImgs.set(id, entry);
+  }
+}
+
+/** draw a landmark sprite centred on its world position, crisp pixels */
+function drawLandmarkSprite(
+  ctx: CanvasRenderingContext2D,
+  l: (typeof LANDMARKS)[number],
+) {
+  const e = landmarkImgs.get(l.id);
+  if (!e || !e.ready) return;
+  const smooth = ctx.imageSmoothingEnabled;
+  ctx.imageSmoothingEnabled = false;
+  ctx.save();
+  // soft contact shadow so it sits on the ground
+  ctx.globalAlpha = 0.22;
+  ctx.fillStyle = "#000";
+  ctx.beginPath();
+  ctx.ellipse(l.x, l.y + l.h / 2 - 12, l.w * 0.34, 16, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  ctx.drawImage(e.img, l.x - l.w / 2, l.y - l.h / 2, l.w, l.h);
+  ctx.restore();
+  ctx.imageSmoothingEnabled = smooth;
+}
+
+
+
 /** draw the bridge sprite centred at the current transform, long axis on local Y */
 function drawBridgeSprite(ctx: CanvasRenderingContext2D, len: number) {
   if (!bridgeImg || !bridgeReady) return false;
