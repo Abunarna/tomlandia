@@ -53,6 +53,7 @@ import { ORE_PALETTE_BY_NODE, oreSprite } from "./ore-sprite";
 import { TREE_PALETTE_BY_NODE, treeSprite } from "./tree-sprite";
 import { ambience, loops, music, sfx, type LoopId } from "./audio";
 import { KnightRig, preloadKnight, type KnightAnim } from "./knight";
+import bridgeAsset from "@/assets/bridge.png.asset.json";
 import {
   MARKET_FEE,
   feeFor,
