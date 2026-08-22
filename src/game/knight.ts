@@ -17,6 +17,9 @@ import attackAsset from "@/assets/knight/attack_strip.png.asset.json";
 import mineAsset from "@/assets/knight/mine_strip.png.asset.json";
 import chopAsset from "@/assets/knight/chop_strip.png.asset.json";
 import lootAsset from "@/assets/knight/loot_strip.png.asset.json";
+import idleWeaponAsset from "@/assets/knight/idle_weapon_strip.png.asset.json";
+import walkWeaponAsset from "@/assets/knight/walk_weapon_strip.png.asset.json";
+import attackWeaponAsset from "@/assets/knight/attack_weapon_strip.png.asset.json";
 
 export type KnightAnim = "idle" | "walk" | "attack" | "mine" | "chop" | "loot";
 
@@ -76,9 +79,9 @@ export const OVERLAY_PATHS: Record<"armor" | "weapon", Record<KnightAnim, string
     loot: "/knight/loot_armor_strip.png",
   },
   weapon: {
-    idle: "/knight/idle_weapon_strip.png",
-    walk: "/knight/walk_weapon_strip.png",
-    attack: "/knight/attack_weapon_strip.png",
+    idle: idleWeaponAsset.url,
+    walk: walkWeaponAsset.url,
+    attack: attackWeaponAsset.url,
     mine: "/knight/mine_weapon_strip.png",
     chop: "/knight/chop_weapon_strip.png",
     loot: "/knight/loot_weapon_strip.png",
