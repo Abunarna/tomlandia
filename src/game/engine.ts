@@ -193,6 +193,8 @@ export interface RemotePlayer {
   emote?: { e: string; until: number };
   /** last emote timestamp we processed from them */
   eat?: number;
+  /** knight sprite rig, created lazily on first tick */
+  rig?: KnightRig;
 }
 
 /** The six quick-chat emotes in the radial menu, in clockwise order. */
@@ -808,8 +810,28 @@ export class GameEngine {
         r.y += dy * k;
       }
       if (Math.abs(dx) + Math.abs(dy) > 1.5) r.bob += dt * 9;
+      this.syncRemoteRig(r, Math.abs(dx) + Math.abs(dy) > 1.5, dt);
     }
   }
+
+  /** Drive a remote player's knight rig from their broadcast activity. */
+  private syncRemoteRig(r: RemotePlayer, moving: boolean, dt: number) {
+    const rig = (r.rig ??= new KnightRig());
+    rig.setLocomotion(moving);
+    const act = r.act || "";
+    if (act.startsWith("Fighting")) rig.play("attack", { repeat: true });
+    else if (act.startsWith("Harvesting")) {
+      const anim: KnightAnim = /Rock|Vein/i.test(act)
+        ? "mine"
+        : /Tree|Palm|Frostpine/i.test(act)
+          ? "chop"
+          : "loot";
+      rig.play(anim, { repeat: true });
+    } else if (act === "Fishing" || act === "Waiting for a bite") rig.play("loot", { repeat: true });
+    else if (!rig.busy) rig.release();
+    rig.update(dt);
+  }
+
 
   private spawnNpcs() {
     this.npcState = NPCS.map((n) => ({
@@ -5162,24 +5184,29 @@ export class GameEngine {
     const x = r.x;
     const y = r.y;
     this.shadow(ctx, x, y + 16, 15);
-    ctx.globalAlpha = 0.96;
-    // body — cool tone so other players read as distinct from you
-    ctx.fillStyle = "#b7d4f5";
-    ctx.beginPath();
-    ctx.roundRect(x - 11, y - 8 - bob, 22, 24, 7);
-    ctx.fill();
-    ctx.fillStyle = "#ffe0c2";
-    ctx.beginPath();
-    ctx.arc(x, y - 20 - bob, 15, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#43506b";
-    ctx.beginPath();
-    ctx.arc(x, y - 24 - bob, 15, Math.PI, 0);
-    ctx.fill();
-    ctx.fillStyle = "#4a3b52";
-    ctx.fillRect(x - 6 * r.f, y - 21 - bob, 3, 4);
-    ctx.fillRect(x + 2 * r.f, y - 21 - bob, 3, 4);
-    ctx.globalAlpha = 1;
+    const rig = (r.rig ??= new KnightRig());
+    const drew = rig.draw(ctx, x, y + 16, (r.f >= 0 ? 1 : -1) as 1 | -1, 72);
+    if (!drew) {
+      ctx.globalAlpha = 0.96;
+      // fallback avatar while the sprite strips are still loading
+      ctx.fillStyle = "#b7d4f5";
+      ctx.beginPath();
+      ctx.roundRect(x - 11, y - 8 - bob, 22, 24, 7);
+      ctx.fill();
+      ctx.fillStyle = "#ffe0c2";
+      ctx.beginPath();
+      ctx.arc(x, y - 20 - bob, 15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#43506b";
+      ctx.beginPath();
+      ctx.arc(x, y - 24 - bob, 15, Math.PI, 0);
+      ctx.fill();
+      ctx.fillStyle = "#4a3b52";
+      ctx.fillRect(x - 6 * r.f, y - 21 - bob, 3, 4);
+      ctx.fillRect(x + 2 * r.f, y - 21 - bob, 3, 4);
+      ctx.globalAlpha = 1;
+    }
+
 
     // nameplate
     const label = `${r.name} · Lv ${r.level}`;
