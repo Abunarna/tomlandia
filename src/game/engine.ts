@@ -3572,20 +3572,24 @@ export class GameEngine {
 
 
     // --- plaza + ring road + spokes to each gate
-    ctx.fillStyle = P.plaza;
-    ctx.beginPath();
-    ctx.arc(cx, cy, CITY.plazaR, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = P.plazaEdge;
-    ctx.lineWidth = 6;
-    ctx.stroke();
+    // Grand Haven is rebuilt from pixel-art landmark assets: leave the ground
+    // bare (no brown plaza disc, no ring-road circle).
+    if (CITY.key !== "grand-haven") {
+      ctx.fillStyle = P.plaza;
+      ctx.beginPath();
+      ctx.arc(cx, cy, CITY.plazaR, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = P.plazaEdge;
+      ctx.lineWidth = 6;
+      ctx.stroke();
 
-    const ringMid = (CITY.ringR[0]! + CITY.ringR[1]!) / 2;
-    ctx.strokeStyle = P.ring;
-    ctx.lineWidth = 46;
-    ctx.beginPath();
-    ctx.arc(cx, cy, ringMid, 0, Math.PI * 2);
-    ctx.stroke();
+      const ringMid = (CITY.ringR[0]! + CITY.ringR[1]!) / 2;
+      ctx.strokeStyle = P.ring;
+      ctx.lineWidth = 46;
+      ctx.beginPath();
+      ctx.arc(cx, cy, ringMid, 0, Math.PI * 2);
+      ctx.stroke();
+    }
     // every city keeps only the plaza and ring road — the bare radial spokes
     // read as ugly untextured smears over everything else
 
