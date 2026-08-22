@@ -2163,7 +2163,7 @@ export function blockedAt(x: number, y: number, pad = 10, wadesRivers = false): 
  */
 export function hasClearance(x: number, y: number, radius = 12, margin = 10): boolean {
   const r = radius + margin;
-  if (blockedAt(x, y, r)) return true === false;
+  if (blockedAt(x, y, r)) return false;
   for (let a = 0; a < 8; a++) {
     const ang = (a / 8) * Math.PI * 2;
     if (blockedAt(x + Math.cos(ang) * r, y + Math.sin(ang) * r, 1)) return false;
