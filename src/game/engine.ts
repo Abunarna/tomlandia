@@ -70,6 +70,7 @@ import { KnightRig, preloadKnight, type KnightAnim } from "./knight";
 import bridgeAsset from "@/assets/bridge.png.asset.json";
 import monasteryAsset from "@/assets/monastery.png.asset.json";
 import house2Asset from "@/assets/house2.png.asset.json";
+import house3Asset from "@/assets/house3.png.asset.json";
 
 import {
   MARKET_FEE,
