@@ -38,6 +38,15 @@ import { TILE_H, TILE_W } from "./data";
 import { biomePattern, onBiomeTileReady } from "./biome-tiles";
 import { CITIES, cityGateAt, cityOuterR, cityWallR, type CityDef } from "./city";
 import {
+  drawRiverHighlights,
+  drawRiverPixels,
+  riverFrame,
+  ringGeom,
+  riverVersion,
+  type CenterGeom,
+} from "./river-pixel";
+
+import {
   BOSS_ATTACK_RADIUS,
   BOSS_HP,
   BOSS_LEVEL,
@@ -2874,6 +2883,7 @@ export class GameEngine {
     w: number;
     h: number;
     scale: number;
+    river: number;
   } | null = null;
 
   private ensureTerrain(view: { x: number; y: number; w: number; h: number }) {
@@ -2882,6 +2892,7 @@ export class GameEngine {
     if (
       c &&
       c.scale === this.dpr &&
+      c.river === riverVersion &&
       view.x >= c.x &&
       view.y >= c.y &&
       view.x + view.w <= c.x + c.w &&
@@ -2889,6 +2900,7 @@ export class GameEngine {
     ) {
       return c;
     }
+
     const w = Math.ceil(view.w) + M * 2;
     const h = Math.ceil(view.h) + M * 2;
     const x = Math.floor(view.x) - M;
@@ -2922,7 +2934,7 @@ export class GameEngine {
     this.drawCity(octx, region);
     this.drawBarriers(octx, region);
 
-    const next = { base, over, x, y, w, h, scale: s };
+    const next = { base, over, x, y, w, h, scale: s, river: riverVersion };
     this.terrainCache = next;
     return next;
   }
@@ -3051,237 +3063,31 @@ export class GameEngine {
   }
 
 
-  /** Dense drifting crests + highlight streaks (cheap, cached geometry). */
+  /** Sparse, flow-aligned pixel highlight clusters (discrete 4-frame pulse). */
   private drawRiverFlow(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
-    // 3x slower than before: every animated term reads this eased clock
-    const t = this.clock / 3;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    const bars: (typeof BARRIERS)[number][] = [];
+    const frame = riverFrame(this.clock);
     for (const bar of BARRIERS) {
       if (bar.kind !== "river") continue;
       if (bar.minX > view.x + view.w + 80 || bar.maxX < view.x - 80) continue;
       if (bar.minY > view.y + view.h + 80 || bar.maxY < view.y - 80) continue;
-      bars.push(bar);
+      drawRiverHighlights(ctx, bar.id, riverGeom(bar), view, frame);
     }
-    if (!bars.length) return;
-
-    // --- soft colour movement riding the current ----------------------
-    // No visible lines: stroke the meandering paths at very large widths
-    // with extremely low opacity so only a diffuse wash of colour drifts
-    // downstream. Multiple faint overlapping passes build up a soft bloom
-    // without ever resolving into a crisp core.
-    const laneColor = (lane: number) =>
-      lane === 0 ? [255, 255, 255] : lane === 1 ? [220, 246, 255] : [255, 255, 255];
-    const laneWidth = (lane: number) => (lane === 0 ? 2.6 : lane === 1 ? 1.9 : 1.3);
-
-    /** Build one lane's streak path at an arbitrary time (used for ghosts). */
-    const lanePath = (lane: number, tt: number) => {
-      const path = new Path2D();
-      for (const bar of bars) {
-        const g = riverGeom(bar);
-        const n = g.pts.length;
-        const speed = 0.013 - lane * 0.003;
-        for (let s = 0; s < 22; s++) {
-          const seed = s * 0.0454 + lane * 0.061;
-          const f = ((seed + tt * speed) % 1 + 1) % 1;
-          const i0 = Math.min(n - 3, Math.floor(f * (n - 3)));
-          const a0 = g.pts[i0]!;
-          if (a0[0] < view.x - 60 || a0[0] > view.x + view.w + 60) continue;
-          if (a0[1] < view.y - 60 || a0[1] > view.y + view.h + 60) continue;
-
-          // pseudo-random per-streak character (stable while it travels)
-          const r1 = ((s * 13 + lane * 7) % 17) / 16;
-          const r2 = ((s * 29 + lane * 11) % 23) / 22;
-          const r3 = ((s * 41 + lane * 5) % 19) / 18;
-
-          const rush = g.maxW / g.hw[i0]!;
-          const steps = 5 + Math.round(r1 * 4);
-          const stride = Math.max(1, Math.round((1 + rush) * (0.5 + r2 * 0.6)));
-          // lateral band this streak drifts around
-          const band = (r3 - 0.5) * 1.5;
-          // meander shape: two mismatched frequencies so it never repeats
-          const w1 = 0.55 + r1 * 0.9;
-          const w2 = 1.7 + r2 * 1.6;
-          const amp = 0.14 + r3 * 0.22;
-          const ph = s * 1.7 + lane * 2.3;
-
-          let px = 0;
-          let py = 0;
-          for (let k = 0; k <= steps; k++) {
-            const i = Math.min(n - 1, i0 + k * stride);
-            const u = k;
-            const off =
-              (band +
-                (Math.sin(u * w1 + tt * 1.9 + ph) * 0.6 + Math.sin(u * w2 - tt * 1.2 + ph * 1.7) * 0.4) * amp) *
-              g.hw[i]!;
-            const x = g.pts[i]![0] + g.nx[i]! * off;
-            const y = g.pts[i]![1] + g.ny[i]! * off;
-            if (k === 0) {
-              path.moveTo(x, y);
-            } else {
-              // smooth the polyline into a flowing curve
-              path.quadraticCurveTo(px, py, (px + x) / 2, (py + y) / 2);
-            }
-            px = x;
-            py = y;
-          }
-          path.lineTo(px, py);
-        }
-      }
-      return path;
-    };
-
-    // ghost trail: two cheap echoes of where each streak just was, so the
-    // wash smears behind itself instead of sliding as a hard shape.
-    const GHOST = [
-      { lag: 2.2, fade: 0.55 },
-      { lag: 4.6, fade: 0.28 },
-    ];
-
-    for (let lane = 0; lane < 3; lane++) {
-      // diffuse colour wash: wide, low-opacity passes stack into a soft
-      // bloom. Halfway between crisp core and full wash — visible as gentle
-      // colour movement without resolving into hard lines.
-      const [cr, cg, cb] = laneColor(lane);
-      const base = lane === 0 ? 0.34 : lane === 1 ? 0.24 : 0.16;
-      const w = laneWidth(lane);
-      // ghosts first (behind), then the live streaks on top
-      for (const gh of GHOST) {
-        const gpath = lanePath(lane, t - gh.lag);
-        for (const p of [
-          { wid: w * 3.2, op: base * 0.14 * gh.fade },
-          { wid: w * 1.8, op: base * 0.32 * gh.fade },
-        ]) {
-          ctx.strokeStyle = `rgba(${cr},${cg},${cb},${p.op})`;
-          ctx.lineWidth = p.wid;
-          ctx.stroke(gpath);
-        }
-      }
-      const path = lanePath(lane, t);
-      const passes = [
-        { wid: w * 4.0, op: base * 0.09 },
-        { wid: w * 2.8, op: base * 0.16 },
-        { wid: w * 2.0, op: base * 0.28 },
-        { wid: w * 1.4, op: base * 0.45 },
-      ];
-      for (const p of passes) {
-        ctx.strokeStyle = `rgba(${cr},${cg},${cb},${p.op})`;
-        ctx.lineWidth = p.wid;
-        ctx.stroke(path);
-      }
-    }
-
-
-    // --- shimmering foam along both banks -------------------------------
-    ctx.strokeStyle = "rgba(255,255,255,0.22)";
-    ctx.lineWidth = 1.6;
-    ctx.beginPath();
-    for (const bar of bars) {
-      const g = riverGeom(bar);
-      const n = g.pts.length;
-      for (let s = 0; s < 30; s++) {
-        const f = ((s / 30 + t * 0.006) % 1 + 1) % 1;
-        const i = Math.min(n - 3, Math.floor(f * (n - 3)));
-        const a = g.pts[i]!;
-        if (a[0] < view.x - 40 || a[0] > view.x + view.w + 40) continue;
-        if (a[1] < view.y - 40 || a[1] > view.y + view.h + 40) continue;
-        const side = s % 2 === 0 ? 1 : -1;
-        const hw = g.hw[i]! * (0.94 + Math.sin(t * 3 + s * 2.1) * 0.03);
-        const j = Math.min(n - 1, i + 2);
-        const b = g.pts[j]!;
-        ctx.moveTo(a[0] + g.nx[i]! * hw * side, a[1] + g.ny[i]! * hw * side);
-        ctx.lineTo(b[0] + g.nx[j]! * hw * side, b[1] + g.ny[j]! * hw * side);
-      }
-    }
-    ctx.stroke();
-    ctx.lineWidth = 1;
   }
 
 
-  /** the same drifting colour wash, wrapped around a city's moat ring */
+
+  /** the same pixel highlight clusters, wrapped around a city's moat ring */
   private drawMoatFlow(ctx: CanvasRenderingContext2D, view: { x: number; y: number; w: number; h: number }) {
-    const t = this.clock / 3;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
+    const frame = riverFrame(this.clock);
     for (const CITY of CITIES) {
       if (CITY.moatW <= 0) continue;
       const R = cityOuterR(CITY) + 40;
       if (CITY.cx + R < view.x || CITY.cx - R > view.x + view.w) continue;
       if (CITY.cy + R < view.y || CITY.cy - R > view.y + view.h) continue;
-      const hw = CITY.moatW / 2;
-      const ringPath = (lane: number, tt: number) => {
-        const path = new Path2D();
-        const spin = 0.055 - lane * 0.014;
-        for (let s = 0; s < 26; s++) {
-          const r1 = ((s * 13 + lane * 7) % 17) / 16;
-          const r2 = ((s * 29 + lane * 11) % 23) / 22;
-          const r3 = ((s * 41 + lane * 5) % 19) / 18;
-          const a0 = (s / 26) * Math.PI * 2 + tt * spin + lane * 0.4;
-          // leave the drawbridge mouths clear so the decks read on top
-          const gate = cityGateAt(a0, CITY);
-          if (gate) continue;
-          const span = 0.09 + r1 * 0.09;
-          const steps = 6;
-          const band = (r3 - 0.5) * 1.3;
-          const w1 = 0.55 + r1 * 0.9;
-          const w2 = 1.7 + r2 * 1.6;
-          const amp = 0.16 + r3 * 0.22;
-          const ph = s * 1.7 + lane * 2.3;
-          let px = 0;
-          let py = 0;
-          for (let k = 0; k <= steps; k++) {
-            const a = a0 + (k / steps) * span;
-            const off =
-              (band + (Math.sin(k * w1 + tt * 1.9 + ph) * 0.6 + Math.sin(k * w2 - tt * 1.2 + ph * 1.7) * 0.4) * amp) *
-              hw;
-            const r = cityWallR(a, CITY) + CITY.moatGap + hw + off;
-            const x = CITY.cx + Math.cos(a) * r;
-            const y = CITY.cy + Math.sin(a) * r;
-            if (k === 0) path.moveTo(x, y);
-            else path.quadraticCurveTo(px, py, (px + x) / 2, (py + y) / 2);
-            px = x;
-            py = y;
-          }
-          path.lineTo(px, py);
-        }
-        return path;
-      };
-      for (let lane = 0; lane < 3; lane++) {
-        const [cr, cg, cb] = lane === 1 ? [220, 246, 255] : [255, 255, 255];
-        const base = lane === 0 ? 0.34 : lane === 1 ? 0.24 : 0.16;
-        const w = lane === 0 ? 2.6 : lane === 1 ? 1.9 : 1.3;
-        for (const gh of [
-          { lag: 2.2, fade: 0.55 },
-          { lag: 4.6, fade: 0.28 },
-        ]) {
-          const gpath = ringPath(lane, t - gh.lag);
-          for (const p of [
-            { wid: w * 3.2, op: base * 0.14 * gh.fade },
-            { wid: w * 1.8, op: base * 0.32 * gh.fade },
-          ]) {
-            ctx.strokeStyle = `rgba(${cr},${cg},${cb},${p.op})`;
-            ctx.lineWidth = p.wid;
-            ctx.stroke(gpath);
-          }
-        }
-        const path = ringPath(lane, t);
-        for (const p of [
-          { wid: w * 4.0, op: base * 0.09 },
-          { wid: w * 2.8, op: base * 0.16 },
-          { wid: w * 2.0, op: base * 0.28 },
-          { wid: w * 1.4, op: base * 0.45 },
-        ]) {
-          ctx.strokeStyle = `rgba(${cr},${cg},${cb},${p.op})`;
-          ctx.lineWidth = p.wid;
-          ctx.stroke(path);
-        }
-      }
+      drawRiverHighlights(ctx, `moat-${CITY.key}`, moatGeom(CITY), view, frame);
     }
-
-    ctx.lineWidth = 1;
   }
+
 
 
 
@@ -3294,15 +3100,9 @@ export class GameEngine {
       if (bar.minY > view.y + view.h + 80 || bar.maxY < view.y - 80) continue;
 
       const g = riverGeom(bar);
-      // outer bank (dark teal), water body, then a cached depth gradient
-      ctx.fillStyle = "#3f6f83";
-      ctx.fill(g.bank);
-      ctx.fillStyle = "#6fa9c9";
-      ctx.fill(g.water);
-      ctx.fillStyle = riverGradient(ctx, g);
-      ctx.fill(g.water);
-      ctx.fillStyle = "rgba(159,216,238,0.55)";
-      ctx.fill(g.core);
+      // world-locked pixel raster: banks + water body
+      drawRiverPixels(ctx, bar.id, g, view);
+
     }
     ctx.lineWidth = 1;
     this.drawBridges(ctx, view);
@@ -3751,26 +3551,15 @@ export class GameEngine {
       return s - Math.floor(s);
     };
 
-    // --- moat: styled exactly like the Great River (bank, water, bright core)
+    // --- moat: same world-locked pixel raster as the Great River
     if (CITY.moatW > 0) {
-      const mid = new Path2D();
-      for (let a = -Math.PI; a <= Math.PI + 0.03; a += 0.03) {
-        const [x, y] = at(a, cityWallR(a, CITY) + CITY.moatGap + CITY.moatW / 2);
-        if (a === -Math.PI) mid.moveTo(x, y);
-        else mid.lineTo(x, y);
-      }
-      mid.closePath();
-      ctx.lineJoin = "round";
-      ctx.lineCap = "round";
-      ctx.strokeStyle = "#3f6f83";
-      ctx.lineWidth = CITY.moatW + 12;
-      ctx.stroke(mid);
-      ctx.strokeStyle = "#6fa9c9";
-      ctx.lineWidth = CITY.moatW;
-      ctx.stroke(mid);
-      ctx.strokeStyle = "rgba(159,216,238,0.5)";
-      ctx.lineWidth = CITY.moatW * 0.42;
-      ctx.stroke(mid);
+      drawRiverPixels(ctx, `moat-${CITY.key}`, moatGeom(CITY), {
+        x: CITY.cx - cityOuterR(CITY) - 40,
+        y: CITY.cy - cityOuterR(CITY) - 40,
+        w: (cityOuterR(CITY) + 40) * 2,
+        h: (cityOuterR(CITY) + 40) * 2,
+      });
+
       // grassy banks
       ctx.lineWidth = 6;
       ctx.strokeStyle = "#6f9464";
@@ -5439,6 +5228,22 @@ interface RiverGeom {
 }
 
 const RIVER_CACHE = new Map<string, RiverGeom>();
+
+/** Centreline geometry for a city moat ring (cached; geometry is static). */
+const MOAT_GEOM = new Map<string, CenterGeom>();
+function moatGeom(city: CityDef): CenterGeom {
+  const hit = MOAT_GEOM.get(city.key);
+  if (hit) return hit;
+  const g = ringGeom(
+    city.cx,
+    city.cy,
+    (a) => cityWallR(a, city) + city.moatGap + city.moatW / 2,
+    city.moatW / 2,
+  );
+  MOAT_GEOM.set(city.key, g);
+  return g;
+}
+
 
 /** Fill a closed polygon from an offset band, smoothed with quadratic joins. */
 function bandPath(pts: [number, number][], nx: number[], ny: number[], hw: number[], k: number) {
