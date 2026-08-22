@@ -475,9 +475,9 @@ export class GameEngine {
   private dpr = 1;
 
   // player
-  /** default spawn: the Grand Haven crossroads in the Peaceful Fields */
-  px = 700;
-  py = 2400;
+  /** default spawn for new characters: the Grand Haven crossroads */
+  px = 1064;
+  py = 2195;
   hp = 30;
   gold = 0;
   facing = 1;
