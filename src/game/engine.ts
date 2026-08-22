@@ -70,6 +70,7 @@ import { KnightRig, preloadKnight, type KnightAnim } from "./knight";
 import bridgeAsset from "@/assets/bridge.png.asset.json";
 import monasteryAsset from "@/assets/monastery.png.asset.json";
 import house2Asset from "@/assets/house2.png.asset.json";
+import house3Asset from "@/assets/house3.png.asset.json";
 
 import {
   MARKET_FEE,
@@ -103,7 +104,7 @@ if (typeof window !== "undefined") {
 }
 
 /** Landmark sprites, keyed by landmark id. */
-const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url, house2: house2Asset.url };
+const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url, house2: house2Asset.url, house3: house3Asset.url };
 const landmarkImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
 if (typeof window !== "undefined") {
   for (const [id, url] of Object.entries(LANDMARK_SRC)) {
