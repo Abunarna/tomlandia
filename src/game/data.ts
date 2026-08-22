@@ -2510,6 +2510,8 @@ function nearTown(x: number, y: number) {
 function spawnable(x: number, y: number) {
   if (x < 90 || y < 90 || x > WORLD_W - 90 || y > WORLD_H - 90) return false;
   if (blockedAt(x, y, 34)) return false;
+  // blanket rule: the whole body, not just the centre, keeps 10px off anything solid
+  if (!hasClearance(x, y, 14, 10)) return false;
   if (inLake(x, y, 50)) return false;
   if (onJetty(x, y, 40) || onBridge(x, y, -60)) return false;
   if (nearRoad(x, y, 40)) return false;
