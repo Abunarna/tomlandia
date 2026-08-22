@@ -3,6 +3,8 @@ import {
   BRIDGES,
   BIOMES,
   BUILDINGS,
+  LANDMARKS,
+
   STREETS,
   ROAD_RUNS,
   MAX_PLUS,
@@ -66,6 +68,8 @@ import { TREE_PALETTE_BY_NODE, treeSprite } from "./tree-sprite";
 import { ambience, loops, music, sfx, type LoopId } from "./audio";
 import { KnightRig, preloadKnight, type KnightAnim } from "./knight";
 import bridgeAsset from "@/assets/bridge.png.asset.json";
+import monasteryAsset from "@/assets/monastery.png.asset.json";
+
 import {
   MARKET_FEE,
   feeFor,
@@ -96,6 +100,45 @@ if (typeof window !== "undefined") {
   };
   bridgeImg.src = bridgeAsset.url;
 }
+
+/** Landmark sprites, keyed by landmark id. */
+const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url };
+const landmarkImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
+if (typeof window !== "undefined") {
+  for (const [id, url] of Object.entries(LANDMARK_SRC)) {
+    const img = new Image();
+    const entry = { img, ready: false };
+    img.onload = () => {
+      entry.ready = true;
+    };
+    img.src = url;
+    landmarkImgs.set(id, entry);
+  }
+}
+
+/** draw a landmark sprite centred on its world position, crisp pixels */
+function drawLandmarkSprite(
+  ctx: CanvasRenderingContext2D,
+  l: (typeof LANDMARKS)[number],
+) {
+  const e = landmarkImgs.get(l.id);
+  if (!e || !e.ready) return;
+  const smooth = ctx.imageSmoothingEnabled;
+  ctx.imageSmoothingEnabled = false;
+  ctx.save();
+  // soft contact shadow so it sits on the ground
+  ctx.globalAlpha = 0.22;
+  ctx.fillStyle = "#000";
+  ctx.beginPath();
+  ctx.ellipse(l.x, l.y + l.h / 2 - 12, l.w * 0.34, 16, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  ctx.drawImage(e.img, l.x - l.w / 2, l.y - l.h / 2, l.w, l.h);
+  ctx.restore();
+  ctx.imageSmoothingEnabled = smooth;
+}
+
+
 
 /** draw the bridge sprite centred at the current transform, long axis on local Y */
 function drawBridgeSprite(ctx: CanvasRenderingContext2D, len: number) {
@@ -2982,6 +3025,18 @@ export class GameEngine {
       if (b.x > view.x + w || b.x + b.w < view.x || b.y > view.y + h || b.y + b.h < view.y) continue;
       drawables.push({ y: b.y + b.h, fn: () => this.drawBuilding(ctx, b) });
     }
+
+    for (const l of LANDMARKS) {
+      if (
+        l.x - l.w / 2 > view.x + w ||
+        l.x + l.w / 2 < view.x ||
+        l.y - l.h / 2 > view.y + h ||
+        l.y + l.h / 2 < view.y
+      )
+        continue;
+      drawables.push({ y: l.y + l.h / 2, fn: () => drawLandmarkSprite(ctx, l) });
+    }
+
 
     for (const n of this.nodes) {
       if (!this.inView(n.x, n.y, view)) continue;

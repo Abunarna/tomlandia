@@ -1372,6 +1372,44 @@ for (const t of TOWN_SPECS) {
 
 export const BUILDINGS: BuildingDef[] = buildings;
 export const STREETS: StreetDef[] = streets;
+
+/**
+ * Standalone landmark structures drawn from a pixel-art sprite. `x`/`y` is the
+ * centre of the image; the solid footprint is the lower stonework only, so the
+ * roof and spire overlap freely.
+ */
+export interface LandmarkDef {
+  id: string;
+  /** centre of the sprite, world coords */
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  /** solid box, relative to the sprite centre */
+  solid: { dx: number; dy: number; w: number; h: number };
+}
+
+export const LANDMARKS: LandmarkDef[] = [
+  {
+    id: "monastery",
+    x: 2605,
+    y: 3012,
+    w: 192,
+    h: 320,
+    solid: { dx: 0, dy: 78, w: 160, h: 150 },
+  },
+];
+
+/** true when the point sits inside a landmark's solid footprint */
+export function onLandmark(x: number, y: number, pad = 0): boolean {
+  for (const l of LANDMARKS) {
+    const cx = l.x + l.solid.dx;
+    const cy = l.y + l.solid.dy;
+    if (Math.abs(x - cx) < l.solid.w / 2 + pad && Math.abs(y - cy) < l.solid.h / 2 + pad) return true;
+  }
+  return false;
+}
+
 const NPC_SPOTS: Record<string, { x: number; y: number }> = npcSpots;
 const spot = (role: string, fx: number, fy: number) => NPC_SPOTS[role] ?? { x: fx, y: fy };
 
@@ -2040,7 +2078,9 @@ export function blockedAt(x: number, y: number, pad = 10, wadesRivers = false): 
   if (inLake(x, y, 0) && !onJetty(x, y, pad)) return true;
   // Grand Haven's stone wall and moat — solid except at the four gates
   if (cityBlocked(x, y, pad)) return true;
+  if (onLandmark(x, y, pad)) return true;
   return false;
+
 }
 
 /** true when the point stands on a jetty deck (so it is walkable over water) */
