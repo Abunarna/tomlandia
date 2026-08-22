@@ -406,3 +406,309 @@ export function ringGeom(
   }
   return { pts, nx, ny, hw };
 }
+
+/* ------------------------------- lakes ----------------------------------- */
+
+/**
+ * Lakes reuse the exact same world-locked grid, six-colour palette, bank
+ * treatment and discrete highlight pulse as the rivers — only the shape source
+ * differs (a closed polygon instead of a centreline band).
+ */
+
+export type LakeStyleKey = "fields" | "forest" | "winter" | "evil";
+
+export const LAKE_PALETTES: Record<LakeStyleKey, RiverPalette> = {
+  fields: RIVER_PALETTE,
+  forest: {
+    bankShadow: "#20362f",
+    bankMid: "#3a6b52",
+    waterDeep: "#245c58",
+    waterBase: "#3f8f86",
+    waterLight: "#6fb9ac",
+    foamHighlight: "#addcd0",
+  },
+  winter: {
+    bankShadow: "#4a6478",
+    bankMid: "#8fb2c4",
+    waterDeep: "#7fb0c9",
+    waterBase: "#a8d3e6",
+    waterLight: "#cfeaf5",
+    foamHighlight: "#eef9ff",
+  },
+  evil: {
+    bankShadow: "#241a3a",
+    bankMid: "#463562",
+    waterDeep: "#3d3066",
+    waterBase: "#5b4a86",
+    waterLight: "#8272ad",
+    foamHighlight: "#b3a3d6",
+  },
+};
+
+interface LakeMask {
+  cell: number;
+  gx0: number;
+  gy0: number;
+  gw: number;
+  gh: number;
+  /** 0 = empty, otherwise 1 + palette index */
+  codes: Uint8Array;
+  clusters: LakeCluster[];
+}
+
+interface LakeCluster {
+  gx: number;
+  gy: number;
+  len: number;
+  phase: number;
+  foam: boolean;
+  thickEnd: boolean;
+}
+
+const LAKE_MASKS = new Map<string, LakeMask>();
+
+function pointInPoly(poly: [number, number][], x: number, y: number) {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i]!;
+    const [xj, yj] = poly[j]!;
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+function buildLakeMask(id: string, poly: [number, number][]): LakeMask {
+  const key = `${id}|${riverVersion}`;
+  const hit = LAKE_MASKS.get(key);
+  if (hit) return hit;
+
+  const cell = riverConfig.cell;
+  const bank = Math.max(1, Math.round(riverConfig.bankPx));
+  const pad = bank + 2;
+
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (const [x, y] of poly) {
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  }
+  const gx0 = Math.floor(minX / cell) - pad;
+  const gy0 = Math.floor(minY / cell) - pad;
+  const gw = Math.ceil(maxX / cell) + pad - gx0 + 1;
+  const gh = Math.ceil(maxY / cell) + pad - gy0 + 1;
+
+  const inside = new Uint8Array(gw * gh);
+  for (let y = 0; y < gh; y++) {
+    const wy = (gy0 + y + 0.5) * cell;
+    for (let x = 0; x < gw; x++) {
+      const wx = (gx0 + x + 0.5) * cell;
+      if (pointInPoly(poly, wx, wy)) inside[y * gw + x] = 1;
+    }
+  }
+
+  // --- cleanup: remove 1px spikes / fill 1px pinholes ----------------------
+  const nb4 = (arr: Uint8Array, x: number, y: number) => {
+    let c = 0;
+    if (x > 0 && arr[y * gw + x - 1]) c++;
+    if (x < gw - 1 && arr[y * gw + x + 1]) c++;
+    if (y > 0 && arr[(y - 1) * gw + x]) c++;
+    if (y < gh - 1 && arr[(y + 1) * gw + x]) c++;
+    return c;
+  };
+  const snap = Uint8Array.from(inside);
+  for (let y = 0; y < gh; y++)
+    for (let x = 0; x < gw; x++) {
+      const i = y * gw + x;
+      const n = nb4(snap, x, y);
+      if (snap[i] && n <= 1) inside[i] = 0;
+      else if (!snap[i] && n >= 3) inside[i] = 1;
+    }
+
+  // --- distance to the shore, in cells (two-pass chamfer) ------------------
+  const BIG = 1e6;
+  const dist = new Float32Array(gw * gh);
+  for (let i = 0; i < dist.length; i++) dist[i] = inside[i] ? BIG : 0;
+  for (let y = 0; y < gh; y++)
+    for (let x = 0; x < gw; x++) {
+      const i = y * gw + x;
+      if (!inside[i]) continue;
+      let d = dist[i]!;
+      if (x > 0) d = Math.min(d, dist[i - 1]! + 1);
+      if (y > 0) d = Math.min(d, dist[i - gw]! + 1);
+      if (x > 0 && y > 0) d = Math.min(d, dist[i - gw - 1]! + 1.41);
+      if (x < gw - 1 && y > 0) d = Math.min(d, dist[i - gw + 1]! + 1.41);
+      dist[i] = d;
+    }
+  for (let y = gh - 1; y >= 0; y--)
+    for (let x = gw - 1; x >= 0; x--) {
+      const i = y * gw + x;
+      if (!inside[i]) continue;
+      let d = dist[i]!;
+      if (x < gw - 1) d = Math.min(d, dist[i + 1]! + 1);
+      if (y < gh - 1) d = Math.min(d, dist[i + gw]! + 1);
+      if (x < gw - 1 && y < gh - 1) d = Math.min(d, dist[i + gw + 1]! + 1.41);
+      if (x > 0 && y < gh - 1) d = Math.min(d, dist[i + gw - 1]! + 1.41);
+      dist[i] = d;
+    }
+
+  let maxD = 1;
+  for (let i = 0; i < dist.length; i++) if (inside[i] && dist[i]! > maxD) maxD = dist[i]!;
+
+  const idx = (k: PaletteKey) => ORDER.indexOf(k) + 1;
+  const codes = new Uint8Array(gw * gh);
+
+  for (let y = 0; y < gh; y++)
+    for (let x = 0; x < gw; x++) {
+      const i = y * gw + x;
+      if (!inside[i]) continue;
+      const d = dist[i]!;
+      // "shaded" side = lower-right of the basin
+      const shaded = !inside[Math.min(gh - 1, y + 1) * gw + x] || !inside[y * gw + Math.min(gw - 1, x + 1)];
+      if (d <= 1.05) codes[i] = idx(shaded ? "waterDeep" : "waterLight");
+      else if (d > maxD * 0.55) codes[i] = idx("waterDeep");
+      else if (d <= 2.2 && shaded && hash(x * 3.7 + y * 8.3) > 0.7) codes[i] = idx("waterDeep");
+      else codes[i] = idx("waterBase");
+    }
+
+  // --- bank ring: dilate outward by bankPx --------------------------------
+  let frontier: number[] = [];
+  for (let y = 0; y < gh; y++)
+    for (let x = 0; x < gw; x++) if (inside[y * gw + x]) frontier.push(y * gw + x);
+  const claimed = Uint8Array.from(inside);
+  for (let step = 0; step < bank; step++) {
+    const next: number[] = [];
+    for (const i of frontier) {
+      const x = i % gw;
+      const y = (i / gw) | 0;
+      for (const [dx, dy] of [
+        [1, 0],
+        [-1, 0],
+        [0, 1],
+        [0, -1],
+      ] as const) {
+        const nx2 = x + dx;
+        const ny2 = y + dy;
+        if (nx2 < 0 || ny2 < 0 || nx2 >= gw || ny2 >= gh) continue;
+        const j = ny2 * gw + nx2;
+        if (claimed[j]) continue;
+        claimed[j] = 1;
+        // shadow below/right of the water, lighter bank above/left
+        const shaded = dy > 0 || dx > 0;
+        codes[j] = idx(step === 0 && shaded ? "bankShadow" : shaded ? "bankShadow" : "bankMid");
+        next.push(j);
+      }
+    }
+    frontier = next;
+  }
+
+  // --- deterministic highlight clusters -----------------------------------
+  const { density, lenMin, lenMax } = riverConfig;
+  let waterCells = 0;
+  for (let i = 0; i < codes.length; i++) if (inside[i]) waterCells++;
+  const avgLen = (lenMin + lenMax) / 2;
+  const target = Math.max(0, Math.round((waterCells * density) / avgLen));
+  let seed = 0;
+  for (let i = 0; i < id.length; i++) seed = (seed * 31 + id.charCodeAt(i)) % 9973;
+
+  const clusters: LakeCluster[] = [];
+  for (let c = 0; c < target * 3 && clusters.length < target; c++) {
+    const h1 = hash(seed + c * 3.11);
+    const h2 = hash(seed + c * 7.53 + 1.7);
+    const h3 = hash(seed + c * 11.9 + 4.2);
+    const len = Math.round(lenMin + h3 * (lenMax - lenMin));
+    const x = Math.floor(h1 * (gw - len - 1));
+    const y = Math.floor(h2 * (gh - 1));
+    let ok = true;
+    for (let s = 0; s < len; s++) {
+      const i = y * gw + x + s;
+      if (!inside[i] || dist[i]! < 1.8) {
+        ok = false;
+        break;
+      }
+    }
+    if (!ok) continue;
+    clusters.push({
+      gx: x,
+      gy: y,
+      len,
+      phase: Math.floor(hash(seed + c * 2.9 + 6.4) * 4),
+      foam: h3 > 0.9,
+      thickEnd: h1 > 0.7,
+    });
+  }
+
+  const mask: LakeMask = { cell, gx0, gy0, gw, gh, codes, clusters };
+  LAKE_MASKS.set(key, mask);
+  return mask;
+}
+
+/** Static pixel banks + water body for a lake polygon. */
+export function drawLakePixels(
+  ctx: CanvasRenderingContext2D,
+  id: string,
+  poly: [number, number][],
+  palette: RiverPalette,
+  view: { x: number; y: number; w: number; h: number },
+) {
+  const mask = buildLakeMask(id, poly);
+  const { cell, gx0, gy0, gw, gh, codes } = mask;
+  const vx0 = Math.max(0, Math.floor((view.x - cell) / cell) - gx0);
+  const vx1 = Math.min(gw - 1, Math.ceil((view.x + view.w + cell) / cell) - gx0);
+  const vy0 = Math.max(0, Math.floor((view.y - cell) / cell) - gy0);
+  const vy1 = Math.min(gh - 1, Math.ceil((view.y + view.h + cell) / cell) - gy0);
+
+  const prev = ctx.imageSmoothingEnabled;
+  ctx.imageSmoothingEnabled = false;
+  for (let y = vy0; y <= vy1; y++) {
+    const wy = (gy0 + y) * cell;
+    let x = vx0;
+    while (x <= vx1) {
+      const code = codes[y * gw + x]!;
+      if (!code) {
+        x++;
+        continue;
+      }
+      let run = 1;
+      while (x + run <= vx1 && codes[y * gw + x + run] === code) run++;
+      ctx.fillStyle = palette[ORDER[code - 1]!];
+      ctx.fillRect((gx0 + x) * cell, wy, cell * run, cell);
+      x += run;
+    }
+  }
+  ctx.imageSmoothingEnabled = prev;
+}
+
+/** Sparse discrete highlight pulse across the lake surface. */
+export function drawLakeHighlights(
+  ctx: CanvasRenderingContext2D,
+  id: string,
+  poly: [number, number][],
+  palette: RiverPalette,
+  frame: number,
+) {
+  const mask = buildLakeMask(id, poly);
+  const { cell, gx0, gy0 } = mask;
+  const prev = ctx.imageSmoothingEnabled;
+  ctx.imageSmoothingEnabled = false;
+  for (const cl of mask.clusters) {
+    const f = riverConfig.animate ? (frame + cl.phase) & 3 : 0;
+    if (f === 3) continue;
+    const len = f === 1 ? cl.len + 1 : cl.len;
+    const broken = f === 2;
+    ctx.fillStyle = cl.foam ? palette.foamHighlight : palette.waterLight;
+    for (let s = 0; s < len; s++) {
+      if (broken && s % 2 === 1 && s > len / 2) continue;
+      const i = cl.gy * mask.gw + cl.gx + s;
+      if (i >= mask.codes.length || !mask.codes[i]) continue;
+      const x = (gx0 + cl.gx + s) * cell;
+      const y = (gy0 + cl.gy) * cell;
+      ctx.fillRect(x, y, cell, cell);
+      if (cl.thickEnd && s === len - 1) ctx.fillRect(x, y - cell, cell, cell);
+    }
+  }
+  ctx.imageSmoothingEnabled = prev;
+}
