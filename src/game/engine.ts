@@ -20,6 +20,8 @@ import {
   WORLD_W,
   biomeAt,
   blockedAt,
+  hasClearance,
+  nudgeClear,
   ITEMS,
   item,
   statWithPlus,
