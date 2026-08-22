@@ -2155,6 +2155,39 @@ export function blockedAt(x: number, y: number, pad = 10, wadesRivers = false): 
 
 }
 
+/**
+ * Blanket spawn rule: a body of `radius` centred here must sit at least
+ * `margin` world pixels clear of anything impassable. Samples the centre plus
+ * a ring of 8 points so an object can never overlap a wall/footprint corner
+ * that the centre point alone would miss.
+ */
+export function hasClearance(x: number, y: number, radius = 12, margin = 10): boolean {
+  const r = radius + margin;
+  if (blockedAt(x, y, r)) return false;
+  for (let a = 0; a < 8; a++) {
+    const ang = (a / 8) * Math.PI * 2;
+    if (blockedAt(x + Math.cos(ang) * r, y + Math.sin(ang) * r, 1)) return false;
+  }
+  return true;
+}
+
+/** nearest spot around (x,y) with full clearance — used to nudge NPCs out of buildings */
+export function nudgeClear(x: number, y: number, radius = 12, margin = 10): { x: number; y: number } {
+  if (hasClearance(x, y, radius, margin)) return { x, y };
+  for (let ring = 16; ring <= 320; ring += 16) {
+    for (let a = 0; a < 16; a++) {
+      const ang = (a / 16) * Math.PI * 2;
+      const nx = x + Math.cos(ang) * ring;
+      const ny = y + Math.sin(ang) * ring;
+      if (nx < 40 || ny < 40 || nx > WORLD_W - 40 || ny > WORLD_H - 40) continue;
+      if (hasClearance(nx, ny, radius, margin)) return { x: nx, y: ny };
+    }
+  }
+  return { x, y };
+}
+
+
+
 /** true when the point stands on a jetty deck (so it is walkable over water) */
 export function onJetty(x: number, y: number, pad = 0): boolean {
   for (const l of LAKES) {
@@ -2477,6 +2510,8 @@ function nearTown(x: number, y: number) {
 function spawnable(x: number, y: number) {
   if (x < 90 || y < 90 || x > WORLD_W - 90 || y > WORLD_H - 90) return false;
   if (blockedAt(x, y, 34)) return false;
+  // blanket rule: the whole body, not just the centre, keeps 10px off anything solid
+  if (!hasClearance(x, y, 14, 10)) return false;
   if (inLake(x, y, 50)) return false;
   if (onJetty(x, y, 40) || onBridge(x, y, -60)) return false;
   if (nearRoad(x, y, 40)) return false;

@@ -20,6 +20,8 @@ import {
   WORLD_W,
   biomeAt,
   blockedAt,
+  hasClearance,
+  nudgeClear,
   ITEMS,
   item,
   statWithPlus,
@@ -959,16 +961,20 @@ export class GameEngine {
 
 
   private spawnNpcs() {
-    this.npcState = NPCS.map((n) => ({
-      role: n.id,
-      x: n.x,
-      y: n.y,
-      hx: n.x,
-      hy: n.y,
-      tx: n.x,
-      ty: n.y,
-      wait: Math.random() * 4,
-    }));
+    this.npcState = NPCS.map((n) => {
+      // blanket rule: never stand inside (or within 10px of) an impassable object
+      const p = nudgeClear(n.x, n.y, 12, 10);
+      return {
+        role: n.id,
+        x: p.x,
+        y: p.y,
+        hx: p.x,
+        hy: p.y,
+        tx: p.x,
+        ty: p.y,
+        wait: Math.random() * 4,
+      };
+    });
   }
 
   private npcPos(role: NpcRole): LiveNpc | undefined {
@@ -980,7 +986,7 @@ export class GameEngine {
     for (let i = 0; i < 8; i++) {
       const x = n.hx + (Math.random() - 0.5) * 80;
       const y = n.hy + (Math.random() - 0.5) * 80;
-      if (blockedAt(x, y, 10)) continue;
+      if (!hasClearance(x, y, 12, 10)) continue;
       let clash = false;
       for (const o of this.npcState) {
         if (o === n) continue;
@@ -1006,10 +1012,11 @@ export class GameEngine {
       const r = 24 + Math.random() * (maxR - 24);
       const x = c.cx + Math.cos(a) * r;
       const y = c.cy + Math.sin(a) * r;
-      if (!blockedAt(x, y, 12)) return { x, y };
+      if (hasClearance(x, y, 12, 10)) return { x, y };
     }
-    return { x: c.cx, y: c.cy };
+    return nudgeClear(c.cx, c.cy, 12, 10);
   }
+
 
   private spawnVillagers() {
     const robes = ["#f2c6d8", "#9fd6b8", "#f5d78a", "#bcd9ec", "#e0bff0", "#f6c9a8"];
@@ -2285,8 +2292,9 @@ export class GameEngine {
           v.tx = s.x;
           v.ty = s.y;
         } else {
-          v.tx = v.hx + (Math.random() - 0.5) * 240;
-          v.ty = v.hy + (Math.random() - 0.5) * 170;
+          const t = nudgeClear(v.hx + (Math.random() - 0.5) * 240, v.hy + (Math.random() - 0.5) * 170, 12, 10);
+          v.tx = t.x;
+          v.ty = t.y;
         }
 
       } else {
