@@ -3269,6 +3269,13 @@ export class GameEngine {
     drawables.push({ y: this.py, fn: () => this.drawPlayer(ctx) });
     drawables.sort((a, b) => a.y - b.y);
     for (const d of drawables) d.fn();
+    // NPC labels are always on top so players can spot services behind buildings
+    for (const live of this.npcState) {
+      if (!this.inView(live.x, live.y, view)) continue;
+      const def = NPCS.find((n) => n.id === live.role);
+      if (!def) continue;
+      this.drawNpcOverlay(ctx, def, live);
+    }
     this.drawEmoteMenu(ctx);
 
 
@@ -5205,6 +5212,16 @@ export class GameEngine {
       ctx.fillRect(x + 3, y - 19, 3, 4);
     }
 
+  }
+
+  /**
+   * Nameplate, quest marker and service badge. Drawn in a pass after every
+   * y-sorted sprite so buildings can never hide an NPC's label.
+   */
+  private drawNpcOverlay(ctx: CanvasRenderingContext2D, npc: NpcDef, live: LiveNpc) {
+    const bob = Math.sin(this.time * 2 + live.hx) * 1.6;
+    const x = live.x;
+    const y = live.y - bob;
     const marker =
       npc.services.includes("quests")
         ? this.quest
