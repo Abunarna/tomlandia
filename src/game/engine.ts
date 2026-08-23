@@ -76,6 +76,7 @@ import house2Asset from "@/assets/house2.png.asset.json";
 import house3Asset from "@/assets/house3.png.asset.json";
 import castleAsset from "@/assets/castle.png.asset.json";
 import towerAsset from "@/assets/tower.png.asset.json";
+import elderAsset from "@/assets/npc-elder.png.asset.json";
 
 import {
   MARKET_FEE,
@@ -148,6 +149,24 @@ function drawGroundDecals(
     ctx.drawImage(e.img, d.x - d.w / 2, d.y - d.h / 2, d.w, d.h);
     ctx.imageSmoothingEnabled = smooth;
   }
+}
+
+/**
+ * Village elder portrait sprite (81x158 source), drawn instead of the generic
+ * NPC blob. Scaled so its on-screen height matches the knight player sprite
+ * (~59 world px).
+ */
+const ELDER_SRC_W = 81;
+const ELDER_SRC_H = 158;
+const ELDER_DRAW_H = 59;
+let elderImg: HTMLImageElement | null = null;
+let elderReady = false;
+if (typeof window !== "undefined") {
+  elderImg = new Image();
+  elderImg.onload = () => {
+    elderReady = true;
+  };
+  elderImg.src = elderAsset.url;
 }
 
 /** Landmark sprites, keyed by landmark id. */
@@ -4979,21 +4998,30 @@ export class GameEngine {
     const x = live.x;
     const y = live.y - bob;
     this.shadow(ctx, live.x, live.y + 16, 15);
-    ctx.fillStyle = npc.robe;
-    ctx.beginPath();
-    ctx.roundRect(x - 11, y - 6, 22, 22, 7);
-    ctx.fill();
-    ctx.fillStyle = "#ffe0c2";
-    ctx.beginPath();
-    ctx.arc(x, y - 18, 14, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = npc.hair;
-    ctx.beginPath();
-    ctx.arc(x, y - 22, 14, Math.PI, 0);
-    ctx.fill();
-    ctx.fillStyle = "#4a3b52";
-    ctx.fillRect(x - 5, y - 19, 3, 4);
-    ctx.fillRect(x + 3, y - 19, 3, 4);
+    if (npc.id === "elder" && elderImg && elderReady) {
+      const h = ELDER_DRAW_H;
+      const w = Math.round((ELDER_SRC_W / ELDER_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(elderImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else {
+      ctx.fillStyle = npc.robe;
+      ctx.beginPath();
+      ctx.roundRect(x - 11, y - 6, 22, 22, 7);
+      ctx.fill();
+      ctx.fillStyle = "#ffe0c2";
+      ctx.beginPath();
+      ctx.arc(x, y - 18, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = npc.hair;
+      ctx.beginPath();
+      ctx.arc(x, y - 22, 14, Math.PI, 0);
+      ctx.fill();
+      ctx.fillStyle = "#4a3b52";
+      ctx.fillRect(x - 5, y - 19, 3, 4);
+      ctx.fillRect(x + 3, y - 19, 3, 4);
+    }
 
     const marker =
       npc.services.includes("quests")
