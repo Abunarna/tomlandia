@@ -84,6 +84,7 @@ import bankerAsset from "@/assets/npc-banker.png.asset.json";
 import exchangeAsset from "@/assets/npc-exchange.png.asset.json";
 import merchantAsset from "@/assets/npc-merchant.png.asset.json";
 import smelterAsset from "@/assets/npc-smelter.png.asset.json";
+import gearUpgraderAsset from "@/assets/npc-gear-upgrader.png.asset.json";
 
 import {
   MARKET_FEE,
