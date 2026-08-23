@@ -1648,8 +1648,8 @@ export class GameEngine {
 
   tapWorld(sx: number, sy: number) {
     const rect = this.canvas.getBoundingClientRect();
-    const wx = sx - rect.left + this.cam.x;
-    const wy = sy - rect.top + this.cam.y;
+    const wx = (sx - rect.left) / this.zoom + this.cam.x;
+    const wy = (sy - rect.top) / this.zoom + this.cam.y;
 
     // An open emote radial swallows the tap: pick an option, or dismiss it.
     const menu = this.emoteMenu;
@@ -3165,7 +3165,7 @@ export class GameEngine {
     const c = this.terrainCache;
     if (
       c &&
-      c.scale === this.dpr &&
+      c.scale === this.dpr * this.zoom &&
       c.river === riverVersion &&
       view.x >= c.x &&
       view.y >= c.y &&
@@ -3179,7 +3179,7 @@ export class GameEngine {
     const h = Math.ceil(view.h) + M * 2;
     const x = Math.floor(view.x) - M;
     const y = Math.floor(view.y) - M;
-    const s = this.dpr;
+    const s = this.dpr * this.zoom;
     const reuse = c && c.w === w && c.h === h && c.scale === s;
     const make = (old: HTMLCanvasElement | null) => {
       const cv = reuse && old ? old : document.createElement("canvas");
