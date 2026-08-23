@@ -455,7 +455,7 @@ function Game() {
         onPointerDown={(e) => {
           engineRef.current?.unlockAudio();
           pinchDown(e);
-          if (pinchPts.current.size === 1) engineRef.current?.tapWorld(e.clientX, e.clientY);
+          if (!PINCH_ENABLED || pinchPts.current.size === 1) engineRef.current?.tapWorld(e.clientX, e.clientY);
         }}
         onPointerMove={pinchMove}
         onPointerUp={pinchUp}
