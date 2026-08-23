@@ -3228,7 +3228,7 @@ export class GameEngine {
     this.drawCity(octx, region);
     this.drawBarriers(octx, region);
 
-    const next = { base, over, x, y, w, h, scale: s, river: riverVersion };
+    const next = { base, over, x, y, w, h, scale: qScale, river: riverVersion };
     this.terrainCache = next;
     return next;
   }
