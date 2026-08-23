@@ -245,6 +245,30 @@ if (typeof window !== "undefined") {
   smelterImg.src = smelterAsset.url;
 }
 
+/**
+ * Grand Market clerk sprite (94x158 source), drawn for every exchange NPC.
+ * Scaled to match the knight player height.
+ */
+const EXCHANGE_SRC_W = 94;
+const EXCHANGE_SRC_H = 158;
+const EXCHANGE_DRAW_H = 59;
+const EXCHANGE_IDS = new Set([
+  "haven_exchange",
+  "sun_exchange",
+  "brook_exchange",
+  "frost_exchange",
+  "dusk_exchange",
+]);
+let exchangeImg: HTMLImageElement | null = null;
+let exchangeReady = false;
+if (typeof window !== "undefined") {
+  exchangeImg = new Image();
+  exchangeImg.onload = () => {
+    exchangeReady = true;
+  };
+  exchangeImg.src = exchangeAsset.url;
+}
+
 
 
 
