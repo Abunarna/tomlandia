@@ -5161,6 +5161,13 @@ export class GameEngine {
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(bankerImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
+    } else if (MERCHANT_IDS.has(npc.id) && merchantImg && merchantReady) {
+      const h = MERCHANT_DRAW_H;
+      const w = Math.round((MERCHANT_SRC_W / MERCHANT_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(merchantImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
     } else {
       ctx.fillStyle = npc.robe;
       ctx.beginPath();
