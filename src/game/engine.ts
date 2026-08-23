@@ -77,7 +77,7 @@ import house2Asset from "@/assets/house2.png.asset.json";
 import house3Asset from "@/assets/house3.png.asset.json";
 import castleAsset from "@/assets/castle.png.asset.json";
 import towerAsset from "@/assets/tower.png.asset.json";
-import elderAsset from "@/assets/npc-elder.png.asset.json";
+import elderAsset from "@/assets/npc-elder-v2.png.asset.json";
 import armourerAsset from "@/assets/npc-armourer.png.asset.json";
 import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
 import bankerAsset from "@/assets/npc-banker.png.asset.json";
@@ -163,8 +163,8 @@ function drawGroundDecals(
  * NPC blob. Scaled so its on-screen height matches the knight player sprite
  * (~59 world px).
  */
-const ELDER_SRC_W = 81;
-const ELDER_SRC_H = 158;
+const ELDER_SRC_W = 93;
+const ELDER_SRC_H = 155;
 const ELDER_DRAW_H = 59;
 let elderImg: HTMLImageElement | null = null;
 let elderReady = false;
