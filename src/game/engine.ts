@@ -4065,12 +4065,14 @@ export class GameEngine {
     // ice cities: concentric swept snow rings between the building rings
 
     if (ice) {
-      ctx.strokeStyle = P.ring;
-      for (const [rr, lw] of [[CITY.plazaR + 46, 20], [CITY.ringR[1]! + 12, 16]] as [number, number][]) {
-        ctx.lineWidth = lw;
-        ctx.beginPath();
-        ctx.arc(cx, cy, rr, 0, Math.PI * 2);
-        ctx.stroke();
+      if (SHOW_PATHS) {
+        ctx.strokeStyle = P.ring;
+        for (const [rr, lw] of [[CITY.plazaR + 46, 20], [CITY.ringR[1]! + 12, 16]] as [number, number][]) {
+          ctx.lineWidth = lw;
+          ctx.beginPath();
+          ctx.arc(cx, cy, rr, 0, Math.PI * 2);
+          ctx.stroke();
+        }
       }
       // drifted snow blown against the inside of the wall
       ctx.strokeStyle = "rgba(255,255,255,0.55)";
