@@ -3231,8 +3231,10 @@ export class GameEngine {
     octx.setTransform(s, 0, 0, s, 0, 0);
     octx.imageSmoothingEnabled = false;
     octx.translate(-x, -y);
-    this.drawRoads(octx, region);
-    this.drawStreets(octx, region);
+    if (SHOW_PATHS) {
+      this.drawRoads(octx, region);
+      this.drawStreets(octx, region);
+    }
     this.drawCity(octx, region);
     this.drawBarriers(octx, region);
 
