@@ -150,6 +150,24 @@ function drawGroundDecals(
   }
 }
 
+/**
+ * Village elder portrait sprite (81x158 source), drawn instead of the generic
+ * NPC blob. Scaled so its on-screen height matches the knight player sprite
+ * (~59 world px).
+ */
+const ELDER_SRC_W = 81;
+const ELDER_SRC_H = 158;
+const ELDER_DRAW_H = 59;
+let elderImg: HTMLImageElement | null = null;
+let elderReady = false;
+if (typeof window !== "undefined") {
+  elderImg = new Image();
+  elderImg.onload = () => {
+    elderReady = true;
+  };
+  elderImg.src = elderAsset.url;
+}
+
 /** Landmark sprites, keyed by landmark id. */
 const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url, house2: house2Asset.url, house3: house3Asset.url, castle: castleAsset.url, tower1: towerAsset.url, tower2: towerAsset.url, tower3: towerAsset.url, tower4: towerAsset.url };
 const landmarkImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
