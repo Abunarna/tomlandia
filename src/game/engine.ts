@@ -3881,19 +3881,21 @@ export class GameEngine {
     // canopy cities: winding forest paths, elevated walkways and rope bridges
     if (wood) {
       ctx.lineCap = "round";
-      for (let k = 0; k < 9; k++) {
-        const a0 = (k / 9) * Math.PI * 2 + 0.31;
-        ctx.strokeStyle = P.ring;
-        ctx.lineWidth = 17;
-        ctx.beginPath();
-        for (let t = 0; t <= 1.001; t += 0.08) {
-          const a = a0 + Math.sin(t * Math.PI * 2.4 + k * 1.7) * 0.16;
-          const r = CITY.plazaR + t * (cityWallR(a0, CITY) - 46 - CITY.plazaR);
-          const [x, y] = at(a, r);
-          if (t === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+      if (SHOW_PATHS) {
+        for (let k = 0; k < 9; k++) {
+          const a0 = (k / 9) * Math.PI * 2 + 0.31;
+          ctx.strokeStyle = P.ring;
+          ctx.lineWidth = 17;
+          ctx.beginPath();
+          for (let t = 0; t <= 1.001; t += 0.08) {
+            const a = a0 + Math.sin(t * Math.PI * 2.4 + k * 1.7) * 0.16;
+            const r = CITY.plazaR + t * (cityWallR(a0, CITY) - 46 - CITY.plazaR);
+            const [x, y] = at(a, r);
+            if (t === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
         }
-        ctx.stroke();
       }
       // planked walkways arcing between the two building rings
       const walkR = (CITY.ringR[0]! + CITY.ringR[1]!) / 2 + 26;
