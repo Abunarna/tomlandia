@@ -155,7 +155,35 @@ function Game() {
     [],
   );
 
+  // Two-finger pinch zoom on the gameplay canvas.
+  const pinchPts = useRef(new Map<number, { x: number; y: number }>());
+  const pinch = useRef<{ dist: number; zoom: number } | null>(null);
 
+  const pinchDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    pinchPts.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pinchPts.current.size >= 2) {
+      const [a, b] = [...pinchPts.current.values()];
+      pinch.current = {
+        dist: Math.hypot(a.x - b.x, a.y - b.y),
+        zoom: engineRef.current?.getZoom() ?? 1,
+      };
+    }
+  };
+
+  const pinchMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!pinchPts.current.has(e.pointerId)) return;
+    pinchPts.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const g = pinch.current;
+    if (!g || pinchPts.current.size < 2) return;
+    const [a, b] = [...pinchPts.current.values()];
+    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+    if (g.dist > 0 && dist > 0) engineRef.current?.setZoom(g.zoom * (dist / g.dist));
+  };
+
+  const pinchUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    pinchPts.current.delete(e.pointerId);
+    if (pinchPts.current.size < 2) pinch.current = null;
+  };
 
 
   // Load the cloud save first, then boot the engine with it.
