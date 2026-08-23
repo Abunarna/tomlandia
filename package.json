@@ -3,13 +3,21 @@
   "private": true,
   "sideEffects": false,
   "type": "module",
+  "packageManager": "bun@1.3.14",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "test": "bun run test:unit && bun run test:static",
+    "test:unit": "bun test tests/contracts tests/fixtures",
+    "test:static": "node scripts/gate1/check-rpc-boundaries.mjs",
+    "test:db:foundation": "supabase test db supabase/tests/gate1_foundation.sql",
+    "test:db:known-defects": "supabase test db supabase/tests/gate1_known_defects.sql",
+    "test:gate1": "bun run test && bun run typecheck && bun run test:db:foundation && bun run test:db:known-defects"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
