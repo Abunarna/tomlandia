@@ -3191,7 +3191,7 @@ export class GameEngine {
       view.x >= c.x &&
       view.y >= c.y &&
       view.x + view.w <= c.x + c.w &&
-      view.y + view.h <= c.y + c.y + c.h
+      view.y + view.h <= c.y + c.h
     ) {
       return c;
     }
