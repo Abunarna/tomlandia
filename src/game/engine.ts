@@ -1762,7 +1762,9 @@ export class GameEngine {
     const s = this.dpr * this.zoom;
     this.ctx.setTransform(s, 0, 0, s, 0, 0);
     this.ctx.imageSmoothingEnabled = false;
-    this.terrainCache = null;
+    // Do NOT null the terrain cache here: ensureTerrain() quantizes the
+    // scale key, so it rebuilds only when the eased zoom crosses a 0.01
+    // step rather than on every animation frame.
   }
 
   resize() {
