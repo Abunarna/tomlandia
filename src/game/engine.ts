@@ -1648,8 +1648,8 @@ export class GameEngine {
 
   tapWorld(sx: number, sy: number) {
     const rect = this.canvas.getBoundingClientRect();
-    const wx = sx - rect.left + this.cam.x;
-    const wy = sy - rect.top + this.cam.y;
+    const wx = (sx - rect.left) / this.zoom + this.cam.x;
+    const wy = (sy - rect.top) / this.zoom + this.cam.y;
 
     // An open emote radial swallows the tap: pick an option, or dismiss it.
     const menu = this.emoteMenu;
@@ -1733,14 +1733,31 @@ export class GameEngine {
     this.save();
   }
 
-  /** CSS-pixel size of the canvas, cached so the loop never forces a layout. */
+  /** World-space size of the visible area (CSS px / zoom). */
   viewW = 0;
   viewH = 0;
 
+  /** Pinch zoom: 1 = default, 1.5 = 50% closer, 0.5 = 50% wider. */
+  zoom = 1;
+  static readonly MIN_ZOOM = 0.5;
+  static readonly MAX_ZOOM = 1.5;
+
+  /** Set the pinch-zoom level (clamped) and rebuild the view transform. */
+  setZoom(z: number) {
+    const next = Math.min(GameEngine.MAX_ZOOM, Math.max(GameEngine.MIN_ZOOM, z));
+    if (Math.abs(next - this.zoom) < 0.0005) return;
+    this.zoom = next;
+    this.resize();
+  }
+
+  getZoom() {
+    return this.zoom;
+  }
+
   resize() {
     const rect = this.canvas.getBoundingClientRect();
-    this.viewW = rect.width;
-    this.viewH = rect.height;
+    this.viewW = rect.width / this.zoom;
+    this.viewH = rect.height / this.zoom;
     // Cap the backing store: a wide desktop window at dpr 2 would otherwise
     // paint 6-10x the pixels of the portrait mobile target every frame.
     const MAX_PIXELS = 2_400_000;
@@ -1750,10 +1767,12 @@ export class GameEngine {
     this.dpr = dpr;
     this.canvas.width = Math.floor(rect.width * dpr);
     this.canvas.height = Math.floor(rect.height * dpr);
-    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const s = dpr * this.zoom;
+    this.ctx.setTransform(s, 0, 0, s, 0, 0);
     this.ctx.imageSmoothingEnabled = false;
     this.terrainCache = null;
   }
+
 
 
   /** move, but never walk into a river, rocky ridge or dense woodland */
@@ -3146,7 +3165,7 @@ export class GameEngine {
     const c = this.terrainCache;
     if (
       c &&
-      c.scale === this.dpr &&
+      c.scale === this.dpr * this.zoom &&
       c.river === riverVersion &&
       view.x >= c.x &&
       view.y >= c.y &&
@@ -3160,7 +3179,7 @@ export class GameEngine {
     const h = Math.ceil(view.h) + M * 2;
     const x = Math.floor(view.x) - M;
     const y = Math.floor(view.y) - M;
-    const s = this.dpr;
+    const s = this.dpr * this.zoom;
     const reuse = c && c.w === w && c.h === h && c.scale === s;
     const make = (old: HTMLCanvasElement | null) => {
       const cv = reuse && old ? old : document.createElement("canvas");
