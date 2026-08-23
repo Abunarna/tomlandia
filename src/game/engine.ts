@@ -78,6 +78,7 @@ import castleAsset from "@/assets/castle.png.asset.json";
 import towerAsset from "@/assets/tower.png.asset.json";
 import elderAsset from "@/assets/npc-elder.png.asset.json";
 import smithAsset from "@/assets/npc-smith.png.asset.json";
+import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
 
 import {
   MARKET_FEE,
@@ -186,6 +187,25 @@ if (typeof window !== "undefined") {
   };
   smithImg.src = smithAsset.url;
 }
+
+/**
+ * Weaponsmith portrait sprite (771x1613 source), drawn for all weaponsmith
+ * NPCs. Scaled to match the knight player height.
+ */
+const WEAPONSMITH_SRC_W = 771;
+const WEAPONSMITH_SRC_H = 1613;
+const WEAPONSMITH_DRAW_H = 59;
+const WEAPONSMITH_IDS = new Set(["haven_weaponsmith", "sun_weaponsmith", "frost_weaponsmith"]);
+let weaponsmithImg: HTMLImageElement | null = null;
+let weaponsmithReady = false;
+if (typeof window !== "undefined") {
+  weaponsmithImg = new Image();
+  weaponsmithImg.onload = () => {
+    weaponsmithReady = true;
+  };
+  weaponsmithImg.src = weaponsmithAsset.url;
+}
+
 
 /** Landmark sprites, keyed by landmark id. */
 
@@ -5031,6 +5051,13 @@ export class GameEngine {
       const smooth = ctx.imageSmoothingEnabled;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(smithImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else if (WEAPONSMITH_IDS.has(npc.id) && weaponsmithImg && weaponsmithReady) {
+      const h = WEAPONSMITH_DRAW_H;
+      const w = Math.round((WEAPONSMITH_SRC_W / WEAPONSMITH_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(weaponsmithImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
     } else {
       ctx.fillStyle = npc.robe;
