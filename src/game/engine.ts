@@ -80,6 +80,7 @@ import elderAsset from "@/assets/npc-elder.png.asset.json";
 import smithAsset from "@/assets/npc-smith.png.asset.json";
 import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
 import bankerAsset from "@/assets/npc-banker.png.asset.json";
+import smelterAsset from "@/assets/npc-smelter.png.asset.json";
 
 import {
   MARKET_FEE,
