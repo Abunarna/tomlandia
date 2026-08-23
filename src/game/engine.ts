@@ -1737,21 +1737,32 @@ export class GameEngine {
   viewW = 0;
   viewH = 0;
 
-  /** Pinch zoom: 1 = default, 1.5 = 50% closer, 0.5 = 50% wider. */
+  /** Pinch zoom: 1 = default, 1.4 = 40% closer, 0.8 = 20% wider. */
   zoom = 1;
-  static readonly MIN_ZOOM = 0.5;
-  static readonly MAX_ZOOM = 1.5;
+  /** Smoothed target the visible zoom eases toward. */
+  targetZoom = 1;
+  static readonly MIN_ZOOM = 0.8;
+  static readonly MAX_ZOOM = 1.4;
 
-  /** Set the pinch-zoom level (clamped) and rebuild the view transform. */
+  /** Set the intended pinch-zoom level (clamped); the view eases toward it. */
   setZoom(z: number) {
-    const next = Math.min(GameEngine.MAX_ZOOM, Math.max(GameEngine.MIN_ZOOM, z));
-    if (Math.abs(next - this.zoom) < 0.0005) return;
-    this.zoom = next;
-    this.resize();
+    this.targetZoom = Math.min(GameEngine.MAX_ZOOM, Math.max(GameEngine.MIN_ZOOM, z));
   }
 
+  /** Returns the intended zoom level (what the pinch anchors against). */
   getZoom() {
-    return this.zoom;
+    return this.targetZoom;
+  }
+
+  /** Re-apply the current zoom to the canvas transform + viewport dims. */
+  private applyZoomTransform() {
+    const rect = this.canvas.getBoundingClientRect();
+    this.viewW = rect.width / this.zoom;
+    this.viewH = rect.height / this.zoom;
+    const s = this.dpr * this.zoom;
+    this.ctx.setTransform(s, 0, 0, s, 0, 0);
+    this.ctx.imageSmoothingEnabled = false;
+    this.terrainCache = null;
   }
 
   resize() {
