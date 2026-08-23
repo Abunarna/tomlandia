@@ -5025,6 +5025,13 @@ export class GameEngine {
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(elderImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
+    } else if (npc.id === "haven_armourer" && smithImg && smithReady) {
+      const h = SMITH_DRAW_H;
+      const w = Math.round((SMITH_SRC_W / SMITH_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(smithImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
     } else {
       ctx.fillStyle = npc.robe;
       ctx.beginPath();
