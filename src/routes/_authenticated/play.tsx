@@ -156,11 +156,15 @@ function Game() {
   );
 
   // Two-finger pinch zoom on the gameplay canvas.
+  // DISABLED: pinch zoom doesn't feel great yet — the logic below is kept intact
+  // so we can re-enable (and tune) it later. Set PINCH_ENABLED to true to restore.
+  const PINCH_ENABLED = false;
   type P = { x: number; y: number };
   const pinchPts = useRef(new Map<number, P>());
   const pinch = useRef<{ dist: number; zoom: number } | null>(null);
 
   const pinchDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!PINCH_ENABLED) return;
     pinchPts.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (pinchPts.current.size >= 2) {
       const [a, b] = [...pinchPts.current.values()] as [P, P];
@@ -172,6 +176,7 @@ function Game() {
   };
 
   const pinchMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!PINCH_ENABLED) return;
     if (!pinchPts.current.has(e.pointerId)) return;
     pinchPts.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     const g = pinch.current;
@@ -182,6 +187,7 @@ function Game() {
   };
 
   const pinchUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!PINCH_ENABLED) return;
     pinchPts.current.delete(e.pointerId);
     if (pinchPts.current.size < 2) pinch.current = null;
   };
