@@ -77,6 +77,7 @@ import house3Asset from "@/assets/house3.png.asset.json";
 import castleAsset from "@/assets/castle.png.asset.json";
 import towerAsset from "@/assets/tower.png.asset.json";
 import elderAsset from "@/assets/npc-elder.png.asset.json";
+import smithAsset from "@/assets/npc-smith.png.asset.json";
 
 import {
   MARKET_FEE,
@@ -168,6 +169,25 @@ if (typeof window !== "undefined") {
   };
   elderImg.src = elderAsset.url;
 }
+
+/**
+ * Armourer portrait sprite (81x167 source), drawn instead of the generic
+ * NPC blob for haven_armourer. Scaled to match the knight player height.
+ */
+const SMITH_SRC_W = 81;
+const SMITH_SRC_H = 167;
+const SMITH_DRAW_H = 59;
+let smithImg: HTMLImageElement | null = null;
+let smithReady = false;
+if (typeof window !== "undefined") {
+  smithImg = new Image();
+  smithImg.onload = () => {
+    smithReady = true;
+  };
+  smithImg.src = smithAsset.url;
+}
+
+/** Landmark sprites, keyed by landmark id. */
 
 /** Landmark sprites, keyed by landmark id. */
 const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url, house2: house2Asset.url, house3: house3Asset.url, castle: castleAsset.url, tower1: towerAsset.url, tower2: towerAsset.url, tower3: towerAsset.url, tower4: towerAsset.url };
