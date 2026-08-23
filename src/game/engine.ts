@@ -5079,7 +5079,14 @@ export class GameEngine {
     const x = live.x;
     const y = live.y - bob;
     this.shadow(ctx, live.x, live.y + 16, 15);
-    if (npc.id === "elder" && elderImg && elderReady) {
+    if (SMELTER_IDS.has(npc.id) && smelterImg && smelterReady) {
+      const h = SMELTER_DRAW_H;
+      const w = Math.round((SMELTER_SRC_W / SMELTER_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(smelterImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else if (npc.id === "elder" && elderImg && elderReady) {
       const h = ELDER_DRAW_H;
       const w = Math.round((ELDER_SRC_W / ELDER_SRC_H) * h);
       const smooth = ctx.imageSmoothingEnabled;
