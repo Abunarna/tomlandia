@@ -156,13 +156,14 @@ function Game() {
   );
 
   // Two-finger pinch zoom on the gameplay canvas.
-  const pinchPts = useRef(new Map<number, { x: number; y: number }>());
+  type P = { x: number; y: number };
+  const pinchPts = useRef(new Map<number, P>());
   const pinch = useRef<{ dist: number; zoom: number } | null>(null);
 
   const pinchDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     pinchPts.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (pinchPts.current.size >= 2) {
-      const [a, b] = [...pinchPts.current.values()];
+      const [a, b] = [...pinchPts.current.values()] as [P, P];
       pinch.current = {
         dist: Math.hypot(a.x - b.x, a.y - b.y),
         zoom: engineRef.current?.getZoom() ?? 1,
@@ -175,7 +176,7 @@ function Game() {
     pinchPts.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     const g = pinch.current;
     if (!g || pinchPts.current.size < 2) return;
-    const [a, b] = [...pinchPts.current.values()];
+    const [a, b] = [...pinchPts.current.values()] as [P, P];
     const dist = Math.hypot(a.x - b.x, a.y - b.y);
     if (g.dist > 0 && dist > 0) engineRef.current?.setZoom(g.zoom * (dist / g.dist));
   };
