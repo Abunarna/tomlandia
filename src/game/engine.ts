@@ -3179,15 +3179,19 @@ export class GameEngine {
 
   private ensureTerrain(view: { x: number; y: number; w: number; h: number }) {
     const M = 256;
+    // Quantize the scale key so sub-pixel zoom easing doesn't rebuild the
+    // terrain cache every animation frame.
+    const s = this.dpr * this.zoom;
+    const qScale = Math.round(s * 100) / 100;
     const c = this.terrainCache;
     if (
       c &&
-      c.scale === this.dpr * this.zoom &&
+      c.scale === qScale &&
       c.river === riverVersion &&
       view.x >= c.x &&
       view.y >= c.y &&
       view.x + view.w <= c.x + c.w &&
-      view.y + view.h <= c.y + c.h
+      view.y + view.h <= c.y + c.y + c.h
     ) {
       return c;
     }
@@ -3196,8 +3200,7 @@ export class GameEngine {
     const h = Math.ceil(view.h) + M * 2;
     const x = Math.floor(view.x) - M;
     const y = Math.floor(view.y) - M;
-    const s = this.dpr * this.zoom;
-    const reuse = c && c.w === w && c.h === h && c.scale === s;
+    const reuse = c && c.w === w && c.h === h && c.scale === qScale;
     const make = (old: HTMLCanvasElement | null) => {
       const cv = reuse && old ? old : document.createElement("canvas");
       cv.width = Math.floor(w * s);
