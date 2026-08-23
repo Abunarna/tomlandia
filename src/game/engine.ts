@@ -106,6 +106,13 @@ import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId
  */
 const BRIDGE_SRC_W = 52;
 const BRIDGE_SRC_H = 90;
+
+/**
+ * Roads, town streets and in-city plazas/ring roads/alleys are hidden while the
+ * world moves to the pixel-art landmark style. Bridges and Grand Haven's mud
+ * decal are unaffected. Flip to re-enable the painted path network.
+ */
+const SHOW_PATHS = false;
 export const BRIDGE_ASPECT = BRIDGE_SRC_W / BRIDGE_SRC_H;
 let bridgeImg: HTMLImageElement | null = null;
 let bridgeReady = false;
@@ -3231,8 +3238,10 @@ export class GameEngine {
     octx.setTransform(s, 0, 0, s, 0, 0);
     octx.imageSmoothingEnabled = false;
     octx.translate(-x, -y);
-    this.drawRoads(octx, region);
-    this.drawStreets(octx, region);
+    if (SHOW_PATHS) {
+      this.drawRoads(octx, region);
+      this.drawStreets(octx, region);
+    }
     this.drawCity(octx, region);
     this.drawBarriers(octx, region);
 
@@ -3842,7 +3851,7 @@ export class GameEngine {
     // --- plaza + ring road + spokes to each gate
     // Grand Haven is rebuilt from pixel-art landmark assets: leave the ground
     // bare (no brown plaza disc, no ring-road circle).
-    if (CITY.key !== "grand-haven") {
+    if (SHOW_PATHS && CITY.key !== "grand-haven") {
       ctx.fillStyle = P.plaza;
       ctx.beginPath();
       ctx.arc(cx, cy, CITY.plazaR, 0, Math.PI * 2);
@@ -3862,7 +3871,7 @@ export class GameEngine {
     // read as ugly untextured smears over everything else
 
     // sandstone cities get narrow winding medina alleys between the rings
-    if (sand) {
+    if (SHOW_PATHS && sand) {
       ctx.strokeStyle = P.ring;
       ctx.lineWidth = 15;
       for (let k = 0; k < 11; k++) {
@@ -3881,19 +3890,21 @@ export class GameEngine {
     // canopy cities: winding forest paths, elevated walkways and rope bridges
     if (wood) {
       ctx.lineCap = "round";
-      for (let k = 0; k < 9; k++) {
-        const a0 = (k / 9) * Math.PI * 2 + 0.31;
-        ctx.strokeStyle = P.ring;
-        ctx.lineWidth = 17;
-        ctx.beginPath();
-        for (let t = 0; t <= 1.001; t += 0.08) {
-          const a = a0 + Math.sin(t * Math.PI * 2.4 + k * 1.7) * 0.16;
-          const r = CITY.plazaR + t * (cityWallR(a0, CITY) - 46 - CITY.plazaR);
-          const [x, y] = at(a, r);
-          if (t === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+      if (SHOW_PATHS) {
+        for (let k = 0; k < 9; k++) {
+          const a0 = (k / 9) * Math.PI * 2 + 0.31;
+          ctx.strokeStyle = P.ring;
+          ctx.lineWidth = 17;
+          ctx.beginPath();
+          for (let t = 0; t <= 1.001; t += 0.08) {
+            const a = a0 + Math.sin(t * Math.PI * 2.4 + k * 1.7) * 0.16;
+            const r = CITY.plazaR + t * (cityWallR(a0, CITY) - 46 - CITY.plazaR);
+            const [x, y] = at(a, r);
+            if (t === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
         }
-        ctx.stroke();
       }
       // planked walkways arcing between the two building rings
       const walkR = (CITY.ringR[0]! + CITY.ringR[1]!) / 2 + 26;
@@ -3944,27 +3955,29 @@ export class GameEngine {
     if (goth) {
       ctx.strokeStyle = "#453e50";
       ctx.lineCap = "round";
-      for (let i = 0; i < 14; i++) {
-        const a0 = (i / 14) * Math.PI * 2 + 0.2;
-        ctx.lineWidth = 12 + ((i * 5) % 9);
-        ctx.beginPath();
-        let a = a0;
-        for (let r = CITY.plazaR + 10; r < CITY.wallR - 26; r += 22) {
-          a += Math.sin(r * 0.031 + i * 2.1) * 0.075;
-          const [x, y] = at(a, r);
-          if (r === CITY.plazaR + 10) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+      if (SHOW_PATHS) {
+        for (let i = 0; i < 14; i++) {
+          const a0 = (i / 14) * Math.PI * 2 + 0.2;
+          ctx.lineWidth = 12 + ((i * 5) % 9);
+          ctx.beginPath();
+          let a = a0;
+          for (let r = CITY.plazaR + 10; r < CITY.wallR - 26; r += 22) {
+            a += Math.sin(r * 0.031 + i * 2.1) * 0.075;
+            const [x, y] = at(a, r);
+            if (r === CITY.plazaR + 10) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
         }
-        ctx.stroke();
-      }
-      // a couple of dead-end cross alleys, because of course
-      for (let i = 0; i < 7; i++) {
-        const a = (i / 7) * Math.PI * 2 + 0.9;
-        const r = CITY.plazaR + 70 + ((i * 47) % 130);
-        ctx.lineWidth = 9;
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, a, a + 0.55 + (i % 3) * 0.18);
-        ctx.stroke();
+        // a couple of dead-end cross alleys, because of course
+        for (let i = 0; i < 7; i++) {
+          const a = (i / 7) * Math.PI * 2 + 0.9;
+          const r = CITY.plazaR + 70 + ((i * 47) % 130);
+          ctx.lineWidth = 9;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, a, a + 0.55 + (i % 3) * 0.18);
+          ctx.stroke();
+        }
       }
       ctx.lineCap = "butt";
       // dead grass and puddles on the plaza
@@ -4065,12 +4078,14 @@ export class GameEngine {
     // ice cities: concentric swept snow rings between the building rings
 
     if (ice) {
-      ctx.strokeStyle = P.ring;
-      for (const [rr, lw] of [[CITY.plazaR + 46, 20], [CITY.ringR[1]! + 12, 16]] as [number, number][]) {
-        ctx.lineWidth = lw;
-        ctx.beginPath();
-        ctx.arc(cx, cy, rr, 0, Math.PI * 2);
-        ctx.stroke();
+      if (SHOW_PATHS) {
+        ctx.strokeStyle = P.ring;
+        for (const [rr, lw] of [[CITY.plazaR + 46, 20], [CITY.ringR[1]! + 12, 16]] as [number, number][]) {
+          ctx.lineWidth = lw;
+          ctx.beginPath();
+          ctx.arc(cx, cy, rr, 0, Math.PI * 2);
+          ctx.stroke();
+        }
       }
       // drifted snow blown against the inside of the wall
       ctx.strokeStyle = "rgba(255,255,255,0.55)";
