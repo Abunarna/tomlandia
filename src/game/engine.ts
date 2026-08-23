@@ -79,6 +79,7 @@ import towerAsset from "@/assets/tower.png.asset.json";
 import elderAsset from "@/assets/npc-elder.png.asset.json";
 import smithAsset from "@/assets/npc-smith.png.asset.json";
 import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
+import bankerAsset from "@/assets/npc-banker.png.asset.json";
 
 import {
   MARKET_FEE,
@@ -204,6 +205,24 @@ if (typeof window !== "undefined") {
     weaponsmithReady = true;
   };
   weaponsmithImg.src = weaponsmithAsset.url;
+}
+
+/**
+ * Banker portrait sprite (94x158 source), drawn for all banker NPCs.
+ * Scaled to match the knight player height.
+ */
+const BANKER_SRC_W = 94;
+const BANKER_SRC_H = 158;
+const BANKER_DRAW_H = 59;
+const BANKER_IDS = new Set(["banker", "haven_banker", "brook_banker", "frost_banker", "dusk_banker"]);
+let bankerImg: HTMLImageElement | null = null;
+let bankerReady = false;
+if (typeof window !== "undefined") {
+  bankerImg = new Image();
+  bankerImg.onload = () => {
+    bankerReady = true;
+  };
+  bankerImg.src = bankerAsset.url;
 }
 
 
@@ -5058,6 +5077,13 @@ export class GameEngine {
       const smooth = ctx.imageSmoothingEnabled;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(weaponsmithImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else if (BANKER_IDS.has(npc.id) && bankerImg && bankerReady) {
+      const h = BANKER_DRAW_H;
+      const w = Math.round((BANKER_SRC_W / BANKER_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(bankerImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
     } else {
       ctx.fillStyle = npc.robe;
