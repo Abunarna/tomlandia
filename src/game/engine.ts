@@ -5179,14 +5179,14 @@ export class GameEngine {
       ctx.font = "bold 20px ui-rounded, 'Baloo 2', system-ui, sans-serif";
       ctx.textAlign = "center";
       ctx.fillStyle = "rgba(70,55,70,0.3)";
-      ctx.fillText(marker, x, y - 40 + f + 2);
+      ctx.fillText(marker, x, y - 54 + f + 2);
       ctx.fillStyle = "#ffd764";
-      ctx.fillText(marker, x, y - 40 + f);
+      ctx.fillText(marker, x, y - 54 + f);
     }
     // Merchant-type badge floating above the head.
     const icon = NPC_ICONS[npc.id];
     if (icon) {
-      const iy = y - (marker ? 62 : 44) + Math.sin(this.time * 2 + live.hx) * 1.5;
+      const iy = y - (marker ? 78 : 60) + Math.sin(this.time * 2 + live.hx) * 1.5;
       ctx.fillStyle = "rgba(70,55,70,0.22)";
       ctx.beginPath();
       ctx.roundRect(x - 13, iy - 12 + 2, 26, 24, 9);
