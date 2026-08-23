@@ -447,10 +447,16 @@ function Game() {
         ref={canvasRef}
         onPointerDown={(e) => {
           engineRef.current?.unlockAudio();
-          engineRef.current?.tapWorld(e.clientX, e.clientY);
+          pinchDown(e);
+          if (pinchPts.current.size === 1) engineRef.current?.tapWorld(e.clientX, e.clientY);
         }}
+        onPointerMove={pinchMove}
+        onPointerUp={pinchUp}
+        onPointerCancel={pinchUp}
+        onPointerLeave={pinchUp}
         className="absolute inset-0 size-full touch-none"
       />
+
 
       {/* overlays */}
       <div className="pointer-events-none absolute inset-0 flex flex-col">
