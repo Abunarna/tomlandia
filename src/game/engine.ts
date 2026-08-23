@@ -76,6 +76,7 @@ import house2Asset from "@/assets/house2.png.asset.json";
 import house3Asset from "@/assets/house3.png.asset.json";
 import castleAsset from "@/assets/castle.png.asset.json";
 import towerAsset from "@/assets/tower.png.asset.json";
+import elderAsset from "@/assets/npc-elder.png.asset.json";
 
 import {
   MARKET_FEE,
