@@ -1178,25 +1178,9 @@ export class GameEngine {
 
 
   private spawnVillagers() {
-    const robes = ["#f2c6d8", "#9fd6b8", "#f5d78a", "#bcd9ec", "#e0bff0", "#f6c9a8"];
-    const hairs = ["#5c3a2e", "#3f5f78", "#8a6a45", "#e6e0ef", "#6b4f7a"];
-    for (const c of CITIES) {
-      for (let i = 0; i < 5; i++) {
-        const s = this.villagerSpot(c);
-        this.villagers.push({
-          x: s.x,
-          y: s.y,
-          hx: c.cx,
-          hy: c.cy,
-          tx: s.x,
-          ty: s.y,
-          wait: Math.random() * 3,
-          robe: robes[Math.floor(Math.random() * robes.length)]!,
-          hair: hairs[Math.floor(Math.random() * hairs.length)]!,
-        });
-      }
-    }
+    // Generic ambient villagers were removed — towns now show only named NPCs.
   }
+
 
 
 
