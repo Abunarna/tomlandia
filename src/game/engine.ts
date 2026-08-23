@@ -77,7 +77,6 @@ import house3Asset from "@/assets/house3.png.asset.json";
 import castleAsset from "@/assets/castle.png.asset.json";
 import towerAsset from "@/assets/tower.png.asset.json";
 import elderAsset from "@/assets/npc-elder.png.asset.json";
-import smithAsset from "@/assets/npc-smith.png.asset.json";
 import armourerAsset from "@/assets/npc-armourer.png.asset.json";
 import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
 import bankerAsset from "@/assets/npc-banker.png.asset.json";
