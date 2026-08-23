@@ -80,6 +80,7 @@ import elderAsset from "@/assets/npc-elder.png.asset.json";
 import smithAsset from "@/assets/npc-smith.png.asset.json";
 import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
 import bankerAsset from "@/assets/npc-banker.png.asset.json";
+import exchangeAsset from "@/assets/npc-exchange.png.asset.json";
 import smelterAsset from "@/assets/npc-smelter.png.asset.json";
 
 import {
@@ -242,6 +243,30 @@ if (typeof window !== "undefined") {
     smelterReady = true;
   };
   smelterImg.src = smelterAsset.url;
+}
+
+/**
+ * Grand Market clerk sprite (94x158 source), drawn for every exchange NPC.
+ * Scaled to match the knight player height.
+ */
+const EXCHANGE_SRC_W = 94;
+const EXCHANGE_SRC_H = 158;
+const EXCHANGE_DRAW_H = 59;
+const EXCHANGE_IDS = new Set([
+  "haven_exchange",
+  "sun_exchange",
+  "brook_exchange",
+  "frost_exchange",
+  "dusk_exchange",
+]);
+let exchangeImg: HTMLImageElement | null = null;
+let exchangeReady = false;
+if (typeof window !== "undefined") {
+  exchangeImg = new Image();
+  exchangeImg.onload = () => {
+    exchangeReady = true;
+  };
+  exchangeImg.src = exchangeAsset.url;
 }
 
 
@@ -5106,6 +5131,13 @@ export class GameEngine {
       const smooth = ctx.imageSmoothingEnabled;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(weaponsmithImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else if (EXCHANGE_IDS.has(npc.id) && exchangeImg && exchangeReady) {
+      const h = EXCHANGE_DRAW_H;
+      const w = Math.round((EXCHANGE_SRC_W / EXCHANGE_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(exchangeImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
     } else if (BANKER_IDS.has(npc.id) && bankerImg && bankerReady) {
       const h = BANKER_DRAW_H;
