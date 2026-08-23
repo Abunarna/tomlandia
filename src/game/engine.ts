@@ -286,6 +286,24 @@ if (typeof window !== "undefined") {
   merchantImg.src = merchantAsset.url;
 }
 
+/**
+ * Gear upgrader portrait sprite (49x150 source), drawn for the
+ * haven_upgrader NPC. Scaled to match the knight player height.
+ */
+const UPGRADER_SRC_W = 49;
+const UPGRADER_SRC_H = 150;
+const UPGRADER_DRAW_H = 59;
+const UPGRADER_IDS = new Set(["haven_upgrader"]);
+let upgraderImg: HTMLImageElement | null = null;
+let upgraderReady = false;
+if (typeof window !== "undefined") {
+  upgraderImg = new Image();
+  upgraderImg.onload = () => {
+    upgraderReady = true;
+  };
+  upgraderImg.src = gearUpgraderAsset.url;
+}
+
 
 
 
