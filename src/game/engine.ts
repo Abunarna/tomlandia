@@ -81,6 +81,7 @@ import armourerAsset from "@/assets/npc-armourer.png.asset.json";
 import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
 import bankerAsset from "@/assets/npc-banker.png.asset.json";
 import exchangeAsset from "@/assets/npc-exchange.png.asset.json";
+import merchantAsset from "@/assets/npc-merchant.png.asset.json";
 import smelterAsset from "@/assets/npc-smelter.png.asset.json";
 
 import {
