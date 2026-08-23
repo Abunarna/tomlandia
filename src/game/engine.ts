@@ -2091,6 +2091,12 @@ export class GameEngine {
   }
 
   private update(dt: number) {
+    // Ease the visible zoom toward the pinch target.
+    if (Math.abs(this.zoom - this.targetZoom) > 0.0005) {
+      const k = 1 - Math.exp(-dt * 14);
+      this.zoom += (this.targetZoom - this.zoom) * k;
+      this.applyZoomTransform();
+    }
     const now = this.time;
     this.prevPx = this.px;
     this.prevPy = this.py;
