@@ -192,11 +192,11 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * Weaponsmith portrait sprite (771x1613 source), drawn for all weaponsmith
+ * Weaponsmith portrait sprite (65x151 source), drawn for all weaponsmith
  * NPCs. Scaled to match the knight player height.
  */
-const WEAPONSMITH_SRC_W = 771;
-const WEAPONSMITH_SRC_H = 1613;
+const WEAPONSMITH_SRC_W = 65;
+const WEAPONSMITH_SRC_H = 151;
 const WEAPONSMITH_DRAW_H = 59;
 const WEAPONSMITH_IDS = new Set(["haven_weaponsmith", "sun_weaponsmith", "frost_weaponsmith"]);
 let weaponsmithImg: HTMLImageElement | null = null;
