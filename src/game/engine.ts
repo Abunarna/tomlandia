@@ -77,7 +77,7 @@ import house3Asset from "@/assets/house3.png.asset.json";
 import castleAsset from "@/assets/castle.png.asset.json";
 import towerAsset from "@/assets/tower.png.asset.json";
 import elderAsset from "@/assets/npc-elder.png.asset.json";
-import smithAsset from "@/assets/npc-smith.png.asset.json";
+import armourerAsset from "@/assets/npc-armourer.png.asset.json";
 import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
 import bankerAsset from "@/assets/npc-banker.png.asset.json";
 import exchangeAsset from "@/assets/npc-exchange.png.asset.json";
@@ -175,20 +175,20 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * Armourer portrait sprite (81x167 source), drawn instead of the generic
+ * Armourer portrait sprite (58x145 source), drawn instead of the generic
  * NPC blob for haven_armourer. Scaled to match the knight player height.
  */
-const SMITH_SRC_W = 81;
-const SMITH_SRC_H = 167;
-const SMITH_DRAW_H = 59;
-let smithImg: HTMLImageElement | null = null;
-let smithReady = false;
+const ARMOURER_SRC_W = 58;
+const ARMOURER_SRC_H = 145;
+const ARMOURER_DRAW_H = 59;
+let armourerImg: HTMLImageElement | null = null;
+let armourerReady = false;
 if (typeof window !== "undefined") {
-  smithImg = new Image();
-  smithImg.onload = () => {
-    smithReady = true;
+  armourerImg = new Image();
+  armourerImg.onload = () => {
+    armourerReady = true;
   };
-  smithImg.src = smithAsset.url;
+  armourerImg.src = armourerAsset.url;
 }
 
 /**
@@ -5118,12 +5118,12 @@ export class GameEngine {
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(elderImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
-    } else if (npc.id === "haven_armourer" && smithImg && smithReady) {
-      const h = SMITH_DRAW_H;
-      const w = Math.round((SMITH_SRC_W / SMITH_SRC_H) * h);
+    } else if (npc.id === "haven_armourer" && armourerImg && armourerReady) {
+      const h = ARMOURER_DRAW_H;
+      const w = Math.round((ARMOURER_SRC_W / ARMOURER_SRC_H) * h);
       const smooth = ctx.imageSmoothingEnabled;
       ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(smithImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.drawImage(armourerImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
     } else if (WEAPONSMITH_IDS.has(npc.id) && weaponsmithImg && weaponsmithReady) {
       const h = WEAPONSMITH_DRAW_H;
