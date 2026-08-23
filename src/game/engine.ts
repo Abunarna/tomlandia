@@ -4998,21 +4998,30 @@ export class GameEngine {
     const x = live.x;
     const y = live.y - bob;
     this.shadow(ctx, live.x, live.y + 16, 15);
-    ctx.fillStyle = npc.robe;
-    ctx.beginPath();
-    ctx.roundRect(x - 11, y - 6, 22, 22, 7);
-    ctx.fill();
-    ctx.fillStyle = "#ffe0c2";
-    ctx.beginPath();
-    ctx.arc(x, y - 18, 14, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = npc.hair;
-    ctx.beginPath();
-    ctx.arc(x, y - 22, 14, Math.PI, 0);
-    ctx.fill();
-    ctx.fillStyle = "#4a3b52";
-    ctx.fillRect(x - 5, y - 19, 3, 4);
-    ctx.fillRect(x + 3, y - 19, 3, 4);
+    if (npc.id === "elder" && elderImg && elderReady) {
+      const h = ELDER_DRAW_H;
+      const w = Math.round((ELDER_SRC_W / ELDER_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(elderImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else {
+      ctx.fillStyle = npc.robe;
+      ctx.beginPath();
+      ctx.roundRect(x - 11, y - 6, 22, 22, 7);
+      ctx.fill();
+      ctx.fillStyle = "#ffe0c2";
+      ctx.beginPath();
+      ctx.arc(x, y - 18, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = npc.hair;
+      ctx.beginPath();
+      ctx.arc(x, y - 22, 14, Math.PI, 0);
+      ctx.fill();
+      ctx.fillStyle = "#4a3b52";
+      ctx.fillRect(x - 5, y - 19, 3, 4);
+      ctx.fillRect(x + 3, y - 19, 3, 4);
+    }
 
     const marker =
       npc.services.includes("quests")
