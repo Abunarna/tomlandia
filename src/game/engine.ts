@@ -1123,7 +1123,8 @@ export class GameEngine {
   private spawnNpcs() {
     this.npcState = NPCS.map((n) => {
       // blanket rule: never stand inside (or within 10px of) an impassable object
-      const p = nudgeClear(n.x, n.y, 12, 10);
+      // The Grand Haven gear upgrader has an explicitly approved accessible post.
+      const p = n.id === "haven_upgrader" ? { x: n.x, y: n.y } : nudgeClear(n.x, n.y, 12, 10);
       return {
         role: n.id,
         x: p.x,
@@ -2506,6 +2507,7 @@ export class GameEngine {
 
     // functional NPCs drift gently around their post
     for (const n of this.npcState) {
+      if (n.role === "haven_upgrader") continue;
       if (n.wait > 0) {
         n.wait -= dt;
       } else {
@@ -2534,6 +2536,7 @@ export class GameEngine {
       const a = this.npcState[i]!;
       for (let j = i + 1; j < this.npcState.length; j++) {
         const b = this.npcState[j]!;
+        if (a.role === "haven_upgrader" || b.role === "haven_upgrader") continue;
         const dx = b.x - a.x;
         const dy = b.y - a.y;
         const d = Math.hypot(dx, dy);
