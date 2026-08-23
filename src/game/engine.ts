@@ -21,6 +21,7 @@ import {
   biomeAt,
   blockedAt,
   hasClearance,
+  occludedByLandmark,
   nudgeClear,
   ITEMS,
   item,
@@ -1123,10 +1124,15 @@ export class GameEngine {
 
   /** Pick a wander destination near home that is walkable and not on top of another NPC. */
   private pickNpcTarget(n: LiveNpc) {
-    for (let i = 0; i < 8; i++) {
-      const x = n.hx + (Math.random() - 0.5) * 80;
-      const y = n.hy + (Math.random() - 0.5) * 80;
+    // market traders roam a much wider beat than the stationed craftsmen
+    const range = MERCHANT_IDS.has(n.role) ? 260 : 80;
+    for (let i = 0; i < 18; i++) {
+      const x = n.hx + (Math.random() - 0.5) * range;
+      const y = n.hy + (Math.random() - 0.5) * range;
       if (!hasClearance(x, y, 12, 10)) continue;
+      // never stop somewhere a building would hide the sprite, icon or nameplate
+      if (occludedByLandmark(x, y)) continue;
+      if (!this.npcPathClear(n.x, n.y, x, y)) continue;
       let clash = false;
       for (const o of this.npcState) {
         if (o === n) continue;
@@ -1142,6 +1148,19 @@ export class GameEngine {
     }
     n.tx = n.x;
     n.ty = n.y;
+  }
+
+  /** true when a straight walk stays walkable and clear of building occlusion */
+  private npcPathClear(x0: number, y0: number, x1: number, y1: number): boolean {
+    const steps = Math.max(2, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / 14));
+    for (let i = 1; i <= steps; i++) {
+      const t = i / steps;
+      const x = x0 + (x1 - x0) * t;
+      const y = y0 + (y1 - y0) * t;
+      if (!hasClearance(x, y, 12, 10)) return false;
+      if (occludedByLandmark(x, y)) return false;
+    }
+    return true;
   }
 
   /** a free-to-stand spot inside a town's plaza / ring road area */
@@ -2459,7 +2478,7 @@ export class GameEngine {
           const step = Math.min(d, 20 * dt);
           const nx = n.x + (dx / d) * step;
           const ny = n.y + (dy / d) * step;
-          if (blockedAt(nx, ny, 10)) {
+          if (blockedAt(nx, ny, 10) || occludedByLandmark(nx, ny)) {
             n.wait = 1 + Math.random() * 2;
             this.pickNpcTarget(n);
           } else {

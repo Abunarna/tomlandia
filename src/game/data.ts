@@ -1472,6 +1472,29 @@ export const LANDMARKS: LandmarkDef[] = [
 
 ];
 
+/**
+ * True when a character standing at (x, y) would be visually covered by a
+ * landmark sprite (or would have its nameplate / icon hidden behind one).
+ * Landmarks are y-sorted by their solid baseline, so only landmarks that draw
+ * *after* the character can occlude it.
+ */
+export function occludedByLandmark(x: number, y: number, headroom = 78, pad = 6): boolean {
+  for (const l of LANDMARKS) {
+    const baseline = l.y + l.solid.dy + l.solid.h / 2;
+    if (y >= baseline) continue; // character draws in front of this landmark
+    const left = l.x - l.w / 2 - pad;
+    const right = l.x + l.w / 2 + pad;
+    if (x < left || x > right) continue;
+    const top = l.y - l.h / 2 - pad;
+    const bottom = l.y + l.h / 2 + pad;
+    // the character occupies from (y - headroom) [nameplate/icon] down to y
+    if (y >= top && y - headroom <= bottom) return true;
+  }
+  return false;
+}
+
+
+
 /** true when the point sits inside a landmark's solid footprint */
 export function onLandmark(x: number, y: number, pad = 0): boolean {
   for (const l of LANDMARKS) {
