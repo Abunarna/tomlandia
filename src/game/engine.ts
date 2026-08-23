@@ -3842,7 +3842,7 @@ export class GameEngine {
     // --- plaza + ring road + spokes to each gate
     // Grand Haven is rebuilt from pixel-art landmark assets: leave the ground
     // bare (no brown plaza disc, no ring-road circle).
-    if (CITY.key !== "grand-haven") {
+    if (SHOW_PATHS && CITY.key !== "grand-haven") {
       ctx.fillStyle = P.plaza;
       ctx.beginPath();
       ctx.arc(cx, cy, CITY.plazaR, 0, Math.PI * 2);
@@ -3862,7 +3862,7 @@ export class GameEngine {
     // read as ugly untextured smears over everything else
 
     // sandstone cities get narrow winding medina alleys between the rings
-    if (sand) {
+    if (SHOW_PATHS && sand) {
       ctx.strokeStyle = P.ring;
       ctx.lineWidth = 15;
       for (let k = 0; k < 11; k++) {
