@@ -270,6 +270,20 @@ if (typeof window !== "undefined") {
   exchangeImg.src = exchangeAsset.url;
 }
 
+const MERCHANT_SRC_W = 95;
+const MERCHANT_SRC_H = 158;
+const MERCHANT_DRAW_H = 59;
+const MERCHANT_IDS = new Set(["merchant"]);
+let merchantImg: HTMLImageElement | null = null;
+let merchantReady = false;
+if (typeof window !== "undefined") {
+  merchantImg = new Image();
+  merchantImg.onload = () => {
+    merchantReady = true;
+  };
+  merchantImg.src = merchantAsset.url;
+}
+
 
 
 
