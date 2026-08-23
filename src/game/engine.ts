@@ -1737,21 +1737,34 @@ export class GameEngine {
   viewW = 0;
   viewH = 0;
 
-  /** Pinch zoom: 1 = default, 1.5 = 50% closer, 0.5 = 50% wider. */
+  /** Pinch zoom: 1 = default, 1.4 = 40% closer, 0.8 = 20% wider. */
   zoom = 1;
-  static readonly MIN_ZOOM = 0.5;
-  static readonly MAX_ZOOM = 1.5;
+  /** Smoothed target the visible zoom eases toward. */
+  targetZoom = 1;
+  static readonly MIN_ZOOM = 0.8;
+  static readonly MAX_ZOOM = 1.4;
 
-  /** Set the pinch-zoom level (clamped) and rebuild the view transform. */
+  /** Set the intended pinch-zoom level (clamped); the view eases toward it. */
   setZoom(z: number) {
-    const next = Math.min(GameEngine.MAX_ZOOM, Math.max(GameEngine.MIN_ZOOM, z));
-    if (Math.abs(next - this.zoom) < 0.0005) return;
-    this.zoom = next;
-    this.resize();
+    this.targetZoom = Math.min(GameEngine.MAX_ZOOM, Math.max(GameEngine.MIN_ZOOM, z));
   }
 
+  /** Returns the current visible zoom (what the pinch anchors against). */
   getZoom() {
     return this.zoom;
+  }
+
+  /** Re-apply the current zoom to the canvas transform + viewport dims. */
+  private applyZoomTransform() {
+    const rect = this.canvas.getBoundingClientRect();
+    this.viewW = rect.width / this.zoom;
+    this.viewH = rect.height / this.zoom;
+    const s = this.dpr * this.zoom;
+    this.ctx.setTransform(s, 0, 0, s, 0, 0);
+    this.ctx.imageSmoothingEnabled = false;
+    // Do NOT null the terrain cache here: ensureTerrain() quantizes the
+    // scale key, so it rebuilds only when the eased zoom crosses a 0.01
+    // step rather than on every animation frame.
   }
 
   resize() {
@@ -2080,6 +2093,12 @@ export class GameEngine {
   }
 
   private update(dt: number) {
+    // Ease the visible zoom toward the pinch target.
+    if (Math.abs(this.zoom - this.targetZoom) > 0.0005) {
+      const k = 1 - Math.exp(-dt * 14);
+      this.zoom += (this.targetZoom - this.zoom) * k;
+      this.applyZoomTransform();
+    }
     const now = this.time;
     this.prevPx = this.px;
     this.prevPy = this.py;
@@ -3162,10 +3181,14 @@ export class GameEngine {
 
   private ensureTerrain(view: { x: number; y: number; w: number; h: number }) {
     const M = 256;
+    // Quantize the scale key so sub-pixel zoom easing doesn't rebuild the
+    // terrain cache every animation frame.
+    const s = this.dpr * this.zoom;
+    const qScale = Math.round(s * 100) / 100;
     const c = this.terrainCache;
     if (
       c &&
-      c.scale === this.dpr * this.zoom &&
+      c.scale === qScale &&
       c.river === riverVersion &&
       view.x >= c.x &&
       view.y >= c.y &&
@@ -3179,8 +3202,7 @@ export class GameEngine {
     const h = Math.ceil(view.h) + M * 2;
     const x = Math.floor(view.x) - M;
     const y = Math.floor(view.y) - M;
-    const s = this.dpr * this.zoom;
-    const reuse = c && c.w === w && c.h === h && c.scale === s;
+    const reuse = c && c.w === w && c.h === h && c.scale === qScale;
     const make = (old: HTMLCanvasElement | null) => {
       const cv = reuse && old ? old : document.createElement("canvas");
       cv.width = Math.floor(w * s);
@@ -3208,7 +3230,7 @@ export class GameEngine {
     this.drawCity(octx, region);
     this.drawBarriers(octx, region);
 
-    const next = { base, over, x, y, w, h, scale: s, river: riverVersion };
+    const next = { base, over, x, y, w, h, scale: qScale, river: riverVersion };
     this.terrainCache = next;
     return next;
   }
