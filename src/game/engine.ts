@@ -106,6 +106,13 @@ import { SKILL_IDS, type EquipState, type HudSnapshot, type InvSlot, type ItemId
  */
 const BRIDGE_SRC_W = 52;
 const BRIDGE_SRC_H = 90;
+
+/**
+ * Roads, town streets and in-city plazas/ring roads/alleys are hidden while the
+ * world moves to the pixel-art landmark style. Bridges and Grand Haven's mud
+ * decal are unaffected. Flip to re-enable the painted path network.
+ */
+const SHOW_PATHS = false;
 export const BRIDGE_ASPECT = BRIDGE_SRC_W / BRIDGE_SRC_H;
 let bridgeImg: HTMLImageElement | null = null;
 let bridgeReady = false;
