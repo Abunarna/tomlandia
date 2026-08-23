@@ -3944,27 +3944,29 @@ export class GameEngine {
     if (goth) {
       ctx.strokeStyle = "#453e50";
       ctx.lineCap = "round";
-      for (let i = 0; i < 14; i++) {
-        const a0 = (i / 14) * Math.PI * 2 + 0.2;
-        ctx.lineWidth = 12 + ((i * 5) % 9);
-        ctx.beginPath();
-        let a = a0;
-        for (let r = CITY.plazaR + 10; r < CITY.wallR - 26; r += 22) {
-          a += Math.sin(r * 0.031 + i * 2.1) * 0.075;
-          const [x, y] = at(a, r);
-          if (r === CITY.plazaR + 10) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+      if (SHOW_PATHS) {
+        for (let i = 0; i < 14; i++) {
+          const a0 = (i / 14) * Math.PI * 2 + 0.2;
+          ctx.lineWidth = 12 + ((i * 5) % 9);
+          ctx.beginPath();
+          let a = a0;
+          for (let r = CITY.plazaR + 10; r < CITY.wallR - 26; r += 22) {
+            a += Math.sin(r * 0.031 + i * 2.1) * 0.075;
+            const [x, y] = at(a, r);
+            if (r === CITY.plazaR + 10) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
         }
-        ctx.stroke();
-      }
-      // a couple of dead-end cross alleys, because of course
-      for (let i = 0; i < 7; i++) {
-        const a = (i / 7) * Math.PI * 2 + 0.9;
-        const r = CITY.plazaR + 70 + ((i * 47) % 130);
-        ctx.lineWidth = 9;
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, a, a + 0.55 + (i % 3) * 0.18);
-        ctx.stroke();
+        // a couple of dead-end cross alleys, because of course
+        for (let i = 0; i < 7; i++) {
+          const a = (i / 7) * Math.PI * 2 + 0.9;
+          const r = CITY.plazaR + 70 + ((i * 47) % 130);
+          ctx.lineWidth = 9;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, a, a + 0.55 + (i % 3) * 0.18);
+          ctx.stroke();
+        }
       }
       ctx.lineCap = "butt";
       // dead grass and puddles on the plaza
