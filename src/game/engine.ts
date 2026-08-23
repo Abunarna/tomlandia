@@ -226,6 +226,27 @@ if (typeof window !== "undefined") {
   bankerImg.src = bankerAsset.url;
 }
 
+/**
+ * Smelter portrait sprite (748x1407 source), drawn for all smelter NPCs
+ * (smith, sun_smith, frost_smith). Scaled to match the knight player height.
+ */
+const SMELTER_SRC_W = 748;
+const SMELTER_SRC_H = 1407;
+const SMELTER_DRAW_H = 59;
+const SMELTER_IDS = new Set(["smith", "sun_smith", "frost_smith"]);
+let smelterImg: HTMLImageElement | null = null;
+let smelterReady = false;
+if (typeof window !== "undefined") {
+  smelterImg = new Image();
+  smelterImg.onload = () => {
+    smelterReady = true;
+  };
+  smelterImg.src = smelterAsset.url;
+}
+
+
+
+
 
 /** Landmark sprites, keyed by landmark id. */
 
