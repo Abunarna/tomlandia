@@ -5217,6 +5217,19 @@ export class GameEngine {
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(weaponsmithImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
+    } else if (UPGRADER_IDS.has(npc.id) && upgraderImg && upgraderReady) {
+      const h = UPGRADER_DRAW_H;
+      const w = Math.round((UPGRADER_SRC_W / UPGRADER_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(upgraderImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+      const h = WEAPONSMITH_DRAW_H;
+      const w = Math.round((WEAPONSMITH_SRC_W / WEAPONSMITH_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(weaponsmithImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
     } else if (EXCHANGE_IDS.has(npc.id) && exchangeImg && exchangeReady) {
       const h = EXCHANGE_DRAW_H;
       const w = Math.round((EXCHANGE_SRC_W / EXCHANGE_SRC_H) * h);
