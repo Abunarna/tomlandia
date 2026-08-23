@@ -84,6 +84,7 @@ import bankerAsset from "@/assets/npc-banker.png.asset.json";
 import exchangeAsset from "@/assets/npc-exchange.png.asset.json";
 import merchantAsset from "@/assets/npc-merchant.png.asset.json";
 import smelterAsset from "@/assets/npc-smelter.png.asset.json";
+import gearUpgraderAsset from "@/assets/npc-gear-upgrader.png.asset.json";
 
 import {
   MARKET_FEE,
@@ -283,6 +284,24 @@ if (typeof window !== "undefined") {
     merchantReady = true;
   };
   merchantImg.src = merchantAsset.url;
+}
+
+/**
+ * Gear upgrader portrait sprite (49x150 source), drawn for the
+ * haven_upgrader NPC. Scaled to match the knight player height.
+ */
+const UPGRADER_SRC_W = 49;
+const UPGRADER_SRC_H = 150;
+const UPGRADER_DRAW_H = 59;
+const UPGRADER_IDS = new Set(["haven_upgrader"]);
+let upgraderImg: HTMLImageElement | null = null;
+let upgraderReady = false;
+if (typeof window !== "undefined") {
+  upgraderImg = new Image();
+  upgraderImg.onload = () => {
+    upgraderReady = true;
+  };
+  upgraderImg.src = gearUpgraderAsset.url;
 }
 
 
@@ -5197,6 +5216,13 @@ export class GameEngine {
       const smooth = ctx.imageSmoothingEnabled;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(weaponsmithImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else if (UPGRADER_IDS.has(npc.id) && upgraderImg && upgraderReady) {
+      const h = UPGRADER_DRAW_H;
+      const w = Math.round((UPGRADER_SRC_W / UPGRADER_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(upgraderImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
     } else if (EXCHANGE_IDS.has(npc.id) && exchangeImg && exchangeReady) {
       const h = EXCHANGE_DRAW_H;
