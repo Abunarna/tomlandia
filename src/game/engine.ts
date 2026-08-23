@@ -80,6 +80,7 @@ import elderAsset from "@/assets/npc-elder.png.asset.json";
 import smithAsset from "@/assets/npc-smith.png.asset.json";
 import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
 import bankerAsset from "@/assets/npc-banker.png.asset.json";
+import smelterAsset from "@/assets/npc-smelter.png.asset.json";
 
 import {
   MARKET_FEE,
@@ -224,6 +225,27 @@ if (typeof window !== "undefined") {
   };
   bankerImg.src = bankerAsset.url;
 }
+
+/**
+ * Smelter portrait sprite (748x1407 source), drawn for all smelter NPCs
+ * (smith, sun_smith, frost_smith). Scaled to match the knight player height.
+ */
+const SMELTER_SRC_W = 748;
+const SMELTER_SRC_H = 1407;
+const SMELTER_DRAW_H = 59;
+const SMELTER_IDS = new Set(["smith", "sun_smith", "frost_smith"]);
+let smelterImg: HTMLImageElement | null = null;
+let smelterReady = false;
+if (typeof window !== "undefined") {
+  smelterImg = new Image();
+  smelterImg.onload = () => {
+    smelterReady = true;
+  };
+  smelterImg.src = smelterAsset.url;
+}
+
+
+
 
 
 /** Landmark sprites, keyed by landmark id. */
@@ -5057,7 +5079,14 @@ export class GameEngine {
     const x = live.x;
     const y = live.y - bob;
     this.shadow(ctx, live.x, live.y + 16, 15);
-    if (npc.id === "elder" && elderImg && elderReady) {
+    if (SMELTER_IDS.has(npc.id) && smelterImg && smelterReady) {
+      const h = SMELTER_DRAW_H;
+      const w = Math.round((SMELTER_SRC_W / SMELTER_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(smelterImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else if (npc.id === "elder" && elderImg && elderReady) {
       const h = ELDER_DRAW_H;
       const w = Math.round((ELDER_SRC_W / ELDER_SRC_H) * h);
       const smooth = ctx.imageSmoothingEnabled;
