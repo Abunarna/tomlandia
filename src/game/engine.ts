@@ -81,6 +81,7 @@ import armourerAsset from "@/assets/npc-armourer.png.asset.json";
 import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
 import bankerAsset from "@/assets/npc-banker.png.asset.json";
 import exchangeAsset from "@/assets/npc-exchange.png.asset.json";
+import merchantAsset from "@/assets/npc-merchant.png.asset.json";
 import smelterAsset from "@/assets/npc-smelter.png.asset.json";
 
 import {
@@ -267,6 +268,20 @@ if (typeof window !== "undefined") {
     exchangeReady = true;
   };
   exchangeImg.src = exchangeAsset.url;
+}
+
+const MERCHANT_SRC_W = 95;
+const MERCHANT_SRC_H = 158;
+const MERCHANT_DRAW_H = 59;
+const MERCHANT_IDS = new Set(["merchant"]);
+let merchantImg: HTMLImageElement | null = null;
+let merchantReady = false;
+if (typeof window !== "undefined") {
+  merchantImg = new Image();
+  merchantImg.onload = () => {
+    merchantReady = true;
+  };
+  merchantImg.src = merchantAsset.url;
 }
 
 
@@ -5145,6 +5160,13 @@ export class GameEngine {
       const smooth = ctx.imageSmoothingEnabled;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(bankerImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else if (MERCHANT_IDS.has(npc.id) && merchantImg && merchantReady) {
+      const h = MERCHANT_DRAW_H;
+      const w = Math.round((MERCHANT_SRC_W / MERCHANT_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(merchantImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
     } else {
       ctx.fillStyle = npc.robe;
