@@ -67,6 +67,18 @@ export const damageResponseSchema = z
   })
   .strict();
 
+export const attackMonsterResponseSchema = damageResponseSchema.superRefine((value, context) => {
+  if (!value.ok) return;
+  for (const key of ["leveled", "state", "buff"] as const) {
+    if (value[key] !== undefined) continue;
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: [key],
+      message: `${key} is required when attack_monster succeeds`,
+    });
+  }
+});
+
 export const fishResponseSchema = z
   .object({
     ok: z.boolean(),
@@ -223,7 +235,7 @@ export const rpcContracts = {
   },
   attack_monster: {
     request: z.object({ _id: nonNegativeInt, ...worldPoint }).strict(),
-    response: damageResponseSchema,
+    response: attackMonsterResponseSchema,
   },
   attack_boss: {
     request: z
@@ -367,6 +379,7 @@ export const rpcContractManifest = {
 
 export type HarvestResponse = z.infer<typeof harvestResponseSchema>;
 export type DamageResponse = z.infer<typeof damageResponseSchema>;
+export type AttackMonsterResponse = z.infer<typeof attackMonsterResponseSchema>;
 export type FishResponse = z.infer<typeof fishResponseSchema>;
 export type PotionResponse = z.infer<typeof potionResponseSchema>;
 export type CraftResponse = z.infer<typeof craftResponseSchema>;

@@ -65,6 +65,16 @@ describe("RPC contract registry", () => {
     expect(rpcContracts.attack_monster.response.safeParse(liveLegacyShape).success).toBe(false);
   });
 
+  test("requires every canonical key when attack_monster succeeds", () => {
+    expect(
+      rpcContracts.attack_monster.response.safeParse({
+        ok: true,
+        leveled: false,
+        state: {},
+      }).success,
+    ).toBe(false);
+  });
+
   test("accepts the canonical attack response keys", () => {
     const canonical = {
       ok: true,
