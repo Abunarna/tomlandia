@@ -2507,6 +2507,7 @@ export class GameEngine {
 
     // functional NPCs drift gently around their post
     for (const n of this.npcState) {
+      if (n.role === "haven_upgrader") continue;
       if (n.wait > 0) {
         n.wait -= dt;
       } else {
@@ -2535,6 +2536,7 @@ export class GameEngine {
       const a = this.npcState[i]!;
       for (let j = i + 1; j < this.npcState.length; j++) {
         const b = this.npcState[j]!;
+        if (a.role === "haven_upgrader" || b.role === "haven_upgrader") continue;
         const dx = b.x - a.x;
         const dy = b.y - a.y;
         const d = Math.hypot(dx, dy);
