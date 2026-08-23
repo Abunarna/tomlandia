@@ -1749,9 +1749,9 @@ export class GameEngine {
     this.targetZoom = Math.min(GameEngine.MAX_ZOOM, Math.max(GameEngine.MIN_ZOOM, z));
   }
 
-  /** Returns the intended zoom level (what the pinch anchors against). */
+  /** Returns the current visible zoom (what the pinch anchors against). */
   getZoom() {
-    return this.targetZoom;
+    return this.zoom;
   }
 
   /** Re-apply the current zoom to the canvas transform + viewport dims. */
