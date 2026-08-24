@@ -140,7 +140,6 @@ const WILLOWBROOK: CityDef = {
   moatGap: 0,
   moatW: 0,
   phase: 3.4,
-  monument: { dx: 0, dy: 0, w: 190, h: 150, kind: "oakhall" },
   gates: [
     // 1 — the fieldward gate, onto the spine road down to Grand Haven
     { angle: 2.67, half: 0.17, kind: "spine", label: "Fieldward Gate", drawbridge: false },
