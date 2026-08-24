@@ -5331,6 +5331,13 @@ export class GameEngine {
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(merchantImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
+    } else if (CHEF_IDS.has(npc.id) && chefImg && chefReady) {
+      const h = CHEF_DRAW_H;
+      const w = Math.round((CHEF_SRC_W / CHEF_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(chefImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
     } else if (TANNER_IDS.has(npc.id) && tannerImg && tannerReady) {
       const h = TANNER_DRAW_H;
       const w = Math.round((TANNER_SRC_W / TANNER_SRC_H) * h);
