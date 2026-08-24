@@ -1,0 +1,5609 @@
+{
+  "cluster_coverage": [
+    {
+      "biome": "winter",
+      "cluster_id": "monster:ancient_frost_wyrm:deepest_frontier:00",
+      "counterpart_cluster_id": "node:ancient_vein:deepest_frontier:00",
+      "counterpart_kind": "ancient_vein",
+      "counterpart_seconds": 4.74,
+      "entity_type": "monster",
+      "kind": "ancient_frost_wyrm",
+      "level_requirement": 146,
+      "reachable": true,
+      "spawn_count": 11,
+      "station_bank_seconds": 30.39,
+      "subzone": "deepest_frontier"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:ancient_frost_wyrm:deepest_frontier:01",
+      "counterpart_cluster_id": "node:ancient_vein:deepest_frontier:00",
+      "counterpart_kind": "ancient_vein",
+      "counterpart_seconds": 12.25,
+      "entity_type": "monster",
+      "kind": "ancient_frost_wyrm",
+      "level_requirement": 146,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 33.76,
+      "subzone": "deepest_frontier"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:ascendant_wyrm:deepest_frontier:00",
+      "counterpart_cluster_id": "node:ascendant_vein:deepest_frontier:00",
+      "counterpart_kind": "ascendant_vein",
+      "counterpart_seconds": 0.92,
+      "entity_type": "monster",
+      "kind": "ascendant_wyrm",
+      "level_requirement": 150,
+      "reachable": true,
+      "spawn_count": 5,
+      "station_bank_seconds": 33.43,
+      "subzone": "deepest_frontier"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:ascendant_wyrm:deepest_frontier:01",
+      "counterpart_cluster_id": "node:ascendant_vein:deepest_frontier:00",
+      "counterpart_kind": "ascendant_vein",
+      "counterpart_seconds": 9,
+      "entity_type": "monster",
+      "kind": "ascendant_wyrm",
+      "level_requirement": 150,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 29.36,
+      "subzone": "deepest_frontier"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:bandit:sunscorch_reaches:00",
+      "counterpart_cluster_id": "node:willow:willowbrook_wilds:00",
+      "counterpart_kind": "willow",
+      "counterpart_seconds": 10.4,
+      "entity_type": "monster",
+      "kind": "bandit",
+      "level_requirement": 17,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 11.84,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:bandit:sunscorch_reaches:01",
+      "counterpart_cluster_id": "node:iron:willowbrook_wilds:01",
+      "counterpart_kind": "iron",
+      "counterpart_seconds": 3.59,
+      "entity_type": "monster",
+      "kind": "bandit",
+      "level_requirement": 17,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 12.53,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:bandit:sunscorch_reaches:02",
+      "counterpart_cluster_id": "node:iron:willowbrook_wilds:01",
+      "counterpart_kind": "iron",
+      "counterpart_seconds": 14.6,
+      "entity_type": "monster",
+      "kind": "bandit",
+      "level_requirement": 17,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 9.09,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:bear:willowbrook_wilds:00",
+      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:02",
+      "counterpart_kind": "copper",
+      "counterpart_seconds": 9.17,
+      "entity_type": "monster",
+      "kind": "bear",
+      "level_requirement": 7,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 16.53,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:bear:willowbrook_wilds:01",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 7.86,
+      "entity_type": "monster",
+      "kind": "bear",
+      "level_requirement": 7,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 19.12,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:bear:willowbrook_wilds:02",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 9.74,
+      "entity_type": "monster",
+      "kind": "bear",
+      "level_requirement": 7,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 21.82,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:bear:willowbrook_wilds:03",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 11.61,
+      "entity_type": "monster",
+      "kind": "bear",
+      "level_requirement": 7,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 23.27,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:bear:willowbrook_wilds:04",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 4.02,
+      "entity_type": "monster",
+      "kind": "bear",
+      "level_requirement": 7,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 24.96,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:bear:willowbrook_wilds:05",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 9.3,
+      "entity_type": "monster",
+      "kind": "bear",
+      "level_requirement": 7,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 29.34,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:bone_reaper:duskmere_wilds:00",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 15.79,
+      "entity_type": "monster",
+      "kind": "bone_reaper",
+      "level_requirement": 36,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 21.29,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:bone_reaper:duskmere_wilds:01",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 9.15,
+      "entity_type": "monster",
+      "kind": "bone_reaper",
+      "level_requirement": 36,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 21.67,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:bone_reaper:duskmere_wilds:02",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 23.94,
+      "entity_type": "monster",
+      "kind": "bone_reaper",
+      "level_requirement": 36,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 22.78,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:bone_reaper:duskmere_wilds:03",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 24.31,
+      "entity_type": "monster",
+      "kind": "bone_reaper",
+      "level_requirement": 36,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 24.17,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:bone_reaper:duskmere_wilds:04",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 17.49,
+      "entity_type": "monster",
+      "kind": "bone_reaper",
+      "level_requirement": 36,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 16.58,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:bone_reaper:duskmere_wilds:05",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 10.45,
+      "entity_type": "monster",
+      "kind": "bone_reaper",
+      "level_requirement": 36,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 14.17,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:00",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:05",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 2.36,
+      "entity_type": "monster",
+      "kind": "chicken",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 7,
+      "station_bank_seconds": 22.72,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:02",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 1.49,
+      "entity_type": "monster",
+      "kind": "chicken",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 20.19,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:02",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:00",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 0.74,
+      "entity_type": "monster",
+      "kind": "chicken",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 8,
+      "station_bank_seconds": 17.24,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:03",
+      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:02",
+      "counterpart_kind": "copper",
+      "counterpart_seconds": 4.15,
+      "entity_type": "monster",
+      "kind": "chicken",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 4,
+      "station_bank_seconds": 13.33,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:04",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:02",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 1.67,
+      "entity_type": "monster",
+      "kind": "chicken",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 4,
+      "station_bank_seconds": 16.53,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:05",
+      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:03",
+      "counterpart_kind": "copper",
+      "counterpart_seconds": 3.51,
+      "entity_type": "monster",
+      "kind": "chicken",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 26.75,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:06",
+      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:05",
+      "counterpart_kind": "copper",
+      "counterpart_seconds": 3.35,
+      "entity_type": "monster",
+      "kind": "chicken",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 23.6,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:07",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 2.05,
+      "entity_type": "monster",
+      "kind": "chicken",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 22.98,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:cursed_knight:desert_evil_boundary:00",
+      "counterpart_cluster_id": "node:cursed_rock:duskmere_wilds:00",
+      "counterpart_kind": "cursed_rock",
+      "counterpart_seconds": 2.1,
+      "entity_type": "monster",
+      "kind": "cursed_knight",
+      "level_requirement": 70,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 13.09,
+      "subzone": "desert_evil_boundary"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:desert_raider:sunscorch_reaches:00",
+      "counterpart_cluster_id": "node:sunstone_vein:sunscorch_reaches:00",
+      "counterpart_kind": "sunstone_vein",
+      "counterpart_seconds": 2.9,
+      "entity_type": "monster",
+      "kind": "desert_raider",
+      "level_requirement": 50,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 5.43,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:00",
+      "counterpart_cluster_id": "node:oak:grand_haven_outskirts:01",
+      "counterpart_kind": "oak",
+      "counterpart_seconds": 1.67,
+      "entity_type": "monster",
+      "kind": "disgruntled_ram",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 19,
+      "station_bank_seconds": 17.5,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:01",
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:05",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 1.18,
+      "entity_type": "monster",
+      "kind": "disgruntled_ram",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 21.73,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:06",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 2.79,
+      "entity_type": "monster",
+      "kind": "disgruntled_ram",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 5,
+      "station_bank_seconds": 18.04,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:03",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 0.44,
+      "entity_type": "monster",
+      "kind": "disgruntled_ram",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 20.76,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:dune_devourer:sunscorch_reaches:00",
+      "counterpart_cluster_id": "node:runite:desert_evil_boundary:00",
+      "counterpart_kind": "runite",
+      "counterpart_seconds": 4.94,
+      "entity_type": "monster",
+      "kind": "dune_devourer",
+      "level_requirement": 60,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 7.97,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 20.91,
+      "entity_type": "monster",
+      "kind": "dust_jackal",
+      "level_requirement": 10,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 8.4,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 11.89,
+      "entity_type": "monster",
+      "kind": "dust_jackal",
+      "level_requirement": 10,
+      "reachable": true,
+      "spawn_count": 4,
+      "station_bank_seconds": 16.43,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:forest_boar:willowbrook_wilds:00",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 8.55,
+      "entity_type": "monster",
+      "kind": "forest_boar",
+      "level_requirement": 2,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 29.37,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:forest_boar:willowbrook_wilds:01",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 4.1,
+      "entity_type": "monster",
+      "kind": "forest_boar",
+      "level_requirement": 2,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 24.67,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:forest_boar:willowbrook_wilds:02",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 9.58,
+      "entity_type": "monster",
+      "kind": "forest_boar",
+      "level_requirement": 2,
+      "reachable": true,
+      "spawn_count": 5,
+      "station_bank_seconds": 18.87,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:forest_boar:willowbrook_wilds:03",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 13.45,
+      "entity_type": "monster",
+      "kind": "forest_boar",
+      "level_requirement": 2,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 24.63,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:forest_boar:willowbrook_wilds:04",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 6.48,
+      "entity_type": "monster",
+      "kind": "forest_boar",
+      "level_requirement": 2,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 22.89,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:forest_lynx:willowbrook_wilds:00",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 4.38,
+      "entity_type": "monster",
+      "kind": "forest_lynx",
+      "level_requirement": 5,
+      "reachable": true,
+      "spawn_count": 9,
+      "station_bank_seconds": 25.32,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:forest_lynx:willowbrook_wilds:01",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 9.27,
+      "entity_type": "monster",
+      "kind": "forest_lynx",
+      "level_requirement": 5,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 17.71,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:frost_giant:upper_peaks:00",
+      "counterpart_cluster_id": "node:glacial_vein:upper_peaks:00",
+      "counterpart_kind": "glacial_vein",
+      "counterpart_seconds": 1.49,
+      "entity_type": "monster",
+      "kind": "frost_giant",
+      "level_requirement": 105,
+      "reachable": true,
+      "spawn_count": 16,
+      "station_bank_seconds": 24.21,
+      "subzone": "upper_peaks"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:frost_revenant:mid_mountain:00",
+      "counterpart_cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+      "counterpart_kind": "frost_crystal_vein",
+      "counterpart_seconds": 6.02,
+      "entity_type": "monster",
+      "kind": "frost_revenant",
+      "level_requirement": 90,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 21.49,
+      "subzone": "mid_mountain"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:frost_troll:mid_mountain:00",
+      "counterpart_cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+      "counterpart_kind": "frost_crystal_vein",
+      "counterpart_seconds": 3.02,
+      "entity_type": "monster",
+      "kind": "frost_troll",
+      "level_requirement": 80,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 24.87,
+      "subzone": "mid_mountain"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:frost_wolf:lower_slopes:00",
+      "counterpart_cluster_id": "node:sunstone_vein:sunscorch_reaches:01",
+      "counterpart_kind": "sunstone_vein",
+      "counterpart_seconds": 19.19,
+      "entity_type": "monster",
+      "kind": "frost_wolf",
+      "level_requirement": 55,
+      "reachable": true,
+      "spawn_count": 20,
+      "station_bank_seconds": 26.01,
+      "subzone": "lower_slopes"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:glacial_guardian:upper_peaks:00",
+      "counterpart_cluster_id": "node:starsteel_vein:upper_peaks:00",
+      "counterpart_kind": "starsteel_vein",
+      "counterpart_seconds": 0.74,
+      "entity_type": "monster",
+      "kind": "glacial_guardian",
+      "level_requirement": 110,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 25.6,
+      "subzone": "upper_peaks"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 5.67,
+      "entity_type": "monster",
+      "kind": "goblin_brute",
+      "level_requirement": 10,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 19.05,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:05",
+      "counterpart_kind": "copper",
+      "counterpart_seconds": 1.97,
+      "entity_type": "monster",
+      "kind": "goblin",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 9,
+      "station_bank_seconds": 22.22,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:05",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 1.97,
+      "entity_type": "monster",
+      "kind": "goblin",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 17,
+      "station_bank_seconds": 19.55,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:02",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:00",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 2.05,
+      "entity_type": "monster",
+      "kind": "goblin",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 18.83,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:ice_wraith:mid_mountain:00",
+      "counterpart_cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+      "counterpart_kind": "frost_crystal_vein",
+      "counterpart_seconds": 4.33,
+      "entity_type": "monster",
+      "kind": "ice_wraith",
+      "level_requirement": 88,
+      "reachable": true,
+      "spawn_count": 11,
+      "station_bank_seconds": 23.54,
+      "subzone": "mid_mountain"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:ice_wraith:mid_mountain:01",
+      "counterpart_cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+      "counterpart_kind": "frost_crystal_vein",
+      "counterpart_seconds": 9.66,
+      "entity_type": "monster",
+      "kind": "ice_wraith",
+      "level_requirement": 88,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 21.8,
+      "subzone": "mid_mountain"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:ironback_boar:willowbrook_wilds:00",
+      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:01",
+      "counterpart_kind": "herbs",
+      "counterpart_seconds": 3.82,
+      "entity_type": "monster",
+      "kind": "ironback_boar",
+      "level_requirement": 20,
+      "reachable": true,
+      "spawn_count": 4,
+      "station_bank_seconds": 17.35,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
+      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:00",
+      "counterpart_kind": "herbs",
+      "counterpart_seconds": 3.28,
+      "entity_type": "monster",
+      "kind": "ironback_boar",
+      "level_requirement": 20,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 23.52,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:ironback_boar:willowbrook_wilds:02",
+      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:01",
+      "counterpart_kind": "herbs",
+      "counterpart_seconds": 4.82,
+      "entity_type": "monster",
+      "kind": "ironback_boar",
+      "level_requirement": 20,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 15.89,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:mithril_stalker:willowbrook_wilds:00",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 6.94,
+      "entity_type": "monster",
+      "kind": "mithril_stalker",
+      "level_requirement": 30,
+      "reachable": true,
+      "spawn_count": 5,
+      "station_bank_seconds": 17.06,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:mithril_stalker:willowbrook_wilds:01",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:02",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 2.66,
+      "entity_type": "monster",
+      "kind": "mithril_stalker",
+      "level_requirement": 30,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 23.47,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
+      "counterpart_cluster_id": "node:iron:willowbrook_wilds:01",
+      "counterpart_kind": "iron",
+      "counterpart_seconds": 2.61,
+      "entity_type": "monster",
+      "kind": "scorpion_stalker",
+      "level_requirement": 15,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 14.45,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:scorpion_stalker:sunscorch_reaches:01",
+      "counterpart_cluster_id": "node:iron:willowbrook_wilds:01",
+      "counterpart_kind": "iron",
+      "counterpart_seconds": 15.19,
+      "entity_type": "monster",
+      "kind": "scorpion_stalker",
+      "level_requirement": 15,
+      "reachable": true,
+      "spawn_count": 7,
+      "station_bank_seconds": 12.97,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:serpent:sunscorch_reaches:00",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 17.37,
+      "entity_type": "monster",
+      "kind": "serpent",
+      "level_requirement": 14,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 11.63,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:serpent:sunscorch_reaches:01",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 18.93,
+      "entity_type": "monster",
+      "kind": "serpent",
+      "level_requirement": 14,
+      "reachable": true,
+      "spawn_count": 4,
+      "station_bank_seconds": 10.63,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:serpent:sunscorch_reaches:02",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 12.35,
+      "entity_type": "monster",
+      "kind": "serpent",
+      "level_requirement": 14,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 17.45,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:serpent:sunscorch_reaches:03",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 24.1,
+      "entity_type": "monster",
+      "kind": "serpent",
+      "level_requirement": 14,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 11.23,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:serpent:sunscorch_reaches:04",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 9.35,
+      "entity_type": "monster",
+      "kind": "serpent",
+      "level_requirement": 14,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 18.2,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:shadow_beast:duskmere_wilds:00",
+      "counterpart_cluster_id": "node:palm:sunscorch_reaches:02",
+      "counterpart_kind": "palm",
+      "counterpart_seconds": 8.82,
+      "entity_type": "monster",
+      "kind": "shadow_beast",
+      "level_requirement": 41,
+      "reachable": true,
+      "spawn_count": 8,
+      "station_bank_seconds": 21.58,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:shadow_beast:duskmere_wilds:01",
+      "counterpart_cluster_id": "node:mithril:sunscorch_reaches:03",
+      "counterpart_kind": "mithril",
+      "counterpart_seconds": 9.82,
+      "entity_type": "monster",
+      "kind": "shadow_beast",
+      "level_requirement": 41,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 20.36,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:shadow_beast:duskmere_wilds:02",
+      "counterpart_cluster_id": "node:sandstone:sunscorch_reaches:02",
+      "counterpart_kind": "sandstone",
+      "counterpart_seconds": 4.82,
+      "entity_type": "monster",
+      "kind": "shadow_beast",
+      "level_requirement": 41,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 17.35,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:void_wraith:high_peaks:00",
+      "counterpart_cluster_id": "node:wyrmforged_vein:high_peaks:00",
+      "counterpart_kind": "wyrmforged_vein",
+      "counterpart_seconds": 16.4,
+      "entity_type": "monster",
+      "kind": "void_wraith",
+      "level_requirement": 130,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 30.09,
+      "subzone": "high_peaks"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:void_wraith:high_peaks:01",
+      "counterpart_cluster_id": "node:wyrmforged_vein:high_peaks:00",
+      "counterpart_kind": "wyrmforged_vein",
+      "counterpart_seconds": 1.67,
+      "entity_type": "monster",
+      "kind": "void_wraith",
+      "level_requirement": 130,
+      "reachable": true,
+      "spawn_count": 5,
+      "station_bank_seconds": 27.24,
+      "subzone": "high_peaks"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:withered_ghoul:duskmere_wilds:00",
+      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:00",
+      "counterpart_kind": "herbs",
+      "counterpart_seconds": 21.14,
+      "entity_type": "monster",
+      "kind": "withered_ghoul",
+      "level_requirement": 23,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 24.44,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:withered_ghoul:duskmere_wilds:01",
+      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:01",
+      "counterpart_kind": "herbs",
+      "counterpart_seconds": 27.85,
+      "entity_type": "monster",
+      "kind": "withered_ghoul",
+      "level_requirement": 23,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 25.99,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
+      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:01",
+      "counterpart_kind": "herbs",
+      "counterpart_seconds": 20.21,
+      "entity_type": "monster",
+      "kind": "withered_ghoul",
+      "level_requirement": 23,
+      "reachable": true,
+      "spawn_count": 8,
+      "station_bank_seconds": 17.33,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:wolf:willowbrook_wilds:00",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 8.46,
+      "entity_type": "monster",
+      "kind": "wolf",
+      "level_requirement": 3,
+      "reachable": true,
+      "spawn_count": 13,
+      "station_bank_seconds": 22.81,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "monster:wolf:willowbrook_wilds:01",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 7.15,
+      "entity_type": "monster",
+      "kind": "wolf",
+      "level_requirement": 3,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 24.32,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:wraith:duskmere_wilds:00",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 19.79,
+      "entity_type": "monster",
+      "kind": "wraith",
+      "level_requirement": 32,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 17.91,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:wraith:duskmere_wilds:01",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 25.82,
+      "entity_type": "monster",
+      "kind": "wraith",
+      "level_requirement": 32,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 24.84,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:wraith:duskmere_wilds:02",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 11.35,
+      "entity_type": "monster",
+      "kind": "wraith",
+      "level_requirement": 32,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 16.34,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "monster:wraith:duskmere_wilds:03",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_kind": "maple",
+      "counterpart_seconds": 23.79,
+      "entity_type": "monster",
+      "kind": "wraith",
+      "level_requirement": 32,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 23.65,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:wyrm_knight:high_peaks:00",
+      "counterpart_cluster_id": "node:voidsteel_vein:high_peaks:00",
+      "counterpart_kind": "voidsteel_vein",
+      "counterpart_seconds": 1.92,
+      "entity_type": "monster",
+      "kind": "wyrm_knight",
+      "level_requirement": 120,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 27.39,
+      "subzone": "high_peaks"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "monster:yeti:lower_slopes:00",
+      "counterpart_cluster_id": "node:cursed_tree:duskmere_wilds:02",
+      "counterpart_kind": "cursed_tree",
+      "counterpart_seconds": 3.02,
+      "entity_type": "monster",
+      "kind": "yeti",
+      "level_requirement": 73,
+      "reachable": true,
+      "spawn_count": 18,
+      "station_bank_seconds": 23.64,
+      "subzone": "lower_slopes"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:ancient_vein:deepest_frontier:00",
+      "counterpart_cluster_id": "monster:void_wraith:high_peaks:01",
+      "counterpart_kind": "void_wraith",
+      "counterpart_seconds": 2.28,
+      "entity_type": "node",
+      "kind": "ancient_vein",
+      "level_requirement": 140,
+      "reachable": true,
+      "spawn_count": 9,
+      "station_bank_seconds": 27.24,
+      "subzone": "deepest_frontier"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:ascendant_vein:deepest_frontier:00",
+      "counterpart_cluster_id": "monster:ascendant_wyrm:deepest_frontier:00",
+      "counterpart_kind": "ascendant_wyrm",
+      "counterpart_seconds": 0.92,
+      "entity_type": "node",
+      "kind": "ascendant_vein",
+      "level_requirement": 150,
+      "reachable": true,
+      "spawn_count": 10,
+      "station_bank_seconds": 33.43,
+      "subzone": "deepest_frontier"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:berries:grand_haven_outskirts:00",
+      "counterpart_cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "counterpart_kind": "goblin",
+      "counterpart_seconds": 3.51,
+      "entity_type": "node",
+      "kind": "berries",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 10,
+      "station_bank_seconds": 22.22,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:berries:grand_haven_outskirts:01",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:00",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 5.13,
+      "entity_type": "node",
+      "kind": "berries",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 22.72,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:berries:grand_haven_outskirts:02",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 1.49,
+      "entity_type": "node",
+      "kind": "berries",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 20.19,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:berries:grand_haven_outskirts:03",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 2.1,
+      "entity_type": "node",
+      "kind": "berries",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 17.24,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:berries:grand_haven_outskirts:04",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:00",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 3.69,
+      "entity_type": "node",
+      "kind": "berries",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 22.72,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:berries:grand_haven_outskirts:05",
+      "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:01",
+      "counterpart_kind": "disgruntled_ram",
+      "counterpart_seconds": 1.18,
+      "entity_type": "node",
+      "kind": "berries",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 21.73,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:berries:grand_haven_outskirts:06",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:04",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 2.48,
+      "entity_type": "node",
+      "kind": "berries",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 16.53,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:bloom:sunscorch_reaches:00",
+      "counterpart_cluster_id": "monster:shadow_beast:duskmere_wilds:02",
+      "counterpart_kind": "shadow_beast",
+      "counterpart_seconds": 5.25,
+      "entity_type": "node",
+      "kind": "bloom",
+      "level_requirement": 42,
+      "reachable": true,
+      "spawn_count": 10,
+      "station_bank_seconds": 17.35,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:bloom:sunscorch_reaches:01",
+      "counterpart_cluster_id": "monster:shadow_beast:duskmere_wilds:02",
+      "counterpart_kind": "shadow_beast",
+      "counterpart_seconds": 18.05,
+      "entity_type": "node",
+      "kind": "bloom",
+      "level_requirement": 42,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 17.35,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:coal_seam:willowbrook_wilds:00",
+      "counterpart_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
+      "counterpart_kind": "withered_ghoul",
+      "counterpart_seconds": 23.4,
+      "entity_type": "node",
+      "kind": "coal_seam",
+      "level_requirement": 25,
+      "reachable": true,
+      "spawn_count": 7,
+      "station_bank_seconds": 17.33,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:copper:grand_haven_outskirts:00",
+      "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:01",
+      "counterpart_kind": "disgruntled_ram",
+      "counterpart_seconds": 1.85,
+      "entity_type": "node",
+      "kind": "copper",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 21.73,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:copper:grand_haven_outskirts:01",
+      "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:00",
+      "counterpart_kind": "disgruntled_ram",
+      "counterpart_seconds": 3.46,
+      "entity_type": "node",
+      "kind": "copper",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 14,
+      "station_bank_seconds": 17.5,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:copper:grand_haven_outskirts:02",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:03",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 4.15,
+      "entity_type": "node",
+      "kind": "copper",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 4,
+      "station_bank_seconds": 13.33,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:copper:grand_haven_outskirts:03",
+      "counterpart_cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "counterpart_kind": "goblin",
+      "counterpart_seconds": 3.33,
+      "entity_type": "node",
+      "kind": "copper",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 22.22,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:copper:grand_haven_outskirts:04",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:04",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 3.51,
+      "entity_type": "node",
+      "kind": "copper",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 16.53,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:copper:grand_haven_outskirts:05",
+      "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:03",
+      "counterpart_kind": "disgruntled_ram",
+      "counterpart_seconds": 1.67,
+      "entity_type": "node",
+      "kind": "copper",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 20.76,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "node:cursed_rock:duskmere_wilds:00",
+      "counterpart_cluster_id": "monster:cursed_knight:desert_evil_boundary:00",
+      "counterpart_kind": "cursed_knight",
+      "counterpart_seconds": 2.1,
+      "entity_type": "node",
+      "kind": "cursed_rock",
+      "level_requirement": 70,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 13.09,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "node:cursed_rock:duskmere_wilds:01",
+      "counterpart_cluster_id": "monster:cursed_knight:desert_evil_boundary:00",
+      "counterpart_kind": "cursed_knight",
+      "counterpart_seconds": 8.48,
+      "entity_type": "node",
+      "kind": "cursed_rock",
+      "level_requirement": 70,
+      "reachable": true,
+      "spawn_count": 9,
+      "station_bank_seconds": 13.09,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "node:cursed_tree:duskmere_wilds:00",
+      "counterpart_cluster_id": "monster:cursed_knight:desert_evil_boundary:00",
+      "counterpart_kind": "cursed_knight",
+      "counterpart_seconds": 5.43,
+      "entity_type": "node",
+      "kind": "cursed_tree",
+      "level_requirement": 70,
+      "reachable": true,
+      "spawn_count": 7,
+      "station_bank_seconds": 13.09,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "node:cursed_tree:duskmere_wilds:01",
+      "counterpart_cluster_id": "monster:cursed_knight:desert_evil_boundary:00",
+      "counterpart_kind": "cursed_knight",
+      "counterpart_seconds": 11.45,
+      "entity_type": "node",
+      "kind": "cursed_tree",
+      "level_requirement": 70,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 13.09,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "node:cursed_tree:duskmere_wilds:02",
+      "counterpart_cluster_id": "monster:cursed_knight:desert_evil_boundary:00",
+      "counterpart_kind": "cursed_knight",
+      "counterpart_seconds": 13.09,
+      "entity_type": "node",
+      "kind": "cursed_tree",
+      "level_requirement": 70,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 13.09,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:flax:grand_haven_outskirts:00",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 0.74,
+      "entity_type": "node",
+      "kind": "flax",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 5,
+      "station_bank_seconds": 17.24,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:03",
+      "counterpart_kind": "disgruntled_ram",
+      "counterpart_seconds": 0.44,
+      "entity_type": "node",
+      "kind": "flax",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 12,
+      "station_bank_seconds": 20.76,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:flax:grand_haven_outskirts:02",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:04",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 1.67,
+      "entity_type": "node",
+      "kind": "flax",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 16.53,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:flax:grand_haven_outskirts:03",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 5.76,
+      "entity_type": "node",
+      "kind": "flax",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 20.19,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:flax:grand_haven_outskirts:04",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 3.1,
+      "entity_type": "node",
+      "kind": "flax",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 17.24,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:flax:grand_haven_outskirts:05",
+      "counterpart_cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "counterpart_kind": "goblin",
+      "counterpart_seconds": 1.97,
+      "entity_type": "node",
+      "kind": "flax",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 19.55,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+      "counterpart_cluster_id": "monster:yeti:lower_slopes:00",
+      "counterpart_kind": "yeti",
+      "counterpart_seconds": 1.18,
+      "entity_type": "node",
+      "kind": "frost_crystal_vein",
+      "level_requirement": 78,
+      "reachable": true,
+      "spawn_count": 8,
+      "station_bank_seconds": 23.64,
+      "subzone": "lower_slopes"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:frostpine:upper_peaks:00",
+      "counterpart_cluster_id": "monster:frost_revenant:mid_mountain:00",
+      "counterpart_kind": "frost_revenant",
+      "counterpart_seconds": 5.63,
+      "entity_type": "node",
+      "kind": "frostpine",
+      "level_requirement": 100,
+      "reachable": true,
+      "spawn_count": 19,
+      "station_bank_seconds": 21.49,
+      "subzone": "upper_peaks"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:frostpine:upper_peaks:01",
+      "counterpart_cluster_id": "monster:frost_revenant:mid_mountain:00",
+      "counterpart_kind": "frost_revenant",
+      "counterpart_seconds": 9.96,
+      "entity_type": "node",
+      "kind": "frostpine",
+      "level_requirement": 100,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 21.49,
+      "subzone": "upper_peaks"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:glacial_vein:upper_peaks:00",
+      "counterpart_cluster_id": "monster:frost_revenant:mid_mountain:00",
+      "counterpart_kind": "frost_revenant",
+      "counterpart_seconds": 2.72,
+      "entity_type": "node",
+      "kind": "glacial_vein",
+      "level_requirement": 100,
+      "reachable": true,
+      "spawn_count": 8,
+      "station_bank_seconds": 21.49,
+      "subzone": "upper_peaks"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:glacial_vein:upper_peaks:01",
+      "counterpart_cluster_id": "monster:frost_revenant:mid_mountain:00",
+      "counterpart_kind": "frost_revenant",
+      "counterpart_seconds": 8.15,
+      "entity_type": "node",
+      "kind": "glacial_vein",
+      "level_requirement": 100,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 21.49,
+      "subzone": "upper_peaks"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "node:gloomcap:duskmere_wilds:00",
+      "counterpart_cluster_id": "monster:dune_devourer:sunscorch_reaches:00",
+      "counterpart_kind": "dune_devourer",
+      "counterpart_seconds": 13.4,
+      "entity_type": "node",
+      "kind": "gloomcap",
+      "level_requirement": 68,
+      "reachable": true,
+      "spawn_count": 9,
+      "station_bank_seconds": 7.97,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "node:gloomcap:duskmere_wilds:01",
+      "counterpart_cluster_id": "monster:dune_devourer:sunscorch_reaches:00",
+      "counterpart_kind": "dune_devourer",
+      "counterpart_seconds": 14.68,
+      "entity_type": "node",
+      "kind": "gloomcap",
+      "level_requirement": 68,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 7.97,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "evil",
+      "cluster_id": "node:gloomcap:duskmere_wilds:02",
+      "counterpart_cluster_id": "monster:dune_devourer:sunscorch_reaches:00",
+      "counterpart_kind": "dune_devourer",
+      "counterpart_seconds": 11.65,
+      "entity_type": "node",
+      "kind": "gloomcap",
+      "level_requirement": 68,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 7.97,
+      "subzone": "duskmere_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:herbs:willowbrook_wilds:00",
+      "counterpart_cluster_id": "monster:bandit:sunscorch_reaches:01",
+      "counterpart_kind": "bandit",
+      "counterpart_seconds": 11.89,
+      "entity_type": "node",
+      "kind": "herbs",
+      "level_requirement": 18,
+      "reachable": true,
+      "spawn_count": 4,
+      "station_bank_seconds": 12.53,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:herbs:willowbrook_wilds:01",
+      "counterpart_cluster_id": "monster:bandit:sunscorch_reaches:01",
+      "counterpart_kind": "bandit",
+      "counterpart_seconds": 4.33,
+      "entity_type": "node",
+      "kind": "herbs",
+      "level_requirement": 18,
+      "reachable": true,
+      "spawn_count": 10,
+      "station_bank_seconds": 12.53,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:iron:willowbrook_wilds:00",
+      "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
+      "counterpart_kind": "scorpion_stalker",
+      "counterpart_seconds": 13.51,
+      "entity_type": "node",
+      "kind": "iron",
+      "level_requirement": 15,
+      "reachable": true,
+      "spawn_count": 11,
+      "station_bank_seconds": 14.45,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:iron:willowbrook_wilds:01",
+      "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
+      "counterpart_kind": "scorpion_stalker",
+      "counterpart_seconds": 2.61,
+      "entity_type": "node",
+      "kind": "iron",
+      "level_requirement": 15,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 14.45,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:iron:willowbrook_wilds:02",
+      "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
+      "counterpart_kind": "scorpion_stalker",
+      "counterpart_seconds": 10.56,
+      "entity_type": "node",
+      "kind": "iron",
+      "level_requirement": 15,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 14.45,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:iron:willowbrook_wilds:03",
+      "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
+      "counterpart_kind": "scorpion_stalker",
+      "counterpart_seconds": 7.3,
+      "entity_type": "node",
+      "kind": "iron",
+      "level_requirement": 15,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 14.45,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:lichen:mid_mountain:00",
+      "counterpart_cluster_id": "monster:frost_revenant:mid_mountain:00",
+      "counterpart_kind": "frost_revenant",
+      "counterpart_seconds": 2.46,
+      "entity_type": "node",
+      "kind": "lichen",
+      "level_requirement": 98,
+      "reachable": true,
+      "spawn_count": 22,
+      "station_bank_seconds": 21.49,
+      "subzone": "mid_mountain"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:maple:willowbrook_wilds:00",
+      "counterpart_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
+      "counterpart_kind": "withered_ghoul",
+      "counterpart_seconds": 18.49,
+      "entity_type": "node",
+      "kind": "maple",
+      "level_requirement": 28,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 17.33,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:maple:willowbrook_wilds:01",
+      "counterpart_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
+      "counterpart_kind": "withered_ghoul",
+      "counterpart_seconds": 24.69,
+      "entity_type": "node",
+      "kind": "maple",
+      "level_requirement": 28,
+      "reachable": true,
+      "spawn_count": 8,
+      "station_bank_seconds": 17.33,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:maple:willowbrook_wilds:02",
+      "counterpart_cluster_id": "monster:withered_ghoul:duskmere_wilds:00",
+      "counterpart_kind": "withered_ghoul",
+      "counterpart_seconds": 24.49,
+      "entity_type": "node",
+      "kind": "maple",
+      "level_requirement": 28,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 24.44,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:mithril:sunscorch_reaches:00",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 12.43,
+      "entity_type": "node",
+      "kind": "mithril",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 14.17,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:mithril:sunscorch_reaches:01",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 18.19,
+      "entity_type": "node",
+      "kind": "mithril",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 14.17,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:mithril:sunscorch_reaches:02",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:04",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 8.69,
+      "entity_type": "node",
+      "kind": "mithril",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 16.58,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:mithril:sunscorch_reaches:03",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 4.38,
+      "entity_type": "node",
+      "kind": "mithril",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 14.17,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:oak:grand_haven_outskirts:00",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:04",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 2.54,
+      "entity_type": "node",
+      "kind": "oak",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 17,
+      "station_bank_seconds": 16.53,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:oak:grand_haven_outskirts:01",
+      "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:00",
+      "counterpart_kind": "disgruntled_ram",
+      "counterpart_seconds": 1.67,
+      "entity_type": "node",
+      "kind": "oak",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 4,
+      "station_bank_seconds": 17.5,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:palm:sunscorch_reaches:00",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 8.4,
+      "entity_type": "node",
+      "kind": "palm",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 14.17,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:palm:sunscorch_reaches:01",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 16.27,
+      "entity_type": "node",
+      "kind": "palm",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 14.17,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:palm:sunscorch_reaches:02",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:04",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 3.82,
+      "entity_type": "node",
+      "kind": "palm",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 16.58,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:palm:sunscorch_reaches:03",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:04",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 13.09,
+      "entity_type": "node",
+      "kind": "palm",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 16.58,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:runite:desert_evil_boundary:00",
+      "counterpart_cluster_id": "monster:dune_devourer:sunscorch_reaches:00",
+      "counterpart_kind": "dune_devourer",
+      "counterpart_seconds": 4.94,
+      "entity_type": "node",
+      "kind": "runite",
+      "level_requirement": 60,
+      "reachable": true,
+      "spawn_count": 23,
+      "station_bank_seconds": 7.97,
+      "subzone": "desert_evil_boundary"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:sandstone:sunscorch_reaches:00",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:04",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 13.05,
+      "entity_type": "node",
+      "kind": "sandstone",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 5,
+      "station_bank_seconds": 16.58,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:sandstone:sunscorch_reaches:01",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 6.36,
+      "entity_type": "node",
+      "kind": "sandstone",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 6,
+      "station_bank_seconds": 14.17,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:sandstone:sunscorch_reaches:02",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:04",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 6.2,
+      "entity_type": "node",
+      "kind": "sandstone",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 16.58,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:sandstone:sunscorch_reaches:03",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 21.23,
+      "entity_type": "node",
+      "kind": "sandstone",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 14.17,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:starsteel_vein:upper_peaks:00",
+      "counterpart_cluster_id": "monster:glacial_guardian:upper_peaks:00",
+      "counterpart_kind": "glacial_guardian",
+      "counterpart_seconds": 0.74,
+      "entity_type": "node",
+      "kind": "starsteel_vein",
+      "level_requirement": 110,
+      "reachable": true,
+      "spawn_count": 9,
+      "station_bank_seconds": 25.6,
+      "subzone": "upper_peaks"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:sunstone_vein:sunscorch_reaches:00",
+      "counterpart_cluster_id": "monster:shadow_beast:duskmere_wilds:02",
+      "counterpart_kind": "shadow_beast",
+      "counterpart_seconds": 13.37,
+      "entity_type": "node",
+      "kind": "sunstone_vein",
+      "level_requirement": 45,
+      "reachable": true,
+      "spawn_count": 7,
+      "station_bank_seconds": 17.35,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:sunstone_vein:sunscorch_reaches:01",
+      "counterpart_cluster_id": "monster:shadow_beast:duskmere_wilds:02",
+      "counterpart_kind": "shadow_beast",
+      "counterpart_seconds": 8.74,
+      "entity_type": "node",
+      "kind": "sunstone_vein",
+      "level_requirement": 45,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 17.35,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:voidsteel_vein:high_peaks:00",
+      "counterpart_cluster_id": "monster:wyrm_knight:high_peaks:00",
+      "counterpart_kind": "wyrm_knight",
+      "counterpart_seconds": 1.92,
+      "entity_type": "node",
+      "kind": "voidsteel_vein",
+      "level_requirement": 120,
+      "reachable": true,
+      "spawn_count": 8,
+      "station_bank_seconds": 27.39,
+      "subzone": "high_peaks"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:voidsteel_vein:high_peaks:01",
+      "counterpart_cluster_id": "monster:wyrm_knight:high_peaks:00",
+      "counterpart_kind": "wyrm_knight",
+      "counterpart_seconds": 5.85,
+      "entity_type": "node",
+      "kind": "voidsteel_vein",
+      "level_requirement": 120,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 27.39,
+      "subzone": "high_peaks"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:willow:willowbrook_wilds:00",
+      "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
+      "counterpart_kind": "scorpion_stalker",
+      "counterpart_seconds": 15.58,
+      "entity_type": "node",
+      "kind": "willow",
+      "level_requirement": 15,
+      "reachable": true,
+      "spawn_count": 4,
+      "station_bank_seconds": 14.45,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:willow:willowbrook_wilds:01",
+      "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
+      "counterpart_kind": "scorpion_stalker",
+      "counterpart_seconds": 8.17,
+      "entity_type": "node",
+      "kind": "willow",
+      "level_requirement": 15,
+      "reachable": true,
+      "spawn_count": 10,
+      "station_bank_seconds": 14.45,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "winter",
+      "cluster_id": "node:wyrmforged_vein:high_peaks:00",
+      "counterpart_cluster_id": "monster:void_wraith:high_peaks:01",
+      "counterpart_kind": "void_wraith",
+      "counterpart_seconds": 1.67,
+      "entity_type": "node",
+      "kind": "wyrmforged_vein",
+      "level_requirement": 130,
+      "reachable": true,
+      "spawn_count": 9,
+      "station_bank_seconds": 27.24,
+      "subzone": "high_peaks"
+    }
+  ],
+  "content_version": "v2",
+  "intentional_cross_biome_exceptions": [
+    {
+      "basis": "The approved Bronze weapon uses Fields copper/oak and the level-10 Forest Goblin Brute trophy.",
+      "biomes": [
+        "fields",
+        "forest"
+      ],
+      "id": "bronze_fields_forest",
+      "level": 10,
+      "tier": 2
+    },
+    {
+      "basis": "The approved in-place Runite Greatsword preserves its live Ghoul Essence trophy ingredient.",
+      "biomes": [
+        "desert",
+        "evil"
+      ],
+      "id": "runite_preserved_ghoul_trophy",
+      "level": 60,
+      "tier": 7
+    },
+    {
+      "basis": "Pre-approved design exception: Desert Runite combines with Evil Woods Cursed Shard at their real boundary.",
+      "biomes": [
+        "desert",
+        "evil"
+      ],
+      "id": "shadowsteel_desert_evil_boundary",
+      "level": 70,
+      "tier": 8
+    },
+    {
+      "basis": "Froststeel intentionally upgrades the approved Shadowsteel chain with a Winter Frost Crystal.",
+      "biomes": [
+        "desert",
+        "evil",
+        "winter"
+      ],
+      "id": "froststeel_inherits_shadowsteel",
+      "level": 80,
+      "tier": 9
+    },
+    {
+      "basis": "Wyrmsteel intentionally upgrades the approved Froststeel chain with a Winter Wraith Ice Core.",
+      "biomes": [
+        "desert",
+        "evil",
+        "winter"
+      ],
+      "id": "wyrmsteel_inherits_froststeel",
+      "level": 90,
+      "tier": 10
+    }
+  ],
+  "method": {
+    "bag_capacity": 20,
+    "biome_min_levels": {
+      "desert": 10,
+      "evil": 23,
+      "fields": 1,
+      "forest": 2,
+      "winter": 55
+    },
+    "cluster_rule": "same entity kind/subzone connected within 480 world units",
+    "collision_source": "terrainBlockedAt plus every v2 node collision disc",
+    "combat_time_included": false,
+    "movement_speed_world_units_per_second": 130,
+    "path_algorithm": "8-neighbour A* with diagonal corner-cut prevention",
+    "path_cell_size": 40,
+    "station_chain": [
+      "node",
+      "monster",
+      "smelt",
+      "forge",
+      "bank"
+    ],
+    "target_node_monster_seconds": {
+      "hard": false,
+      "max": 30,
+      "min": 15
+    }
+  },
+  "schema_version": "tomlandia-gate7-reachability/v1",
+  "spawn_hash": "24130e8725da5f6e339d5037a40e81f5bcc1052a47fc29b056b36b8d8b2d31fa",
+  "spawn_issues": [],
+  "spawn_set_version": "v2",
+  "summary": {
+    "clusters_evaluated": 152,
+    "failed_tiers": 0,
+    "overall_cluster_counterpart_seconds": {
+      "median": 5.8,
+      "p90": 18.89
+    },
+    "overall_cluster_station_bank_seconds": {
+      "median": 18.12,
+      "p90": 26.01
+    },
+    "spawn_issues": 0,
+    "spawns_evaluated": 730,
+    "tiers_evaluated": 16,
+    "unreachable_clusters": 0
+  },
+  "tier_reports": [
+    {
+      "approved_exception_id": null,
+      "evaluated_clusters": 14,
+      "level_requirement": 1,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 14,
+        "median": 4.02,
+        "p90": 4.89,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "chicken",
+      "primary_node_kind": "copper",
+      "reachable_clusters": 14,
+      "requirements": {
+        "monster_items": [],
+        "node_items": [
+          {
+            "item_id": "copper_ore",
+            "producers": [
+              "copper"
+            ],
+            "quantity": 6
+          }
+        ],
+        "other_items": [],
+        "weapon": "copper_sword"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 41.34,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:00",
+          "node_monster_seconds": 4.89,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 8,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 12
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 22.14
+        },
+        {
+          "modeled_cycle_seconds": 43.78,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:01",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:01",
+          "node_monster_seconds": 4.38,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 56
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 24.58
+        },
+        {
+          "modeled_cycle_seconds": 36.68,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:03",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:02",
+          "node_monster_seconds": 4.15,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:02",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 4,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 16
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 17.48
+        },
+        {
+          "modeled_cycle_seconds": 85.46,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:05",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:03",
+          "node_monster_seconds": 3.51,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:03",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 36,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 30.26
+        },
+        {
+          "modeled_cycle_seconds": 39.24,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:04",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:04",
+          "node_monster_seconds": 3.51,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:04",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 4,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 8
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 20.04
+        },
+        {
+          "modeled_cycle_seconds": 46.15,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:06",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:05",
+          "node_monster_seconds": 3.35,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:05",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 2,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 8
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 26.95
+        },
+        {
+          "modeled_cycle_seconds": 50.09,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:00",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:01",
+          "node_monster_seconds": 8.17,
+          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 7,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 56
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 30.89
+        },
+        {
+          "modeled_cycle_seconds": 43.78,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:01",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:01",
+          "node_monster_seconds": 4.38,
+          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 56
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 24.58
+        },
+        {
+          "modeled_cycle_seconds": 41.34,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:00",
+          "node_monster_seconds": 4.89,
+          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 8,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 12
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 22.14
+        },
+        {
+          "modeled_cycle_seconds": 36.68,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:03",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:02",
+          "node_monster_seconds": 4.15,
+          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:03",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 4,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 16
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 17.48
+        },
+        {
+          "modeled_cycle_seconds": 39.24,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:04",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:04",
+          "node_monster_seconds": 3.51,
+          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:04",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 4,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 8
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 20.04
+        },
+        {
+          "modeled_cycle_seconds": 85.46,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:05",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:03",
+          "node_monster_seconds": 3.51,
+          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:05",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 36,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 30.26
+        },
+        {
+          "modeled_cycle_seconds": 46.15,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:06",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:05",
+          "node_monster_seconds": 3.35,
+          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:06",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 2,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 8
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 26.95
+        },
+        {
+          "modeled_cycle_seconds": 46.08,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:07",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:05",
+          "node_monster_seconds": 3.89,
+          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:07",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 2,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 8
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 26.88
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 1,
+      "walking_loop_seconds": {
+        "median": 24.58,
+        "p90": 30.26
+      }
+    },
+    {
+      "approved_exception_id": "bronze_fields_forest",
+      "evaluated_clusters": 7,
+      "level_requirement": 10,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 4,
+        "median": 13.33,
+        "p90": 23.1,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "goblin_brute",
+      "primary_node_kind": "copper",
+      "reachable_clusters": 7,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "brute_fang",
+            "producers": [
+              "goblin_brute"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "copper_ore",
+            "producers": [
+              "copper"
+            ],
+            "quantity": 12
+          },
+          {
+            "item_id": "oak_logs",
+            "producers": [
+              "oak"
+            ],
+            "quantity": 1
+          }
+        ],
+        "other_items": [],
+        "weapon": "bronze_sword"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 84.27,
+          "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:00",
+          "node_monster_seconds": 26.83,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "brute_fang"
+              }
+            ],
+            "gather_seconds": 38.4,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 12,
+            "shared_node_capacity": 12
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 45.87
+        },
+        {
+          "modeled_cycle_seconds": 78.05,
+          "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:01",
+          "node_monster_seconds": 20.61,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "brute_fang"
+              }
+            ],
+            "gather_seconds": 38.4,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 12,
+            "shared_node_capacity": 56
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 39.65
+        },
+        {
+          "modeled_cycle_seconds": 70.77,
+          "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:02",
+          "node_monster_seconds": 13.33,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:02",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "brute_fang"
+              }
+            ],
+            "gather_seconds": 38.4,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 12,
+            "shared_node_capacity": 16
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 32.37
+        },
+        {
+          "modeled_cycle_seconds": 139.05,
+          "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:03",
+          "node_monster_seconds": 9.6,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:03",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "brute_fang"
+              }
+            ],
+            "gather_seconds": 38.4,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 3,
+            "node_respawn_wait_seconds": 72,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 12,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 28.65
+        },
+        {
+          "modeled_cycle_seconds": 111.95,
+          "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:04",
+          "node_monster_seconds": 18.51,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:04",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "brute_fang"
+              }
+            ],
+            "gather_seconds": 38.4,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 36,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 12,
+            "shared_node_capacity": 8
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 37.55
+        },
+        {
+          "modeled_cycle_seconds": 100.96,
+          "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:05",
+          "node_monster_seconds": 7.51,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:05",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "brute_fang"
+              }
+            ],
+            "gather_seconds": 38.4,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 36,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 12,
+            "shared_node_capacity": 8
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 26.56
+        },
+        {
+          "modeled_cycle_seconds": 100.96,
+          "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:05",
+          "node_monster_seconds": 7.51,
+          "origin_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "brute_fang"
+              }
+            ],
+            "gather_seconds": 38.4,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 36,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 12,
+            "shared_node_capacity": 8
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 26.56
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 2,
+      "walking_loop_seconds": {
+        "median": 32.37,
+        "p90": 42.14
+      }
+    },
+    {
+      "approved_exception_id": null,
+      "evaluated_clusters": 7,
+      "level_requirement": 20,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 7,
+        "median": 2.1,
+        "p90": 3.2,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "ironback_boar",
+      "primary_node_kind": "iron",
+      "reachable_clusters": 7,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "ironback_tusk",
+            "producers": [
+              "ironback_boar"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "iron_ore",
+            "producers": [
+              "iron"
+            ],
+            "quantity": 6
+          },
+          {
+            "item_id": "willow_logs",
+            "producers": [
+              "willow"
+            ],
+            "quantity": 1
+          }
+        ],
+        "other_items": [],
+        "weapon": "iron_sword"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 43.45,
+          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:00",
+          "node_cluster_id": "node:iron:willowbrook_wilds:00",
+          "node_monster_seconds": 2.1,
+          "origin_cluster_id": "node:iron:willowbrook_wilds:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ironback_tusk"
+              }
+            ],
+            "gather_seconds": 24,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 4,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "iron_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 44
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 19.45
+        },
+        {
+          "modeled_cycle_seconds": 111.52,
+          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:02",
+          "node_cluster_id": "node:iron:willowbrook_wilds:01",
+          "node_monster_seconds": 3.64,
+          "origin_cluster_id": "node:iron:willowbrook_wilds:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ironback_tusk"
+              }
+            ],
+            "gather_seconds": 24,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 44,
+            "primary_node_item": "iron_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 19.52
+        },
+        {
+          "modeled_cycle_seconds": 118.42,
+          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
+          "node_cluster_id": "node:iron:willowbrook_wilds:02",
+          "node_monster_seconds": 2.9,
+          "origin_cluster_id": "node:iron:willowbrook_wilds:02",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ironback_tusk"
+              }
+            ],
+            "gather_seconds": 24,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 44,
+            "primary_node_item": "iron_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 26.42
+        },
+        {
+          "modeled_cycle_seconds": 109.81,
+          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:02",
+          "node_cluster_id": "node:iron:willowbrook_wilds:03",
+          "node_monster_seconds": 1.92,
+          "origin_cluster_id": "node:iron:willowbrook_wilds:03",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ironback_tusk"
+              }
+            ],
+            "gather_seconds": 24,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 44,
+            "primary_node_item": "iron_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 17.81
+        },
+        {
+          "modeled_cycle_seconds": 43.45,
+          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:00",
+          "node_cluster_id": "node:iron:willowbrook_wilds:00",
+          "node_monster_seconds": 2.1,
+          "origin_cluster_id": "monster:ironback_boar:willowbrook_wilds:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ironback_tusk"
+              }
+            ],
+            "gather_seconds": 24,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 4,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "iron_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 44
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 19.45
+        },
+        {
+          "modeled_cycle_seconds": 118.42,
+          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
+          "node_cluster_id": "node:iron:willowbrook_wilds:02",
+          "node_monster_seconds": 2.9,
+          "origin_cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ironback_tusk"
+              }
+            ],
+            "gather_seconds": 24,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 44,
+            "primary_node_item": "iron_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 26.42
+        },
+        {
+          "modeled_cycle_seconds": 109.81,
+          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:02",
+          "node_cluster_id": "node:iron:willowbrook_wilds:03",
+          "node_monster_seconds": 1.92,
+          "origin_cluster_id": "monster:ironback_boar:willowbrook_wilds:02",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ironback_tusk"
+              }
+            ],
+            "gather_seconds": 24,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 44,
+            "primary_node_item": "iron_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 17.81
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 3,
+      "walking_loop_seconds": {
+        "median": 19.45,
+        "p90": 26.42
+      }
+    },
+    {
+      "approved_exception_id": null,
+      "evaluated_clusters": 6,
+      "level_requirement": 30,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 6,
+        "median": 7.57,
+        "p90": 9.41,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "forest_boar",
+      "primary_node_kind": "coal_seam",
+      "reachable_clusters": 6,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "boar_tusk",
+            "producers": [
+              "forest_boar"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "coal",
+            "producers": [
+              "coal_seam"
+            ],
+            "quantity": 6
+          },
+          {
+            "item_id": "iron_ore",
+            "producers": [
+              "iron"
+            ],
+            "quantity": 6
+          },
+          {
+            "item_id": "maple_logs",
+            "producers": [
+              "maple"
+            ],
+            "quantity": 1
+          }
+        ],
+        "other_items": [],
+        "weapon": "steel_sword"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 56.19,
+          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:04",
+          "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
+          "node_monster_seconds": 2.46,
+          "origin_cluster_id": "node:coal_seam:willowbrook_wilds:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "boar_tusk"
+              }
+            ],
+            "gather_seconds": 22.56,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 2,
+            "monster_respawn_wait_seconds": 12,
+            "monster_spawns_in_cluster": 2,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "coal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 28
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 21.63
+        },
+        {
+          "modeled_cycle_seconds": 72.83,
+          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:00",
+          "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
+          "node_monster_seconds": 7.02,
+          "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "boar_tusk"
+              }
+            ],
+            "gather_seconds": 22.56,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "coal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 28
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 26.27
+        },
+        {
+          "modeled_cycle_seconds": 77.72,
+          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:01",
+          "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
+          "node_monster_seconds": 8.12,
+          "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "boar_tusk"
+              }
+            ],
+            "gather_seconds": 22.56,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "coal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 28
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 31.16
+        },
+        {
+          "modeled_cycle_seconds": 51.35,
+          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:02",
+          "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
+          "node_monster_seconds": 9.92,
+          "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:02",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "boar_tusk"
+              }
+            ],
+            "gather_seconds": 22.56,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 5,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "coal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 28
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 28.79
+        },
+        {
+          "modeled_cycle_seconds": 69.18,
+          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:03",
+          "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
+          "node_monster_seconds": 8.91,
+          "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:03",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "boar_tusk"
+              }
+            ],
+            "gather_seconds": 22.56,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "coal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 28
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 22.62
+        },
+        {
+          "modeled_cycle_seconds": 56.19,
+          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:04",
+          "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
+          "node_monster_seconds": 2.46,
+          "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:04",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "boar_tusk"
+              }
+            ],
+            "gather_seconds": 22.56,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 2,
+            "monster_respawn_wait_seconds": 12,
+            "monster_spawns_in_cluster": 2,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "coal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 28
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 21.63
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 4,
+      "walking_loop_seconds": {
+        "median": 24.45,
+        "p90": 29.98
+      }
+    },
+    {
+      "approved_exception_id": null,
+      "evaluated_clusters": 6,
+      "level_requirement": 40,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 6,
+        "median": 1.97,
+        "p90": 8.19,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "dust_jackal",
+      "primary_node_kind": "mithril",
+      "reachable_clusters": 6,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "jackal_fang",
+            "producers": [
+              "dust_jackal"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "mithril_ore",
+            "producers": [
+              "mithril"
+            ],
+            "quantity": 6
+          },
+          {
+            "item_id": "palm_logs",
+            "producers": [
+              "palm"
+            ],
+            "quantity": 1
+          },
+          {
+            "item_id": "sandstone",
+            "producers": [
+              "sandstone"
+            ],
+            "quantity": 3
+          }
+        ],
+        "other_items": [],
+        "weapon": "mithril_blade"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 46.93,
+          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
+          "node_cluster_id": "node:mithril:sunscorch_reaches:00",
+          "node_monster_seconds": 6.12,
+          "origin_cluster_id": "node:mithril:sunscorch_reaches:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "jackal_fang"
+              }
+            ],
+            "gather_seconds": 32.4,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "mithril_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 24
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 14.53
+        },
+        {
+          "modeled_cycle_seconds": 50.8,
+          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
+          "node_cluster_id": "node:mithril:sunscorch_reaches:01",
+          "node_monster_seconds": 1.97,
+          "origin_cluster_id": "node:mithril:sunscorch_reaches:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "jackal_fang"
+              }
+            ],
+            "gather_seconds": 32.4,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 4,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "mithril_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 12
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 18.4
+        },
+        {
+          "modeled_cycle_seconds": 101.67,
+          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
+          "node_cluster_id": "node:mithril:sunscorch_reaches:02",
+          "node_monster_seconds": 0.87,
+          "origin_cluster_id": "node:mithril:sunscorch_reaches:02",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "jackal_fang"
+              }
+            ],
+            "gather_seconds": 32.4,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 60,
+            "primary_node_item": "mithril_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 9.27
+        },
+        {
+          "modeled_cycle_seconds": 111.05,
+          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
+          "node_cluster_id": "node:mithril:sunscorch_reaches:03",
+          "node_monster_seconds": 10.25,
+          "origin_cluster_id": "node:mithril:sunscorch_reaches:03",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "jackal_fang"
+              }
+            ],
+            "gather_seconds": 32.4,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 60,
+            "primary_node_item": "mithril_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 18.65
+        },
+        {
+          "modeled_cycle_seconds": 101.67,
+          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
+          "node_cluster_id": "node:mithril:sunscorch_reaches:02",
+          "node_monster_seconds": 0.87,
+          "origin_cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "jackal_fang"
+              }
+            ],
+            "gather_seconds": 32.4,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 60,
+            "primary_node_item": "mithril_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 9.27
+        },
+        {
+          "modeled_cycle_seconds": 50.8,
+          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
+          "node_cluster_id": "node:mithril:sunscorch_reaches:01",
+          "node_monster_seconds": 1.97,
+          "origin_cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "jackal_fang"
+              }
+            ],
+            "gather_seconds": 32.4,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 4,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "mithril_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 12
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 18.4
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 5,
+      "walking_loop_seconds": {
+        "median": 16.46,
+        "p90": 18.52
+      }
+    },
+    {
+      "approved_exception_id": null,
+      "evaluated_clusters": 3,
+      "level_requirement": 50,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 3,
+        "median": 2.9,
+        "p90": 4.39,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "desert_raider",
+      "primary_node_kind": "sunstone_vein",
+      "reachable_clusters": 3,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "raider_fang",
+            "producers": [
+              "desert_raider"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "mithril_ore",
+            "producers": [
+              "mithril"
+            ],
+            "quantity": 6
+          },
+          {
+            "item_id": "palm_logs",
+            "producers": [
+              "palm"
+            ],
+            "quantity": 1
+          },
+          {
+            "item_id": "sandstone",
+            "producers": [
+              "sandstone"
+            ],
+            "quantity": 3
+          },
+          {
+            "item_id": "sunstone",
+            "producers": [
+              "sunstone_vein"
+            ],
+            "quantity": 6
+          }
+        ],
+        "other_items": [],
+        "weapon": "sunsteel_blade"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 34.25,
+          "monster_cluster_id": "monster:desert_raider:sunscorch_reaches:00",
+          "node_cluster_id": "node:sunstone_vein:sunscorch_reaches:00",
+          "node_monster_seconds": 2.9,
+          "origin_cluster_id": "node:sunstone_vein:sunscorch_reaches:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "raider_fang"
+              }
+            ],
+            "gather_seconds": 25.92,
+            "modeled_distinct_stacks": 6,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "sunstone",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 28
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 8.33
+        },
+        {
+          "modeled_cycle_seconds": 83.12,
+          "monster_cluster_id": "monster:desert_raider:sunscorch_reaches:00",
+          "node_cluster_id": "node:sunstone_vein:sunscorch_reaches:01",
+          "node_monster_seconds": 4.76,
+          "origin_cluster_id": "node:sunstone_vein:sunscorch_reaches:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "raider_fang"
+              }
+            ],
+            "gather_seconds": 25.92,
+            "modeled_distinct_stacks": 6,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 47,
+            "primary_node_item": "sunstone",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 10.2
+        },
+        {
+          "modeled_cycle_seconds": 34.25,
+          "monster_cluster_id": "monster:desert_raider:sunscorch_reaches:00",
+          "node_cluster_id": "node:sunstone_vein:sunscorch_reaches:00",
+          "node_monster_seconds": 2.9,
+          "origin_cluster_id": "monster:desert_raider:sunscorch_reaches:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "raider_fang"
+              }
+            ],
+            "gather_seconds": 25.92,
+            "modeled_distinct_stacks": 6,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "sunstone",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 28
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 8.33
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 6,
+      "walking_loop_seconds": {
+        "median": 8.33,
+        "p90": 9.83
+      }
+    },
+    {
+      "approved_exception_id": "runite_preserved_ghoul_trophy",
+      "evaluated_clusters": 4,
+      "level_requirement": 60,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 3,
+        "median": 10.2,
+        "p90": 14.99,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "withered_ghoul",
+      "primary_node_kind": "runite",
+      "reachable_clusters": 4,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "ghoul_essence",
+            "producers": [
+              "withered_ghoul"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "palm_logs",
+            "producers": [
+              "palm"
+            ],
+            "quantity": 1
+          },
+          {
+            "item_id": "runite_ore",
+            "producers": [
+              "runite"
+            ],
+            "quantity": 6
+          }
+        ],
+        "other_items": [],
+        "weapon": "runite_greatsword"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 65.71,
+          "monster_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
+          "node_cluster_id": "node:runite:desert_evil_boundary:00",
+          "node_monster_seconds": 6.38,
+          "origin_cluster_id": "node:runite:desert_evil_boundary:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ghoul_essence"
+              }
+            ],
+            "gather_seconds": 42,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 8,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "runite_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 92
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 23.71
+        },
+        {
+          "modeled_cycle_seconds": 105.84,
+          "monster_cluster_id": "monster:withered_ghoul:duskmere_wilds:00",
+          "node_cluster_id": "node:runite:desert_evil_boundary:00",
+          "node_monster_seconds": 15.4,
+          "origin_cluster_id": "monster:withered_ghoul:duskmere_wilds:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ghoul_essence"
+              }
+            ],
+            "gather_seconds": 42,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "runite_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 92
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 39.84
+        },
+        {
+          "modeled_cycle_seconds": 106,
+          "monster_cluster_id": "monster:withered_ghoul:duskmere_wilds:01",
+          "node_cluster_id": "node:runite:desert_evil_boundary:00",
+          "node_monster_seconds": 14.02,
+          "origin_cluster_id": "monster:withered_ghoul:duskmere_wilds:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ghoul_essence"
+              }
+            ],
+            "gather_seconds": 42,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "runite_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 92
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 40
+        },
+        {
+          "modeled_cycle_seconds": 65.71,
+          "monster_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
+          "node_cluster_id": "node:runite:desert_evil_boundary:00",
+          "node_monster_seconds": 6.38,
+          "origin_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ghoul_essence"
+              }
+            ],
+            "gather_seconds": 42,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 8,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "runite_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 92
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 23.71
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 7,
+      "walking_loop_seconds": {
+        "median": 31.78,
+        "p90": 39.95
+      }
+    },
+    {
+      "approved_exception_id": "shadowsteel_desert_evil_boundary",
+      "evaluated_clusters": 3,
+      "level_requirement": 70,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 3,
+        "median": 2.1,
+        "p90": 7.2,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "cursed_knight",
+      "primary_node_kind": "cursed_rock",
+      "reachable_clusters": 3,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "cursed_rune",
+            "producers": [
+              "cursed_knight"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "cursed_bark",
+            "producers": [
+              "cursed_tree"
+            ],
+            "quantity": 1
+          },
+          {
+            "item_id": "cursed_shard",
+            "producers": [
+              "cursed_rock"
+            ],
+            "quantity": 6
+          },
+          {
+            "item_id": "runite_ore",
+            "producers": [
+              "runite"
+            ],
+            "quantity": 6
+          }
+        ],
+        "other_items": [],
+        "weapon": "shadow_blade"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 51.2,
+          "monster_cluster_id": "monster:cursed_knight:desert_evil_boundary:00",
+          "node_cluster_id": "node:cursed_rock:duskmere_wilds:00",
+          "node_monster_seconds": 2.1,
+          "origin_cluster_id": "node:cursed_rock:duskmere_wilds:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "cursed_rune"
+              }
+            ],
+            "gather_seconds": 36,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "cursed_shard",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 8
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 15.2
+        },
+        {
+          "modeled_cycle_seconds": 57.57,
+          "monster_cluster_id": "monster:cursed_knight:desert_evil_boundary:00",
+          "node_cluster_id": "node:cursed_rock:duskmere_wilds:01",
+          "node_monster_seconds": 8.48,
+          "origin_cluster_id": "node:cursed_rock:duskmere_wilds:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "cursed_rune"
+              }
+            ],
+            "gather_seconds": 36,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "cursed_shard",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 36
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 21.57
+        },
+        {
+          "modeled_cycle_seconds": 51.2,
+          "monster_cluster_id": "monster:cursed_knight:desert_evil_boundary:00",
+          "node_cluster_id": "node:cursed_rock:duskmere_wilds:00",
+          "node_monster_seconds": 2.1,
+          "origin_cluster_id": "monster:cursed_knight:desert_evil_boundary:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "cursed_rune"
+              }
+            ],
+            "gather_seconds": 36,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "cursed_shard",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 8
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 15.2
+        }
+      ],
+      "secondary_node_kinds": [
+        "runite"
+      ],
+      "status": "pass_compact",
+      "tier_index": 8,
+      "walking_loop_seconds": {
+        "median": 15.2,
+        "p90": 20.3
+      }
+    },
+    {
+      "approved_exception_id": "froststeel_inherits_shadowsteel",
+      "evaluated_clusters": 2,
+      "level_requirement": 80,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 2,
+        "median": 3.02,
+        "p90": 3.02,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "frost_troll",
+      "primary_node_kind": "frost_crystal_vein",
+      "reachable_clusters": 2,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "troll_fang",
+            "producers": [
+              "frost_troll"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "cursed_bark",
+            "producers": [
+              "cursed_tree"
+            ],
+            "quantity": 1
+          },
+          {
+            "item_id": "cursed_shard",
+            "producers": [
+              "cursed_rock"
+            ],
+            "quantity": 6
+          },
+          {
+            "item_id": "frost_crystal",
+            "producers": [
+              "frost_crystal_vein"
+            ],
+            "quantity": 6
+          },
+          {
+            "item_id": "runite_ore",
+            "producers": [
+              "runite"
+            ],
+            "quantity": 6
+          }
+        ],
+        "other_items": [],
+        "weapon": "frost_greatblade"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 58.86,
+          "monster_cluster_id": "monster:frost_troll:mid_mountain:00",
+          "node_cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+          "node_monster_seconds": 3.02,
+          "origin_cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "troll_fang"
+              }
+            ],
+            "gather_seconds": 30.96,
+            "modeled_distinct_stacks": 6,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "frost_crystal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 32
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 27.9
+        },
+        {
+          "modeled_cycle_seconds": 58.86,
+          "monster_cluster_id": "monster:frost_troll:mid_mountain:00",
+          "node_cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+          "node_monster_seconds": 3.02,
+          "origin_cluster_id": "monster:frost_troll:mid_mountain:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "troll_fang"
+              }
+            ],
+            "gather_seconds": 30.96,
+            "modeled_distinct_stacks": 6,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "frost_crystal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 32
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 27.9
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 9,
+      "walking_loop_seconds": {
+        "median": 27.9,
+        "p90": 27.9
+      }
+    },
+    {
+      "approved_exception_id": "wyrmsteel_inherits_froststeel",
+      "evaluated_clusters": 3,
+      "level_requirement": 90,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 3,
+        "median": 4.33,
+        "p90": 8.59,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "ice_wraith",
+      "primary_node_kind": "frost_crystal_vein",
+      "reachable_clusters": 3,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "wraith_ice_core",
+            "producers": [
+              "ice_wraith"
+            ],
+            "quantity": 4
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "cursed_bark",
+            "producers": [
+              "cursed_tree"
+            ],
+            "quantity": 1
+          },
+          {
+            "item_id": "cursed_shard",
+            "producers": [
+              "cursed_rock"
+            ],
+            "quantity": 6
+          },
+          {
+            "item_id": "frost_crystal",
+            "producers": [
+              "frost_crystal_vein"
+            ],
+            "quantity": 6
+          },
+          {
+            "item_id": "runite_ore",
+            "producers": [
+              "runite"
+            ],
+            "quantity": 6
+          }
+        ],
+        "other_items": [],
+        "weapon": "wyrmsteel_blade"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 58.83,
+          "monster_cluster_id": "monster:ice_wraith:mid_mountain:00",
+          "node_cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+          "node_monster_seconds": 4.33,
+          "origin_cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 8.89,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "wraith_ice_core"
+              }
+            ],
+            "gather_seconds": 30.96,
+            "modeled_distinct_stacks": 6,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 11,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "frost_crystal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 32
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 27.87
+        },
+        {
+          "modeled_cycle_seconds": 58.83,
+          "monster_cluster_id": "monster:ice_wraith:mid_mountain:00",
+          "node_cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+          "node_monster_seconds": 4.33,
+          "origin_cluster_id": "monster:ice_wraith:mid_mountain:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 8.89,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "wraith_ice_core"
+              }
+            ],
+            "gather_seconds": 30.96,
+            "modeled_distinct_stacks": 6,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 11,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "frost_crystal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 32
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 27.87
+        },
+        {
+          "modeled_cycle_seconds": 158.41,
+          "monster_cluster_id": "monster:ice_wraith:mid_mountain:01",
+          "node_cluster_id": "node:frost_crystal_vein:lower_slopes:00",
+          "node_monster_seconds": 9.66,
+          "origin_cluster_id": "monster:ice_wraith:mid_mountain:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 8.89,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "wraith_ice_core"
+              }
+            ],
+            "gather_seconds": 30.96,
+            "modeled_distinct_stacks": 6,
+            "monster_respawn_cycles": 9,
+            "monster_respawn_wait_seconds": 96,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "frost_crystal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 32
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 31.45
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 10,
+      "walking_loop_seconds": {
+        "median": 27.87,
+        "p90": 30.73
+      }
+    },
+    {
+      "approved_exception_id": null,
+      "evaluated_clusters": 3,
+      "level_requirement": 100,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 3,
+        "median": 2.72,
+        "p90": 7.06,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "frost_revenant",
+      "primary_node_kind": "glacial_vein",
+      "reachable_clusters": 3,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "revenant_essence",
+            "producers": [
+              "frost_revenant"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "frostpine_logs",
+            "producers": [
+              "frostpine"
+            ],
+            "quantity": 1
+          },
+          {
+            "item_id": "glacial_ore",
+            "producers": [
+              "glacial_vein"
+            ],
+            "quantity": 9
+          }
+        ],
+        "other_items": [],
+        "weapon": "glacial_greatblade"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 78.21,
+          "monster_cluster_id": "monster:frost_revenant:mid_mountain:00",
+          "node_cluster_id": "node:glacial_vein:upper_peaks:00",
+          "node_monster_seconds": 2.72,
+          "origin_cluster_id": "node:glacial_vein:upper_peaks:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "revenant_essence"
+              }
+            ],
+            "gather_seconds": 54,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "glacial_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 32
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 24.21
+        },
+        {
+          "modeled_cycle_seconds": 223.64,
+          "monster_cluster_id": "monster:frost_revenant:mid_mountain:00",
+          "node_cluster_id": "node:glacial_vein:upper_peaks:01",
+          "node_monster_seconds": 8.15,
+          "origin_cluster_id": "node:glacial_vein:upper_peaks:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "revenant_essence"
+              }
+            ],
+            "gather_seconds": 54,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 3,
+            "node_respawn_wait_seconds": 140,
+            "primary_node_item": "glacial_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 29.64
+        },
+        {
+          "modeled_cycle_seconds": 78.21,
+          "monster_cluster_id": "monster:frost_revenant:mid_mountain:00",
+          "node_cluster_id": "node:glacial_vein:upper_peaks:00",
+          "node_monster_seconds": 2.72,
+          "origin_cluster_id": "monster:frost_revenant:mid_mountain:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "revenant_essence"
+              }
+            ],
+            "gather_seconds": 54,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "glacial_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 32
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 24.21
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 11,
+      "walking_loop_seconds": {
+        "median": 24.21,
+        "p90": 28.55
+      }
+    },
+    {
+      "approved_exception_id": null,
+      "evaluated_clusters": 2,
+      "level_requirement": 110,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 2,
+        "median": 4.38,
+        "p90": 4.38,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "frost_giant",
+      "primary_node_kind": "starsteel_vein",
+      "reachable_clusters": 2,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "frost_giant_heart",
+            "producers": [
+              "frost_giant"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "frostpine_logs",
+            "producers": [
+              "frostpine"
+            ],
+            "quantity": 1
+          },
+          {
+            "item_id": "starsteel_ore",
+            "producers": [
+              "starsteel_vein"
+            ],
+            "quantity": 9
+          }
+        ],
+        "other_items": [],
+        "weapon": "starsteel_blade"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 85.11,
+          "monster_cluster_id": "monster:frost_giant:upper_peaks:00",
+          "node_cluster_id": "node:starsteel_vein:upper_peaks:00",
+          "node_monster_seconds": 4.38,
+          "origin_cluster_id": "node:starsteel_vein:upper_peaks:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.5,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.4,
+                "item_id": "frost_giant_heart"
+              }
+            ],
+            "gather_seconds": 56.52,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 16,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "starsteel_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 36
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 28.59
+        },
+        {
+          "modeled_cycle_seconds": 85.11,
+          "monster_cluster_id": "monster:frost_giant:upper_peaks:00",
+          "node_cluster_id": "node:starsteel_vein:upper_peaks:00",
+          "node_monster_seconds": 4.38,
+          "origin_cluster_id": "monster:frost_giant:upper_peaks:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.5,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.4,
+                "item_id": "frost_giant_heart"
+              }
+            ],
+            "gather_seconds": 56.52,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 16,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "starsteel_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 36
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 28.59
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 12,
+      "walking_loop_seconds": {
+        "median": 28.59,
+        "p90": 28.59
+      }
+    },
+    {
+      "approved_exception_id": null,
+      "evaluated_clusters": 3,
+      "level_requirement": 120,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 3,
+        "median": 1.92,
+        "p90": 5.06,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "wyrm_knight",
+      "primary_node_kind": "voidsteel_vein",
+      "reachable_clusters": 3,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "wyrm_knight_fang",
+            "producers": [
+              "wyrm_knight"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "frostpine_logs",
+            "producers": [
+              "frostpine"
+            ],
+            "quantity": 1
+          },
+          {
+            "item_id": "voidsteel_ore",
+            "producers": [
+              "voidsteel_vein"
+            ],
+            "quantity": 9
+          }
+        ],
+        "other_items": [],
+        "weapon": "voidsteel_greatblade"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 88.35,
+          "monster_cluster_id": "monster:wyrm_knight:high_peaks:00",
+          "node_cluster_id": "node:voidsteel_vein:high_peaks:00",
+          "node_monster_seconds": 1.92,
+          "origin_cluster_id": "node:voidsteel_vein:high_peaks:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "wyrm_knight_fang"
+              }
+            ],
+            "gather_seconds": 59.04,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "voidsteel_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 32
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 29.31
+        },
+        {
+          "modeled_cycle_seconds": 248.27,
+          "monster_cluster_id": "monster:wyrm_knight:high_peaks:00",
+          "node_cluster_id": "node:voidsteel_vein:high_peaks:01",
+          "node_monster_seconds": 5.85,
+          "origin_cluster_id": "node:voidsteel_vein:high_peaks:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "wyrm_knight_fang"
+              }
+            ],
+            "gather_seconds": 59.04,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 3,
+            "node_respawn_wait_seconds": 156,
+            "primary_node_item": "voidsteel_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 33.23
+        },
+        {
+          "modeled_cycle_seconds": 88.35,
+          "monster_cluster_id": "monster:wyrm_knight:high_peaks:00",
+          "node_cluster_id": "node:voidsteel_vein:high_peaks:00",
+          "node_monster_seconds": 1.92,
+          "origin_cluster_id": "monster:wyrm_knight:high_peaks:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "wyrm_knight_fang"
+              }
+            ],
+            "gather_seconds": 59.04,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "voidsteel_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 32
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 29.31
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 13,
+      "walking_loop_seconds": {
+        "median": 29.31,
+        "p90": 32.45
+      }
+    },
+    {
+      "approved_exception_id": null,
+      "evaluated_clusters": 3,
+      "level_requirement": 130,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 2,
+        "median": 1.67,
+        "p90": 13.45,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "void_wraith",
+      "primary_node_kind": "wyrmforged_vein",
+      "reachable_clusters": 3,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "void_essence",
+            "producers": [
+              "void_wraith"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "frostpine_logs",
+            "producers": [
+              "frostpine"
+            ],
+            "quantity": 1
+          },
+          {
+            "item_id": "wyrmforged_ore",
+            "producers": [
+              "wyrmforged_vein"
+            ],
+            "quantity": 9
+          }
+        ],
+        "other_items": [],
+        "weapon": "wyrmforged_blade"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 90.46,
+          "monster_cluster_id": "monster:void_wraith:high_peaks:01",
+          "node_cluster_id": "node:wyrmforged_vein:high_peaks:00",
+          "node_monster_seconds": 1.67,
+          "origin_cluster_id": "node:wyrmforged_vein:high_peaks:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "void_essence"
+              }
+            ],
+            "gather_seconds": 61.56,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 5,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "wyrmforged_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 36
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 28.9
+        },
+        {
+          "modeled_cycle_seconds": 132.06,
+          "monster_cluster_id": "monster:void_wraith:high_peaks:00",
+          "node_cluster_id": "node:wyrmforged_vein:high_peaks:00",
+          "node_monster_seconds": 16.4,
+          "origin_cluster_id": "monster:void_wraith:high_peaks:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "void_essence"
+              }
+            ],
+            "gather_seconds": 61.56,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "wyrmforged_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 36
+          },
+          "services": {
+            "bank": "frost_banker",
+            "forge": "frost_weaponsmith",
+            "smelt": "frost_smith"
+          },
+          "walking_loop_seconds": 46.5
+        },
+        {
+          "modeled_cycle_seconds": 90.46,
+          "monster_cluster_id": "monster:void_wraith:high_peaks:01",
+          "node_cluster_id": "node:wyrmforged_vein:high_peaks:00",
+          "node_monster_seconds": 1.67,
+          "origin_cluster_id": "monster:void_wraith:high_peaks:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "void_essence"
+              }
+            ],
+            "gather_seconds": 61.56,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 5,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "wyrmforged_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 36
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 28.9
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 14,
+      "walking_loop_seconds": {
+        "median": 28.9,
+        "p90": 42.98
+      }
+    },
+    {
+      "approved_exception_id": null,
+      "evaluated_clusters": 3,
+      "level_requirement": 140,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 2,
+        "median": 2.28,
+        "p90": 12.86,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "void_wraith",
+      "primary_node_kind": "ancient_vein",
+      "reachable_clusters": 3,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "void_essence",
+            "producers": [
+              "void_wraith"
+            ],
+            "quantity": 2
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "ancient_ore",
+            "producers": [
+              "ancient_vein"
+            ],
+            "quantity": 9
+          },
+          {
+            "item_id": "frostpine_logs",
+            "producers": [
+              "frostpine"
+            ],
+            "quantity": 1
+          }
+        ],
+        "other_items": [],
+        "weapon": "ancient_greatblade"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 93.6,
+          "monster_cluster_id": "monster:void_wraith:high_peaks:01",
+          "node_cluster_id": "node:ancient_vein:deepest_frontier:00",
+          "node_monster_seconds": 2.28,
+          "origin_cluster_id": "node:ancient_vein:deepest_frontier:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 4.44,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "void_essence"
+              }
+            ],
+            "gather_seconds": 64.08,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 5,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "ancient_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 36
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 29.52
+        },
+        {
+          "modeled_cycle_seconds": 157.68,
+          "monster_cluster_id": "monster:void_wraith:high_peaks:00",
+          "node_cluster_id": "node:ancient_vein:deepest_frontier:00",
+          "node_monster_seconds": 15.5,
+          "origin_cluster_id": "monster:void_wraith:high_peaks:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 4.44,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "void_essence"
+              }
+            ],
+            "gather_seconds": 64.08,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 5,
+            "monster_respawn_wait_seconds": 48,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "ancient_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 36
+          },
+          "services": {
+            "bank": "frost_banker",
+            "forge": "frost_weaponsmith",
+            "smelt": "frost_smith"
+          },
+          "walking_loop_seconds": 45.6
+        },
+        {
+          "modeled_cycle_seconds": 93.6,
+          "monster_cluster_id": "monster:void_wraith:high_peaks:01",
+          "node_cluster_id": "node:ancient_vein:deepest_frontier:00",
+          "node_monster_seconds": 2.28,
+          "origin_cluster_id": "monster:void_wraith:high_peaks:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 4.44,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "void_essence"
+              }
+            ],
+            "gather_seconds": 64.08,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 5,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "ancient_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 36
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 29.52
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 15,
+      "walking_loop_seconds": {
+        "median": 29.52,
+        "p90": 42.38
+      }
+    },
+    {
+      "approved_exception_id": null,
+      "evaluated_clusters": 3,
+      "level_requirement": 150,
+      "node_monster_seconds": {
+        "above_target_samples": 0,
+        "below_target_samples": 3,
+        "median": 0.92,
+        "p90": 7.38,
+        "target_max": 30,
+        "target_min": 15
+      },
+      "primary_monster_kind": "ascendant_wyrm",
+      "primary_node_kind": "ascendant_vein",
+      "reachable_clusters": 3,
+      "requirements": {
+        "monster_items": [
+          {
+            "item_id": "ascendant_core",
+            "producers": [
+              "ascendant_wyrm"
+            ],
+            "quantity": 1
+          },
+          {
+            "item_id": "wyrm_scale",
+            "producers": [
+              "ancient_frost_wyrm"
+            ],
+            "quantity": 1
+          }
+        ],
+        "node_items": [
+          {
+            "item_id": "ascendant_ore",
+            "producers": [
+              "ascendant_vein"
+            ],
+            "quantity": 9
+          },
+          {
+            "item_id": "frostpine_logs",
+            "producers": [
+              "frostpine"
+            ],
+            "quantity": 1
+          }
+        ],
+        "other_items": [],
+        "weapon": "ascendant_blade"
+      },
+      "samples": [
+        {
+          "modeled_cycle_seconds": 100.95,
+          "monster_cluster_id": "monster:ascendant_wyrm:deepest_frontier:00",
+          "node_cluster_id": "node:ascendant_vein:deepest_frontier:00",
+          "node_monster_seconds": 0.92,
+          "origin_cluster_id": "node:ascendant_vein:deepest_frontier:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ascendant_core"
+              }
+            ],
+            "gather_seconds": 66.6,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 5,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "ascendant_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 40
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 34.35
+        },
+        {
+          "modeled_cycle_seconds": 100.95,
+          "monster_cluster_id": "monster:ascendant_wyrm:deepest_frontier:00",
+          "node_cluster_id": "node:ascendant_vein:deepest_frontier:00",
+          "node_monster_seconds": 0.92,
+          "origin_cluster_id": "monster:ascendant_wyrm:deepest_frontier:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ascendant_core"
+              }
+            ],
+            "gather_seconds": 66.6,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 5,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "ascendant_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 40
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 34.35
+        },
+        {
+          "modeled_cycle_seconds": 128.96,
+          "monster_cluster_id": "monster:ascendant_wyrm:deepest_frontier:01",
+          "node_cluster_id": "node:ascendant_vein:deepest_frontier:00",
+          "node_monster_seconds": 9,
+          "origin_cluster_id": "monster:ascendant_wyrm:deepest_frontier:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "ascendant_core"
+              }
+            ],
+            "gather_seconds": 66.6,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "ascendant_ore",
+            "primary_node_quantity": 9,
+            "shared_node_capacity": 40
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 38.36
+        }
+      ],
+      "secondary_node_kinds": [],
+      "status": "pass_compact",
+      "tier_index": 16,
+      "walking_loop_seconds": {
+        "median": 34.35,
+        "p90": 37.56
+      }
+    }
+  ],
+  "unreachable_clusters": []
+}

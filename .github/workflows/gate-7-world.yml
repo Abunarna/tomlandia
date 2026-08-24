@@ -1,0 +1,70 @@
+name: Gate 7 deterministic world
+
+on:
+  push:
+    branches:
+      - "codex/gate-7-*"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gate-7-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deterministic-world:
+    name: World model, reachability and inherited contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run test:gate7
+      - run: bun run build
+
+  versioned-world-database:
+    name: Zero-to-head staged UUID world database
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.115.0
+      - name: Verify deterministic world artifacts and migration
+        run: node scripts/gate7/check.mjs
+      - name: Start isolated local stack
+        run: supabase start
+      - name: Reapply every migration from zero
+        run: supabase db reset --local
+      - name: Generate Supabase TypeScript contract
+        run: |
+          supabase gen types typescript --local > gate7-generated-types.ts
+          sed -i '${/^$/d;}' gate7-generated-types.ts
+      - name: Upload generated type evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate7-generated-supabase-types
+          path: gate7-generated-types.ts
+          if-no-files-found: error
+      - name: Verify inherited Gate 1 foundation
+        run: supabase test db supabase/tests/gate1_foundation.sql
+      - name: Verify inherited known-defect contracts
+        run: supabase test db supabase/tests/gate1_known_defects.sql
+      - name: Verify inherited Gate 2 authority
+        run: supabase test db supabase/tests/gate2_authority.sql
+      - name: Verify inherited canonical schema guards
+        run: supabase test db supabase/tests/gate4_content_contract.sql
+      - name: Verify inherited staged server contracts
+        run: supabase test db supabase/tests/gate6_inactive_server_content.sql
+      - name: Verify Gate 7 deterministic UUID world
+        run: supabase test db supabase/tests/gate7_versioned_world.sql
+      - name: Reject checked-in Supabase type drift
+        run: diff -u src/integrations/supabase/types.ts gate7-generated-types.ts
+      - name: Stop isolated stack
+        if: always()
+        run: supabase stop --no-backup
