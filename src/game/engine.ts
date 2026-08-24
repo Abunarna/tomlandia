@@ -3490,15 +3490,8 @@ export class GameEngine {
       ctx.fillRect(b.x - 40, b.y - 40, b.w + 80, b.h + 80);
     }
 
-    // town plaza
-    if (b.plaza) {
-      ctx.fillStyle = b.detail;
-      ctx.globalAlpha = 0.75;
-      ctx.beginPath();
-      ctx.roundRect(b.plaza.x, b.plaza.y, b.plaza.w, b.plaza.h, 40);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-    }
+    // town plaza — disabled: the rounded slab doesn't match the pixel-art ground
+
 
     // grass tufts / dunes / snow speckles (the tiled biomes carry their own)
     if (!tile) {
