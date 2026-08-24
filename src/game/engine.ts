@@ -21,6 +21,7 @@ import {
   biomeAt,
   blockedAt,
   hasClearance,
+  inDecorClear,
   nodeInDecorClear,
   occludedByLandmark,
   nudgeClear,
@@ -967,6 +968,14 @@ export class GameEngine {
       this.monsters = this.monsters.filter((m) => known.has(m.id));
     }
     for (const row of rows) {
+      // Town tiles (DECOR_CLEAR) stay free of creatures, exactly as nodes do.
+      // A monster whose authoritative spawn point sits on a town paving tile is
+      // hidden here and, if persisted, is deleted from the database so it can't
+      // respawn in town.
+      if (typeof row.x === "number" && typeof row.y === "number" && inDecorClear(row.x, row.y)) {
+        this.monsters = this.monsters.filter((c) => c.id !== row.id);
+        continue;
+      }
       let m = this.monsters.find((c) => c.id === row.id);
       if (!m) {
         if (!row.kind || row.x === undefined || row.y === undefined) continue;
