@@ -3882,7 +3882,9 @@ export class GameEngine {
       }
     }
     // canopy cities: winding forest paths, elevated walkways and rope bridges
-    if (wood) {
+    // (Willowbrook is being rebuilt from pixel-art assets — no procedural
+    // circular walkways there)
+    if (wood && CITY.key !== "willowbrook") {
       ctx.lineCap = "round";
       if (SHOW_PATHS) {
         for (let k = 0; k < 9; k++) {
