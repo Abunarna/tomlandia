@@ -1331,13 +1331,12 @@ for (const t of TOWN_SPECS) {
 // Grand Haven is being rebuilt from external pixel-art assets: clear every
 // procedurally drawn structure inside its walls. Traders keep their plaza
 // spots (re-seated just below).
-{
-  const gh = GRAND_HAVEN;
+for (const town of [GRAND_HAVEN, WILLOWBROOK]) {
   for (let i = buildings.length - 1; i >= 0; i--) {
     const b = buildings[i]!;
     const cx = b.x + b.w / 2;
     const cy = b.y + b.h / 2;
-    if (Math.hypot(cx - gh.cx, cy - gh.cy) <= cityOuterR(gh)) buildings.splice(i, 1);
+    if (Math.hypot(cx - town.cx, cy - town.cy) <= cityOuterR(town)) buildings.splice(i, 1);
   }
 }
 
