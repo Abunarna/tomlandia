@@ -21,6 +21,7 @@ import {
   biomeAt,
   blockedAt,
   hasClearance,
+  nodeInDecorClear,
   occludedByLandmark,
   nudgeClear,
   ITEMS,
@@ -817,7 +818,7 @@ export class GameEngine {
       respawnAt: 0,
       pending: false,
       sway: Math.random() * 6,
-    }));
+    })).filter((n) => !nodeInDecorClear(n.kind, n.x, n.y));
     this.monsters = MONSTER_SPAWNS.map((m, i) => {
       const d = MONSTER_DEFS[m.kind];
       return {
@@ -906,6 +907,11 @@ export class GameEngine {
       this.nodes = this.nodes.filter((n) => known.has(n.id));
     }
     for (const row of rows) {
+      const rowKind = row.kind as ResNode["kind"] | undefined;
+      if (rowKind && row.x !== undefined && row.y !== undefined && nodeInDecorClear(rowKind, row.x, row.y)) {
+        this.nodes = this.nodes.filter((n) => n.id !== row.id);
+        continue;
+      }
       let n = this.nodes.find((c) => c.id === row.id);
       if (!n) {
         if (!row.kind || row.x === undefined || row.y === undefined) continue;
@@ -925,6 +931,10 @@ export class GameEngine {
       if (row.kind) n.kind = row.kind as ResNode["kind"];
       if (typeof row.x === "number") n.x = row.x;
       if (typeof row.y === "number") n.y = row.y;
+      if (nodeInDecorClear(n.kind, n.x, n.y)) {
+        this.nodes = this.nodes.filter((candidate) => candidate.id !== n.id);
+        continue;
+      }
       n.charges = row.charges;
       n.respawnAt = row.respawn_at ? Date.parse(row.respawn_at) : 0;
       n.depleted = n.respawnAt > Date.now();
