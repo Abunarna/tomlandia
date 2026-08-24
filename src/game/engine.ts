@@ -327,21 +327,21 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * Tanner portrait sprite (110x158 source), drawn for the trapper NPC.
+ * Chef portrait sprite (110x158 source), drawn for the brook_chef NPC.
  * Scaled to match the knight player height.
  */
-const TANNER_SRC_W = 110;
-const TANNER_SRC_H = 158;
-const TANNER_DRAW_H = 59;
-const TANNER_IDS = new Set(["trapper"]);
-let tannerImg: HTMLImageElement | null = null;
-let tannerReady = false;
+const CHEF_SRC_W = 110;
+const CHEF_SRC_H = 158;
+const CHEF_DRAW_H = 59;
+const CHEF_IDS = new Set(["brook_chef"]);
+let chefImg: HTMLImageElement | null = null;
+let chefReady = false;
 if (typeof window !== "undefined") {
-  tannerImg = new Image();
-  tannerImg.onload = () => {
-    tannerReady = true;
+  chefImg = new Image();
+  chefImg.onload = () => {
+    chefReady = true;
   };
-  tannerImg.src = tannerAsset.url;
+  chefImg.src = chefAsset.url;
 }
 
 
