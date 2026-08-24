@@ -808,7 +808,7 @@ export class GameEngine {
     this.ctx = canvas.getContext("2d")!;
     this.onHud = onHud;
 
-    this.nodes = NODE_SPAWNS.filter((n) => !nodeInDecorClear(n.kind, n.x, n.y)).map((n, i) => ({
+    this.nodes = NODE_SPAWNS.map((n, i) => ({
       id: i,
       kind: n.kind,
       x: n.x,
@@ -818,7 +818,7 @@ export class GameEngine {
       respawnAt: 0,
       pending: false,
       sway: Math.random() * 6,
-    }));
+    })).filter((n) => !nodeInDecorClear(n.kind, n.x, n.y));
     this.monsters = MONSTER_SPAWNS.map((m, i) => {
       const d = MONSTER_DEFS[m.kind];
       return {
