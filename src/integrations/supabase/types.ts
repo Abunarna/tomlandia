@@ -1196,6 +1196,247 @@ export type Database = {
         }
         Relationships: []
       }
+      game_world_monsters: {
+        Row: {
+          biome: string
+          cell: string
+          content_version: string
+          entity_type: string
+          hp: number
+          kind: string
+          max_hp: number
+          respawn_at: string | null
+          respawn_s: number
+          spawn_id: string
+          spawn_set_version: string
+          subzone: string
+          tagged_at: string | null
+          tagged_by: string | null
+          updated_at: string
+          x: number
+          y: number
+        }
+        Insert: {
+          biome: string
+          cell: string
+          content_version: string
+          entity_type?: string
+          hp: number
+          kind: string
+          max_hp: number
+          respawn_at?: string | null
+          respawn_s: number
+          spawn_id: string
+          spawn_set_version: string
+          subzone: string
+          tagged_at?: string | null
+          tagged_by?: string | null
+          updated_at?: string
+          x: number
+          y: number
+        }
+        Update: {
+          biome?: string
+          cell?: string
+          content_version?: string
+          entity_type?: string
+          hp?: number
+          kind?: string
+          max_hp?: number
+          respawn_at?: string | null
+          respawn_s?: number
+          spawn_id?: string
+          spawn_set_version?: string
+          subzone?: string
+          tagged_at?: string | null
+          tagged_by?: string | null
+          updated_at?: string
+          x?: number
+          y?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_world_monsters_content_version_kind_fkey"
+            columns: ["content_version", "kind"]
+            isOneToOne: false
+            referencedRelation: "game_content_monsters"
+            referencedColumns: ["content_version", "kind"]
+          },
+          {
+            foreignKeyName: "game_world_monsters_content_version_spawn_set_version_fkey"
+            columns: ["content_version", "spawn_set_version"]
+            isOneToOne: false
+            referencedRelation: "game_world_spawn_sets"
+            referencedColumns: ["content_version", "spawn_set_version"]
+          },
+          {
+            foreignKeyName: "game_world_monsters_spawn_id_content_version_spawn_set_ver_fkey"
+            columns: [
+              "spawn_id",
+              "content_version",
+              "spawn_set_version",
+              "entity_type",
+              "kind",
+            ]
+            isOneToOne: false
+            referencedRelation: "game_content_spawns"
+            referencedColumns: [
+              "spawn_id",
+              "content_version",
+              "spawn_set_version",
+              "entity_type",
+              "kind",
+            ]
+          },
+        ]
+      }
+      game_world_nodes: {
+        Row: {
+          biome: string
+          cell: string
+          charges: number
+          content_version: string
+          entity_type: string
+          gather_s: number
+          kind: string
+          max_charges: number
+          respawn_at: string | null
+          respawn_s: number
+          spawn_id: string
+          spawn_set_version: string
+          subzone: string
+          updated_at: string
+          x: number
+          y: number
+        }
+        Insert: {
+          biome: string
+          cell: string
+          charges: number
+          content_version: string
+          entity_type?: string
+          gather_s: number
+          kind: string
+          max_charges: number
+          respawn_at?: string | null
+          respawn_s: number
+          spawn_id: string
+          spawn_set_version: string
+          subzone: string
+          updated_at?: string
+          x: number
+          y: number
+        }
+        Update: {
+          biome?: string
+          cell?: string
+          charges?: number
+          content_version?: string
+          entity_type?: string
+          gather_s?: number
+          kind?: string
+          max_charges?: number
+          respawn_at?: string | null
+          respawn_s?: number
+          spawn_id?: string
+          spawn_set_version?: string
+          subzone?: string
+          updated_at?: string
+          x?: number
+          y?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_world_nodes_content_version_kind_fkey"
+            columns: ["content_version", "kind"]
+            isOneToOne: false
+            referencedRelation: "game_content_nodes"
+            referencedColumns: ["content_version", "kind"]
+          },
+          {
+            foreignKeyName: "game_world_nodes_content_version_spawn_set_version_fkey"
+            columns: ["content_version", "spawn_set_version"]
+            isOneToOne: false
+            referencedRelation: "game_world_spawn_sets"
+            referencedColumns: ["content_version", "spawn_set_version"]
+          },
+          {
+            foreignKeyName: "game_world_nodes_spawn_id_content_version_spawn_set_versio_fkey"
+            columns: [
+              "spawn_id",
+              "content_version",
+              "spawn_set_version",
+              "entity_type",
+              "kind",
+            ]
+            isOneToOne: false
+            referencedRelation: "game_content_spawns"
+            referencedColumns: [
+              "spawn_id",
+              "content_version",
+              "spawn_set_version",
+              "entity_type",
+              "kind",
+            ]
+          },
+        ]
+      }
+      game_world_spawn_sets: {
+        Row: {
+          cluster_probability: number
+          content_version: string
+          created_at: string
+          model_version: string
+          movement_speed: number
+          path_cell_size: number
+          reachability_summary: Json
+          source_content_manifest_hash: string
+          spawn_hash: string
+          spawn_set_version: string
+          winter_geometry: Json
+          world_height: number
+          world_width: number
+        }
+        Insert: {
+          cluster_probability: number
+          content_version: string
+          created_at?: string
+          model_version: string
+          movement_speed: number
+          path_cell_size: number
+          reachability_summary: Json
+          source_content_manifest_hash: string
+          spawn_hash: string
+          spawn_set_version: string
+          winter_geometry: Json
+          world_height: number
+          world_width: number
+        }
+        Update: {
+          cluster_probability?: number
+          content_version?: string
+          created_at?: string
+          model_version?: string
+          movement_speed?: number
+          path_cell_size?: number
+          reachability_summary?: Json
+          source_content_manifest_hash?: string
+          spawn_hash?: string
+          spawn_set_version?: string
+          winter_geometry?: Json
+          world_height?: number
+          world_width?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_world_spawn_sets_content_version_spawn_set_version_fkey"
+            columns: ["content_version", "spawn_set_version"]
+            isOneToOne: true
+            referencedRelation: "game_content_versions"
+            referencedColumns: ["content_version", "spawn_set_version"]
+          },
+        ]
+      }
       market_listings: {
         Row: {
           content_version: string
@@ -1731,6 +1972,10 @@ export type Database = {
         Args: { _id: number; _x: number; _y: number }
         Returns: Json
       }
+      attack_monster_v2: {
+        Args: { _id: string; _x: number; _y: number }
+        Returns: Json
+      }
       bank_gold: { Args: { _amount: number; _dir: string }; Returns: Json }
       bank_gold_v1: { Args: { _amount: number; _dir: string }; Returns: Json }
       bank_item: {
@@ -1795,6 +2040,7 @@ export type Database = {
           reference_path: string
         }[]
       }
+      game_world_runtime_status: { Args: never; Returns: Json }
       gear_equip: { Args: { _index: number }; Returns: Json }
       gear_equip_v1: { Args: { _index: number }; Returns: Json }
       gear_upgrade: { Args: { _which: string }; Returns: Json }
@@ -1809,6 +2055,10 @@ export type Database = {
       }
       harvest_node_v1: {
         Args: { _id: number; _x: number; _y: number }
+        Returns: Json
+      }
+      harvest_node_v2: {
+        Args: { _id: string; _x: number; _y: number }
         Returns: Json
       }
       inv_add: {
