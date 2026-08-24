@@ -2090,6 +2090,9 @@ const GREAT = buildGreatRiver(RAW_BARRIERS);
 /** wooden bridges crossing the Great River */
 export const BRIDGES: BridgeDef[] = GREAT.bridges;
 
+/** Hand-authored vine bridge centred over the southern river crossing. */
+export const VINE_BRIDGE = { x: 2049, y: 2671, w: 210, h: 485 } as const;
+
 const riverXs = GREAT.pts.map((p) => p[0]);
 const riverYs = GREAT.pts.map((p) => p[1]);
 
@@ -2137,6 +2140,11 @@ export const BARRIERS: Barrier[] = [GREAT_RIVER, MOAT_CHANNEL];
 
 /** true when the point stands on a bridge deck (so the river is crossable there) */
 export function onBridge(x: number, y: number, pad = 0): boolean {
+  if (
+    Math.abs(x - VINE_BRIDGE.x) < VINE_BRIDGE.w / 2 - pad &&
+    Math.abs(y - VINE_BRIDGE.y) < VINE_BRIDGE.h / 2 + 16
+  )
+    return true;
   for (const br of BRIDGES) {
     const dx = x - br.x;
     const dy = y - br.y;
@@ -2179,7 +2187,7 @@ export function blockedAt(x: number, y: number, pad = 10, wadesRivers = false): 
       if (distToSeg(x, y, a[0], a[1], b[0], b[1]) < r) {
         // the world boss wades straight through the river instead of hunting
         // for a bridge, so he never gets stuck on a bank
-        if (bar.kind === "river" && (wadesRivers || (bar.id === "great-river" && onBridge(x, y, pad)))) break;
+        if (bar.kind === "river" && (wadesRivers || onBridge(x, y, pad))) break;
         return true;
       }
     }
@@ -2559,7 +2567,7 @@ function nearTown(x: number, y: number) {
  */
 export const DECOR_CLEAR: { x: number; y: number; w: number; h: number }[] = [
   // vine bridge at (2049, 2671): 210x485 sprite + 20px margin on every edge
-  { x: 2049, y: 2671, w: 250, h: 525 },
+  { x: VINE_BRIDGE.x, y: VINE_BRIDGE.y, w: VINE_BRIDGE.w + 40, h: VINE_BRIDGE.h + 40 },
 ];
 
 export function inDecorClear(x: number, y: number, pad = 0): boolean {
@@ -2567,6 +2575,13 @@ export function inDecorClear(x: number, y: number, pad = 0): boolean {
     if (Math.abs(x - z.x) <= z.w / 2 + pad && Math.abs(y - z.y) <= z.h / 2 + pad) return true;
   }
   return false;
+}
+
+/** Removes the full visible resource sprite, not merely its ground point. */
+export function nodeInDecorClear(kind: NodeKind, x: number, y: number): boolean {
+  const shape = NODE_DEFS[kind].shape;
+  const artPad = shape === "tree" ? 112 : shape === "rock" ? 28 : 25;
+  return inDecorClear(x, y, artPad);
 }
 
 /** a spot must be walkable, dry, off the roads and clear of anything built */
@@ -2760,8 +2775,7 @@ function spawnable(x: number, y: number) {
     const n = NODE_SPAWNS[i]!;
     // Include the node artwork itself, not just its centre, so tall tree
     // canopies cannot hang over the bridge from outside the clear rectangle.
-    const artPad = NODE_DEFS[n.kind].shape === "tree" ? 112 : NODE_DEFS[n.kind].shape === "rock" ? 28 : 25;
-    if (inDecorClear(n.x, n.y, artPad)) NODE_SPAWNS.splice(i, 1);
+    if (nodeInDecorClear(n.kind, n.x, n.y)) NODE_SPAWNS.splice(i, 1);
   }
   for (let i = MONSTER_SPAWNS.length - 1; i >= 0; i--) {
     const m = MONSTER_SPAWNS[i]!;
