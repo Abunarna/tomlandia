@@ -80,7 +80,7 @@ import house2Asset from "@/assets/house2.png.asset.json";
 import house3Asset from "@/assets/house3.png.asset.json";
 import castleAsset from "@/assets/castle.png.asset.json";
 import towerAsset from "@/assets/tower.png.asset.json";
-import treeCastleAsset from "@/assets/willow-tree-castle.png.asset.json";
+import treeCastleAsset from "@/assets/willow-castle-v2.png.asset.json";
 import greenHallAsset from "@/assets/greenhall.png.asset.json";
 import elderAsset from "@/assets/npc-elder-v2.png.asset.json";
 import armourerAsset from "@/assets/npc-armourer.png.asset.json";
