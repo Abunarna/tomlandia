@@ -21,6 +21,7 @@ import {
   biomeAt,
   blockedAt,
   hasClearance,
+  inDecorClear,
   nodeInDecorClear,
   occludedByLandmark,
   nudgeClear,
