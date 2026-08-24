@@ -2552,9 +2552,27 @@ function nearTown(x: number, y: number) {
   return false;
 }
 
+/**
+ * Hand-authored keep-out rectangles (centre + half sizes already padded).
+ * Nothing spawns inside these — used for decorative decals like the vine
+ * bridge, which must stay walkable and unobstructed.
+ */
+export const DECOR_CLEAR: { x: number; y: number; w: number; h: number }[] = [
+  // vine bridge at (2049, 2671): 140x323 sprite + 20px margin on every edge
+  { x: 2049, y: 2671, w: 180, h: 363 },
+];
+
+export function inDecorClear(x: number, y: number): boolean {
+  for (const z of DECOR_CLEAR) {
+    if (Math.abs(x - z.x) <= z.w / 2 && Math.abs(y - z.y) <= z.h / 2) return true;
+  }
+  return false;
+}
+
 /** a spot must be walkable, dry, off the roads and clear of anything built */
 function spawnable(x: number, y: number) {
   if (x < 90 || y < 90 || x > WORLD_W - 90 || y > WORLD_H - 90) return false;
+  if (inDecorClear(x, y)) return false;
   if (blockedAt(x, y, 34)) return false;
   // blanket rule: the whole body, not just the centre, keeps 10px off anything solid
   if (!hasClearance(x, y, 14, 10)) return false;
@@ -2730,5 +2748,24 @@ function spawnable(x: number, y: number) {
       MONSTER_SPAWNS.push({ kind, x: Math.round(c.x), y: Math.round(c.y) });
     }
     placed.push({ x: c.x, y: c.y });
+  }
+})();
+
+/**
+ * Final sweep: anything (node, monster or its collision disc) sitting inside a
+ * decorative keep-out zone is removed, so the vine bridge stays clear.
+ */
+(() => {
+  for (let i = NODE_SPAWNS.length - 1; i >= 0; i--) {
+    const n = NODE_SPAWNS[i]!;
+    if (inDecorClear(n.x, n.y)) NODE_SPAWNS.splice(i, 1);
+  }
+  for (let i = MONSTER_SPAWNS.length - 1; i >= 0; i--) {
+    const m = MONSTER_SPAWNS[i]!;
+    if (inDecorClear(m.x, m.y)) MONSTER_SPAWNS.splice(i, 1);
+  }
+  for (let i = SOLID_DISCS.length - 1; i >= 0; i--) {
+    const d = SOLID_DISCS[i]!;
+    if (inDecorClear(d.x, d.y)) SOLID_DISCS.splice(i, 1);
   }
 })();
