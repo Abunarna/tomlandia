@@ -1,6 +1,7 @@
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { CELL_H, CELL_W, COLS, ROWS } from "./presence";
+import { resolveWorldRuntime, type WorldRuntimeResolution } from "./world-runtime";
 
 /**
  * Phase 8 — shared world state (nodes & monsters).
@@ -65,6 +66,7 @@ interface Sink {
   onNodes: (rows: NodeRow[], full?: boolean) => void;
   onMonsters: (rows: MonsterRow[], full?: boolean) => void;
   onBoss?: (row: BossRow) => void;
+  onRuntime?: (runtime: WorldRuntimeResolution) => void;
 }
 
 export class WorldNet {
@@ -78,6 +80,12 @@ export class WorldNet {
 
   async start() {
     this.stopped = false;
+    // Gate 8 reads the version control plane before subscribing. A missing
+    // Gate 7 RPC remains a legacy-safe fallback, which preserves existing v1
+    // deployments while the dual client is rolled out.
+    const { data: runtime } = await supabase.rpc("game_world_runtime_status");
+    if (this.stopped) return;
+    this.sink.onRuntime?.(resolveWorldRuntime(runtime));
     // One cheap full snapshot on join, then per-cell realtime deltas.
     const [nodes, monsters] = await Promise.all([
       supabase.from("world_nodes").select("id,cell,kind,x,y,charges,max_charges,respawn_at"),

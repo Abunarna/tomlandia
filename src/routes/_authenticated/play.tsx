@@ -6,6 +6,7 @@ import { parseRpcResponse, rpcContracts } from "@/contracts/rpc";
 import { GameEngine, clearLegacySave, readLegacySave, type SyncAck } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
+import type { WorldRuntimeResolution } from "@/game/world-runtime";
 import {
   attackBoss,
   attackMonster,
@@ -135,6 +136,7 @@ function Game() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showFsPrompt, setShowFsPrompt] = useState(false);
   const [loadFailed, setLoadFailed] = useState(false);
+  const [worldRuntime, setWorldRuntime] = useState<WorldRuntimeResolution | null>(null);
 
   const pendingSave = useRef<PromiseLike<unknown> | null>(null);
   const panelRef = useRef<PanelId | null>(null);
@@ -363,6 +365,7 @@ function Game() {
       onNodes: (rows, full) => engine.applyNodeRows(rows, full),
       onMonsters: (rows, full) => engine.applyMonsterRows(rows, full),
       onBoss: (row) => engine.applyBossRow(row),
+      onRuntime: setWorldRuntime,
     });
     void net.start();
     return () => net.stop();
@@ -654,6 +657,23 @@ function Game() {
               onClick={() => window.location.reload()}
             >
               Retry
+            </button>
+          </div>
+        </div>
+      )}
+
+      {worldRuntime?.mode === "maintenance" && (
+        <div className="absolute inset-0 z-50 grid place-items-center bg-background p-6 text-center">
+          <div className="max-w-sm">
+            <h2 className="font-display text-xl font-bold text-foreground">World update in progress</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {worldRuntime.message ?? "This client does not match the active world content yet."}
+            </p>
+            <button
+              className="mt-5 rounded-2xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+              onClick={() => window.location.reload()}
+            >
+              Refresh game
             </button>
           </div>
         </div>

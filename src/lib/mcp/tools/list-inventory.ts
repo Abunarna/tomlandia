@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { supabaseForUser } from "../supabase";
-import { item } from "@/game/data";
+import { displayContentItem } from "@/game/content-display";
 import type { SaveState } from "@/game/types";
 
 export default defineTool({
@@ -25,14 +25,15 @@ export default defineTool({
     const items = (save?.inv ?? [])
       .map((slot, index) => {
         if (!slot) return null;
-        const def = item(slot.id);
+        const display = displayContentItem(slot.id);
         return {
           slot: index,
           id: slot.id,
-          name: def?.name ?? slot.id,
+          name: display.name,
+          contentStatus: display.status,
           qty: slot.qty,
           plus: slot.plus ?? 0,
-          unitValue: def?.value ?? 0,
+          unitValue: display.value,
         };
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null);

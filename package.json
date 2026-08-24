@@ -38,7 +38,9 @@
     "gate7:build": "node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/build-world.mjs && node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/reachability.mjs && node scripts/gate7/build-migration.mjs",
     "gate7:check": "node scripts/gate7/check.mjs",
     "test:db:gate7": "supabase test db supabase/tests/gate7_versioned_world.sql",
-    "test:gate7": "bun run test:gate6 && bun run gate7:check"
+    "test:gate7": "bun run test:gate6 && bun run gate7:check",
+    "gate8:check": "node scripts/gate8/check.mjs",
+    "test:gate8": "bun run test:gate7 && bun run gate8:check"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
