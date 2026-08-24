@@ -38,68 +38,68 @@ select ok(not has_function_privilege('authenticated', 'public.track_position(uui
   'authenticated cannot provide an arbitrary position owner');
 select ok(not has_function_privilege('anon', 'public.track_position(uuid,numeric,numeric)', 'EXECUTE'),
   'anonymous cannot call the position helper');
-select like(prosrc, '%elapsed < 0.25%', 'same-frame movement cannot ratchet the trusted anchor')
+select ok(prosrc like '%elapsed < 0.25%', 'same-frame movement cannot ratchet the trusted anchor')
 from pg_proc where oid = 'public.track_position(uuid,numeric,numeric)'::regprocedure;
-select like(prosrc, '%world_cooldowns.next_at <= now()%', 'action cooldown acquisition is atomic')
+select ok(prosrc like '%world_cooldowns.next_at <= now()%', 'action cooldown acquisition is atomic')
 from pg_proc where oid = 'public.action_gate(uuid,text,interval)'::regprocedure;
-select like(prosrc, '%player_positions%', 'death settlement resets the trusted position anchor')
+select ok(prosrc like '%player_positions%', 'death settlement resets the trusted position anchor')
 from pg_proc where oid = 'public.settle_incoming_damage(uuid,jsonb,integer,text)'::regprocedure;
 
-select unlike(prosrc, '%_data->''gold''%', 'player_sync ignores client gold')
+select ok(prosrc not like '%_data->''gold''%', 'player_sync ignores client gold')
 from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select unlike(prosrc, '%_data->''inv''%', 'player_sync ignores client inventory')
+select ok(prosrc not like '%_data->''inv''%', 'player_sync ignores client inventory')
 from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select unlike(prosrc, '%_data->''skills''%', 'player_sync ignores client skills')
+select ok(prosrc not like '%_data->''skills''%', 'player_sync ignores client skills')
 from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select unlike(prosrc, '%_data->''hp''%', 'player_sync ignores client health')
+select ok(prosrc not like '%_data->''hp''%', 'player_sync ignores client health')
 from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select unlike(prosrc, '%_data->''quest''%', 'player_sync ignores client quests')
+select ok(prosrc not like '%_data->''quest''%', 'player_sync ignores client quests')
 from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select unlike(prosrc, '%_data->''weapon''%', 'player_sync ignores client weapon')
+select ok(prosrc not like '%_data->''weapon''%', 'player_sync ignores client weapon')
 from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select unlike(prosrc, '%_data->''bank''%', 'player_sync ignores client bank')
+select ok(prosrc not like '%_data->''bank''%', 'player_sync ignores client bank')
 from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
 
-select like(prosrc, '%''leveled''%', 'attack_monster returns leveled')
+select ok(prosrc like '%''leveled''%', 'attack_monster returns leveled')
 from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select like(prosrc, '%''state''%', 'attack_monster returns state')
+select ok(prosrc like '%''state''%', 'attack_monster returns state')
 from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select like(prosrc, '%''buff''%', 'attack_monster returns buff')
+select ok(prosrc like '%''buff''%', 'attack_monster returns buff')
 from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select unlike(prosrc, '%''levelup''%', 'attack_monster removed legacy levelup')
+select ok(prosrc not like '%''levelup''%', 'attack_monster removed legacy levelup')
 from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select unlike(prosrc, '%''save''%', 'attack_monster never returns a whole save alias')
+select ok(prosrc not like '%''save''%', 'attack_monster never returns a whole save alias')
 from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select like(prosrc, '%''skipped_loot''%', 'attack_monster reports full-bag skipped loot')
+select ok(prosrc like '%''skipped_loot''%', 'attack_monster reports full-bag skipped loot')
 from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select like(prosrc, '%15 seconds%', 'monster ownership tags expire')
+select ok(prosrc like '%15 seconds%', 'monster ownership tags expire')
 from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
 
-select like(prosrc, '%w1%', 'fish_cast reads level-1 stored weights')
+select ok(prosrc like '%w1%', 'fish_cast reads level-1 stored weights')
 from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
-select like(prosrc, '%w15%', 'fish_cast reads level-15 stored weights')
+select ok(prosrc like '%w15%', 'fish_cast reads level-15 stored weights')
 from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
-select like(prosrc, '%w40%', 'fish_cast reads level-40 stored weights')
+select ok(prosrc like '%w40%', 'fish_cast reads level-40 stored weights')
 from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
-select like(prosrc, '%w70%', 'fish_cast reads level-70 stored weights')
+select ok(prosrc like '%w70%', 'fish_cast reads level-70 stored weights')
 from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
-select like(prosrc, '%w100%', 'fish_cast reads level-100 stored weights')
+select ok(prosrc like '%w100%', 'fish_cast reads level-100 stored weights')
 from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
-select unlike(prosrc, '%start_pct%', 'fish_cast removed misleading hard-coded weight arrays')
+select ok(prosrc not like '%start_pct%', 'fish_cast removed misleading hard-coded weight arrays')
 from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
 
 select is((select count(*) from public.game_boss_path_points), 181::bigint,
   'DESOLATUS server path matches the 181-point client loop');
 select ok((select x is not null and y is not null from public.boss_position_at('2026-08-24T00:00:00Z')),
   'DESOLATUS has a deterministic server position at a fixed time');
-select unlike(prosrc, '%tungsten_ore%', 'DESOLATUS no longer grants a retired Tungsten reward')
+select ok(prosrc not like '%tungsten_ore%', 'DESOLATUS no longer grants a retired Tungsten reward')
 from pg_proc where oid = 'public.attack_boss(numeric,numeric,numeric,numeric,boolean)'::regprocedure;
-select like(prosrc, '%boss_position_at%', 'DESOLATUS combat reads the server path')
+select ok(prosrc like '%boss_position_at%', 'DESOLATUS combat reads the server path')
 from pg_proc where oid = 'public.attack_boss(numeric,numeric,numeric,numeric,boolean)'::regprocedure;
 
-select like(prosrc, '%gross numeric%', 'market multiplication is evaluated as numeric')
+select ok(prosrc like '%gross numeric%', 'market multiplication is evaluated as numeric')
 from pg_proc where oid = 'public.market_buy(uuid,integer)'::regprocedure;
-select like(prosrc, '%untradable%', 'market buy enforces server tradability')
+select ok(prosrc like '%untradable%', 'market buy enforces server tradability')
 from pg_proc where oid = 'public.market_buy(uuid,integer)'::regprocedure;
 select ok(not has_function_privilege('public', 'public.leaderboard(text)', 'EXECUTE'),
   'leaderboard has no PUBLIC execute grant');
