@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
 import { manifestHash, uuidV5 } from "../content/model.mjs";
+import { auditLegacyV1World } from "./legacy-v1-world.mjs";
 
 const root = resolve(import.meta.dirname, "../..");
 const read = (path) => readFile(resolve(root, path), "utf8");
@@ -43,6 +44,7 @@ const [
   gate4,
   gate5,
   gate6,
+  legacyV1,
 ] = await Promise.all([
   read("content/v2/world-spawn-manifest.json"),
   read("docs/overhaul/gate-7/reachability-report.json"),
@@ -53,6 +55,7 @@ const [
   read("supabase/migrations/20260824070000_gate4_content_contract.sql"),
   read("supabase/migrations/20260824080000_gate5_complete_content_contract.sql"),
   read("supabase/migrations/20260824090000_gate6_inactive_server_content.sql"),
+  auditLegacyV1World(root),
 ]);
 const manifest = JSON.parse(manifestText);
 const report = JSON.parse(reportText);
@@ -191,7 +194,12 @@ const runite = spawns.filter((spawn) => spawn.entity_type === "node" && spawn.ki
 assert(runite.length === 23, "Gate 7 requires exactly 23 Runite nodes");
 assert(runite.every((spawn) => spawn.biome === "desert" && spawn.subzone === "desert_evil_boundary"), "Runite boundary ownership drifted");
 assert(spawns.every((spawn) => spawn.kind !== "tungsten"), "Tungsten leaked into v2");
+assert(live.node_spawns.length === 311 && live.monster_spawns.length === 289, "v1 client spawn snapshot counts drifted");
 assert(live.node_spawns.filter((spawn) => spawn.kind === "tungsten").length === 20, "v1 Tungsten rollback evidence drifted");
+assert(
+  legacyV1.node_count === 234 && legacyV1.monster_count === 170 && legacyV1.tungsten_node_count === 17,
+  "Historical v1 database seed audit drifted",
+);
 assert(manifest.retirement.legacy_tungsten_nodes === 20 && manifest.retirement.v2_tungsten_nodes === 0, "Tungsten retirement metadata drifted");
 assert(manifest.rollback.v1_tables_mutated === false && manifest.rollback.player_state_mutated === false, "Rollback promise drifted");
 
@@ -229,6 +237,10 @@ const requiredRuntimeMarkers = [
 ];
 for (const marker of requiredRuntimeMarkers) assert(runtime.includes(marker), `Missing Gate 7 runtime marker: ${marker}`);
 assert(migration.includes(`Stable spawn payload sha256: ${manifest.spawn_hash}`), "Migration lacks exact spawn hash");
+assert(
+  migration.includes("Legacy integer v1 DB audit: 234 nodes, 170 monsters, 17 Tungsten"),
+  "Migration lacks the exact historical v1 database audit",
+);
 assert(!/INSERT\s+INTO\s+public\.game_content_control/i.test(migration), "Gate 7 must not activate a content control row");
 assert(!/UPDATE\s+public\.game_content_control/i.test(migration), "Gate 7 must not modify activation control");
 assert(!/UPDATE\s+public\.game_content_versions\s+SET[\s\S]{0,200}?status\s*=\s*'active'/i.test(migration), "Gate 7 must not activate v2");

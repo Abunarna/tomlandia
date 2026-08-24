@@ -3,6 +3,8 @@ import { readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { auditLegacyV1World } from "./legacy-v1-world.mjs";
+
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const runtimePath = resolve(root, "supabase/gate7/world-runtime.sql");
 const manifestPath = resolve(root, "content/v2/world-spawn-manifest.json");
@@ -10,10 +12,11 @@ const reachabilityPath = resolve(root, "docs/overhaul/gate-7/reachability-report
 const outputPath = resolve(root, "supabase/migrations/20260824100000_gate7_versioned_world.sql");
 const checkOnly = process.argv.includes("--check");
 
-const [runtime, manifestText, reachabilityText] = await Promise.all([
+const [runtime, manifestText, reachabilityText, legacyV1] = await Promise.all([
   readFile(runtimePath, "utf8"),
   readFile(manifestPath, "utf8"),
   readFile(reachabilityPath, "utf8"),
+  auditLegacyV1World(root),
 ]);
 const manifest = JSON.parse(manifestText);
 const reachability = JSON.parse(reachabilityText);
@@ -89,6 +92,9 @@ const generated = [
   `-- World manifest artifact sha256: ${sourceHashes.manifest}`,
   `-- Reachability artifact sha256: ${sourceHashes.reachability}`,
   `-- Stable spawn payload sha256: ${manifest.spawn_hash}`,
+  `-- Legacy integer v1 DB audit: ${legacyV1.node_count} nodes, ${legacyV1.monster_count} monsters, ${legacyV1.tungsten_node_count} Tungsten`,
+  `-- Legacy reset migration sha256: ${legacyV1.reset_migration_hash}`,
+  `-- Legacy southern extension sha256: ${legacyV1.southern_extension_migration_hash}`,
   "-- This migration stages UUID v2 rows and never activates them.",
   "",
   "BEGIN;",
@@ -197,11 +203,11 @@ const generated = [
   "  IF EXISTS (SELECT 1 FROM public.game_world_nodes WHERE content_version = 'v2' AND kind = 'tungsten') THEN",
   "    RAISE EXCEPTION 'Gate 7 must retire all Tungsten nodes from v2';",
   "  END IF;",
-  "  IF (SELECT count(*) FROM public.world_nodes WHERE kind = 'tungsten') <> 20 THEN",
-  "    RAISE EXCEPTION 'Gate 7 must retain all 20 v1 Tungsten rows for rollback';",
+  `  IF (SELECT count(*) FROM public.world_nodes WHERE kind = 'tungsten') <> ${legacyV1.tungsten_node_count} THEN`,
+  `    RAISE EXCEPTION 'Gate 7 changed the historical v1 database Tungsten count of ${legacyV1.tungsten_node_count}';`,
   "  END IF;",
-  "  IF (SELECT count(*) FROM public.world_nodes) <> 311 OR (SELECT count(*) FROM public.world_monsters) <> 289 THEN",
-  "    RAISE EXCEPTION 'Gate 7 changed legacy v1 world row counts';",
+  `  IF (SELECT count(*) FROM public.world_nodes) <> ${legacyV1.node_count} OR (SELECT count(*) FROM public.world_monsters) <> ${legacyV1.monster_count} THEN`,
+  `    RAISE EXCEPTION 'Gate 7 changed historical v1 database world counts (${legacyV1.node_count} nodes, ${legacyV1.monster_count} monsters)';`,
   "  END IF;",
   "  IF EXISTS (",
   "    SELECT 1 FROM public.game_content_spawns AS spawn",

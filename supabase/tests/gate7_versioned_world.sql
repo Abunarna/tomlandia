@@ -68,12 +68,12 @@ select is((select count(*) from public.game_world_monsters where content_version
   'UUID state contains exactly 361 v2 monsters');
 select is((select count(*) from public.game_world_nodes where content_version = 'v2' and kind = 'tungsten'), 0::bigint,
   'all Tungsten nodes are retired from v2');
-select is((select count(*) from public.world_nodes where kind = 'tungsten'), 20::bigint,
-  'all 20 Tungsten nodes remain in v1 for rollback');
-select is((select count(*) from public.world_nodes), 311::bigint,
-  'legacy v1 node table remains byte-behavior compatible');
-select is((select count(*) from public.world_monsters), 289::bigint,
-  'legacy v1 monster table remains byte-behavior compatible');
+select is((select count(*) from public.world_nodes where kind = 'tungsten'), 17::bigint,
+  'historical v1 database retains all 17 seeded Tungsten rows');
+select is((select count(*) from public.world_nodes), 234::bigint,
+  'historical v1 database node table remains unchanged');
+select is((select count(*) from public.world_monsters), 170::bigint,
+  'historical v1 database monster table remains unchanged');
 select is(
   (select count(*) from public.game_world_nodes node
    left join public.game_content_spawns spawn

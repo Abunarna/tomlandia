@@ -5,6 +5,9 @@
 -- World manifest artifact sha256: bdacb822933872cfa9dca5a516736102682ec30298d567df887933256591e9fa
 -- Reachability artifact sha256: e23d5794a9922fc2386d473b8aa785be0ab4d4a84ac539869012a4b95ee7dc9e
 -- Stable spawn payload sha256: 24130e8725da5f6e339d5037a40e81f5bcc1052a47fc29b056b36b8d8b2d31fa
+-- Legacy integer v1 DB audit: 234 nodes, 170 monsters, 17 Tungsten
+-- Legacy reset migration sha256: 8918d51eb0c159f95abd852029ca7894eb33ecd1ad77c8923380f49981e2f41b
+-- Legacy southern extension sha256: 7d9f76a7b84e20ab6b67f6a7f0cd8314fa38b06739cfb2f0e5abc17c00834630
 -- This migration stages UUID v2 rows and never activates them.
 
 BEGIN;
@@ -1981,11 +1984,11 @@ BEGIN
   IF EXISTS (SELECT 1 FROM public.game_world_nodes WHERE content_version = 'v2' AND kind = 'tungsten') THEN
     RAISE EXCEPTION 'Gate 7 must retire all Tungsten nodes from v2';
   END IF;
-  IF (SELECT count(*) FROM public.world_nodes WHERE kind = 'tungsten') <> 20 THEN
-    RAISE EXCEPTION 'Gate 7 must retain all 20 v1 Tungsten rows for rollback';
+  IF (SELECT count(*) FROM public.world_nodes WHERE kind = 'tungsten') <> 17 THEN
+    RAISE EXCEPTION 'Gate 7 changed the historical v1 database Tungsten count of 17';
   END IF;
-  IF (SELECT count(*) FROM public.world_nodes) <> 311 OR (SELECT count(*) FROM public.world_monsters) <> 289 THEN
-    RAISE EXCEPTION 'Gate 7 changed legacy v1 world row counts';
+  IF (SELECT count(*) FROM public.world_nodes) <> 234 OR (SELECT count(*) FROM public.world_monsters) <> 170 THEN
+    RAISE EXCEPTION 'Gate 7 changed historical v1 database world counts (234 nodes, 170 monsters)';
   END IF;
   IF EXISTS (
     SELECT 1 FROM public.game_content_spawns AS spawn

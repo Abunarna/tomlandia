@@ -11,7 +11,7 @@ Gate 7 replaces the v2 startup-array concept with a deterministic, reviewable wo
 - Generator model: `tomlandia-gate7-world-model/v1`
 - Generator split: 436 exact coordinate carry-forwards; 294 regenerated rows
 - Deterministic selection: 262 `cluster_90` rows and 32 `fallback_10` rows, each decided by `stable_sha256_roll < 0.9`
-- Tungsten: 0 v2 nodes; all 20 v1 nodes retained for rollback
+- Tungsten: 0 v2 nodes; the immutable v1 client snapshot retains 20 and the historical v1 database retains all 17 seeded rows
 - Reachability: 730/730 spawns checked, 152/152 clusters reachable, 16/16 tier loops passing
 - Movement model: 130 world units/second on a 40-unit collision-aware A* grid, with diagonal corner-cut prevention
 
@@ -86,4 +86,4 @@ supabase test db supabase/tests/gate7_versioned_world.sql
 
 ## Rollback boundary
 
-Gate 7 adds staged v2 rows only. Rolling back before any later approved cutover means continuing to select v1; the legacy 311 nodes, 289 monsters, integer RPCs, and all 20 Tungsten nodes are still present. Player saves are not migrated or mutated by this gate.
+Gate 7 adds staged v2 rows only. Rolling back before any later approved cutover means continuing to select v1. The immutable client snapshot remains at 311 nodes, 289 monsters, and 20 Tungsten nodes. Separately, the historical integer database seed remains at 234 nodes, 170 monsters, and 17 Tungsten rows; its tables and RPCs are untouched. Player saves are not migrated or mutated by this gate.
