@@ -254,7 +254,7 @@ SELECT
   recipe.xp,
   recipe.time_s
 FROM public.game_recipes AS recipe
-JOIN public.game_items AS output ON output.id = recipe.out_item
+LEFT JOIN public.game_items AS output ON output.id = recipe.out_item
 WHERE public.game_active_content_version() = 'v1'
 UNION ALL
 SELECT
