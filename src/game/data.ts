@@ -2706,7 +2706,7 @@ function spawnable(x: number, y: number) {
     // alternate between nodes and monsters, weighted by what is still missing
     const takeNode = nodesLeft > 0 && (mobsLeft === 0 || c.k * (nodesLeft + mobsLeft) < nodesLeft);
     // mostly cluster by nearest same-kind patch; sometimes fall back to quota
-    const cluster = rand01(c.x * 0.013 + c.y * 0.029 + 3.7) < 0.9;
+    const cluster = rand01(c.x * 0.013 + c.y * 0.029 + 3.7) < 0.8;
     if (takeNode) {
       const kind = (cluster ? pickNear(w.node, bid, c.x, c.y) : null) ?? pickMost(w.node);
       if (!kind) continue;
