@@ -1,0 +1,64 @@
+name: Gate 5 complete content
+
+on:
+  push:
+    branches:
+      - "codex/gate-5-*"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gate-5-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  complete-content:
+    name: Deterministic complete-content contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run test:gate5
+
+  staged-database:
+    name: Zero-to-head staged v2 database
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.115.0
+      - name: Verify generated Gate 5 artifacts
+        run: node scripts/content/generate.mjs --check
+      - name: Start isolated local stack
+        run: supabase start
+      - name: Reapply every migration from zero
+        run: supabase db reset --local
+      - name: Verify inherited Gate 1 foundation
+        run: supabase test db supabase/tests/gate1_foundation.sql
+      - name: Verify inherited known-defect contracts
+        run: supabase test db supabase/tests/gate1_known_defects.sql
+      - name: Verify inherited Gate 2 authority
+        run: supabase test db supabase/tests/gate2_authority.sql
+      - name: Verify canonical schema guards
+        run: supabase test db supabase/tests/gate4_content_contract.sql
+      - name: Apply generated v2 SQL to isolated database
+        run: psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --set=ON_ERROR_STOP=1 --file=supabase/generated/content-manifest.sql
+      - name: Confirm exact complete content remains staged and inactive
+        run: |
+          test "$(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --tuples-only --no-align --command "select status from public.game_content_versions where content_version='v2'")" = "staged"
+          test "$(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --tuples-only --no-align --command "select count(*) from public.game_content_control")" = "0"
+          test "$(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --tuples-only --no-align --command "select count(*) from public.game_validate_content_version('v2')")" = "0"
+          test "$(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --tuples-only --no-align --command "select count(*) from public.game_content_items where content_version='v2'")" = "174"
+          test "$(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --tuples-only --no-align --command "select count(*) from public.game_content_recipes where content_version='v2'")" = "108"
+          test "$(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --tuples-only --no-align --command "select count(*) from public.game_content_monsters where content_version='v2'")" = "32"
+          test "$(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --tuples-only --no-align --command "select count(*) from public.game_content_nodes where content_version='v2'")" = "27"
+      - name: Stop isolated stack
+        if: always()
+        run: supabase stop --no-backup

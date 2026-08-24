@@ -1,0 +1,2259 @@
+{
+  "captured_fields": {
+    "fish": [
+      {
+        "id": "river_minnow",
+        "rank": 1,
+        "xp": 15
+      },
+      {
+        "id": "silver_trout",
+        "rank": 2,
+        "xp": 45
+      },
+      {
+        "id": "golden_koi",
+        "rank": 3,
+        "xp": 140
+      },
+      {
+        "id": "deepwater_eel",
+        "rank": 4,
+        "xp": 380
+      },
+      {
+        "id": "starlight_salmon",
+        "rank": 5,
+        "xp": 900
+      }
+    ],
+    "fishing_spots": [
+      {
+        "id": 1,
+        "lake": "fields",
+        "x": 392.8904829745483,
+        "y": 2766.4147100038044
+      },
+      {
+        "id": 2,
+        "lake": "fields",
+        "x": 270.19956121959575,
+        "y": 2797.4001826569693
+      },
+      {
+        "id": 3,
+        "lake": "forest",
+        "x": 1578.0710684345934,
+        "y": 1197.0463788679922
+      },
+      {
+        "id": 4,
+        "lake": "forest",
+        "x": 1495.4835037674786,
+        "y": 1167.0094479389297
+      },
+      {
+        "id": 5,
+        "lake": "winter",
+        "x": 5253.876211999212,
+        "y": 2736.962884314645
+      },
+      {
+        "id": 6,
+        "lake": "evil",
+        "x": 4385.634595274821,
+        "y": 1875.7000392856248
+      }
+    ],
+    "items": [
+      {
+        "color": "#e0955f",
+        "family": "ore",
+        "id": "copper_ore",
+        "kind": "resource",
+        "name": "Copper Ore",
+        "stackable": true,
+        "value": 6
+      },
+      {
+        "color": "#b0a49b",
+        "family": "ore",
+        "id": "iron_ore",
+        "kind": "resource",
+        "name": "Iron Ore",
+        "stackable": true,
+        "value": 14
+      },
+      {
+        "color": "#e6cf9a",
+        "family": "ore",
+        "id": "sandstone",
+        "kind": "resource",
+        "name": "Sandstone",
+        "stackable": true,
+        "value": 22
+      },
+      {
+        "color": "#9fc4e8",
+        "family": "ore",
+        "id": "mithril_ore",
+        "kind": "resource",
+        "name": "Mithril Ore",
+        "stackable": true,
+        "value": 40
+      },
+      {
+        "color": "#b58ce0",
+        "family": "ore",
+        "id": "cursed_shard",
+        "kind": "resource",
+        "name": "Cursed Shard",
+        "stackable": true,
+        "value": 70
+      },
+      {
+        "color": "#8fe0d0",
+        "family": "ore",
+        "id": "runite_ore",
+        "kind": "resource",
+        "name": "Runite Ore",
+        "stackable": true,
+        "value": 110
+      },
+      {
+        "color": "#c8cfe0",
+        "family": "ore",
+        "id": "tungsten_ore",
+        "kind": "resource",
+        "name": "Tungsten Ore",
+        "stackable": true,
+        "value": 150
+      },
+      {
+        "color": "#b98a5c",
+        "family": "log",
+        "id": "oak_logs",
+        "kind": "resource",
+        "name": "Oak Logs",
+        "stackable": true,
+        "value": 5
+      },
+      {
+        "color": "#a8b87a",
+        "family": "log",
+        "id": "willow_logs",
+        "kind": "resource",
+        "name": "Willow Logs",
+        "stackable": true,
+        "value": 12
+      },
+      {
+        "color": "#d59470",
+        "family": "log",
+        "id": "maple_logs",
+        "kind": "resource",
+        "name": "Maple Logs",
+        "stackable": true,
+        "value": 20
+      },
+      {
+        "color": "#d8bb7c",
+        "family": "log",
+        "id": "palm_logs",
+        "kind": "resource",
+        "name": "Palm Logs",
+        "stackable": true,
+        "value": 34
+      },
+      {
+        "color": "#8f7bb0",
+        "family": "log",
+        "id": "cursed_bark",
+        "kind": "resource",
+        "name": "Cursed Bark",
+        "stackable": true,
+        "value": 62
+      },
+      {
+        "color": "#a9d8e6",
+        "family": "log",
+        "id": "frostpine_logs",
+        "kind": "resource",
+        "name": "Frostpine Logs",
+        "stackable": true,
+        "value": 100
+      },
+      {
+        "color": "#e6e0a6",
+        "family": "herb",
+        "id": "flax",
+        "kind": "resource",
+        "name": "Flax",
+        "stackable": true,
+        "value": 4
+      },
+      {
+        "color": "#f19bb0",
+        "family": "berries",
+        "id": "meadow_berries",
+        "kind": "resource",
+        "name": "Meadow Berries",
+        "stackable": true,
+        "value": 7
+      },
+      {
+        "color": "#8fd6a0",
+        "family": "herb",
+        "id": "forest_herbs",
+        "kind": "resource",
+        "name": "Forest Herbs",
+        "stackable": true,
+        "value": 16
+      },
+      {
+        "color": "#f4c66b",
+        "family": "herb",
+        "id": "desert_bloom",
+        "kind": "resource",
+        "name": "Desert Bloom",
+        "stackable": true,
+        "value": 30
+      },
+      {
+        "color": "#c39ae8",
+        "family": "herb",
+        "id": "gloomcap",
+        "kind": "resource",
+        "name": "Gloomcap",
+        "stackable": true,
+        "value": 58
+      },
+      {
+        "color": "#cfeaf5",
+        "family": "herb",
+        "id": "frost_lichen",
+        "kind": "resource",
+        "name": "Frost Lichen",
+        "stackable": true,
+        "value": 95
+      },
+      {
+        "color": "#fdf3d8",
+        "family": "feather",
+        "id": "feather",
+        "kind": "resource",
+        "name": "Feather",
+        "stackable": true,
+        "value": 2
+      },
+      {
+        "color": "#a7d97f",
+        "family": "charm",
+        "id": "goblin_charm",
+        "kind": "resource",
+        "name": "Goblin Charm",
+        "stackable": true,
+        "value": 14
+      },
+      {
+        "color": "#d9b189",
+        "family": "hide",
+        "id": "raw_hide",
+        "kind": "resource",
+        "name": "Raw Hide",
+        "stackable": true,
+        "value": 10
+      },
+      {
+        "color": "#bb8b60",
+        "family": "hide",
+        "id": "thick_hide",
+        "kind": "resource",
+        "name": "Thick Hide",
+        "stackable": true,
+        "value": 28
+      },
+      {
+        "color": "#d9c07a",
+        "family": "hide",
+        "id": "scale_hide",
+        "kind": "resource",
+        "name": "Scaled Hide",
+        "stackable": true,
+        "value": 55
+      },
+      {
+        "color": "#9b86bd",
+        "family": "hide",
+        "id": "shadow_pelt",
+        "kind": "resource",
+        "name": "Shadow Pelt",
+        "stackable": true,
+        "value": 90
+      },
+      {
+        "color": "#dcecf7",
+        "family": "hide",
+        "id": "frost_pelt",
+        "kind": "resource",
+        "name": "Frost Pelt",
+        "stackable": true,
+        "value": 140
+      },
+      {
+        "color": "#c9a876",
+        "family": "charm",
+        "id": "ram_horn",
+        "kind": "resource",
+        "name": "Ram Horn",
+        "stackable": true,
+        "value": 5
+      },
+      {
+        "color": "#e6ddc8",
+        "family": "charm",
+        "id": "boar_tusk",
+        "kind": "resource",
+        "name": "Boar Tusk",
+        "stackable": true,
+        "value": 12
+      },
+      {
+        "color": "#6b5a42",
+        "family": "charm",
+        "id": "lynx_claw",
+        "kind": "resource",
+        "name": "Lynx Claw",
+        "stackable": true,
+        "value": 24
+      },
+      {
+        "color": "#7a5c3a",
+        "family": "charm",
+        "id": "jackal_fang",
+        "kind": "resource",
+        "name": "Jackal Fang",
+        "stackable": true,
+        "value": 45
+      },
+      {
+        "color": "#5a4020",
+        "family": "charm",
+        "id": "scorpion_stinger",
+        "kind": "resource",
+        "name": "Scorpion Stinger",
+        "stackable": true,
+        "value": 65
+      },
+      {
+        "color": "#3f4a38",
+        "family": "charm",
+        "id": "ghoul_essence",
+        "kind": "resource",
+        "name": "Ghoul Essence",
+        "stackable": true,
+        "value": 95
+      },
+      {
+        "color": "#e8e0d0",
+        "family": "charm",
+        "id": "reaper_bone",
+        "kind": "resource",
+        "name": "Reaper Bone",
+        "stackable": true,
+        "value": 130
+      },
+      {
+        "color": "#8fb8d4",
+        "family": "charm",
+        "id": "frost_fang",
+        "kind": "resource",
+        "name": "Frost Fang",
+        "stackable": true,
+        "value": 175
+      },
+      {
+        "color": "#5f9ec4",
+        "family": "charm",
+        "id": "wraith_ice_core",
+        "kind": "resource",
+        "name": "Wraith Ice Core",
+        "stackable": true,
+        "value": 220
+      },
+      {
+        "color": "#a8d4e8",
+        "family": "charm",
+        "id": "wyrm_scale",
+        "kind": "resource",
+        "name": "Wyrm Scale",
+        "stackable": true,
+        "value": 300
+      },
+      {
+        "color": "#e0a070",
+        "family": "bar",
+        "id": "copper_bar",
+        "kind": "material",
+        "name": "Copper Bar",
+        "stackable": true,
+        "value": 18
+      },
+      {
+        "color": "#b9b2ab",
+        "family": "bar",
+        "id": "iron_bar",
+        "kind": "material",
+        "name": "Iron Bar",
+        "stackable": true,
+        "value": 40
+      },
+      {
+        "color": "#a8cdee",
+        "family": "bar",
+        "id": "mithril_bar",
+        "kind": "material",
+        "name": "Mithril Bar",
+        "stackable": true,
+        "value": 100
+      },
+      {
+        "color": "#95e6d6",
+        "family": "bar",
+        "id": "runite_bar",
+        "kind": "material",
+        "name": "Runite Bar",
+        "stackable": true,
+        "value": 260
+      },
+      {
+        "color": "#d3d9e8",
+        "family": "bar",
+        "id": "tungsten_bar",
+        "kind": "material",
+        "name": "Tungsten Bar",
+        "stackable": true,
+        "value": 380
+      },
+      {
+        "color": "#d6a877",
+        "family": "leather",
+        "id": "light_leather",
+        "kind": "material",
+        "name": "Light Leather",
+        "stackable": true,
+        "value": 30
+      },
+      {
+        "color": "#b17f52",
+        "family": "leather",
+        "id": "thick_leather",
+        "kind": "material",
+        "name": "Thick Leather",
+        "stackable": true,
+        "value": 78
+      },
+      {
+        "color": "#8f7aa8",
+        "family": "leather",
+        "id": "shadow_leather",
+        "kind": "material",
+        "name": "Shadow Leather",
+        "stackable": true,
+        "value": 210
+      },
+      {
+        "color": "#f0e6c8",
+        "family": "cloth",
+        "id": "linen_cloth",
+        "kind": "material",
+        "name": "Linen Cloth",
+        "stackable": true,
+        "value": 22
+      },
+      {
+        "color": "#a7dcb4",
+        "family": "cloth",
+        "id": "herb_weave",
+        "kind": "material",
+        "name": "Herb Weave",
+        "stackable": true,
+        "value": 70
+      },
+      {
+        "color": "#d5b7f0",
+        "family": "cloth",
+        "id": "mystic_cloth",
+        "kind": "material",
+        "name": "Mystic Cloth",
+        "stackable": true,
+        "value": 200
+      },
+      {
+        "attack": 2,
+        "color": "#b98a5c",
+        "family": "weapon",
+        "id": "wooden_club",
+        "kind": "weapon",
+        "name": "Wooden Club",
+        "stackable": false,
+        "value": 15
+      },
+      {
+        "attack": 4,
+        "color": "#d9a066",
+        "family": "weapon",
+        "id": "bronze_dagger",
+        "kind": "weapon",
+        "name": "Bronze Dagger",
+        "stackable": false,
+        "value": 40
+      },
+      {
+        "attack": 6,
+        "color": "#e0a070",
+        "family": "weapon",
+        "id": "copper_sword",
+        "kind": "weapon",
+        "name": "Copper Sword",
+        "stackable": false,
+        "value": 70
+      },
+      {
+        "attack": 9,
+        "color": "#cdd8e6",
+        "family": "weapon",
+        "id": "steel_sword",
+        "kind": "weapon",
+        "name": "Steel Sword",
+        "stackable": false,
+        "value": 150
+      },
+      {
+        "attack": 16,
+        "color": "#a8cdee",
+        "family": "weapon",
+        "id": "mithril_blade",
+        "kind": "weapon",
+        "name": "Mithril Blade",
+        "stackable": false,
+        "value": 380
+      },
+      {
+        "attack": 26,
+        "color": "#95e6d6",
+        "family": "weapon",
+        "id": "runite_greatsword",
+        "kind": "weapon",
+        "name": "Runite Greatsword",
+        "stackable": false,
+        "value": 900
+      },
+      {
+        "attack": 38,
+        "color": "#d3d9e8",
+        "family": "weapon",
+        "id": "tungsten_maul",
+        "kind": "weapon",
+        "name": "Tungsten Maul",
+        "stackable": false,
+        "value": 1500
+      },
+      {
+        "attack": 22,
+        "color": "#f5d78a",
+        "family": "weapon",
+        "id": "sunspire_wand",
+        "kind": "weapon",
+        "name": "Sunspire Wand",
+        "stackable": false,
+        "value": 700
+      },
+      {
+        "attack": 1,
+        "color": "#f2c6d8",
+        "defense": 2,
+        "family": "armor",
+        "id": "cloth_tunic",
+        "kind": "armor",
+        "name": "Cloth Tunic",
+        "speed": 0.04,
+        "stackable": false,
+        "value": 18
+      },
+      {
+        "attack": 1,
+        "color": "#c98f5a",
+        "defense": 4,
+        "family": "armor",
+        "id": "leather_vest",
+        "kind": "armor",
+        "name": "Leather Vest",
+        "speed": 0.07,
+        "stackable": false,
+        "value": 45
+      },
+      {
+        "attack": 2,
+        "color": "#f0e6c8",
+        "defense": 6,
+        "family": "armor",
+        "id": "linen_robe",
+        "kind": "armor",
+        "name": "Linen Robe",
+        "speed": 0.1,
+        "stackable": false,
+        "value": 90
+      },
+      {
+        "color": "#9aa8bd",
+        "defense": 9,
+        "family": "armor",
+        "id": "iron_mail",
+        "kind": "armor",
+        "name": "Iron Mail",
+        "stackable": false,
+        "value": 170
+      },
+      {
+        "color": "#a8cdee",
+        "defense": 16,
+        "family": "armor",
+        "id": "mithril_plate",
+        "kind": "armor",
+        "name": "Mithril Plate",
+        "stackable": false,
+        "value": 420
+      },
+      {
+        "attack": 7,
+        "color": "#d5b7f0",
+        "defense": 21,
+        "family": "armor",
+        "id": "mystic_robe",
+        "kind": "armor",
+        "name": "Mystic Robe",
+        "speed": 0.16,
+        "stackable": false,
+        "value": 640
+      },
+      {
+        "color": "#95e6d6",
+        "defense": 27,
+        "family": "armor",
+        "id": "runite_plate",
+        "kind": "armor",
+        "name": "Runite Plate",
+        "stackable": false,
+        "value": 980
+      },
+      {
+        "color": "#d3d9e8",
+        "defense": 38,
+        "family": "armor",
+        "id": "frostguard_plate",
+        "kind": "armor",
+        "name": "Frostguard Plate",
+        "stackable": false,
+        "value": 1600
+      },
+      {
+        "color": "#a8d4e8",
+        "defense": 50,
+        "family": "armor",
+        "id": "wyrmscale_plate",
+        "kind": "armor",
+        "name": "Wyrmscale Plate",
+        "stackable": false,
+        "value": 2200
+      },
+      {
+        "color": "#f4c56b",
+        "family": "bun",
+        "heal": 14,
+        "id": "honey_bun",
+        "kind": "food",
+        "name": "Honey Bun",
+        "stackable": true,
+        "value": 12
+      },
+      {
+        "color": "#f19bb0",
+        "family": "pie",
+        "heal": 45,
+        "id": "berry_pie",
+        "kind": "food",
+        "name": "Berry Pie",
+        "stackable": true,
+        "value": 34
+      },
+      {
+        "color": "#e0a070",
+        "family": "stew",
+        "heal": 120,
+        "id": "hearty_stew",
+        "kind": "food",
+        "name": "Hearty Stew",
+        "stackable": true,
+        "value": 90
+      },
+      {
+        "color": "#a9d8e6",
+        "family": "tonic",
+        "heal": 300,
+        "id": "frost_tonic",
+        "kind": "food",
+        "name": "Frost Tonic",
+        "stackable": true,
+        "value": 180
+      },
+      {
+        "color": "#f59a5c",
+        "family": "ore",
+        "heal": 650,
+        "id": "phoenix_fillet",
+        "kind": "food",
+        "name": "Phoenix Fillet",
+        "stackable": true,
+        "value": 700
+      },
+      {
+        "color": "#9fc9d8",
+        "family": "fish",
+        "id": "river_minnow",
+        "kind": "resource",
+        "name": "River Minnow",
+        "stackable": true,
+        "value": 8
+      },
+      {
+        "color": "#c8d6e0",
+        "family": "fish",
+        "id": "silver_trout",
+        "kind": "resource",
+        "name": "Silver Trout",
+        "stackable": true,
+        "value": 24
+      },
+      {
+        "color": "#f4c05e",
+        "family": "fish",
+        "id": "golden_koi",
+        "kind": "resource",
+        "name": "Golden Koi",
+        "stackable": true,
+        "value": 65
+      },
+      {
+        "color": "#7b8fb0",
+        "family": "fish",
+        "id": "deepwater_eel",
+        "kind": "resource",
+        "name": "Deepwater Eel",
+        "stackable": true,
+        "value": 150
+      },
+      {
+        "color": "#f0a3b6",
+        "family": "fish",
+        "id": "starlight_salmon",
+        "kind": "resource",
+        "name": "Starlight Salmon",
+        "stackable": true,
+        "value": 320
+      },
+      {
+        "boostHits": 5,
+        "color": "#a7d97f",
+        "dmgBoost": 2,
+        "family": "potion",
+        "id": "minor_venom_draught",
+        "kind": "potion",
+        "name": "Minor Venom Draught",
+        "stackable": true,
+        "value": 35
+      },
+      {
+        "boostHits": 8,
+        "color": "#e08a5c",
+        "dmgBoost": 5,
+        "family": "potion",
+        "id": "goblins_fury_tonic",
+        "kind": "potion",
+        "name": "Goblin's Fury Tonic",
+        "stackable": true,
+        "value": 90
+      },
+      {
+        "boostHits": 10,
+        "color": "#6fc8a0",
+        "dmgBoost": 10,
+        "family": "potion",
+        "id": "serpents_bite_elixir",
+        "kind": "potion",
+        "name": "Serpent's Bite Elixir",
+        "stackable": true,
+        "value": 220
+      },
+      {
+        "boostHits": 12,
+        "color": "#9b7ac0",
+        "dmgBoost": 18,
+        "family": "potion",
+        "id": "shadow_venom",
+        "kind": "potion",
+        "name": "Shadow Venom",
+        "stackable": true,
+        "value": 480
+      },
+      {
+        "boostHits": 15,
+        "color": "#8fd6ee",
+        "dmgBoost": 30,
+        "family": "potion",
+        "id": "frostfire_brew",
+        "kind": "potion",
+        "name": "Frostfire Brew",
+        "stackable": true,
+        "value": 900
+      }
+    ],
+    "monsters": {
+      "ancient_frost_wyrm": {
+        "accent": "#5a6fa0",
+        "attack": 210,
+        "body": "#a8d4e8",
+        "defense": 95,
+        "drop": "wyrm_scale",
+        "dropChance": 0.45,
+        "ears": "spikes",
+        "gold": [
+          560,
+          1092
+        ],
+        "hide": "frost_pelt",
+        "hideXp": 1000,
+        "hp": 3080,
+        "name": "Ancient Frost Wyrm",
+        "size": 1.9,
+        "xp": 4760
+      },
+      "bandit": {
+        "accent": "#a86f45",
+        "attack": 42,
+        "body": "#e8b98a",
+        "defense": 22,
+        "drop": "desert_bloom",
+        "dropChance": 0.4,
+        "ears": "none",
+        "gold": [
+          70,
+          160
+        ],
+        "hide": "scale_hide",
+        "hideXp": 190,
+        "hp": 320,
+        "name": "Dune Bandit",
+        "size": 1.1,
+        "xp": 520
+      },
+      "bear": {
+        "accent": "#8a5f3b",
+        "attack": 20,
+        "body": "#c08a5c",
+        "defense": 10,
+        "drop": "thick_hide",
+        "dropChance": 0.5,
+        "ears": "none",
+        "gold": [
+          22,
+          48
+        ],
+        "hide": "thick_hide",
+        "hideXp": 85,
+        "hp": 130,
+        "name": "Honey Bear",
+        "size": 1.35,
+        "xp": 210
+      },
+      "bone_reaper": {
+        "accent": "#2b2b35",
+        "attack": 76,
+        "body": "#e8e0d0",
+        "defense": 38,
+        "drop": "reaper_bone",
+        "dropChance": 0.45,
+        "ears": "spikes",
+        "gold": [
+          139,
+          283
+        ],
+        "hide": "shadow_pelt",
+        "hideXp": 400,
+        "hp": 713,
+        "name": "Bone Reaper",
+        "size": 1.3,
+        "xp": 1129
+      },
+      "chicken": {
+        "accent": "#f2a154",
+        "attack": 2,
+        "body": "#fff6e0",
+        "defense": 0,
+        "drop": "feather",
+        "dropChance": 0.7,
+        "ears": "beak",
+        "gold": [
+          1,
+          4
+        ],
+        "hide": null,
+        "hideXp": 0,
+        "hp": 8,
+        "name": "Chicken",
+        "size": 1,
+        "xp": 12
+      },
+      "disgruntled_ram": {
+        "accent": "#c9a876",
+        "attack": 3,
+        "body": "#f0ead6",
+        "defense": 1,
+        "drop": "ram_horn",
+        "dropChance": 0.45,
+        "ears": "horns",
+        "gold": [
+          2,
+          7
+        ],
+        "hide": "raw_hide",
+        "hideXp": 20,
+        "hp": 13,
+        "name": "Disgruntled Ram",
+        "size": 1.05,
+        "xp": 20
+      },
+      "dust_jackal": {
+        "accent": "#7a5c3a",
+        "attack": 26,
+        "body": "#d4b382",
+        "defense": 13,
+        "drop": "jackal_fang",
+        "dropChance": 0.45,
+        "ears": "horns",
+        "gold": [
+          31,
+          68
+        ],
+        "hide": "thick_hide",
+        "hideXp": 130,
+        "hp": 184,
+        "name": "Dust Jackal",
+        "size": 1.1,
+        "xp": 300
+      },
+      "forest_boar": {
+        "accent": "#e6ddc8",
+        "attack": 7,
+        "body": "#8a6a45",
+        "defense": 3,
+        "drop": "boar_tusk",
+        "dropChance": 0.45,
+        "ears": "spikes",
+        "gold": [
+          6,
+          17
+        ],
+        "hide": "raw_hide",
+        "hideXp": 28,
+        "hp": 36,
+        "name": "Forest Boar",
+        "size": 1.15,
+        "xp": 57
+      },
+      "forest_lynx": {
+        "accent": "#6b5a42",
+        "attack": 15,
+        "body": "#b8a888",
+        "defense": 7,
+        "drop": "lynx_claw",
+        "dropChance": 0.45,
+        "ears": "horns",
+        "gold": [
+          15,
+          34
+        ],
+        "hide": "thick_hide",
+        "hideXp": 65,
+        "hp": 88,
+        "name": "Forest Lynx",
+        "size": 1.15,
+        "xp": 141
+      },
+      "frost_giant": {
+        "accent": "#7fa8c4",
+        "attack": 165,
+        "body": "#bcd9ec",
+        "defense": 80,
+        "drop": "tungsten_ore",
+        "dropChance": 0.4,
+        "ears": "spikes",
+        "gold": [
+          400,
+          780
+        ],
+        "hide": "frost_pelt",
+        "hideXp": 900,
+        "hp": 2200,
+        "name": "Frost Giant",
+        "size": 1.7,
+        "xp": 3400
+      },
+      "frost_wolf": {
+        "accent": "#8fb8d4",
+        "attack": 105,
+        "body": "#dceaf5",
+        "defense": 51,
+        "drop": "frost_fang",
+        "dropChance": 0.45,
+        "ears": "horns",
+        "gold": [
+          212,
+          408
+        ],
+        "hide": "frost_pelt",
+        "hideXp": 600,
+        "hp": 1109,
+        "name": "Frost Wolf",
+        "size": 1.2,
+        "xp": 1766
+      },
+      "goblin": {
+        "accent": "#6fae52",
+        "attack": 5,
+        "body": "#a7d97f",
+        "defense": 2,
+        "drop": "goblin_charm",
+        "dropChance": 0.35,
+        "ears": "horns",
+        "gold": [
+          4,
+          12
+        ],
+        "hide": "raw_hide",
+        "hideXp": 16,
+        "hp": 22,
+        "name": "Goblin",
+        "size": 1,
+        "xp": 34
+      },
+      "ice_wraith": {
+        "accent": "#5f9ec4",
+        "attack": 146,
+        "body": "#cfe8f5",
+        "defense": 70,
+        "drop": "wraith_ice_core",
+        "dropChance": 0.45,
+        "ears": "spikes",
+        "gold": [
+          335,
+          637
+        ],
+        "hide": "frost_pelt",
+        "hideXp": 800,
+        "hp": 1817,
+        "name": "Ice Wraith",
+        "size": 1.35,
+        "xp": 2857
+      },
+      "scorpion_stalker": {
+        "accent": "#5a4020",
+        "attack": 38,
+        "body": "#c9963f",
+        "defense": 20,
+        "drop": "scorpion_stinger",
+        "dropChance": 0.45,
+        "ears": "spikes",
+        "gold": [
+          56,
+          123
+        ],
+        "hide": "scale_hide",
+        "hideXp": 180,
+        "hp": 288,
+        "name": "Scorpion Stalker",
+        "size": 1.25,
+        "xp": 473
+      },
+      "serpent": {
+        "accent": "#b8934c",
+        "attack": 34,
+        "body": "#e0c078",
+        "defense": 18,
+        "drop": "scale_hide",
+        "dropChance": 0.5,
+        "ears": "spikes",
+        "gold": [
+          45,
+          95
+        ],
+        "hide": "scale_hide",
+        "hideXp": 170,
+        "hp": 260,
+        "name": "Sand Serpent",
+        "size": 1.2,
+        "xp": 430
+      },
+      "shadow_beast": {
+        "accent": "#4a3c6d",
+        "attack": 84,
+        "body": "#7b6a9c",
+        "defense": 42,
+        "drop": "shadow_pelt",
+        "dropChance": 0.55,
+        "ears": "horns",
+        "gold": [
+          160,
+          320
+        ],
+        "hide": "shadow_pelt",
+        "hideXp": 400,
+        "hp": 820,
+        "name": "Shadow Beast",
+        "size": 1.45,
+        "xp": 1300
+      },
+      "withered_ghoul": {
+        "accent": "#3f4a38",
+        "attack": 53,
+        "body": "#7a8a6e",
+        "defense": 27,
+        "drop": "ghoul_essence",
+        "dropChance": 0.45,
+        "ears": "none",
+        "gold": [
+          92,
+          200
+        ],
+        "hide": "shadow_pelt",
+        "hideXp": 250,
+        "hp": 445,
+        "name": "Withered Ghoul",
+        "size": 1.2,
+        "xp": 714
+      },
+      "wolf": {
+        "accent": "#8e857c",
+        "attack": 11,
+        "body": "#c9c2bb",
+        "defense": 5,
+        "drop": "raw_hide",
+        "dropChance": 0.6,
+        "ears": "horns",
+        "gold": [
+          10,
+          24
+        ],
+        "hide": "raw_hide",
+        "hideXp": 40,
+        "hp": 60,
+        "name": "Meadow Wolf",
+        "size": 1.1,
+        "xp": 95
+      },
+      "wraith": {
+        "accent": "#8f7bb0",
+        "attack": 68,
+        "body": "#cbb8e8",
+        "defense": 34,
+        "drop": "gloomcap",
+        "dropChance": 0.45,
+        "ears": "spikes",
+        "gold": [
+          120,
+          250
+        ],
+        "hide": "shadow_pelt",
+        "hideXp": 330,
+        "hp": 620,
+        "name": "Pale Wraith",
+        "size": 1.2,
+        "xp": 980
+      },
+      "yeti": {
+        "accent": "#a9d8e6",
+        "attack": 130,
+        "body": "#eef7fd",
+        "defense": 62,
+        "drop": "frost_pelt",
+        "dropChance": 0.55,
+        "ears": "horns",
+        "gold": [
+          280,
+          520
+        ],
+        "hide": "frost_pelt",
+        "hideXp": 720,
+        "hp": 1500,
+        "name": "Fluffy Yeti",
+        "size": 1.5,
+        "xp": 2400
+      }
+    },
+    "nodes": {
+      "berries": {
+        "accent": "#f19bb0",
+        "color": "#6fa85c",
+        "item": "meadow_berries",
+        "name": "Berry Bush",
+        "req": 3,
+        "respawn": 32,
+        "shape": "bush",
+        "skill": "gathering",
+        "time": 2.8,
+        "xp": 20
+      },
+      "bloom": {
+        "accent": "#f4c66b",
+        "color": "#c79b56",
+        "item": "desert_bloom",
+        "name": "Desert Bloom",
+        "req": 42,
+        "respawn": 48,
+        "shape": "bush",
+        "skill": "gathering",
+        "time": 4,
+        "xp": 110
+      },
+      "copper": {
+        "accent": "#e0955f",
+        "color": "#b8a999",
+        "item": "copper_ore",
+        "name": "Copper Rock",
+        "req": 1,
+        "respawn": 36,
+        "shape": "rock",
+        "skill": "mining",
+        "time": 3.2,
+        "xp": 18
+      },
+      "cursed_rock": {
+        "accent": "#b58ce0",
+        "color": "#6b5b93",
+        "item": "cursed_shard",
+        "name": "Cursed Rock",
+        "req": 70,
+        "respawn": 68,
+        "shape": "rock",
+        "skill": "mining",
+        "time": 6,
+        "xp": 240
+      },
+      "cursed_tree": {
+        "accent": "#8f7bb0",
+        "color": "#4a3c6d",
+        "item": "cursed_bark",
+        "name": "Cursed Tree",
+        "req": 70,
+        "respawn": 68,
+        "shape": "tree",
+        "skill": "woodcutting",
+        "time": 6,
+        "xp": 230
+      },
+      "flax": {
+        "accent": "#e6e0a6",
+        "color": "#9ec27a",
+        "item": "flax",
+        "name": "Flax Patch",
+        "req": 1,
+        "respawn": 28,
+        "shape": "bush",
+        "skill": "gathering",
+        "time": 2.4,
+        "xp": 14
+      },
+      "frostpine": {
+        "accent": "#a9d8e6",
+        "color": "#6f8798",
+        "item": "frostpine_logs",
+        "name": "Frostpine",
+        "req": 100,
+        "respawn": 76,
+        "shape": "tree",
+        "skill": "woodcutting",
+        "time": 6.8,
+        "xp": 400
+      },
+      "gloomcap": {
+        "accent": "#c39ae8",
+        "color": "#3f3460",
+        "item": "gloomcap",
+        "name": "Gloomcap",
+        "req": 68,
+        "respawn": 56,
+        "shape": "bush",
+        "skill": "gathering",
+        "time": 4.8,
+        "xp": 210
+      },
+      "herbs": {
+        "accent": "#8fd6a0",
+        "color": "#3f8f6a",
+        "item": "forest_herbs",
+        "name": "Herb Cluster",
+        "req": 18,
+        "respawn": 40,
+        "shape": "bush",
+        "skill": "gathering",
+        "time": 3.4,
+        "xp": 48
+      },
+      "iron": {
+        "accent": "#b0a49b",
+        "color": "#9c948c",
+        "item": "iron_ore",
+        "name": "Iron Rock",
+        "req": 15,
+        "respawn": 44,
+        "shape": "rock",
+        "skill": "mining",
+        "time": 4,
+        "xp": 42
+      },
+      "lichen": {
+        "accent": "#cfeaf5",
+        "color": "#8bb0c4",
+        "item": "frost_lichen",
+        "name": "Frost Lichen",
+        "req": 98,
+        "respawn": 64,
+        "shape": "bush",
+        "skill": "gathering",
+        "time": 5.4,
+        "xp": 380
+      },
+      "maple": {
+        "accent": "#d59470",
+        "color": "#7a5236",
+        "item": "maple_logs",
+        "name": "Maple Tree",
+        "req": 28,
+        "respawn": 48,
+        "shape": "tree",
+        "skill": "woodcutting",
+        "time": 4.4,
+        "xp": 60
+      },
+      "mithril": {
+        "accent": "#9fc4e8",
+        "color": "#8fa6bb",
+        "item": "mithril_ore",
+        "name": "Mithril Vein",
+        "req": 50,
+        "respawn": 60,
+        "shape": "rock",
+        "skill": "mining",
+        "time": 5.4,
+        "xp": 140
+      },
+      "oak": {
+        "accent": "#79c46b",
+        "color": "#8a6a45",
+        "item": "oak_logs",
+        "name": "Oak Tree",
+        "req": 1,
+        "respawn": 32,
+        "shape": "tree",
+        "skill": "woodcutting",
+        "time": 3,
+        "xp": 16
+      },
+      "palm": {
+        "accent": "#d8bb7c",
+        "color": "#a8834e",
+        "item": "palm_logs",
+        "name": "Desert Palm",
+        "req": 45,
+        "respawn": 56,
+        "shape": "tree",
+        "skill": "woodcutting",
+        "time": 5,
+        "xp": 120
+      },
+      "runite": {
+        "accent": "#8fe0d0",
+        "color": "#7d9fa8",
+        "item": "runite_ore",
+        "name": "Runite Vein",
+        "req": 100,
+        "respawn": 80,
+        "shape": "rock",
+        "skill": "mining",
+        "time": 7,
+        "xp": 420
+      },
+      "sandstone": {
+        "accent": "#e6cf9a",
+        "color": "#d3bb88",
+        "item": "sandstone",
+        "name": "Sandstone Vein",
+        "req": 40,
+        "respawn": 48,
+        "shape": "rock",
+        "skill": "mining",
+        "time": 4.6,
+        "xp": 90
+      },
+      "tungsten": {
+        "accent": "#c8cfe0",
+        "color": "#98a2b5",
+        "item": "tungsten_ore",
+        "name": "Tungsten Vein",
+        "req": 110,
+        "respawn": 88,
+        "shape": "rock",
+        "skill": "mining",
+        "time": 7.6,
+        "xp": 520
+      },
+      "willow": {
+        "accent": "#a8b87a",
+        "color": "#7b6a4a",
+        "item": "willow_logs",
+        "name": "Willow Tree",
+        "req": 15,
+        "respawn": 40,
+        "shape": "tree",
+        "skill": "woodcutting",
+        "time": 3.8,
+        "xp": 38
+      }
+    },
+    "quests": [
+      {
+        "count": 5,
+        "desc": "Chickens have run wild. Defeat 5 of them.",
+        "gold": 45,
+        "id": "feather_duster",
+        "key": "chicken",
+        "kind": "kill",
+        "name": "Feather Duster",
+        "xp": 45,
+        "xpSkill": "combat"
+      },
+      {
+        "count": 6,
+        "desc": "The forge is cold. Mine 6 Copper Ore.",
+        "gold": 60,
+        "id": "copper_run",
+        "key": "copper_ore",
+        "kind": "gather",
+        "name": "Copper Run",
+        "xp": 70,
+        "xpSkill": "mining"
+      },
+      {
+        "count": 6,
+        "desc": "The inn needs warmth. Chop 6 Oak Logs.",
+        "gold": 55,
+        "id": "log_delivery",
+        "key": "oak_logs",
+        "kind": "gather",
+        "name": "Firewood Duty",
+        "xp": 65,
+        "xpSkill": "woodcutting"
+      },
+      {
+        "count": 3,
+        "desc": "Goblins raid the east fields. Defeat 3.",
+        "gold": 120,
+        "id": "goblin_trouble",
+        "key": "goblin",
+        "kind": "kill",
+        "name": "Goblin Trouble",
+        "reward": "bronze_dagger",
+        "xp": 130,
+        "xpSkill": "combat"
+      },
+      {
+        "count": 8,
+        "desc": "Gather 8 Flax for the weavers.",
+        "gold": 90,
+        "id": "flax_bundle",
+        "key": "flax",
+        "kind": "gather",
+        "name": "Bundle of Flax",
+        "xp": 120,
+        "xpSkill": "gathering"
+      },
+      {
+        "count": 4,
+        "desc": "Thin the forest pack. Defeat 4 Meadow Wolves.",
+        "gold": 260,
+        "id": "wolf_watch",
+        "key": "wolf",
+        "kind": "kill",
+        "name": "Wolf Watch",
+        "reward": "steel_sword",
+        "xp": 380,
+        "xpSkill": "combat"
+      },
+      {
+        "count": 3,
+        "desc": "Bandits harass the caravans. Defeat 3.",
+        "gold": 700,
+        "id": "dune_patrol",
+        "key": "bandit",
+        "kind": "kill",
+        "name": "Dune Patrol",
+        "xp": 1200,
+        "xpSkill": "combat"
+      },
+      {
+        "count": 5,
+        "desc": "Pick 5 Gloomcaps from the Evil Woods.",
+        "gold": 1100,
+        "id": "gloom_harvest",
+        "key": "gloomcap",
+        "kind": "gather",
+        "name": "Gloom Harvest",
+        "xp": 1600,
+        "xpSkill": "gathering"
+      }
+    ],
+    "recipes": [
+      {
+        "id": "copper_bar",
+        "inputs": [
+          {
+            "id": "copper_ore",
+            "qty": 2
+          }
+        ],
+        "out": "copper_bar",
+        "outQty": 1,
+        "req": 1,
+        "skill": "smithing",
+        "station": "smelt",
+        "time": 1.6,
+        "xp": 22
+      },
+      {
+        "id": "iron_bar",
+        "inputs": [
+          {
+            "id": "iron_ore",
+            "qty": 2
+          }
+        ],
+        "out": "iron_bar",
+        "outQty": 1,
+        "req": 15,
+        "skill": "smithing",
+        "station": "smelt",
+        "time": 1.8,
+        "xp": 55
+      },
+      {
+        "id": "mithril_bar",
+        "inputs": [
+          {
+            "id": "mithril_ore",
+            "qty": 2
+          },
+          {
+            "id": "sandstone",
+            "qty": 1
+          }
+        ],
+        "out": "mithril_bar",
+        "outQty": 1,
+        "req": 40,
+        "skill": "smithing",
+        "station": "smelt",
+        "time": 2.2,
+        "xp": 150
+      },
+      {
+        "id": "runite_bar",
+        "inputs": [
+          {
+            "id": "runite_ore",
+            "qty": 2
+          },
+          {
+            "id": "cursed_shard",
+            "qty": 1
+          }
+        ],
+        "out": "runite_bar",
+        "outQty": 1,
+        "req": 70,
+        "skill": "smithing",
+        "station": "smelt",
+        "time": 2.6,
+        "xp": 420
+      },
+      {
+        "id": "tungsten_bar",
+        "inputs": [
+          {
+            "id": "tungsten_ore",
+            "qty": 2
+          },
+          {
+            "id": "runite_bar",
+            "qty": 1
+          }
+        ],
+        "out": "tungsten_bar",
+        "outQty": 1,
+        "req": 100,
+        "skill": "smithing",
+        "station": "smelt",
+        "time": 3,
+        "xp": 620
+      },
+      {
+        "id": "copper_sword",
+        "inputs": [
+          {
+            "id": "copper_bar",
+            "qty": 3
+          }
+        ],
+        "out": "copper_sword",
+        "outQty": 1,
+        "req": 5,
+        "skill": "smithing",
+        "station": "forge",
+        "time": 2.4,
+        "xp": 90
+      },
+      {
+        "id": "bronze_dagger",
+        "inputs": [
+          {
+            "id": "copper_bar",
+            "qty": 2
+          },
+          {
+            "id": "willow_logs",
+            "qty": 1
+          },
+          {
+            "id": "goblin_charm",
+            "qty": 1
+          },
+          {
+            "id": "ram_horn",
+            "qty": 1
+          }
+        ],
+        "out": "bronze_dagger",
+        "outQty": 1,
+        "req": 3,
+        "skill": "smithing",
+        "station": "forge",
+        "time": 2.2,
+        "xp": 60
+      },
+      {
+        "id": "sunspire_wand",
+        "inputs": [
+          {
+            "id": "mithril_bar",
+            "qty": 2
+          },
+          {
+            "id": "willow_logs",
+            "qty": 2
+          },
+          {
+            "id": "feather",
+            "qty": 2
+          }
+        ],
+        "out": "sunspire_wand",
+        "outQty": 1,
+        "req": 45,
+        "skill": "smithing",
+        "station": "forge",
+        "time": 3,
+        "xp": 640
+      },
+      {
+        "id": "steel_sword",
+        "inputs": [
+          {
+            "id": "iron_bar",
+            "qty": 3
+          },
+          {
+            "id": "oak_logs",
+            "qty": 1
+          },
+          {
+            "id": "boar_tusk",
+            "qty": 1
+          }
+        ],
+        "out": "steel_sword",
+        "outQty": 1,
+        "req": 20,
+        "skill": "smithing",
+        "station": "forge",
+        "time": 2.6,
+        "xp": 220
+      },
+      {
+        "id": "iron_mail",
+        "inputs": [
+          {
+            "id": "iron_bar",
+            "qty": 4
+          },
+          {
+            "id": "lynx_claw",
+            "qty": 1
+          }
+        ],
+        "out": "iron_mail",
+        "outQty": 1,
+        "req": 24,
+        "skill": "smithing",
+        "station": "armor",
+        "time": 2.8,
+        "xp": 260
+      },
+      {
+        "id": "mithril_blade",
+        "inputs": [
+          {
+            "id": "mithril_bar",
+            "qty": 3
+          },
+          {
+            "id": "palm_logs",
+            "qty": 1
+          },
+          {
+            "id": "maple_logs",
+            "qty": 1
+          },
+          {
+            "id": "jackal_fang",
+            "qty": 1
+          }
+        ],
+        "out": "mithril_blade",
+        "outQty": 1,
+        "req": 45,
+        "skill": "smithing",
+        "station": "forge",
+        "time": 3,
+        "xp": 620
+      },
+      {
+        "id": "mithril_plate",
+        "inputs": [
+          {
+            "id": "mithril_bar",
+            "qty": 4
+          },
+          {
+            "id": "scorpion_stinger",
+            "qty": 1
+          }
+        ],
+        "out": "mithril_plate",
+        "outQty": 1,
+        "req": 50,
+        "skill": "smithing",
+        "station": "armor",
+        "time": 3.2,
+        "xp": 700
+      },
+      {
+        "id": "runite_greatsword",
+        "inputs": [
+          {
+            "id": "runite_bar",
+            "qty": 4
+          },
+          {
+            "id": "frostpine_logs",
+            "qty": 1
+          },
+          {
+            "id": "ghoul_essence",
+            "qty": 1
+          }
+        ],
+        "out": "runite_greatsword",
+        "outQty": 1,
+        "req": 75,
+        "skill": "smithing",
+        "station": "forge",
+        "time": 3.4,
+        "xp": 1500
+      },
+      {
+        "id": "runite_plate",
+        "inputs": [
+          {
+            "id": "runite_bar",
+            "qty": 5
+          },
+          {
+            "id": "reaper_bone",
+            "qty": 1
+          }
+        ],
+        "out": "runite_plate",
+        "outQty": 1,
+        "req": 80,
+        "skill": "smithing",
+        "station": "armor",
+        "time": 3.6,
+        "xp": 1700
+      },
+      {
+        "id": "tungsten_maul",
+        "inputs": [
+          {
+            "id": "tungsten_bar",
+            "qty": 4
+          },
+          {
+            "id": "cursed_bark",
+            "qty": 1
+          },
+          {
+            "id": "frost_fang",
+            "qty": 1
+          }
+        ],
+        "out": "tungsten_maul",
+        "outQty": 1,
+        "req": 105,
+        "skill": "smithing",
+        "station": "forge",
+        "time": 3.8,
+        "xp": 2600
+      },
+      {
+        "id": "frostguard_plate",
+        "inputs": [
+          {
+            "id": "tungsten_bar",
+            "qty": 5
+          },
+          {
+            "id": "frost_pelt",
+            "qty": 2
+          },
+          {
+            "id": "wraith_ice_core",
+            "qty": 1
+          }
+        ],
+        "out": "frostguard_plate",
+        "outQty": 1,
+        "req": 110,
+        "skill": "smithing",
+        "station": "armor",
+        "time": 4,
+        "xp": 3000
+      },
+      {
+        "id": "wyrmscale_plate",
+        "inputs": [
+          {
+            "id": "tungsten_bar",
+            "qty": 6
+          },
+          {
+            "id": "wyrm_scale",
+            "qty": 3
+          }
+        ],
+        "out": "wyrmscale_plate",
+        "outQty": 1,
+        "req": 120,
+        "skill": "smithing",
+        "station": "armor",
+        "time": 4.2,
+        "xp": 3600
+      },
+      {
+        "id": "light_leather",
+        "inputs": [
+          {
+            "id": "raw_hide",
+            "qty": 3
+          }
+        ],
+        "out": "light_leather",
+        "outQty": 1,
+        "req": 1,
+        "skill": "skinning",
+        "station": "skin",
+        "time": 1.6,
+        "xp": 30
+      },
+      {
+        "id": "thick_leather",
+        "inputs": [
+          {
+            "id": "thick_hide",
+            "qty": 3
+          }
+        ],
+        "out": "thick_leather",
+        "outQty": 1,
+        "req": 25,
+        "skill": "skinning",
+        "station": "skin",
+        "time": 2,
+        "xp": 110
+      },
+      {
+        "id": "shadow_leather",
+        "inputs": [
+          {
+            "id": "shadow_pelt",
+            "qty": 3
+          },
+          {
+            "id": "scale_hide",
+            "qty": 1
+          }
+        ],
+        "out": "shadow_leather",
+        "outQty": 1,
+        "req": 65,
+        "skill": "skinning",
+        "station": "skin",
+        "time": 2.4,
+        "xp": 460
+      },
+      {
+        "id": "linen_cloth",
+        "inputs": [
+          {
+            "id": "flax",
+            "qty": 3
+          },
+          {
+            "id": "meadow_berries",
+            "qty": 1
+          }
+        ],
+        "out": "linen_cloth",
+        "outQty": 1,
+        "req": 1,
+        "skill": "tailoring",
+        "station": "weave",
+        "time": 1.6,
+        "xp": 26
+      },
+      {
+        "id": "herb_weave",
+        "inputs": [
+          {
+            "id": "forest_herbs",
+            "qty": 3
+          },
+          {
+            "id": "linen_cloth",
+            "qty": 1
+          }
+        ],
+        "out": "herb_weave",
+        "outQty": 1,
+        "req": 22,
+        "skill": "tailoring",
+        "station": "weave",
+        "time": 2,
+        "xp": 120
+      },
+      {
+        "id": "mystic_cloth",
+        "inputs": [
+          {
+            "id": "gloomcap",
+            "qty": 2
+          },
+          {
+            "id": "herb_weave",
+            "qty": 2
+          },
+          {
+            "id": "desert_bloom",
+            "qty": 1
+          }
+        ],
+        "out": "mystic_cloth",
+        "outQty": 1,
+        "req": 60,
+        "skill": "tailoring",
+        "station": "weave",
+        "time": 2.4,
+        "xp": 520
+      },
+      {
+        "id": "leather_vest",
+        "inputs": [
+          {
+            "id": "light_leather",
+            "qty": 3
+          }
+        ],
+        "out": "leather_vest",
+        "outQty": 1,
+        "req": 6,
+        "skill": "tailoring",
+        "station": "armor",
+        "time": 2.2,
+        "xp": 90
+      },
+      {
+        "id": "linen_robe",
+        "inputs": [
+          {
+            "id": "linen_cloth",
+            "qty": 3
+          },
+          {
+            "id": "light_leather",
+            "qty": 1
+          }
+        ],
+        "out": "linen_robe",
+        "outQty": 1,
+        "req": 14,
+        "skill": "tailoring",
+        "station": "armor",
+        "time": 2.4,
+        "xp": 180
+      },
+      {
+        "id": "mystic_robe",
+        "inputs": [
+          {
+            "id": "mystic_cloth",
+            "qty": 3
+          },
+          {
+            "id": "shadow_leather",
+            "qty": 1
+          },
+          {
+            "id": "frost_lichen",
+            "qty": 1
+          }
+        ],
+        "out": "mystic_robe",
+        "outQty": 1,
+        "req": 66,
+        "skill": "tailoring",
+        "station": "armor",
+        "time": 3,
+        "xp": 900
+      },
+      {
+        "id": "honey_bun",
+        "inputs": [
+          {
+            "id": "river_minnow",
+            "qty": 2
+          }
+        ],
+        "out": "honey_bun",
+        "outQty": 1,
+        "req": 1,
+        "skill": "cooking",
+        "station": "cook",
+        "time": 1.6,
+        "xp": 30
+      },
+      {
+        "id": "berry_pie",
+        "inputs": [
+          {
+            "id": "silver_trout",
+            "qty": 2
+          },
+          {
+            "id": "feather",
+            "qty": 1
+          }
+        ],
+        "out": "berry_pie",
+        "outQty": 1,
+        "req": 15,
+        "skill": "cooking",
+        "station": "cook",
+        "time": 2,
+        "xp": 110
+      },
+      {
+        "id": "hearty_stew",
+        "inputs": [
+          {
+            "id": "golden_koi",
+            "qty": 2
+          },
+          {
+            "id": "goblin_charm",
+            "qty": 1
+          }
+        ],
+        "out": "hearty_stew",
+        "outQty": 1,
+        "req": 40,
+        "skill": "cooking",
+        "station": "cook",
+        "time": 2.4,
+        "xp": 340
+      },
+      {
+        "id": "frost_tonic",
+        "inputs": [
+          {
+            "id": "deepwater_eel",
+            "qty": 2
+          },
+          {
+            "id": "thick_leather",
+            "qty": 1
+          }
+        ],
+        "out": "frost_tonic",
+        "outQty": 1,
+        "req": 70,
+        "skill": "cooking",
+        "station": "cook",
+        "time": 2.8,
+        "xp": 900
+      },
+      {
+        "id": "phoenix_fillet",
+        "inputs": [
+          {
+            "id": "starlight_salmon",
+            "qty": 3
+          },
+          {
+            "id": "frost_pelt",
+            "qty": 1
+          }
+        ],
+        "out": "phoenix_fillet",
+        "outQty": 1,
+        "req": 100,
+        "skill": "cooking",
+        "station": "cook",
+        "time": 3.2,
+        "xp": 2200
+      },
+      {
+        "id": "minor_venom_draught",
+        "inputs": [
+          {
+            "id": "raw_hide",
+            "qty": 2
+          }
+        ],
+        "out": "minor_venom_draught",
+        "outQty": 1,
+        "req": 1,
+        "skill": "alchemy",
+        "station": "alchemy",
+        "time": 1.8,
+        "xp": 40
+      },
+      {
+        "id": "goblins_fury_tonic",
+        "inputs": [
+          {
+            "id": "goblin_charm",
+            "qty": 2
+          },
+          {
+            "id": "thick_hide",
+            "qty": 1
+          }
+        ],
+        "out": "goblins_fury_tonic",
+        "outQty": 1,
+        "req": 20,
+        "skill": "alchemy",
+        "station": "alchemy",
+        "time": 2.2,
+        "xp": 180
+      },
+      {
+        "id": "serpents_bite_elixir",
+        "inputs": [
+          {
+            "id": "scale_hide",
+            "qty": 2
+          }
+        ],
+        "out": "serpents_bite_elixir",
+        "outQty": 1,
+        "req": 45,
+        "skill": "alchemy",
+        "station": "alchemy",
+        "time": 2.6,
+        "xp": 520
+      },
+      {
+        "id": "shadow_venom",
+        "inputs": [
+          {
+            "id": "shadow_pelt",
+            "qty": 2
+          },
+          {
+            "id": "feather",
+            "qty": 1
+          }
+        ],
+        "out": "shadow_venom",
+        "outQty": 1,
+        "req": 75,
+        "skill": "alchemy",
+        "station": "alchemy",
+        "time": 3,
+        "xp": 1400
+      },
+      {
+        "id": "frostfire_brew",
+        "inputs": [
+          {
+            "id": "frost_pelt",
+            "qty": 2
+          },
+          {
+            "id": "goblin_charm",
+            "qty": 1
+          }
+        ],
+        "out": "frostfire_brew",
+        "outQty": 1,
+        "req": 105,
+        "skill": "alchemy",
+        "station": "alchemy",
+        "time": 3.4,
+        "xp": 3000
+      }
+    ]
+  },
+  "snapshot_version": "tomlandia-v1-definition-snapshot/1",
+  "source_file": "src/game/data.ts",
+  "source_sha256": "0babb7e09063dbe1d7973c8ec6e584df38f1fa362312df72baf12f8f8c16cf8f"
+}
