@@ -282,7 +282,7 @@ BEGIN
   WHERE row_count = 0;
 
   RETURN QUERY
-  SELECT 'tier_band_mismatch', reference_path, format('level %s belongs to tier %s, not tier %s', level_requirement, expected_tier, tier_index)
+  SELECT 'tier_band_mismatch', banded.reference_path, format('level %s belongs to tier %s, not tier %s', banded.level_requirement, banded.expected_tier, banded.tier_index)
   FROM (
     SELECT format('item:%s', id) AS reference_path, level_requirement, tier_index,
       least(16, level_requirement / 10 + 1) AS expected_tier
@@ -308,7 +308,7 @@ BEGIN
       least(16, level_requirement / 10 + 1)
     FROM public.game_content_quests WHERE content_version = _content_version
   ) banded
-  WHERE tier_index <> expected_tier;
+  WHERE banded.tier_index <> banded.expected_tier;
 
   RETURN QUERY
   SELECT 'invalid_fish_weight', format('fish:%s.weights', f.item_id), 'Each weight requires numeric level 1..150 and weight 0..1'
@@ -506,4 +506,3 @@ BEGIN
   WHERE s.content_version = _content_version AND s.active AND s.entity_type = 'monster' AND m.kind IS NULL;
 END;
 $$;
-
