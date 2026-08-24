@@ -128,17 +128,19 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * Flat ground decals: painted on top of the terrain/road layers but under all
- * y-sorted objects (buildings, NPCs, creatures, players).
+ * Flat ground decals: painted on top of the terrain/road layers but under water
+ * and all y-sorted objects (buildings, NPCs, creatures, players).
  */
 const GROUND_DECALS: { url: string; x: number; y: number; w: number; h: number }[] = [
   { url: groundTownAsset.url, x: 817, y: 2213, w: 560, h: 560 },
-  // vine bridge — flat walkway, fully traversable (no collision registered)
-  { url: vineBridgeAsset.url, x: 2049, y: 2671, w: 140, h: 323 },
+];
+const OVER_WATER_DECALS: { url: string; x: number; y: number; w: number; h: number }[] = [
+  // Vine bridge: 1.5x its original placement size and fully traversable.
+  { url: vineBridgeAsset.url, x: 2049, y: 2671, w: 210, h: 485 },
 ];
 const decalImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
 if (typeof window !== "undefined") {
-  for (const d of GROUND_DECALS) {
+  for (const d of [...GROUND_DECALS, ...OVER_WATER_DECALS]) {
     if (decalImgs.has(d.url)) continue;
     const img = new Image();
     const entry = { img, ready: false };
@@ -153,8 +155,9 @@ if (typeof window !== "undefined") {
 function drawGroundDecals(
   ctx: CanvasRenderingContext2D,
   view: { x: number; y: number; w: number; h: number },
+  decals = GROUND_DECALS,
 ) {
-  for (const d of GROUND_DECALS) {
+  for (const d of decals) {
     if (
       d.x - d.w / 2 > view.x + view.w ||
       d.x + d.w / 2 < view.x ||
@@ -3276,6 +3279,9 @@ export class GameEngine {
 
     this.drawRiverFlow(ctx, view);
     this.drawMoatFlow(ctx, view);
+
+    // These crossings must sit above every static and animated water layer.
+    drawGroundDecals(ctx, view, OVER_WATER_DECALS);
 
     // bridges are baked into the overlay, so redraw them live on top of the
     // animated water so the wave effects stay visible under, not over, them.
