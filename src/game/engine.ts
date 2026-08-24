@@ -78,6 +78,7 @@ import house3Asset from "@/assets/house3.png.asset.json";
 import castleAsset from "@/assets/castle.png.asset.json";
 import towerAsset from "@/assets/tower.png.asset.json";
 import treeCastleAsset from "@/assets/willow-tree-castle.png.asset.json";
+import greenHallAsset from "@/assets/greenhall.png.asset.json";
 import elderAsset from "@/assets/npc-elder-v2.png.asset.json";
 import armourerAsset from "@/assets/npc-armourer.png.asset.json";
 import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
@@ -319,7 +320,7 @@ if (typeof window !== "undefined") {
 /** Landmark sprites, keyed by landmark id. */
 
 /** Landmark sprites, keyed by landmark id. */
-const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url, house2: house2Asset.url, house3: house3Asset.url, castle: castleAsset.url, tower1: towerAsset.url, tower2: towerAsset.url, tower3: towerAsset.url, tower4: towerAsset.url, treecastle: treeCastleAsset.url };
+const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url, house2: house2Asset.url, house3: house3Asset.url, castle: castleAsset.url, tower1: towerAsset.url, tower2: towerAsset.url, tower3: towerAsset.url, tower4: towerAsset.url, treecastle: treeCastleAsset.url, greenhall: greenHallAsset.url };
 const landmarkImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
 if (typeof window !== "undefined") {
   for (const [id, url] of Object.entries(LANDMARK_SRC)) {
