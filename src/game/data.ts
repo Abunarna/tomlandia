@@ -2089,7 +2089,7 @@ const RAW_BARRIERS = buildBarriers();
 const GREAT = buildGreatRiver(RAW_BARRIERS);
 
 /** crossings removed by hand — the vine bridge covers this area now */
-const REMOVED_BRIDGES: [number, number][] = [[1473, 2083]];
+const REMOVED_BRIDGES: [number, number][] = [[1473, 2083], [2382, 2532]];
 
 /** wooden bridges crossing the Great River */
 export const BRIDGES: BridgeDef[] = GREAT.bridges.filter(
