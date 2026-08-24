@@ -1,17 +1,17 @@
 /* eslint-disable */
 /*
-+ * GENERATED FILE — DO NOT EDIT.
-+ * Source: content/v2/manifest.authoring.json (or the generator input named in CI)
-+ * Manifest SHA-256: b30a801588fc59a281bdcbad07946dd52fd8cbc764ddcd652aaa4fee5c021f3c
-+ */
-+
-+export const CONTENT_SCHEMA_VERSION = "tomlandia-content-manifest/v1";
-+export const CONTENT_VERSION = "v2";
-+export const SPAWN_SET_VERSION = "v2";
-+export const CONTENT_MANIFEST_HASH = "b30a801588fc59a281bdcbad07946dd52fd8cbc764ddcd652aaa4fee5c021f3c";
-+export const CONTENT_RUNNABLE = false;
-+
-+export const CONTENT_TIERS = [
+ * GENERATED FILE — DO NOT EDIT.
+ * Source: content/v2/manifest.authoring.json (or the generator input named in CI)
+ * Manifest SHA-256: b30a801588fc59a281bdcbad07946dd52fd8cbc764ddcd652aaa4fee5c021f3c
+ */
+
+export const CONTENT_SCHEMA_VERSION = "tomlandia-content-manifest/v1";
+export const CONTENT_VERSION = "v2";
+export const SPAWN_SET_VERSION = "v2";
+export const CONTENT_MANIFEST_HASH = "b30a801588fc59a281bdcbad07946dd52fd8cbc764ddcd652aaa4fee5c021f3c";
+export const CONTENT_RUNNABLE = false;
+
+export const CONTENT_TIERS = [
   {
     "tier_index": 1,
     "level_requirement": 1,
@@ -93,7 +93,7 @@
     "theme": "Ascendant"
   }
 ] as const;
-+export const CONTENT_ITEM_IDS = [
+export const CONTENT_ITEM_IDS = [
   "ancient_bar",
   "ancient_damage_potion",
   "ancient_feast",
@@ -219,7 +219,7 @@
   "wyrmsteel_heavy_armor",
   "wyrmsteel_light_armor"
 ] as const;
-+export const CONTENT_NODE_KINDS = [
+export const CONTENT_NODE_KINDS = [
   "ancient_vein",
   "ascendant_vein",
   "coal_seam",
@@ -230,7 +230,7 @@
   "voidsteel_vein",
   "wyrmforged_vein"
 ] as const;
-+export const CONTENT_MONSTER_KINDS = [
+export const CONTENT_MONSTER_KINDS = [
   "ancient_frost_wyrm",
   "ascendant_wyrm",
   "bandit",
@@ -264,8 +264,8 @@
   "wyrm_knight",
   "yeti"
 ] as const;
-+export const CONTENT_RECIPE_IDS = [] as const;
-+export const RETIRED_CONTENT_IDS = [
+export const CONTENT_RECIPE_IDS = [] as const;
+export const RETIRED_CONTENT_IDS = [
   "bronze_dagger",
   "sunspire_wand",
   "tungsten_bar",
@@ -273,35 +273,34 @@
   "tungsten_ore",
   "wooden_club"
 ] as const;
-+
-+export type ContentItemId = (typeof CONTENT_ITEM_IDS)[number];
-+export type ContentNodeKind = (typeof CONTENT_NODE_KINDS)[number];
-+export type ContentMonsterKind = (typeof CONTENT_MONSTER_KINDS)[number];
-+export type ContentRecipeId = (typeof CONTENT_RECIPE_IDS)[number];
-+
-+export class UnknownGeneratedContentIdError extends Error {
-+  readonly kind: string;
-+  readonly value: string;
-+
-+  constructor(kind: string, value: string) {
-+    super(`Unknown ${kind} ID: ${value}`);
-+    this.name = "UnknownGeneratedContentIdError";
-+    this.kind = kind;
-+    this.value = value;
-+  }
-+}
-+
-+function assertGeneratedId<T extends string>(kind: string, known: readonly T[], value: string): T {
-+  if (!(known as readonly string[]).includes(value)) throw new UnknownGeneratedContentIdError(kind, value);
-+  return value as T;
-+}
-+
-+export const assertContentItemId = (value: string): ContentItemId =>
-+  assertGeneratedId("item", CONTENT_ITEM_IDS, value);
-+export const assertContentNodeKind = (value: string): ContentNodeKind =>
-+  assertGeneratedId("node", CONTENT_NODE_KINDS, value);
-+export const assertContentMonsterKind = (value: string): ContentMonsterKind =>
-+  assertGeneratedId("monster", CONTENT_MONSTER_KINDS, value);
-+export const assertContentRecipeId = (value: string): ContentRecipeId =>
-+  assertGeneratedId("recipe", CONTENT_RECIPE_IDS, value);
-+
+
+export type ContentItemId = (typeof CONTENT_ITEM_IDS)[number];
+export type ContentNodeKind = (typeof CONTENT_NODE_KINDS)[number];
+export type ContentMonsterKind = (typeof CONTENT_MONSTER_KINDS)[number];
+export type ContentRecipeId = (typeof CONTENT_RECIPE_IDS)[number];
+
+export class UnknownGeneratedContentIdError extends Error {
+  readonly kind: string;
+  readonly value: string;
+
+  constructor(kind: string, value: string) {
+    super(`Unknown ${kind} ID: ${value}`);
+    this.name = "UnknownGeneratedContentIdError";
+    this.kind = kind;
+    this.value = value;
+  }
+}
+
+function assertGeneratedId<T extends string>(kind: string, known: readonly T[], value: string): T {
+  if (!(known as readonly string[]).includes(value)) throw new UnknownGeneratedContentIdError(kind, value);
+  return value as T;
+}
+
+export const assertContentItemId = (value: string): ContentItemId =>
+  assertGeneratedId("item", CONTENT_ITEM_IDS, value);
+export const assertContentNodeKind = (value: string): ContentNodeKind =>
+  assertGeneratedId("node", CONTENT_NODE_KINDS, value);
+export const assertContentMonsterKind = (value: string): ContentMonsterKind =>
+  assertGeneratedId("monster", CONTENT_MONSTER_KINDS, value);
+export const assertContentRecipeId = (value: string): ContentRecipeId =>
+  assertGeneratedId("recipe", CONTENT_RECIPE_IDS, value);

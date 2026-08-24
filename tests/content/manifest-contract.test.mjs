@@ -37,6 +37,7 @@ test("canonical Gate 4 authoring manifest is locked and non-runnable", () => {
   const generated = generateOutputs(draft, registry);
   assert.match(generated.files["supabase/generated/content-manifest.sql"], /draft-only and cannot be applied/);
   assert.match(generated.files["src/generated/content-manifest.ts"], /CONTENT_RUNNABLE = false/);
+  assert.doesNotMatch(generated.files["src/generated/content-manifest.ts"], /^\+/m);
 });
 
 test("complete runtime fixture generates byte-identical artifacts", () => {
@@ -46,6 +47,7 @@ test("complete runtime fixture generates byte-identical artifacts", () => {
   assert.match(first.hash, /^[0-9a-f]{64}$/);
   for (const output of Object.values(first.files)) assert.match(output, new RegExp(first.hash));
   assert.match(first.files["src/generated/content-manifest.ts"], /CONTENT_RUNNABLE = true/);
+  assert.doesNotMatch(first.files["src/generated/content-manifest.ts"], /^\+/m);
   assert.match(first.files["supabase/generated/content-manifest.sql"], /status = 'staged'/);
   assert.doesNotMatch(first.files["supabase/generated/content-manifest.sql"], /VALUES \([^\n]*'active'/);
 });
