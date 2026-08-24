@@ -2760,7 +2760,7 @@ function spawnable(x: number, y: number) {
     const n = NODE_SPAWNS[i]!;
     // Include the node artwork itself, not just its centre, so tall tree
     // canopies cannot hang over the bridge from outside the clear rectangle.
-    const artPad = NODE_DEFS[n.kind].shape === "tree" ? 66 : NODE_DEFS[n.kind].shape === "rock" ? 28 : 25;
+    const artPad = NODE_DEFS[n.kind].shape === "tree" ? 112 : NODE_DEFS[n.kind].shape === "rock" ? 28 : 25;
     if (inDecorClear(n.x, n.y, artPad)) NODE_SPAWNS.splice(i, 1);
   }
   for (let i = MONSTER_SPAWNS.length - 1; i >= 0; i--) {
