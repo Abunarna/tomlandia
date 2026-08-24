@@ -14,10 +14,12 @@
     "typecheck": "tsc --noEmit",
     "test": "bun run test:unit && bun run test:static",
     "test:unit": "bun test tests/contracts tests/fixtures",
-    "test:static": "node scripts/gate1/check-rpc-boundaries.mjs",
+    "test:static": "node scripts/gate1/check-rpc-boundaries.mjs && node scripts/gate2/check-authority.mjs",
     "test:db:foundation": "supabase test db supabase/tests/gate1_foundation.sql",
     "test:db:known-defects": "supabase test db supabase/tests/gate1_known_defects.sql",
-    "test:gate1": "bun run test && bun run typecheck && bun run test:db:foundation && bun run test:db:known-defects"
+    "test:db:gate2": "supabase test db supabase/tests/gate2_authority.sql",
+    "test:gate1": "bun run test && bun run typecheck && bun run test:db:foundation && bun run test:db:known-defects",
+    "test:gate2": "bun run test && bun run typecheck && bun run test:db:foundation && bun run test:db:known-defects && bun run test:db:gate2"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

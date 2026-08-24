@@ -607,6 +607,7 @@ export type Database = {
         Returns: Json
       }
       craft_item: { Args: { _recipe: string }; Returns: Json }
+      consume_food: { Args: { _index: number }; Returns: Json }
       equip_stat: {
         Args: { _data: Json; _stat: string; _which: string }
         Returns: number
@@ -656,9 +657,15 @@ export type Database = {
       }
       pl_state: { Args: { _d: Json }; Returns: Json }
       player_sync: { Args: { _data: Json; _rev?: number }; Returns: Json }
+      player_recover: { Args: never; Returns: Json }
+      quest_action: {
+        Args: { _action: string; _quest?: string | null }
+        Returns: Json
+      }
       save_is_fresh: { Args: { _d: Json }; Returns: boolean }
       save_total_xp: { Args: { _d: Json }; Returns: number }
       skill_xp: { Args: { _data: Json; _skill: string }; Returns: number }
+      sell_all_resources: { Args: never; Returns: Json }
       slot_add: {
         Args: {
           _arr: Json

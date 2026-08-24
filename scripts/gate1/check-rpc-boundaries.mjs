@@ -41,9 +41,14 @@ if (JSON.stringify(actual) !== JSON.stringify(expected)) {
   failures.push(`RPC call set differs from snapshot\nexpected: ${expected.join(", ")}\nactual:   ${actual.join(", ")}`);
 }
 
+// market_browse has two deliberate consumers: the game server function and
+// the authenticated read-only MCP tool. Both are required to parse the same
+// shared contract; every mutation RPC retains a single application boundary.
+const expectedBoundaryCounts = { market_browse: 2 };
 for (const name of expected) {
   const count = calls.filter((value) => value === name).length;
-  if (count !== 1) failures.push(`${name} must have exactly one application boundary; found ${count}`);
+  const wanted = expectedBoundaryCounts[name] ?? 1;
+  if (count !== wanted) failures.push(`${name} must have ${wanted} validated application boundary/boundaries; found ${count}`);
 }
 
 const boundaryFiles = [
@@ -51,6 +56,7 @@ const boundaryFiles = [
   "src/lib/market.functions.ts",
   "src/lib/leaderboard.functions.ts",
   "src/routes/_authenticated/play.tsx",
+  "src/lib/mcp/tools/browse-market.ts",
 ];
 const legacyResponseTypes =
   /as\s+unknown\s+as\s+(?:HarvestRes|DamageRes|FishRes|PotionRes|CraftRes|GearRes|BrowseRes|MarketRes|LeaderRes|SyncAck)/;

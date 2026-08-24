@@ -11,12 +11,16 @@ import {
   attackMonster,
   bankGold,
   bankItem,
+  consumeFood,
   craftItem,
   dropSlotAction,
   sellSlotAction,
   equipSlotAction,
   fishCast,
   harvestNode,
+  recoverPlayer,
+  sellAllResourcesAction,
+  settleQuest,
   upgradeGear,
   usePotion,
 } from "@/lib/world.functions";
@@ -258,6 +262,10 @@ function Game() {
       engine.onSell = (index) => sellSlotAction({ data: { index } });
       engine.onBankGold = (dir, amount) => bankGold({ data: { dir, amount } });
       engine.onBankItem = (dir, index, qty) => bankItem({ data: { dir, index, qty } });
+      engine.onFood = (index) => consumeFood({ data: { index } });
+      engine.onRecover = () => recoverPlayer();
+      engine.onQuestAction = (action, quest) => settleQuest({ data: { action, quest } });
+      engine.onSellAllResources = () => sellAllResourcesAction();
 
       // The exchange is a 100% player-driven shared order book.
       engine.onMarketBrowse = () => browseMarket();

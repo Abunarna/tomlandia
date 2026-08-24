@@ -1688,10 +1688,10 @@ export const RECIPES: Recipe[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* Equipment upgrading (+1 .. +1000)                                   */
+/* Equipment upgrading (+1 .. +100)                                    */
 /* ------------------------------------------------------------------ */
 
-export const MAX_PLUS = 1000;
+export const MAX_PLUS = 100;
 /** each upgrade level grants +5% of base stat */
 export const PLUS_STEP = 0.05;
 
