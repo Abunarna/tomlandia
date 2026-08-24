@@ -92,6 +92,7 @@ import merchantAsset from "@/assets/npc-merchant.png.asset.json";
 import smelterAsset from "@/assets/npc-smelter.png.asset.json";
 import gearUpgraderAsset from "@/assets/npc-gear-upgrader.png.asset.json";
 import tannerAsset from "@/assets/npc-tanner.png.asset.json";
+import chefAsset from "@/assets/npc-chef.png.asset.json";
 
 import {
   MARKET_FEE,
@@ -341,6 +342,24 @@ if (typeof window !== "undefined") {
     tannerReady = true;
   };
   tannerImg.src = tannerAsset.url;
+}
+
+/**
+ * Chef portrait sprite (110x158 source), drawn for the brook_chef NPC.
+ * Scaled to match the knight player height.
+ */
+const CHEF_SRC_W = 110;
+const CHEF_SRC_H = 158;
+const CHEF_DRAW_H = 59;
+const CHEF_IDS = new Set(["brook_chef"]);
+let chefImg: HTMLImageElement | null = null;
+let chefReady = false;
+if (typeof window !== "undefined") {
+  chefImg = new Image();
+  chefImg.onload = () => {
+    chefReady = true;
+  };
+  chefImg.src = chefAsset.url;
 }
 
 
@@ -5311,6 +5330,13 @@ export class GameEngine {
       const smooth = ctx.imageSmoothingEnabled;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(merchantImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else if (CHEF_IDS.has(npc.id) && chefImg && chefReady) {
+      const h = CHEF_DRAW_H;
+      const w = Math.round((CHEF_SRC_W / CHEF_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(chefImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
     } else if (TANNER_IDS.has(npc.id) && tannerImg && tannerReady) {
       const h = TANNER_DRAW_H;
