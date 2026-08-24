@@ -134,6 +134,8 @@ if (typeof window !== "undefined") {
  */
 const GROUND_DECALS: { url: string; x: number; y: number; w: number; h: number }[] = [
   { url: groundTownAsset.url, x: 817, y: 2213, w: 560, h: 560 },
+  // Willowbrook elven town centre paving.
+  { url: elvenTownAsset.url, x: 2051, y: 2151, w: 700, h: 700 },
 ];
 const OVER_WATER_DECALS: { url: string; x: number; y: number; w: number; h: number }[] = [
   // Vine bridge: 1.5x its original placement size and fully traversable.
