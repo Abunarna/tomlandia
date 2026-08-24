@@ -1470,28 +1470,29 @@ export const LANDMARKS: LandmarkDef[] = [
   },
   {
     id: "treecastle",
-    x: 1989,
-    y: 1781,
+    x: 2049,
+    y: 1981,
     w: 260,
     h: 325,
     solid: { dx: 0, dy: 92, w: 150, h: 110 },
   },
   {
     id: "greenhall",
-    x: 2170,
-    y: 2070,
+    x: 2230,
+    y: 2270,
     w: 208,
     h: 289,
     solid: { dx: 0, dy: 84, w: 128, h: 92 },
   },
   {
     id: "greenhall",
-    x: 1800,
-    y: 2070,
+    x: 1860,
+    y: 2270,
     w: 208,
     h: 289,
     solid: { dx: 0, dy: 84, w: 128, h: 92 },
   },
+
 
 ];
 
