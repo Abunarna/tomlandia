@@ -170,25 +170,28 @@ BEGIN
   RETURN jsonb_set(_data, '{quest,progress}', to_jsonb(progress), true);
 END $$;
 
-CREATE OR REPLACE FUNCTION public.pl_state(_data jsonb)
+-- Preserve the original `_d` parameter name. PostgreSQL identifies routines by
+-- argument types, but CREATE OR REPLACE rejects an input-parameter rename when
+-- the existing routine has named arguments.
+CREATE OR REPLACE FUNCTION public.pl_state(_d jsonb)
 RETURNS jsonb
 LANGUAGE sql
 IMMUTABLE
 AS $$
   SELECT jsonb_build_object(
-    'inv', coalesce(_data->'inv', '[]'::jsonb),
-    'gold', coalesce(_data->'gold', '0'::jsonb),
-    'skills', coalesce(_data->'skills', '{}'::jsonb),
-    'weapon', _data->'weapon',
-    'armor', _data->'armor',
-    'food', _data->'food',
-    'bank', coalesce(_data->'bank', jsonb_build_object('gold', 0, 'items', '[]'::jsonb)),
-    'hp', coalesce(_data->'hp', to_jsonb(public.player_max_hp(_data))),
-    'px', coalesce(_data->'px', '1064'::jsonb),
-    'py', coalesce(_data->'py', '2195'::jsonb),
-    'quest', coalesce(_data->'quest', 'null'::jsonb),
-    'completed', coalesce(_data->'completed', '[]'::jsonb),
-    'autoEatAt', coalesce(_data->'autoEatAt', '0.5'::jsonb)
+    'inv', coalesce(_d->'inv', '[]'::jsonb),
+    'gold', coalesce(_d->'gold', '0'::jsonb),
+    'skills', coalesce(_d->'skills', '{}'::jsonb),
+    'weapon', _d->'weapon',
+    'armor', _d->'armor',
+    'food', _d->'food',
+    'bank', coalesce(_d->'bank', jsonb_build_object('gold', 0, 'items', '[]'::jsonb)),
+    'hp', coalesce(_d->'hp', to_jsonb(public.player_max_hp(_d))),
+    'px', coalesce(_d->'px', '1064'::jsonb),
+    'py', coalesce(_d->'py', '2195'::jsonb),
+    'quest', coalesce(_d->'quest', 'null'::jsonb),
+    'completed', coalesce(_d->'completed', '[]'::jsonb),
+    'autoEatAt', coalesce(_d->'autoEatAt', '0.5'::jsonb)
   )
 $$;
 
