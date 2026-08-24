@@ -3,7 +3,7 @@ import { ITEMS } from "./data";
 
 export type ContentItemDisplay =
   | { status: "legacy"; id: string; name: string; value: number }
-  | { status: "generated"; id: string; name: string; value: null }
+  | { status: "generated"; id: string; name: string; value: number }
   | { status: "unknown"; id: string; name: string; value: null };
 
 /**

@@ -28,20 +28,20 @@ const finiteNumberOrNull = (value: unknown): number | null =>
 export function parseWorldRuntimeStatus(value: unknown): WorldRuntimeStatus | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const input = value as Record<string, unknown>;
-  if (input.contract_version !== 1) return null;
-  if (!nonEmptyString(input.active_content_version) || !nonEmptyString(input.active_spawn_set_version)) return null;
-  if (input.state_contract !== "legacy_integer_v1" && input.state_contract !== "uuid_v2") return null;
-  if (typeof input.spawn_hash !== "string") return null;
+  if (input["contract_version"] !== 1) return null;
+  if (!nonEmptyString(input["active_content_version"]) || !nonEmptyString(input["active_spawn_set_version"])) return null;
+  if (input["state_contract"] !== "legacy_integer_v1" && input["state_contract"] !== "uuid_v2") return null;
+  if (typeof input["spawn_hash"] !== "string") return null;
   return {
-    contract_version: input.contract_version,
-    active_content_version: input.active_content_version,
-    active_spawn_set_version: input.active_spawn_set_version,
-    state_contract: input.state_contract,
-    spawn_hash: input.spawn_hash,
-    world_width: finiteNumberOrNull(input.world_width),
-    world_height: finiteNumberOrNull(input.world_height),
-    movement_speed: finiteNumberOrNull(input.movement_speed),
-    server_time: typeof input.server_time === "string" ? input.server_time : null,
+    contract_version: input["contract_version"],
+    active_content_version: input["active_content_version"],
+    active_spawn_set_version: input["active_spawn_set_version"],
+    state_contract: input["state_contract"],
+    spawn_hash: input["spawn_hash"],
+    world_width: finiteNumberOrNull(input["world_width"]),
+    world_height: finiteNumberOrNull(input["world_height"]),
+    movement_speed: finiteNumberOrNull(input["movement_speed"]),
+    server_time: typeof input["server_time"] === "string" ? input["server_time"] : null,
   };
 }
 
