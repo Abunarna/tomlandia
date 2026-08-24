@@ -92,6 +92,7 @@ import merchantAsset from "@/assets/npc-merchant.png.asset.json";
 import smelterAsset from "@/assets/npc-smelter.png.asset.json";
 import gearUpgraderAsset from "@/assets/npc-gear-upgrader.png.asset.json";
 import tannerAsset from "@/assets/npc-tanner.png.asset.json";
+import chefAsset from "@/assets/npc-chef.png.asset.json";
 
 import {
   MARKET_FEE,
