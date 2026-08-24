@@ -46,6 +46,8 @@ export interface CityDef {
   moatW: number;
   /** wobble phase so the two cities don't share an identical silhouette */
   phase: number;
+  /** no procedural perimeter wall: nothing drawn, nothing blocks */
+  noWall?: boolean;
   /** interior water feature at the heart of the city (Sunspire's oasis) */
   oasis?: { dx: number; dy: number; rx: number; ry: number };
   /** signature monument: a solid block players walk around */
