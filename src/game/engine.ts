@@ -133,6 +133,8 @@ if (typeof window !== "undefined") {
  */
 const GROUND_DECALS: { url: string; x: number; y: number; w: number; h: number }[] = [
   { url: groundTownAsset.url, x: 817, y: 2213, w: 560, h: 560 },
+  // vine bridge — flat walkway, fully traversable (no collision registered)
+  { url: vineBridgeAsset.url, x: 2049, y: 2671, w: 140, h: 323 },
 ];
 const decalImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
 if (typeof window !== "undefined") {
