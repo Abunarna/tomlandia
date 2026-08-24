@@ -2558,13 +2558,13 @@ function nearTown(x: number, y: number) {
  * bridge, which must stay walkable and unobstructed.
  */
 export const DECOR_CLEAR: { x: number; y: number; w: number; h: number }[] = [
-  // vine bridge at (2049, 2671): 140x323 sprite + 20px margin on every edge
-  { x: 2049, y: 2671, w: 180, h: 363 },
+  // vine bridge at (2049, 2671): 210x485 sprite + 20px margin on every edge
+  { x: 2049, y: 2671, w: 250, h: 525 },
 ];
 
-export function inDecorClear(x: number, y: number): boolean {
+export function inDecorClear(x: number, y: number, pad = 0): boolean {
   for (const z of DECOR_CLEAR) {
-    if (Math.abs(x - z.x) <= z.w / 2 && Math.abs(y - z.y) <= z.h / 2) return true;
+    if (Math.abs(x - z.x) <= z.w / 2 + pad && Math.abs(y - z.y) <= z.h / 2 + pad) return true;
   }
   return false;
 }
@@ -2758,7 +2758,10 @@ function spawnable(x: number, y: number) {
 (() => {
   for (let i = NODE_SPAWNS.length - 1; i >= 0; i--) {
     const n = NODE_SPAWNS[i]!;
-    if (inDecorClear(n.x, n.y)) NODE_SPAWNS.splice(i, 1);
+    // Include the node artwork itself, not just its centre, so tall tree
+    // canopies cannot hang over the bridge from outside the clear rectangle.
+    const artPad = NODE_DEFS[n.kind].shape === "tree" ? 112 : NODE_DEFS[n.kind].shape === "rock" ? 28 : 25;
+    if (inDecorClear(n.x, n.y, artPad)) NODE_SPAWNS.splice(i, 1);
   }
   for (let i = MONSTER_SPAWNS.length - 1; i >= 0; i--) {
     const m = MONSTER_SPAWNS[i]!;
