@@ -91,6 +91,7 @@ import exchangeAsset from "@/assets/npc-exchange.png.asset.json";
 import merchantAsset from "@/assets/npc-merchant.png.asset.json";
 import smelterAsset from "@/assets/npc-smelter.png.asset.json";
 import gearUpgraderAsset from "@/assets/npc-gear-upgrader.png.asset.json";
+import tannerAsset from "@/assets/npc-tanner.png.asset.json";
 
 import {
   MARKET_FEE,
@@ -322,6 +323,24 @@ if (typeof window !== "undefined") {
     upgraderReady = true;
   };
   upgraderImg.src = gearUpgraderAsset.url;
+}
+
+/**
+ * Tanner portrait sprite (110x158 source), drawn for the trapper NPC.
+ * Scaled to match the knight player height.
+ */
+const TANNER_SRC_W = 110;
+const TANNER_SRC_H = 158;
+const TANNER_DRAW_H = 59;
+const TANNER_IDS = new Set(["trapper"]);
+let tannerImg: HTMLImageElement | null = null;
+let tannerReady = false;
+if (typeof window !== "undefined") {
+  tannerImg = new Image();
+  tannerImg.onload = () => {
+    tannerReady = true;
+  };
+  tannerImg.src = tannerAsset.url;
 }
 
 
@@ -5292,6 +5311,13 @@ export class GameEngine {
       const smooth = ctx.imageSmoothingEnabled;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(merchantImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else if (TANNER_IDS.has(npc.id) && tannerImg && tannerReady) {
+      const h = TANNER_DRAW_H;
+      const w = Math.round((TANNER_SRC_W / TANNER_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(tannerImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
     } else {
       ctx.fillStyle = npc.robe;
