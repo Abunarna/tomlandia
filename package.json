@@ -19,7 +19,10 @@
     "test:db:known-defects": "supabase test db supabase/tests/gate1_known_defects.sql",
     "test:db:gate2": "supabase test db supabase/tests/gate2_authority.sql",
     "test:gate1": "bun run test && bun run typecheck && bun run test:db:foundation && bun run test:db:known-defects",
-    "test:gate2": "bun run test && bun run typecheck && bun run test:db:foundation && bun run test:db:known-defects && bun run test:db:gate2"
+    "test:gate2": "bun run test && bun run typecheck && bun run test:db:foundation && bun run test:db:known-defects && bun run test:db:gate2",
+    "gate3:generate": "node scripts/gate3/generate.mjs",
+    "gate3:check": "node scripts/gate3/check.mjs && node --test tests/balance/gate3-model.test.mjs",
+    "test:gate3": "bun run test && bun run typecheck && bun run gate3:check"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

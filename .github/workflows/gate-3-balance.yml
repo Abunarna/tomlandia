@@ -1,0 +1,26 @@
+name: Gate 3 deterministic balance
+
+on:
+  push:
+    branches:
+      - "codex/gate-3-*"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gate-3-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  balance-evidence:
+    name: Proposal model and inherited contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run test:gate3
