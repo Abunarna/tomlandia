@@ -450,6 +450,15 @@ function Game() {
 
 
 
+  if (isLoading) {
+    return (
+      <LoadingScreen
+        assets={GAME_ASSETS}
+        onComplete={() => setIsLoading(false)}
+      />
+    );
+  }
+
   return (
     <main className="relative h-[100dvh] w-full overflow-hidden bg-background">
       <h1 className="sr-only">Tomlandia — a cozy pixel idle RPG</h1>
