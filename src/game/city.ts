@@ -307,6 +307,8 @@ export function onMonument(x: number, y: number, pad = 0): boolean {
 }
 
 function blockedByCity(c: CityDef, x: number, y: number, pad: number): boolean {
+  // cities with no procedural wall have no ring collision at all
+  if (c.noWall) return false;
   const dx = x - c.cx;
   const dy = y - c.cy;
   const d = Math.hypot(dx, dy);
