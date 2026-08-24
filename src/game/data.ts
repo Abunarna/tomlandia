@@ -2750,3 +2750,22 @@ function spawnable(x: number, y: number) {
     placed.push({ x: c.x, y: c.y });
   }
 })();
+
+/**
+ * Final sweep: anything (node, monster or its collision disc) sitting inside a
+ * decorative keep-out zone is removed, so the vine bridge stays clear.
+ */
+(() => {
+  for (let i = NODE_SPAWNS.length - 1; i >= 0; i--) {
+    const n = NODE_SPAWNS[i]!;
+    if (inDecorClear(n.x, n.y)) NODE_SPAWNS.splice(i, 1);
+  }
+  for (let i = MONSTER_SPAWNS.length - 1; i >= 0; i--) {
+    const m = MONSTER_SPAWNS[i]!;
+    if (inDecorClear(m.x, m.y)) MONSTER_SPAWNS.splice(i, 1);
+  }
+  for (let i = SOLID_DISCS.length - 1; i >= 0; i--) {
+    const d = SOLID_DISCS[i]!;
+    if (inDecorClear(d.x, d.y)) SOLID_DISCS.splice(i, 1);
+  }
+})();
