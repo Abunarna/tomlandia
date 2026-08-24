@@ -181,8 +181,20 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
   ].map((d) => [d.id, d]),
 );
 
+export class UnknownItemIdError extends Error {
+  readonly itemId: string;
+
+  constructor(itemId: string) {
+    super(`Unknown item ID: ${itemId}`);
+    this.name = "UnknownItemIdError";
+    this.itemId = itemId;
+  }
+}
+
 export function item(id: ItemId): ItemDef {
-  return ITEMS[id] ?? ITEMS["oak_logs"]!;
+  const definition = ITEMS[id];
+  if (!definition) throw new UnknownItemIdError(id);
+  return definition;
 }
 
 /* ------------------------------------------------------------------ */

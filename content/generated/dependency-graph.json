@@ -1,0 +1,833 @@
+{
+  "content_version": "v2",
+  "edges": [],
+  "manifest_hash": "b30a801588fc59a281bdcbad07946dd52fd8cbc764ddcd652aaa4fee5c021f3c",
+  "nodes": [
+    {
+      "id": "item:ancient_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ancient_damage_potion",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ancient_feast",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ancient_greatblade",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ancient_heavy_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ancient_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ancient_ore",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ascendant_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ascendant_blade",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ascendant_core",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ascendant_damage_potion",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ascendant_feast",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ascendant_heavy_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ascendant_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ascendant_ore",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ascendant_weave",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:berry_pie",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:bronze_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:bronze_dagger",
+      "state": "retired",
+      "type": "item"
+    },
+    {
+      "id": "item:bronze_damage_potion",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:bronze_heavy_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:bronze_sword",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:brute_fang",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:cloth_tunic",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:coal",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:copper_heavy_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:copper_sword",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:cursed_rune",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:fishermans_stew",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:frost_crystal",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:frost_giant_heart",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:frost_greatblade",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:frost_leather",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:frost_tonic",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:frostfire_brew",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:frostguard_plate",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:froststeel_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:froststeel_damage_potion",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:froststeel_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:frostweave",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:glacial_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:glacial_greatblade",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:glacial_heavy_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:glacial_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:glacial_ore",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:goblins_fury_tonic",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:golden_koi_feast",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:hearty_stew",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:honey_bun",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:iron_heavy_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:iron_mail",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:iron_sword",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:ironback_tusk",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:leather_vest",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:linen_robe",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:minor_venom_draught",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:mithril_blade",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:mithril_heavy_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:mithril_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:mithril_plate",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:mystic_robe",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:phoenix_fillet",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:raider_fang",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:revenant_essence",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:runic_fish_stew",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:runite_damage_potion",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:runite_greatsword",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:runite_heavy_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:runite_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:runite_plate",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:scaled_leather",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:serpents_bite_elixir",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:shadow_blade",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:shadow_stew",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:shadow_venom",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:shadowsteel_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:shadowsteel_heavy_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:shadowweave",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:starsteel_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:starsteel_blade",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:starsteel_damage_potion",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:starsteel_feast",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:starsteel_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:starsteel_ore",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:steel_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:steel_damage_potion",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:steel_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:steel_sword",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:sunspiced_eel",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:sunspire_wand",
+      "state": "retired",
+      "type": "item"
+    },
+    {
+      "id": "item:sunsteel_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:sunsteel_blade",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:sunsteel_damage_potion",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:sunsteel_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:sunstone",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:troll_fang",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:tungsten_bar",
+      "state": "retired",
+      "type": "item"
+    },
+    {
+      "id": "item:tungsten_maul",
+      "state": "retired",
+      "type": "item"
+    },
+    {
+      "id": "item:tungsten_ore",
+      "state": "retired",
+      "type": "item"
+    },
+    {
+      "id": "item:void_essence",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:void_feast",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:voidsteel_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:voidsteel_damage_potion",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:voidsteel_greatblade",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:voidsteel_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:voidsteel_ore",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wooden_club",
+      "state": "retired",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrm_feast",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrm_hide",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrm_knight_fang",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrm_leather",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmforged_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmforged_blade",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmforged_damage_potion",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmforged_feast",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmforged_heavy_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmforged_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmforged_ore",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmscale_plate",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmsteel_bar",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmsteel_blade",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmsteel_damage_potion",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmsteel_heavy_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "item:wyrmsteel_light_armor",
+      "state": "planned",
+      "type": "item"
+    },
+    {
+      "id": "monster:ancient_frost_wyrm",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:ascendant_wyrm",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:bandit",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:bear",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:bone_reaper",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:chicken",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:cursed_knight",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:desert_raider",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:disgruntled_ram",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:dune_devourer",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:dust_jackal",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:forest_boar",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:forest_lynx",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:frost_giant",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:frost_revenant",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:frost_troll",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:frost_wolf",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:glacial_guardian",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:goblin",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:goblin_brute",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:ice_wraith",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:ironback_boar",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:mithril_stalker",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:scorpion_stalker",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:serpent",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:shadow_beast",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:void_wraith",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:withered_ghoul",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:wolf",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:wraith",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:wyrm_knight",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "monster:yeti",
+      "state": "planned",
+      "type": "monster"
+    },
+    {
+      "id": "node:ancient_vein",
+      "state": "planned",
+      "type": "node"
+    },
+    {
+      "id": "node:ascendant_vein",
+      "state": "planned",
+      "type": "node"
+    },
+    {
+      "id": "node:coal_seam",
+      "state": "planned",
+      "type": "node"
+    },
+    {
+      "id": "node:frost_crystal_vein",
+      "state": "planned",
+      "type": "node"
+    },
+    {
+      "id": "node:glacial_vein",
+      "state": "planned",
+      "type": "node"
+    },
+    {
+      "id": "node:starsteel_vein",
+      "state": "planned",
+      "type": "node"
+    },
+    {
+      "id": "node:sunstone_vein",
+      "state": "planned",
+      "type": "node"
+    },
+    {
+      "id": "node:voidsteel_vein",
+      "state": "planned",
+      "type": "node"
+    },
+    {
+      "id": "node:wyrmforged_vein",
+      "state": "planned",
+      "type": "node"
+    }
+  ],
+  "runnable": false
+}

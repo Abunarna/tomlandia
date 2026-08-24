@@ -1,0 +1,60 @@
+name: Gate 4 canonical content
+
+on:
+  push:
+    branches:
+      - "codex/gate-4-*"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gate-4-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  content-contracts:
+    name: Deterministic manifest and client contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run test:gate4
+
+  database-contracts:
+    name: Zero-to-head inactive content schema
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.115.0
+      - name: Generate a complete closed runtime fixture
+        run: node scripts/content/generate.mjs --input tests/content/fixtures/gate4-valid-runtime.json --out-root .gate4-runtime
+      - name: Start isolated local stack
+        run: supabase start
+      - name: Reapply every migration from zero
+        run: supabase db reset --local
+      - name: Verify inherited Gate 1 foundation
+        run: supabase test db supabase/tests/gate1_foundation.sql
+      - name: Verify inherited known-defect contracts
+        run: supabase test db supabase/tests/gate1_known_defects.sql
+      - name: Verify inherited Gate 2 authority
+        run: supabase test db supabase/tests/gate2_authority.sql
+      - name: Verify Gate 4 schema and activation guards
+        run: supabase test db supabase/tests/gate4_content_contract.sql
+      - name: Apply generated runtime SQL to isolated database
+        run: psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --set=ON_ERROR_STOP=1 --file=.gate4-runtime/supabase/generated/content-manifest.sql
+      - name: Confirm fixture is staged and inactive
+        run: |
+          test "$(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --tuples-only --no-align --command "select status from public.game_content_versions where content_version='gate4_test_v1'")" = "staged"
+          test "$(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --tuples-only --no-align --command "select count(*) from public.game_content_control")" = "0"
+          test "$(psql postgresql://postgres:postgres@127.0.0.1:54322/postgres --tuples-only --no-align --command "select count(*) from public.game_validate_content_version('gate4_test_v1')")" = "0"
+      - name: Stop isolated stack
+        if: always()
+        run: supabase stop --no-backup
