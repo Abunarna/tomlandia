@@ -2088,8 +2088,13 @@ function clamp01px(y: number) {
 const RAW_BARRIERS = buildBarriers();
 const GREAT = buildGreatRiver(RAW_BARRIERS);
 
+/** crossings removed by hand — the vine bridge covers this area now */
+const REMOVED_BRIDGES: [number, number][] = [[1473, 2083]];
+
 /** wooden bridges crossing the Great River */
-export const BRIDGES: BridgeDef[] = GREAT.bridges;
+export const BRIDGES: BridgeDef[] = GREAT.bridges.filter(
+  (br) => !REMOVED_BRIDGES.some(([rx, ry]) => Math.hypot(br.x - rx, br.y - ry) < 140),
+);
 
 /** Hand-authored vine bridge centred over the southern river crossing. */
 export const VINE_BRIDGE = { x: 2049, y: 2671, w: 210, h: 485 } as const;
