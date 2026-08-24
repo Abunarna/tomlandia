@@ -1468,6 +1468,14 @@ export const LANDMARKS: LandmarkDef[] = [
     h: 256,
     solid: { dx: 0, dy: 82, w: 96, h: 44 },
   },
+  {
+    id: "treecastle",
+    x: 1989,
+    y: 1781,
+    w: 260,
+    h: 325,
+    solid: { dx: 0, dy: 92, w: 150, h: 110 },
+  },
 
 ];
 
