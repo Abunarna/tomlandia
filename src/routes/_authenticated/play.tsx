@@ -27,6 +27,8 @@ import { Hud } from "@/components/game/Hud";
 import { AutoEat } from "@/components/game/AutoEat";
 import { AutoPotion } from "@/components/game/AutoPotion";
 import { KnightDebug } from "@/components/game/KnightDebug";
+import { LoadingScreen } from "@/components/LoadingScreen";
+
 
 import { Panel, type PanelId } from "@/components/game/Panel";
 import { NpcDialog } from "@/components/game/NpcDialog";
@@ -116,9 +118,21 @@ const EMPTY: HudSnapshot = {
 };
 
 
+// Image assets to preload before the world appears. Collected automatically
+// from every CDN-hosted image asset pointer in src/assets (PNG/JPG), so the
+// loading screen stays in sync with the actual art shipped by the game.
+const _imagePointers = import.meta.glob("../assets/**/*.{png,jpg}.asset.json", {
+  eager: true,
+  import: "default",
+}) as Record<string, { url: string }>;
+const GAME_ASSETS: string[] = Object.values(_imagePointers)
+  .map((p) => p?.url)
+  .filter((u): u is string => typeof u === "string");
+
 function Game() {
   const { user } = Route.useRouteContext();
-  
+
+  const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState<string>("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<GameEngine | null>(null);
@@ -435,6 +449,15 @@ function Game() {
 
 
 
+
+  if (isLoading) {
+    return (
+      <LoadingScreen
+        assets={GAME_ASSETS}
+        onComplete={() => setIsLoading(false)}
+      />
+    );
+  }
 
   return (
     <main className="relative h-[100dvh] w-full overflow-hidden bg-background">
