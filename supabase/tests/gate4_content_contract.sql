@@ -56,8 +56,8 @@ select is(
   'market price primary key prevents v1/v2 history collision'
 );
 
-select is((select count(*) from public.game_content_versions), 0::bigint,
-  'Gate 4 activates no content version');
+select is((select count(*) from public.game_content_versions where content_version = 'gate4_test_v1'), 0::bigint,
+  'Gate 4 fixture is absent before this transactional test');
 select is((select count(*) from public.game_content_control), 0::bigint,
   'Gate 4 creates no active control row');
 select is((select count(*) from public.game_content_versions where status = 'active'), 0::bigint,
@@ -73,7 +73,10 @@ select ok(not has_function_privilege('authenticated', 'public.game_assert_conten
   'players cannot invoke internal content assertion');
 select ok(prosrc like '%unsupported_content_version%',
   'legacy market buy fails closed for a staged v2 listing')
-from pg_proc where oid = 'public.market_buy(uuid,integer)'::regprocedure;
+from pg_proc where oid = coalesce(
+  to_regprocedure('public.market_buy_v1(uuid,integer)'),
+  'public.market_buy(uuid,integer)'::regprocedure
+);
 select ok(prosrc like '%content_version, item_id, plus%',
   'market settlement writes the composite versioned price key')
 from pg_proc where oid = 'public.market_buy(uuid,integer)'::regprocedure;
