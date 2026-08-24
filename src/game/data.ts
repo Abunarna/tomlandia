@@ -2574,6 +2574,10 @@ function nearTown(x: number, y: number) {
 export const DECOR_CLEAR: { x: number; y: number; w: number; h: number }[] = [
   // vine bridge at (2049, 2671): 210x485 sprite + 20px margin on every edge
   { x: VINE_BRIDGE.x, y: VINE_BRIDGE.y, w: VINE_BRIDGE.w + 40, h: VINE_BRIDGE.h + 40 },
+  // Willowbrook town centre paving at (2051, 2151): 700x700 tile — towns stay
+  // free of resource nodes and creatures.
+  { x: 2051, y: 2151, w: 700, h: 700 },
+
 ];
 
 export function inDecorClear(x: number, y: number, pad = 0): boolean {
