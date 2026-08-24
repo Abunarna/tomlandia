@@ -74,6 +74,7 @@ import { KnightRig, preloadKnight, type KnightAnim } from "./knight";
 import bridgeAsset from "@/assets/bridge.png.asset.json";
 import monasteryAsset from "@/assets/monastery.png.asset.json";
 import groundTownAsset from "@/assets/ground-town-v2.png.asset.json";
+import elvenTownAsset from "@/assets/elven-town-center.png.asset.json";
 import vineBridgeAsset from "@/assets/vine-bridge.png.asset.json";
 import house2Asset from "@/assets/house2.png.asset.json";
 import house3Asset from "@/assets/house3.png.asset.json";
@@ -134,6 +135,8 @@ if (typeof window !== "undefined") {
  */
 const GROUND_DECALS: { url: string; x: number; y: number; w: number; h: number }[] = [
   { url: groundTownAsset.url, x: 817, y: 2213, w: 560, h: 560 },
+  // Willowbrook elven town centre paving.
+  { url: elvenTownAsset.url, x: 2051, y: 2151, w: 700, h: 700 },
 ];
 const OVER_WATER_DECALS: { url: string; x: number; y: number; w: number; h: number }[] = [
   // Vine bridge: 1.5x its original placement size and fully traversable.
