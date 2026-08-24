@@ -46,6 +46,8 @@ export interface CityDef {
   moatW: number;
   /** wobble phase so the two cities don't share an identical silhouette */
   phase: number;
+  /** no procedural perimeter wall: nothing drawn, nothing blocks */
+  noWall?: boolean;
   /** interior water feature at the heart of the city (Sunspire's oasis) */
   oasis?: { dx: number; dy: number; rx: number; ry: number };
   /** signature monument: a solid block players walk around */
@@ -140,6 +142,8 @@ const WILLOWBROOK: CityDef = {
   moatGap: 0,
   moatW: 0,
   phase: 3.4,
+  // palisade removed — the town is being rebuilt from pixel-art assets
+  noWall: true,
   gates: [
     // 1 — the fieldward gate, onto the spine road down to Grand Haven
     { angle: 2.67, half: 0.17, kind: "spine", label: "Fieldward Gate", drawbridge: false },
@@ -307,6 +311,8 @@ export function onMonument(x: number, y: number, pad = 0): boolean {
 }
 
 function blockedByCity(c: CityDef, x: number, y: number, pad: number): boolean {
+  // cities with no procedural wall have no ring collision at all
+  if (c.noWall) return false;
   const dx = x - c.cx;
   const dy = y - c.cy;
   const d = Math.hypot(dx, dy);
