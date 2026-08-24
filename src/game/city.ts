@@ -142,6 +142,8 @@ const WILLOWBROOK: CityDef = {
   moatGap: 0,
   moatW: 0,
   phase: 3.4,
+  // palisade removed — the town is being rebuilt from pixel-art assets
+  noWall: true,
   gates: [
     // 1 — the fieldward gate, onto the spine road down to Grand Haven
     { angle: 2.67, half: 0.17, kind: "spine", label: "Fieldward Gate", drawbridge: false },
