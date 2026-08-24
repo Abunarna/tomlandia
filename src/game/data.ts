@@ -1476,6 +1476,22 @@ export const LANDMARKS: LandmarkDef[] = [
     h: 325,
     solid: { dx: 0, dy: 92, w: 150, h: 110 },
   },
+  {
+    id: "greenhall",
+    x: 2170,
+    y: 2070,
+    w: 208,
+    h: 289,
+    solid: { dx: 0, dy: 84, w: 128, h: 92 },
+  },
+  {
+    id: "greenhall",
+    x: 1800,
+    y: 2070,
+    w: 208,
+    h: 289,
+    solid: { dx: 0, dy: 84, w: 128, h: 92 },
+  },
 
 ];
 
