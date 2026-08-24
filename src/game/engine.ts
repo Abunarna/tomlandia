@@ -4208,7 +4208,9 @@ export class GameEngine {
     // --- the wall itself, broken only at the gate mouths
     // Grand Haven now uses custom asset buildings/towers, so its procedural
     // grey defensive wall is skipped (the moat and gates remain).
-    if (CITY.key === "grand-haven") {
+    // Willowbrook likewise: its palisade ring, gate trees and gatehouses are
+    // gone while it is rebuilt from pixel-art landmark assets.
+    if (CITY.key === "grand-haven" || CITY.key === "willowbrook") {
       return;
     }
     const drawArc = (from: number, to: number, width: number, colour: string) => {
