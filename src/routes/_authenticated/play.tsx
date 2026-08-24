@@ -27,6 +27,8 @@ import { Hud } from "@/components/game/Hud";
 import { AutoEat } from "@/components/game/AutoEat";
 import { AutoPotion } from "@/components/game/AutoPotion";
 import { KnightDebug } from "@/components/game/KnightDebug";
+import { LoadingScreen } from "@/components/LoadingScreen";
+
 
 import { Panel, type PanelId } from "@/components/game/Panel";
 import { NpcDialog } from "@/components/game/NpcDialog";
