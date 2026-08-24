@@ -25,6 +25,9 @@ if (!engine.includes("preloadCreatureSprites") || !engine.includes("creaturePoin
 if (!engine.includes("drawCreatureSprite") || !engine.includes("if (!usedSprite)")) {
   throw new Error("Gate 8 must retain a procedural monster fallback");
 }
+if (!engine.includes("sprite.visual_bounds.top") || !engine.includes("labelTop")) {
+  throw new Error("Gate 8 sprite labels must follow prepared visual bounds");
+}
 if (!runtime.includes("CONTENT_MANIFEST_HASH") || !runtime.includes('mode: "maintenance"')) {
   throw new Error("Gate 8 version mismatch must fail closed into maintenance");
 }

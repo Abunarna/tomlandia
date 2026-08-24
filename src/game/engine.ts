@@ -70,7 +70,7 @@ import { ORE_PALETTE_BY_NODE, oreSprite } from "./ore-sprite";
 import { TREE_PALETTE_BY_NODE, treeSprite } from "./tree-sprite";
 import { ambience, loops, music, sfx, type LoopId } from "./audio";
 import { KnightRig, preloadKnight, type KnightAnim } from "./knight";
-import { creaturePointerHit, drawCreatureSprite, preloadCreatureSprites } from "@/generated/creature-sprites";
+import { creaturePointerHit, creatureSprite, drawCreatureSprite, preloadCreatureSprites } from "@/generated/creature-sprites";
 import bridgeAsset from "@/assets/bridge.png.asset.json";
 import monasteryAsset from "@/assets/monastery.png.asset.json";
 import groundTownAsset from "@/assets/ground-town-v2.png.asset.json";
@@ -5053,6 +5053,7 @@ export class GameEngine {
     const d = MONSTER_DEFS[m.kind];
     const s = d.size;
     const bob = Math.sin(this.time * 4 + m.id) * 2;
+    const sprite = creatureSprite(m.kind);
     this.shadow(ctx, m.x, m.y + 14 * s, 14 * s);
     const usedSprite = drawCreatureSprite(ctx, m.kind, m.x, m.y, bob, m.hitFlash > 0);
     if (!usedSprite) {
@@ -5094,24 +5095,29 @@ export class GameEngine {
     }
     // Persistent nameplate: name + level, always shown above the head.
     const label = `${d.name} · Lv ${monsterLevel(d)}`;
+    // Prepared art may be far taller than the legacy primitive; anchor UI to
+    // its visual bounds so labels and shared-health bars never float inside it.
+    const labelTop = sprite
+      ? m.y + bob + (sprite.visual_bounds.top - sprite.pivot.y) * 0.42 - 16
+      : m.y - 54 * s + bob;
     ctx.font = "bold 11px ui-rounded, 'Baloo 2', system-ui, sans-serif";
     ctx.textAlign = "center";
     const lw = ctx.measureText(label).width + 12;
     ctx.fillStyle = "rgba(52,40,64,0.55)";
     ctx.beginPath();
-    ctx.roundRect(m.x - lw / 2, m.y - 54 * s + bob, lw, 16, 8);
+    ctx.roundRect(m.x - lw / 2, labelTop, lw, 16, 8);
     ctx.fill();
     ctx.fillStyle = "#f6f2ff";
-    ctx.fillText(label, m.x, m.y - 43 * s + bob);
+    ctx.fillText(label, m.x, labelTop + 11);
 
     if (m.hp < m.maxHp) {
       // Shared health pool. Amber bar = another player tagged it first, so the
       // loot is theirs. Drawn below the nameplate.
       const mine = !m.taggedBy || m.taggedBy === this.userId;
       ctx.fillStyle = "rgba(70,55,70,0.3)";
-      ctx.fillRect(m.x - 16, m.y - 34 * s, 32, 5);
+      ctx.fillRect(m.x - 16, labelTop + 20, 32, 5);
       ctx.fillStyle = mine ? "#8fd98a" : "#e8b26a";
-      ctx.fillRect(m.x - 16, m.y - 34 * s, 32 * (m.hp / m.maxHp), 5);
+      ctx.fillRect(m.x - 16, labelTop + 20, 32 * (m.hp / m.maxHp), 5);
     }
   }
 
