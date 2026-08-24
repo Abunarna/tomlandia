@@ -42,7 +42,9 @@ jobs:
       - name: Reapply every migration from zero
         run: supabase db reset --local
       - name: Generate Supabase TypeScript contract
-        run: supabase gen types typescript --local > gate6-generated-types.ts
+        run: |
+          supabase gen types typescript --local > gate6-generated-types.ts
+          sed -i '${/^$/d;}' gate6-generated-types.ts
       - name: Upload generated type evidence
         uses: actions/upload-artifact@v4
         with:
