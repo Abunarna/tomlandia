@@ -117,6 +117,12 @@ export const serverStateSchema = z
       .strict()
       .nullable()
       .optional(),
+    hp: z.number().finite().nonnegative().optional(),
+    px: z.number().finite().optional(),
+    py: z.number().finite().optional(),
+    quest: questStateSchema.nullable().optional(),
+    completed: z.array(itemIdSchema).optional(),
+    autoEatAt: z.number().finite().min(0).max(1).optional(),
   })
   .strict();
 

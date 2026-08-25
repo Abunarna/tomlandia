@@ -104,7 +104,7 @@ export const usePotion = createServerFn({ method: "POST" })
 
 export const equipSlotAction = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) => z.object({ index: z.number().int().min(0).max(19) }).parse(input))
+  .inputValidator((input) => z.object({ index: z.number().int().min(-1).max(19) }).parse(input))
   .handler(async ({ data, context }): Promise<GearRes> => {
     const request = rpcContracts.gear_equip.request.parse({ _index: data.index });
     const { data: res, error } = await context.supabase.rpc("gear_equip", request);
@@ -180,6 +180,62 @@ export const bankItem = createServerFn({ method: "POST" })
     return parseRpcResponse<GearRes>(
       "bank_item",
       rpcContracts.bank_item.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
+  });
+
+/** Eat a specific bag slot; healing and inventory consumption are one transaction. */
+export const consumeFood = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ index: z.number().int().min(0).max(19) }).parse(input))
+  .handler(async ({ data, context }): Promise<GearRes> => {
+    const request = rpcContracts.consume_food.request.parse({ _index: data.index });
+    const { data: res, error } = await context.supabase.rpc("consume_food", request);
+    return parseRpcResponse<GearRes>(
+      "consume_food",
+      rpcContracts.consume_food.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
+  });
+
+/** Settle an out-of-combat regeneration tick against the authoritative save. */
+export const recoverPlayer = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<GearRes> => {
+    rpcContracts.player_recover.request.parse({});
+    const { data: res, error } = await context.supabase.rpc("player_recover");
+    return parseRpcResponse<GearRes>(
+      "player_recover",
+      rpcContracts.player_recover.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
+  });
+
+/** Accept, abandon or claim a quest entirely inside the save row lock. */
+export const settleQuest = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) =>
+    z.object({ action: z.enum(["accept", "abandon", "claim"]), quest: z.string().min(1).max(64).nullable() }).parse(input),
+  )
+  .handler(async ({ data, context }): Promise<GearRes> => {
+    const request = rpcContracts.quest_action.request.parse({ _action: data.action, _quest: data.quest });
+    const { data: res, error } = await context.supabase.rpc("quest_action", request);
+    return parseRpcResponse<GearRes>(
+      "quest_action",
+      rpcContracts.quest_action.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
+  });
+
+/** Sell every resource stack and credit the exact stored quantities atomically. */
+export const sellAllResourcesAction = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<GearRes> => {
+    rpcContracts.sell_all_resources.request.parse({});
+    const { data: res, error } = await context.supabase.rpc("sell_all_resources");
+    return parseRpcResponse<GearRes>(
+      "sell_all_resources",
+      rpcContracts.sell_all_resources.response,
       error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
     );
   });
