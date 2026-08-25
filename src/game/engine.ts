@@ -70,6 +70,7 @@ import { ORE_PALETTE_BY_NODE, oreSprite } from "./ore-sprite";
 import { TREE_PALETTE_BY_NODE, treeSprite } from "./tree-sprite";
 import { ambience, loops, music, sfx, type LoopId } from "./audio";
 import { KnightRig, preloadKnight, type KnightAnim } from "./knight";
+import { creaturePointerHit, creatureSprite, drawCreatureSprite, preloadCreatureSprites } from "@/generated/creature-sprites";
 import bridgeAsset from "@/assets/bridge.png.asset.json";
 import monasteryAsset from "@/assets/monastery.png.asset.json";
 import groundTownAsset from "@/assets/ground-town-v2.png.asset.json";
@@ -1723,7 +1724,8 @@ export class GameEngine {
     for (const m of this.monsters) {
       if (m.dead) continue;
       const d = Math.hypot(m.x - wx, m.y - wy);
-      if (d < 40 && (!best || d < best.d)) best = { d, t: { type: "monster", id: m.id } };
+      const spriteHit = creaturePointerHit(m.kind, m.x, m.y, wx, wy);
+      if ((spriteHit ?? d < 40) && (!best || d < best.d)) best = { d, t: { type: "monster", id: m.id } };
     }
     for (const n of this.nodes) {
       if (n.depleted) continue;
@@ -1750,6 +1752,7 @@ export class GameEngine {
 
   start() {
     preloadKnight();
+    void preloadCreatureSprites();
     this.last = performance.now();
     const loop = (t: number) => {
       const dt = Math.min(0.05, (t - this.last) / 1000);
@@ -5050,62 +5053,71 @@ export class GameEngine {
     const d = MONSTER_DEFS[m.kind];
     const s = d.size;
     const bob = Math.sin(this.time * 4 + m.id) * 2;
+    const sprite = creatureSprite(m.kind);
     this.shadow(ctx, m.x, m.y + 14 * s, 14 * s);
-    ctx.fillStyle = m.hitFlash > 0 ? "#ffffff" : d.body;
-    ctx.beginPath();
-    ctx.roundRect(m.x - 10 * s, m.y - 6 * s + bob, 20 * s, 18 * s, 6);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(m.x, m.y - 16 * s + bob, 13 * s, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = d.accent;
-    if (d.ears === "beak") {
+    const usedSprite = drawCreatureSprite(ctx, m.kind, m.x, m.y, bob, m.hitFlash > 0);
+    if (!usedSprite) {
+      ctx.fillStyle = m.hitFlash > 0 ? "#ffffff" : d.body;
       ctx.beginPath();
-      ctx.moveTo(m.x - 4, m.y - 27 * s + bob);
-      ctx.lineTo(m.x, m.y - 34 * s + bob);
-      ctx.lineTo(m.x + 4, m.y - 27 * s + bob);
+      ctx.roundRect(m.x - 10 * s, m.y - 6 * s + bob, 20 * s, 18 * s, 6);
       ctx.fill();
-      ctx.fillRect(m.x + 10 * s, m.y - 17 * s + bob, 6, 4);
-    } else if (d.ears === "horns") {
-      for (const dir of [-1, 1]) {
+      ctx.beginPath();
+      ctx.arc(m.x, m.y - 16 * s + bob, 13 * s, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = d.accent;
+      if (d.ears === "beak") {
         ctx.beginPath();
-        ctx.moveTo(m.x + dir * 13 * s, m.y - 20 * s + bob);
-        ctx.lineTo(m.x + dir * 20 * s, m.y - 27 * s + bob);
-        ctx.lineTo(m.x + dir * 11 * s, m.y - 27 * s + bob);
+        ctx.moveTo(m.x - 4, m.y - 27 * s + bob);
+        ctx.lineTo(m.x, m.y - 34 * s + bob);
+        ctx.lineTo(m.x + 4, m.y - 27 * s + bob);
         ctx.fill();
+        ctx.fillRect(m.x + 10 * s, m.y - 17 * s + bob, 6, 4);
+      } else if (d.ears === "horns") {
+        for (const dir of [-1, 1]) {
+          ctx.beginPath();
+          ctx.moveTo(m.x + dir * 13 * s, m.y - 20 * s + bob);
+          ctx.lineTo(m.x + dir * 20 * s, m.y - 27 * s + bob);
+          ctx.lineTo(m.x + dir * 11 * s, m.y - 27 * s + bob);
+          ctx.fill();
+        }
+      } else if (d.ears === "spikes") {
+        for (let i = -1; i <= 1; i++) {
+          ctx.beginPath();
+          ctx.moveTo(m.x + i * 8 * s - 3, m.y - 26 * s + bob);
+          ctx.lineTo(m.x + i * 8 * s, m.y - 36 * s + bob);
+          ctx.lineTo(m.x + i * 8 * s + 3, m.y - 26 * s + bob);
+          ctx.fill();
+        }
       }
-    } else if (d.ears === "spikes") {
-      for (let i = -1; i <= 1; i++) {
-        ctx.beginPath();
-        ctx.moveTo(m.x + i * 8 * s - 3, m.y - 26 * s + bob);
-        ctx.lineTo(m.x + i * 8 * s, m.y - 36 * s + bob);
-        ctx.lineTo(m.x + i * 8 * s + 3, m.y - 26 * s + bob);
-        ctx.fill();
-      }
+      ctx.fillStyle = "#4a3b52";
+      ctx.fillRect(m.x - 6 * s, m.y - 18 * s + bob, 3, 3);
+      ctx.fillRect(m.x + 3 * s, m.y - 18 * s + bob, 3, 3);
     }
-    ctx.fillStyle = "#4a3b52";
-    ctx.fillRect(m.x - 6 * s, m.y - 18 * s + bob, 3, 3);
-    ctx.fillRect(m.x + 3 * s, m.y - 18 * s + bob, 3, 3);
     // Persistent nameplate: name + level, always shown above the head.
     const label = `${d.name} · Lv ${monsterLevel(d)}`;
+    // Prepared art may be far taller than the legacy primitive; anchor UI to
+    // its visual bounds so labels and shared-health bars never float inside it.
+    const labelTop = sprite
+      ? m.y + bob + (sprite.visual_bounds.top - sprite.pivot.y) * 0.42 - 16
+      : m.y - 54 * s + bob;
     ctx.font = "bold 11px ui-rounded, 'Baloo 2', system-ui, sans-serif";
     ctx.textAlign = "center";
     const lw = ctx.measureText(label).width + 12;
     ctx.fillStyle = "rgba(52,40,64,0.55)";
     ctx.beginPath();
-    ctx.roundRect(m.x - lw / 2, m.y - 54 * s + bob, lw, 16, 8);
+    ctx.roundRect(m.x - lw / 2, labelTop, lw, 16, 8);
     ctx.fill();
     ctx.fillStyle = "#f6f2ff";
-    ctx.fillText(label, m.x, m.y - 43 * s + bob);
+    ctx.fillText(label, m.x, labelTop + 11);
 
     if (m.hp < m.maxHp) {
       // Shared health pool. Amber bar = another player tagged it first, so the
       // loot is theirs. Drawn below the nameplate.
       const mine = !m.taggedBy || m.taggedBy === this.userId;
       ctx.fillStyle = "rgba(70,55,70,0.3)";
-      ctx.fillRect(m.x - 16, m.y - 34 * s, 32, 5);
+      ctx.fillRect(m.x - 16, labelTop + 20, 32, 5);
       ctx.fillStyle = mine ? "#8fd98a" : "#e8b26a";
-      ctx.fillRect(m.x - 16, m.y - 34 * s, 32 * (m.hp / m.maxHp), 5);
+      ctx.fillRect(m.x - 16, labelTop + 20, 32 * (m.hp / m.maxHp), 5);
     }
   }
 

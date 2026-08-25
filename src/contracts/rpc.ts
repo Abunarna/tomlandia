@@ -243,7 +243,25 @@ export const syncResponseSchema = z
     }
   });
 
+export const worldRuntimeStatusResponseSchema = z
+  .object({
+    contract_version: z.literal(1),
+    active_content_version: z.string().min(1),
+    active_spawn_set_version: z.string().min(1),
+    state_contract: z.enum(["legacy_integer_v1", "uuid_v2"]),
+    spawn_hash: z.string(),
+    world_width: z.number().finite().nullable(),
+    world_height: z.number().finite().nullable(),
+    movement_speed: z.number().finite().nullable(),
+    server_time: dbTimestamp.nullable(),
+  })
+  .strict();
+
 export const rpcContracts = {
+  game_world_runtime_status: {
+    request: z.object({}).strict(),
+    response: worldRuntimeStatusResponseSchema,
+  },
   harvest_node: {
     request: z.object({ _id: nonNegativeInt, ...worldPoint }).strict(),
     response: harvestResponseSchema,
@@ -385,6 +403,7 @@ export const rpcContractManifest = {
   upgrade_max: 100,
   access: "authenticated",
   rpcs: {
+    game_world_runtime_status: { request: [], response: "world_runtime_status" },
     harvest_node: { request: ["_id", "_x", "_y"], response: "harvest" },
     attack_monster: {
       request: ["_id", "_x", "_y"],
@@ -426,4 +445,5 @@ export type MarketResponse = z.infer<typeof marketResponseSchema>;
 export type LeaderRowContract = z.infer<typeof leaderRowSchema>;
 export type LeaderboardResponse = z.infer<typeof leaderboardResponseSchema>;
 export type SyncResponse = z.infer<typeof syncResponseSchema>;
+export type WorldRuntimeStatusResponse = z.infer<typeof worldRuntimeStatusResponseSchema>;
 export type RpcJsonValue = z.infer<typeof jsonValueSchema>;

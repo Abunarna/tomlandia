@@ -3,6 +3,7 @@
   "upgrade_max": 100,
   "access": "authenticated",
   "rpcs": {
+    "game_world_runtime_status": { "request": [], "response": "world_runtime_status" },
     "harvest_node": { "request": ["_id", "_x", "_y"], "response": "harvest" },
     "attack_monster": {
       "request": ["_id", "_x", "_y"],
