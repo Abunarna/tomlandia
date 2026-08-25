@@ -63,6 +63,30 @@ export const Route = createFileRoute("/_authenticated/play")({
 
 const blank = { level: 1, xp: 0, progress: 0, into: 0, need: 115 };
 
+// Temporary, exact allowlist for the reset V2 test accounts. This deliberately
+// prevents a save-read timeout from falling back for future player accounts.
+const V2_TESTER_IDS = new Set([
+  "0bf5ddc6-b4d6-4878-a07a-892098e9968f",
+  "245ee625-752d-459a-892e-02a0de1707e0",
+  "2eca2ed0-e948-4cc1-97ff-86ba0a836009",
+  "5da68789-9c0b-4303-bac3-6b39810cf956",
+  "5dfdf4d2-22f2-4a66-9ef2-409bed1e7023",
+  "7685271b-6fd7-4356-adec-2a4a63d9ffad",
+  "89509f65-5217-403d-8bd7-7fe695bb588d",
+  "90022372-7edf-49dc-9c28-0a33421bf6fa",
+  "9d8c3c53-7cea-4bc8-8308-521d6521f21d",
+  "aabca5f3-94d5-4cd8-bcdd-5d81f00bb91d",
+  "ab158acc-cdbd-41fb-8ccc-bd80c8b4af10",
+  "af07b844-f0c4-4dbd-808b-28a174e1bd19",
+  "be0bae85-a400-45fb-9a95-21bc7398c0e7",
+  "c71d75e2-768e-4a61-84ae-4d8f4338f458",
+  "c986355e-3684-40bd-8317-c5cf798e504b",
+  "cec83b0b-251a-4ef8-8d57-5a8159745a87",
+  "cfe8adc0-9747-4b13-bead-26acdf8f0133",
+  "eb607659-010f-403a-ad11-f044cb26c2f7",
+  "fe383381-aa6e-4d29-96c6-54b03acbf7bf",
+]);
+
 const EMPTY: HudSnapshot = {
   hp: 30,
   maxHp: 30,
@@ -235,24 +259,20 @@ function Game() {
       // then autosaving is how a character could be overwritten. Retry first.
       type SaveRow = { data: unknown; rev: number | null };
       let row: SaveRow | null = null;
-      let readOk = false;
-      for (let attempt = 0; attempt < 4 && !readOk; attempt++) {
-        const { data, error } = await supabase
+      const result = await Promise.race([
+        supabase
           .from("player_saves")
           .select("data, rev")
           .eq("user_id", user.id)
-          .maybeSingle();
-        if (cancelled) return;
-        if (!error) {
-          readOk = true;
-          row = (data as SaveRow | null) ?? null;
-        } else {
-          console.error("Save load failed", error.message);
-          await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
-          if (cancelled) return;
-        }
-      }
-      if (!readOk) {
+          .maybeSingle(),
+        new Promise<null>((resolve) => window.setTimeout(() => resolve(null), 4_000)),
+      ]);
+      if (cancelled) return;
+      if (result && !result.error) {
+        row = (result.data as SaveRow | null) ?? null;
+      } else if (V2_TESTER_IDS.has(user.id)) {
+        console.warn("Cloud save did not load; starting the approved V2 test save fallback.");
+      } else {
         setLoadFailed(true);
         return;
       }
