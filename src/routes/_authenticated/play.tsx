@@ -220,6 +220,10 @@ function Game() {
 
   // Load the cloud save first, then boot the engine with it.
   useEffect(() => {
+    // The canvas is mounted only after the asset loading screen completes.
+    // Re-run at that transition; otherwise the first pass sees no canvas and
+    // leaves the route on the adventure loader indefinitely.
+    if (isLoading) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     let engine: GameEngine | null = null;
@@ -325,7 +329,7 @@ function Game() {
       engine?.stop();
       engineRef.current = null;
     };
-  }, [user.id, persist]);
+  }, [user.id, persist, isLoading]);
 
   // Never lose progress when the tab closes or is backgrounded.
   useEffect(() => {
