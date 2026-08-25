@@ -71,6 +71,10 @@
       "type": "string",
       "pattern": "^#[0-9a-fA-F]{6}$"
     },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
     "positiveInteger": {
       "type": "integer",
       "minimum": 1,
@@ -143,7 +147,7 @@
       "additionalProperties": false,
       "required": [
         "id", "name", "active", "tier_index", "level_requirement", "kind", "family",
-        "colour", "rarity", "tradable", "stackable", "value", "stats"
+        "icon_key", "colour", "rarity", "tradable", "stackable", "value", "stats"
       ],
       "properties": {
         "id": { "$ref": "#/$defs/contentId" },
@@ -153,6 +157,7 @@
         "level_requirement": { "type": "integer", "minimum": 1, "maximum": 150 },
         "kind": { "enum": ["resource", "material", "weapon", "armor", "food", "potion", "trophy"] },
         "family": { "$ref": "#/$defs/contentId" },
+        "icon_key": { "$ref": "#/$defs/contentId" },
         "colour": { "$ref": "#/$defs/colour" },
         "rarity": { "enum": ["common", "uncommon", "rare", "epic", "legendary"] },
         "tradable": { "type": "boolean" },
@@ -197,7 +202,8 @@
       "additionalProperties": false,
       "required": [
         "kind", "name", "active", "tier_index", "level_requirement", "skill", "item_id",
-        "xp", "gather_s", "respawn_s", "max_charges", "family", "colour", "visual_key"
+        "xp", "gather_s", "respawn_s", "max_charges", "cluster_min", "shape",
+        "family", "colour", "visual_key"
       ],
       "properties": {
         "kind": { "$ref": "#/$defs/contentId" },
@@ -211,6 +217,8 @@
         "gather_s": { "type": "number", "exclusiveMinimum": 0 },
         "respawn_s": { "$ref": "#/$defs/positiveInteger" },
         "max_charges": { "$ref": "#/$defs/positiveInteger" },
+        "cluster_min": { "$ref": "#/$defs/positiveInteger" },
+        "shape": { "enum": ["rock", "tree", "bush"] },
         "family": { "$ref": "#/$defs/contentId" },
         "colour": { "$ref": "#/$defs/colour" },
         "visual_key": { "$ref": "#/$defs/contentId" }
@@ -234,7 +242,7 @@
       "additionalProperties": false,
       "required": [
         "kind", "name", "active", "tier_index", "level_requirement", "hp", "attack",
-        "defense", "xp", "gold_min", "gold_max", "respawn_s", "visual_key", "loot"
+        "defense", "xp", "gold_min", "gold_max", "respawn_s", "visual_key", "visual", "loot"
       ],
       "properties": {
         "kind": { "$ref": "#/$defs/contentId" },
@@ -250,7 +258,71 @@
         "gold_max": { "type": "integer", "minimum": 0 },
         "respawn_s": { "$ref": "#/$defs/positiveInteger" },
         "visual_key": { "$ref": "#/$defs/contentId" },
+        "visual": { "$ref": "#/$defs/monsterVisual" },
         "loot": { "type": "array", "items": { "$ref": "#/$defs/loot" } }
+      }
+    },
+    "point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0 },
+        "y": { "type": "number", "minimum": 0 }
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "bounds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["left", "top", "right", "bottom"],
+      "properties": {
+        "left": { "type": "number", "minimum": 0 },
+        "top": { "type": "number", "minimum": 0 },
+        "right": { "type": "number", "minimum": 0 },
+        "bottom": { "type": "number", "minimum": 0 }
+      }
+    },
+    "proceduralFallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["body", "accent", "size", "ears"],
+      "properties": {
+        "body": { "$ref": "#/$defs/colour" },
+        "accent": { "$ref": "#/$defs/colour" },
+        "size": { "type": "number", "exclusiveMinimum": 0 },
+        "ears": { "enum": ["none", "beak", "horns", "spikes"] }
+      }
+    },
+    "monsterVisual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_key", "asset_path", "source_sha256", "padded_sha256", "canvas",
+        "pivot", "visual_bounds", "click_bounds", "render_scale", "ground_offset_y",
+        "motion_profile", "fallback"
+      ],
+      "properties": {
+        "asset_key": { "$ref": "#/$defs/contentId" },
+        "asset_path": { "type": "string", "minLength": 1 },
+        "source_sha256": { "$ref": "#/$defs/sha256" },
+        "padded_sha256": { "$ref": "#/$defs/sha256" },
+        "canvas": { "$ref": "#/$defs/dimensions" },
+        "pivot": { "$ref": "#/$defs/point" },
+        "visual_bounds": { "$ref": "#/$defs/bounds" },
+        "click_bounds": { "$ref": "#/$defs/bounds" },
+        "render_scale": { "type": "number", "exclusiveMinimum": 0 },
+        "ground_offset_y": { "type": "number", "minimum": 0 },
+        "motion_profile": { "const": "static_front_facing_bob" },
+        "fallback": { "$ref": "#/$defs/proceduralFallback" }
       }
     },
     "weight": {
@@ -302,12 +374,13 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "id", "name", "active", "tier_index", "level_requirement", "kind", "target_id",
+        "id", "name", "description", "active", "tier_index", "level_requirement", "kind", "target_id",
         "count", "gold", "xp_skill", "xp", "reward_items"
       ],
       "properties": {
         "id": { "$ref": "#/$defs/contentId" },
         "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
         "active": { "type": "boolean" },
         "tier_index": { "type": "integer", "minimum": 1, "maximum": 16 },
         "level_requirement": { "type": "integer", "minimum": 1, "maximum": 150 },
@@ -336,7 +409,9 @@
       "additionalProperties": false,
       "required": [
         "id", "name", "active", "level_requirement", "hp", "attack", "defense",
-        "respawn_s", "visual_key", "rewards"
+        "respawn_s", "visual_key", "reward_mode", "target_contributors", "minimum_damage",
+        "xp_pool", "xp_per_player_cap", "gold_pool_min", "gold_pool_max",
+        "gold_per_player_cap_min", "gold_per_player_cap_max", "rewards"
       ],
       "properties": {
         "id": { "$ref": "#/$defs/contentId" },
@@ -348,7 +423,16 @@
         "defense": { "type": "integer", "minimum": 0 },
         "respawn_s": { "$ref": "#/$defs/positiveInteger" },
         "visual_key": { "$ref": "#/$defs/contentId" },
-        "rewards": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/bossReward" } }
+        "reward_mode": { "const": "fixed_pool_proportional_damage_with_per_player_cap" },
+        "target_contributors": { "$ref": "#/$defs/positiveInteger" },
+        "minimum_damage": { "$ref": "#/$defs/positiveInteger" },
+        "xp_pool": { "$ref": "#/$defs/positiveInteger" },
+        "xp_per_player_cap": { "$ref": "#/$defs/positiveInteger" },
+        "gold_pool_min": { "$ref": "#/$defs/positiveInteger" },
+        "gold_pool_max": { "$ref": "#/$defs/positiveInteger" },
+        "gold_per_player_cap_min": { "$ref": "#/$defs/positiveInteger" },
+        "gold_per_player_cap_max": { "$ref": "#/$defs/positiveInteger" },
+        "rewards": { "type": "array", "items": { "$ref": "#/$defs/bossReward" } }
       }
     },
     "spawn": {
@@ -371,10 +455,58 @@
       "required": ["from_id", "action", "captured_value_required", "notice_key"],
       "properties": {
         "from_id": { "$ref": "#/$defs/contentId" },
-        "action": { "enum": ["retain", "replace", "compensate", "stop"] },
+        "action": { "enum": ["retain", "replace", "replace_or_compensate", "compensate", "stop"] },
         "to_id": { "$ref": "#/$defs/contentId" },
         "captured_value_required": { "type": "boolean" },
-        "notice_key": { "$ref": "#/$defs/contentId" }
+        "notice_key": { "$ref": "#/$defs/contentId" },
+        "equipped_action": { "const": "replace_preserve_plus" },
+        "unequipped_action": { "const": "compensate_captured_value" }
+      }
+    },
+    "starterLoadout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["weapon_item_id", "armor_item_id", "plus"],
+      "properties": {
+        "weapon_item_id": { "$ref": "#/$defs/contentId" },
+        "armor_item_id": { "$ref": "#/$defs/contentId" },
+        "plus": { "type": "integer", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "mechanics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approved_balance_model_hash", "max_level", "max_plus", "market_fee_pct",
+        "weapon_multiplier_rule", "light_attack_multiplier_rule", "defense_multiplier_rule",
+        "upgrade_cost_rule", "gear_resale_rule", "fishing_xp_curve"
+      ],
+      "properties": {
+        "approved_balance_model_hash": { "$ref": "#/$defs/sha256" },
+        "max_level": { "const": 150 },
+        "max_plus": { "const": 100 },
+        "market_fee_pct": { "type": "number", "minimum": 0, "maximum": 100 },
+        "weapon_multiplier_rule": { "type": "string", "minLength": 1 },
+        "light_attack_multiplier_rule": { "type": "string", "minLength": 1 },
+        "defense_multiplier_rule": { "type": "string", "minLength": 1 },
+        "upgrade_cost_rule": { "type": "string", "minLength": 1 },
+        "gear_resale_rule": { "type": "string", "minLength": 1 },
+        "fishing_xp_curve": {
+          "type": "array",
+          "minItems": 16,
+          "maxItems": 16,
+          "items": { "$ref": "#/$defs/fishingXpCheckpoint" }
+        }
+      }
+    },
+    "fishingXpCheckpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tier_index", "level_requirement", "xp_per_action"],
+      "properties": {
+        "tier_index": { "type": "integer", "minimum": 1, "maximum": 16 },
+        "level_requirement": { "type": "integer", "minimum": 1, "maximum": 150 },
+        "xp_per_action": { "$ref": "#/$defs/positiveInteger" }
       }
     },
     "playerNotice": {
@@ -392,7 +524,8 @@
       "additionalProperties": false,
       "required": [
         "items", "recipes", "nodes", "monsters", "fish", "fishing_spots", "quests",
-        "bosses", "node_spawns", "monster_spawns", "migration_rules", "player_notice"
+        "bosses", "node_spawns", "monster_spawns", "migration_rules", "starter_loadout",
+        "mechanics", "player_notice"
       ],
       "properties": {
         "items": { "type": "array", "items": { "$ref": "#/$defs/item" } },
@@ -406,6 +539,8 @@
         "node_spawns": { "type": "array", "items": { "$ref": "#/$defs/spawn" } },
         "monster_spawns": { "type": "array", "items": { "$ref": "#/$defs/spawn" } },
         "migration_rules": { "type": "array", "items": { "$ref": "#/$defs/migrationRule" } },
+        "starter_loadout": { "$ref": "#/$defs/starterLoadout" },
+        "mechanics": { "$ref": "#/$defs/mechanics" },
         "player_notice": { "$ref": "#/$defs/playerNotice" }
       }
     }

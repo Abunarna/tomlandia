@@ -14,15 +14,19 @@ const schema = await readJson("content/schema/manifest.schema.json");
 if (schema.$id !== "https://tomlandia.game/schemas/content-manifest-v1.json") {
   throw new Error("Unexpected canonical manifest schema identity");
 }
-if (manifest.lifecycle !== "draft") throw new Error("Gate 4 authoring manifest must remain draft-only");
-
-let draftRuntimeRejected = false;
-try {
+if (manifest.lifecycle === "draft") {
+  let draftRuntimeRejected = false;
+  try {
+    generateRuntimeOutputs(manifest, registry);
+  } catch (error) {
+    draftRuntimeRejected = /Refusing runtime generation/.test(String(error?.message));
+  }
+  if (!draftRuntimeRejected) throw new Error("Draft manifest unexpectedly entered runtime generation");
+} else if (manifest.lifecycle === "runtime") {
   generateRuntimeOutputs(manifest, registry);
-} catch (error) {
-  draftRuntimeRejected = /Refusing runtime generation/.test(String(error?.message));
+} else {
+  throw new Error(`Unsupported canonical manifest lifecycle: ${manifest.lifecycle}`);
 }
-if (!draftRuntimeRejected) throw new Error("Draft manifest unexpectedly entered runtime generation");
 
 const generated = generateOutputs(manifest, registry);
 for (const [relativePath, expected] of Object.entries(generated.files)) {
@@ -39,8 +43,18 @@ if (!client.includes(`CONTENT_MANIFEST_HASH = "${generated.hash}"`)) {
 if (!sql.includes(`Manifest SHA-256: ${generated.hash}`)) {
   throw new Error("Generated SQL hash does not match canonical manifest");
 }
-if (!sql.includes("draft-only and cannot be applied")) {
+if (manifest.lifecycle === "draft" && !sql.includes("draft-only and cannot be applied")) {
   throw new Error("Draft SQL is missing its hard execution guard");
+}
+if (manifest.lifecycle === "runtime") {
+  if (!sql.includes("This stages content only; it never changes the active control row.")) {
+    throw new Error("Runtime SQL is missing its staged-only safety declaration");
+  }
+  if (!sql.includes("'staged'")) throw new Error("Runtime SQL does not create a staged version");
+  if (/VALUES \([^\n]*'active'/.test(sql)) throw new Error("Runtime SQL attempts to activate content");
+  if (/archiveOrdinal/i.test(JSON.stringify(manifest))) {
+    throw new Error("Archive ordinals must never enter the canonical manifest");
+  }
 }
 
 const dataSource = await readFile(path.join(root, "src/game/data.ts"), "utf8");
@@ -53,6 +67,10 @@ if (!dataSource.includes("UnknownItemIdError")) {
 
 const migration = await readFile(
   path.join(root, "supabase/migrations/20260824070000_gate4_content_contract.sql"),
+  "utf8",
+);
+const gate5Migration = await readFile(
+  path.join(root, "supabase/migrations/20260824080000_gate5_complete_content_contract.sql"),
   "utf8",
 );
 for (const requiredFragment of [
@@ -72,5 +90,25 @@ if (/^INSERT INTO public\.game_content_versions/gm.test(migration)) {
 if (/^INSERT INTO public\.game_content_control/gm.test(migration)) {
   throw new Error("Gate 4 schema migration must not create an active control row");
 }
+for (const requiredFragment of [
+  "ADD COLUMN starter_loadout",
+  "ADD COLUMN mechanics",
+  "ADD COLUMN icon_key",
+  "ADD COLUMN visual jsonb",
+  "ADD COLUMN reward_mode",
+  "replace_or_compensate",
+  "game_content_items_tier_band_fkey",
+  "CREATE OR REPLACE FUNCTION public.game_validate_content_version",
+]) {
+  if (!gate5Migration.includes(requiredFragment)) {
+    throw new Error(`Gate 5 migration omits: ${requiredFragment}`);
+  }
+}
+if (/^INSERT INTO public\.game_content_versions/gm.test(gate5Migration)) {
+  throw new Error("Gate 5 schema migration must not insert a content version");
+}
+if (/^INSERT INTO public\.game_content_control/gm.test(gate5Migration)) {
+  throw new Error("Gate 5 schema migration must not create an active control row");
+}
 
-console.log(`Gate 4 content contract verified (${generated.hash})`);
+console.log(`Canonical content contract verified (${manifest.lifecycle}, ${generated.hash})`);

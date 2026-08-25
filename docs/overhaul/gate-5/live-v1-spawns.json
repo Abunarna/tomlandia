@@ -1,0 +1,3609 @@
+{
+  "snapshot_version": "tomlandia-v1-spawn-snapshot/1",
+  "source_file": "src/game/data.ts",
+  "source_sha256": "0babb7e09063dbe1d7973c8ec6e584df38f1fa362312df72baf12f8f8c16cf8f",
+  "node_spawns": [
+    {
+      "kind": "cursed_rock",
+      "x": 3948,
+      "y": 1609,
+      "biome": "evil"
+    },
+    {
+      "kind": "bloom",
+      "x": 3791,
+      "y": 1156,
+      "biome": "desert"
+    },
+    {
+      "kind": "iron",
+      "x": 1514,
+      "y": 1552,
+      "biome": "forest"
+    },
+    {
+      "kind": "maple",
+      "x": 1320,
+      "y": 332,
+      "biome": "forest"
+    },
+    {
+      "kind": "willow",
+      "x": 1314,
+      "y": 1271,
+      "biome": "forest"
+    },
+    {
+      "kind": "runite",
+      "x": 3321,
+      "y": 2418,
+      "biome": "winter"
+    },
+    {
+      "kind": "sandstone",
+      "x": 2838,
+      "y": 1310,
+      "biome": "desert"
+    },
+    {
+      "kind": "bloom",
+      "x": 3586,
+      "y": 897,
+      "biome": "desert"
+    },
+    {
+      "kind": "frostpine",
+      "x": 2940,
+      "y": 2670,
+      "biome": "winter"
+    },
+    {
+      "kind": "cursed_tree",
+      "x": 3790,
+      "y": 1600,
+      "biome": "evil"
+    },
+    {
+      "kind": "mithril",
+      "x": 2641,
+      "y": 708,
+      "biome": "desert"
+    },
+    {
+      "kind": "frostpine",
+      "x": 4728,
+      "y": 2298,
+      "biome": "winter"
+    },
+    {
+      "kind": "herbs",
+      "x": 2371,
+      "y": 2186,
+      "biome": "forest"
+    },
+    {
+      "kind": "lichen",
+      "x": 3697,
+      "y": 2275,
+      "biome": "winter"
+    },
+    {
+      "kind": "copper",
+      "x": 1587,
+      "y": 2566,
+      "biome": "fields"
+    },
+    {
+      "kind": "frostpine",
+      "x": 4855,
+      "y": 1869,
+      "biome": "winter"
+    },
+    {
+      "kind": "herbs",
+      "x": 1740,
+      "y": 1058,
+      "biome": "forest"
+    },
+    {
+      "kind": "oak",
+      "x": 370,
+      "y": 1165,
+      "biome": "fields"
+    },
+    {
+      "kind": "oak",
+      "x": 896,
+      "y": 1446,
+      "biome": "fields"
+    },
+    {
+      "kind": "herbs",
+      "x": 2673,
+      "y": 2601,
+      "biome": "forest"
+    },
+    {
+      "kind": "sandstone",
+      "x": 3367,
+      "y": 1313,
+      "biome": "desert"
+    },
+    {
+      "kind": "bloom",
+      "x": 3753,
+      "y": 168,
+      "biome": "desert"
+    },
+    {
+      "kind": "gloomcap",
+      "x": 4350,
+      "y": 457,
+      "biome": "evil"
+    },
+    {
+      "kind": "oak",
+      "x": 389,
+      "y": 832,
+      "biome": "fields"
+    },
+    {
+      "kind": "lichen",
+      "x": 4368,
+      "y": 2180,
+      "biome": "winter"
+    },
+    {
+      "kind": "sandstone",
+      "x": 3831,
+      "y": 105,
+      "biome": "desert"
+    },
+    {
+      "kind": "gloomcap",
+      "x": 4733,
+      "y": 1644,
+      "biome": "evil"
+    },
+    {
+      "kind": "herbs",
+      "x": 2089,
+      "y": 1000,
+      "biome": "forest"
+    },
+    {
+      "kind": "cursed_rock",
+      "x": 4858,
+      "y": 871,
+      "biome": "evil"
+    },
+    {
+      "kind": "maple",
+      "x": 1383,
+      "y": 196,
+      "biome": "forest"
+    },
+    {
+      "kind": "oak",
+      "x": 650,
+      "y": 1320,
+      "biome": "fields"
+    },
+    {
+      "kind": "cursed_tree",
+      "x": 5200,
+      "y": 691,
+      "biome": "evil"
+    },
+    {
+      "kind": "oak",
+      "x": 659,
+      "y": 1732,
+      "biome": "fields"
+    },
+    {
+      "kind": "cursed_rock",
+      "x": 4933,
+      "y": 1160,
+      "biome": "evil"
+    },
+    {
+      "kind": "frostpine",
+      "x": 4869,
+      "y": 2883,
+      "biome": "winter"
+    },
+    {
+      "kind": "herbs",
+      "x": 2629,
+      "y": 2498,
+      "biome": "forest"
+    },
+    {
+      "kind": "iron",
+      "x": 2892,
+      "y": 1970,
+      "biome": "forest"
+    },
+    {
+      "kind": "willow",
+      "x": 1843,
+      "y": 2162,
+      "biome": "forest"
+    },
+    {
+      "kind": "cursed_tree",
+      "x": 4819,
+      "y": 1507,
+      "biome": "evil"
+    },
+    {
+      "kind": "mithril",
+      "x": 2341,
+      "y": 946,
+      "biome": "desert"
+    },
+    {
+      "kind": "willow",
+      "x": 2241,
+      "y": 2075,
+      "biome": "forest"
+    },
+    {
+      "kind": "bloom",
+      "x": 3818,
+      "y": 428,
+      "biome": "desert"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4305,
+      "y": 2761,
+      "biome": "winter"
+    },
+    {
+      "kind": "palm",
+      "x": 3067,
+      "y": 1895,
+      "biome": "desert"
+    },
+    {
+      "kind": "palm",
+      "x": 2846,
+      "y": 1712,
+      "biome": "desert"
+    },
+    {
+      "kind": "copper",
+      "x": 1208,
+      "y": 2812,
+      "biome": "fields"
+    },
+    {
+      "kind": "berries",
+      "x": 464,
+      "y": 250,
+      "biome": "fields"
+    },
+    {
+      "kind": "herbs",
+      "x": 2256,
+      "y": 1362,
+      "biome": "forest"
+    },
+    {
+      "kind": "cursed_tree",
+      "x": 3629,
+      "y": 1850,
+      "biome": "evil"
+    },
+    {
+      "kind": "lichen",
+      "x": 5315,
+      "y": 1277,
+      "biome": "winter"
+    },
+    {
+      "kind": "cursed_tree",
+      "x": 3638,
+      "y": 2162,
+      "biome": "evil"
+    },
+    {
+      "kind": "iron",
+      "x": 1340,
+      "y": 631,
+      "biome": "forest"
+    },
+    {
+      "kind": "frostpine",
+      "x": 4591,
+      "y": 2283,
+      "biome": "winter"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4361,
+      "y": 2893,
+      "biome": "winter"
+    },
+    {
+      "kind": "oak",
+      "x": 320,
+      "y": 1288,
+      "biome": "fields"
+    },
+    {
+      "kind": "herbs",
+      "x": 1862,
+      "y": 1006,
+      "biome": "forest"
+    },
+    {
+      "kind": "willow",
+      "x": 2143,
+      "y": 2755,
+      "biome": "forest"
+    },
+    {
+      "kind": "oak",
+      "x": 164,
+      "y": 2188,
+      "biome": "fields"
+    },
+    {
+      "kind": "cursed_rock",
+      "x": 3877,
+      "y": 1207,
+      "biome": "evil"
+    },
+    {
+      "kind": "runite",
+      "x": 3182,
+      "y": 2670,
+      "biome": "winter"
+    },
+    {
+      "kind": "copper",
+      "x": 1458,
+      "y": 2681,
+      "biome": "fields"
+    },
+    {
+      "kind": "lichen",
+      "x": 3780,
+      "y": 2209,
+      "biome": "winter"
+    },
+    {
+      "kind": "bloom",
+      "x": 3531,
+      "y": 424,
+      "biome": "desert"
+    },
+    {
+      "kind": "palm",
+      "x": 3375,
+      "y": 1965,
+      "biome": "desert"
+    },
+    {
+      "kind": "willow",
+      "x": 2244,
+      "y": 2169,
+      "biome": "forest"
+    },
+    {
+      "kind": "runite",
+      "x": 3779,
+      "y": 2790,
+      "biome": "winter"
+    },
+    {
+      "kind": "gloomcap",
+      "x": 4236,
+      "y": 394,
+      "biome": "evil"
+    },
+    {
+      "kind": "iron",
+      "x": 2338,
+      "y": 2092,
+      "biome": "forest"
+    },
+    {
+      "kind": "gloomcap",
+      "x": 4872,
+      "y": 654,
+      "biome": "evil"
+    },
+    {
+      "kind": "mithril",
+      "x": 2098,
+      "y": 365,
+      "biome": "desert"
+    },
+    {
+      "kind": "runite",
+      "x": 3702,
+      "y": 2591,
+      "biome": "winter"
+    },
+    {
+      "kind": "iron",
+      "x": 1606,
+      "y": 1418,
+      "biome": "forest"
+    },
+    {
+      "kind": "gloomcap",
+      "x": 4851,
+      "y": 197,
+      "biome": "evil"
+    },
+    {
+      "kind": "runite",
+      "x": 5230,
+      "y": 1547,
+      "biome": "winter"
+    },
+    {
+      "kind": "willow",
+      "x": 2443,
+      "y": 2726,
+      "biome": "forest"
+    },
+    {
+      "kind": "mithril",
+      "x": 1920,
+      "y": 608,
+      "biome": "desert"
+    },
+    {
+      "kind": "iron",
+      "x": 1613,
+      "y": 832,
+      "biome": "forest"
+    },
+    {
+      "kind": "maple",
+      "x": 1788,
+      "y": 751,
+      "biome": "forest"
+    },
+    {
+      "kind": "bloom",
+      "x": 2155,
+      "y": 119,
+      "biome": "desert"
+    },
+    {
+      "kind": "iron",
+      "x": 1640,
+      "y": 2017,
+      "biome": "forest"
+    },
+    {
+      "kind": "runite",
+      "x": 5115,
+      "y": 1376,
+      "biome": "winter"
+    },
+    {
+      "kind": "sandstone",
+      "x": 2714,
+      "y": 619,
+      "biome": "desert"
+    },
+    {
+      "kind": "herbs",
+      "x": 2421,
+      "y": 1650,
+      "biome": "forest"
+    },
+    {
+      "kind": "iron",
+      "x": 1459,
+      "y": 779,
+      "biome": "forest"
+    },
+    {
+      "kind": "copper",
+      "x": 361,
+      "y": 1401,
+      "biome": "fields"
+    },
+    {
+      "kind": "palm",
+      "x": 2921,
+      "y": 1769,
+      "biome": "desert"
+    },
+    {
+      "kind": "frostpine",
+      "x": 5359,
+      "y": 1509,
+      "biome": "winter"
+    },
+    {
+      "kind": "oak",
+      "x": 174,
+      "y": 1529,
+      "biome": "fields"
+    },
+    {
+      "kind": "flax",
+      "x": 828,
+      "y": 1257,
+      "biome": "fields"
+    },
+    {
+      "kind": "sandstone",
+      "x": 1798,
+      "y": 127,
+      "biome": "desert"
+    },
+    {
+      "kind": "gloomcap",
+      "x": 4553,
+      "y": 504,
+      "biome": "evil"
+    },
+    {
+      "kind": "maple",
+      "x": 1153,
+      "y": 112,
+      "biome": "forest"
+    },
+    {
+      "kind": "cursed_tree",
+      "x": 3708,
+      "y": 1554,
+      "biome": "evil"
+    },
+    {
+      "kind": "herbs",
+      "x": 2879,
+      "y": 2760,
+      "biome": "forest"
+    },
+    {
+      "kind": "copper",
+      "x": 1449,
+      "y": 2536,
+      "biome": "fields"
+    },
+    {
+      "kind": "sandstone",
+      "x": 2807,
+      "y": 492,
+      "biome": "desert"
+    },
+    {
+      "kind": "berries",
+      "x": 1702,
+      "y": 2558,
+      "biome": "fields"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4592,
+      "y": 2566,
+      "biome": "winter"
+    },
+    {
+      "kind": "bloom",
+      "x": 4072,
+      "y": 504,
+      "biome": "desert"
+    },
+    {
+      "kind": "sandstone",
+      "x": 3404,
+      "y": 1670,
+      "biome": "desert"
+    },
+    {
+      "kind": "willow",
+      "x": 1549,
+      "y": 1923,
+      "biome": "forest"
+    },
+    {
+      "kind": "cursed_tree",
+      "x": 3883,
+      "y": 1336,
+      "biome": "evil"
+    },
+    {
+      "kind": "sandstone",
+      "x": 3039,
+      "y": 1658,
+      "biome": "desert"
+    },
+    {
+      "kind": "cursed_tree",
+      "x": 5111,
+      "y": 184,
+      "biome": "evil"
+    },
+    {
+      "kind": "mithril",
+      "x": 3397,
+      "y": 1568,
+      "biome": "desert"
+    },
+    {
+      "kind": "cursed_rock",
+      "x": 5123,
+      "y": 847,
+      "biome": "evil"
+    },
+    {
+      "kind": "oak",
+      "x": 384,
+      "y": 1782,
+      "biome": "fields"
+    },
+    {
+      "kind": "oak",
+      "x": 118,
+      "y": 2593,
+      "biome": "fields"
+    },
+    {
+      "kind": "willow",
+      "x": 1848,
+      "y": 2360,
+      "biome": "forest"
+    },
+    {
+      "kind": "willow",
+      "x": 1142,
+      "y": 822,
+      "biome": "forest"
+    },
+    {
+      "kind": "lichen",
+      "x": 4848,
+      "y": 1731,
+      "biome": "winter"
+    },
+    {
+      "kind": "oak",
+      "x": 362,
+      "y": 1911,
+      "biome": "fields"
+    },
+    {
+      "kind": "runite",
+      "x": 3655,
+      "y": 2831,
+      "biome": "winter"
+    },
+    {
+      "kind": "cursed_tree",
+      "x": 4032,
+      "y": 2045,
+      "biome": "evil"
+    },
+    {
+      "kind": "maple",
+      "x": 1212,
+      "y": 551,
+      "biome": "forest"
+    },
+    {
+      "kind": "copper",
+      "x": 1116,
+      "y": 1770,
+      "biome": "fields"
+    },
+    {
+      "kind": "willow",
+      "x": 1419,
+      "y": 993,
+      "biome": "forest"
+    },
+    {
+      "kind": "mithril",
+      "x": 2415,
+      "y": 869,
+      "biome": "desert"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4225,
+      "y": 2617,
+      "biome": "winter"
+    },
+    {
+      "kind": "lichen",
+      "x": 4241,
+      "y": 2214,
+      "biome": "winter"
+    },
+    {
+      "kind": "herbs",
+      "x": 1821,
+      "y": 1262,
+      "biome": "forest"
+    },
+    {
+      "kind": "sandstone",
+      "x": 3521,
+      "y": 1129,
+      "biome": "desert"
+    },
+    {
+      "kind": "flax",
+      "x": 897,
+      "y": 912,
+      "biome": "fields"
+    },
+    {
+      "kind": "mithril",
+      "x": 1997,
+      "y": 498,
+      "biome": "desert"
+    },
+    {
+      "kind": "berries",
+      "x": 502,
+      "y": 427,
+      "biome": "fields"
+    },
+    {
+      "kind": "cursed_tree",
+      "x": 3907,
+      "y": 2099,
+      "biome": "evil"
+    },
+    {
+      "kind": "oak",
+      "x": 279,
+      "y": 2015,
+      "biome": "fields"
+    },
+    {
+      "kind": "flax",
+      "x": 807,
+      "y": 323,
+      "biome": "fields"
+    },
+    {
+      "kind": "maple",
+      "x": 2408,
+      "y": 1780,
+      "biome": "forest"
+    },
+    {
+      "kind": "copper",
+      "x": 574,
+      "y": 237,
+      "biome": "fields"
+    },
+    {
+      "kind": "herbs",
+      "x": 2081,
+      "y": 1161,
+      "biome": "forest"
+    },
+    {
+      "kind": "cursed_rock",
+      "x": 4124,
+      "y": 705,
+      "biome": "evil"
+    },
+    {
+      "kind": "frostpine",
+      "x": 4770,
+      "y": 1981,
+      "biome": "winter"
+    },
+    {
+      "kind": "iron",
+      "x": 1080,
+      "y": 545,
+      "biome": "forest"
+    },
+    {
+      "kind": "copper",
+      "x": 525,
+      "y": 2871,
+      "biome": "fields"
+    },
+    {
+      "kind": "palm",
+      "x": 2164,
+      "y": 618,
+      "biome": "desert"
+    },
+    {
+      "kind": "cursed_tree",
+      "x": 5186,
+      "y": 366,
+      "biome": "evil"
+    },
+    {
+      "kind": "cursed_rock",
+      "x": 5244,
+      "y": 557,
+      "biome": "evil"
+    },
+    {
+      "kind": "runite",
+      "x": 3295,
+      "y": 2290,
+      "biome": "winter"
+    },
+    {
+      "kind": "flax",
+      "x": 518,
+      "y": 1186,
+      "biome": "fields"
+    },
+    {
+      "kind": "cursed_rock",
+      "x": 5030,
+      "y": 1167,
+      "biome": "evil"
+    },
+    {
+      "kind": "oak",
+      "x": 950,
+      "y": 1283,
+      "biome": "fields"
+    },
+    {
+      "kind": "palm",
+      "x": 2916,
+      "y": 101,
+      "biome": "desert"
+    },
+    {
+      "kind": "bloom",
+      "x": 3874,
+      "y": 271,
+      "biome": "desert"
+    },
+    {
+      "kind": "gloomcap",
+      "x": 4747,
+      "y": 559,
+      "biome": "evil"
+    },
+    {
+      "kind": "palm",
+      "x": 2283,
+      "y": 428,
+      "biome": "desert"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4044,
+      "y": 2809,
+      "biome": "winter"
+    },
+    {
+      "kind": "frostpine",
+      "x": 5000,
+      "y": 1776,
+      "biome": "winter"
+    },
+    {
+      "kind": "gloomcap",
+      "x": 5391,
+      "y": 493,
+      "biome": "evil"
+    },
+    {
+      "kind": "sandstone",
+      "x": 2442,
+      "y": 626,
+      "biome": "desert"
+    },
+    {
+      "kind": "herbs",
+      "x": 2491,
+      "y": 1486,
+      "biome": "forest"
+    },
+    {
+      "kind": "cursed_rock",
+      "x": 4598,
+      "y": 650,
+      "biome": "evil"
+    },
+    {
+      "kind": "berries",
+      "x": 450,
+      "y": 1597,
+      "biome": "fields"
+    },
+    {
+      "kind": "gloomcap",
+      "x": 4979,
+      "y": 178,
+      "biome": "evil"
+    },
+    {
+      "kind": "herbs",
+      "x": 2355,
+      "y": 1482,
+      "biome": "forest"
+    },
+    {
+      "kind": "oak",
+      "x": 544,
+      "y": 1762,
+      "biome": "fields"
+    },
+    {
+      "kind": "gloomcap",
+      "x": 3952,
+      "y": 1926,
+      "biome": "evil"
+    },
+    {
+      "kind": "copper",
+      "x": 1405,
+      "y": 2273,
+      "biome": "fields"
+    },
+    {
+      "kind": "oak",
+      "x": 801,
+      "y": 1353,
+      "biome": "fields"
+    },
+    {
+      "kind": "herbs",
+      "x": 2445,
+      "y": 1355,
+      "biome": "forest"
+    },
+    {
+      "kind": "lichen",
+      "x": 5453,
+      "y": 2602,
+      "biome": "winter"
+    },
+    {
+      "kind": "flax",
+      "x": 366,
+      "y": 315,
+      "biome": "fields"
+    },
+    {
+      "kind": "sandstone",
+      "x": 2862,
+      "y": 387,
+      "biome": "desert"
+    },
+    {
+      "kind": "cursed_rock",
+      "x": 4899,
+      "y": 1024,
+      "biome": "evil"
+    },
+    {
+      "kind": "oak",
+      "x": 484,
+      "y": 1403,
+      "biome": "fields"
+    },
+    {
+      "kind": "runite",
+      "x": 5110,
+      "y": 1614,
+      "biome": "winter"
+    },
+    {
+      "kind": "bloom",
+      "x": 3144,
+      "y": 433,
+      "biome": "desert"
+    },
+    {
+      "kind": "oak",
+      "x": 810,
+      "y": 1705,
+      "biome": "fields"
+    },
+    {
+      "kind": "iron",
+      "x": 1500,
+      "y": 1774,
+      "biome": "forest"
+    },
+    {
+      "kind": "mithril",
+      "x": 2720,
+      "y": 337,
+      "biome": "desert"
+    },
+    {
+      "kind": "flax",
+      "x": 632,
+      "y": 388,
+      "biome": "fields"
+    },
+    {
+      "kind": "bloom",
+      "x": 3643,
+      "y": 143,
+      "biome": "desert"
+    },
+    {
+      "kind": "sandstone",
+      "x": 3153,
+      "y": 1607,
+      "biome": "desert"
+    },
+    {
+      "kind": "maple",
+      "x": 2748,
+      "y": 1931,
+      "biome": "forest"
+    },
+    {
+      "kind": "sandstone",
+      "x": 3041,
+      "y": 430,
+      "biome": "desert"
+    },
+    {
+      "kind": "copper",
+      "x": 561,
+      "y": 1599,
+      "biome": "fields"
+    },
+    {
+      "kind": "willow",
+      "x": 2342,
+      "y": 2293,
+      "biome": "forest"
+    },
+    {
+      "kind": "berries",
+      "x": 308,
+      "y": 167,
+      "biome": "fields"
+    },
+    {
+      "kind": "copper",
+      "x": 1319,
+      "y": 2562,
+      "biome": "fields"
+    },
+    {
+      "kind": "frostpine",
+      "x": 5479,
+      "y": 1815,
+      "biome": "winter"
+    },
+    {
+      "kind": "copper",
+      "x": 518,
+      "y": 890,
+      "biome": "fields"
+    },
+    {
+      "kind": "maple",
+      "x": 1092,
+      "y": 184,
+      "biome": "forest"
+    },
+    {
+      "kind": "iron",
+      "x": 1920,
+      "y": 1250,
+      "biome": "forest"
+    },
+    {
+      "kind": "maple",
+      "x": 2700,
+      "y": 2802,
+      "biome": "forest"
+    },
+    {
+      "kind": "berries",
+      "x": 638,
+      "y": 101,
+      "biome": "fields"
+    },
+    {
+      "kind": "mithril",
+      "x": 2791,
+      "y": 121,
+      "biome": "desert"
+    },
+    {
+      "kind": "berries",
+      "x": 101,
+      "y": 197,
+      "biome": "fields"
+    },
+    {
+      "kind": "copper",
+      "x": 223,
+      "y": 2497,
+      "biome": "fields"
+    },
+    {
+      "kind": "mithril",
+      "x": 2601,
+      "y": 889,
+      "biome": "desert"
+    },
+    {
+      "kind": "frostpine",
+      "x": 4736,
+      "y": 2833,
+      "biome": "winter"
+    },
+    {
+      "kind": "tungsten",
+      "x": 3961,
+      "y": 2536,
+      "biome": "winter"
+    },
+    {
+      "kind": "berries",
+      "x": 174,
+      "y": 435,
+      "biome": "fields"
+    },
+    {
+      "kind": "iron",
+      "x": 2190,
+      "y": 1218,
+      "biome": "forest"
+    },
+    {
+      "kind": "willow",
+      "x": 2332,
+      "y": 1976,
+      "biome": "forest"
+    },
+    {
+      "kind": "palm",
+      "x": 2746,
+      "y": 1249,
+      "biome": "desert"
+    },
+    {
+      "kind": "palm",
+      "x": 3906,
+      "y": 637,
+      "biome": "desert"
+    },
+    {
+      "kind": "copper",
+      "x": 809,
+      "y": 2883,
+      "biome": "fields"
+    },
+    {
+      "kind": "runite",
+      "x": 3942,
+      "y": 2852,
+      "biome": "winter"
+    },
+    {
+      "kind": "copper",
+      "x": 548,
+      "y": 772,
+      "biome": "fields"
+    },
+    {
+      "kind": "iron",
+      "x": 1778,
+      "y": 965,
+      "biome": "forest"
+    },
+    {
+      "kind": "berries",
+      "x": 321,
+      "y": 482,
+      "biome": "fields"
+    },
+    {
+      "kind": "runite",
+      "x": 3429,
+      "y": 2617,
+      "biome": "winter"
+    },
+    {
+      "kind": "copper",
+      "x": 845,
+      "y": 1544,
+      "biome": "fields"
+    },
+    {
+      "kind": "flax",
+      "x": 981,
+      "y": 2873,
+      "biome": "fields"
+    },
+    {
+      "kind": "maple",
+      "x": 2318,
+      "y": 2786,
+      "biome": "forest"
+    },
+    {
+      "kind": "palm",
+      "x": 3275,
+      "y": 1646,
+      "biome": "desert"
+    },
+    {
+      "kind": "willow",
+      "x": 1351,
+      "y": 1071,
+      "biome": "forest"
+    },
+    {
+      "kind": "lichen",
+      "x": 3119,
+      "y": 2492,
+      "biome": "winter"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4462,
+      "y": 2470,
+      "biome": "winter"
+    },
+    {
+      "kind": "copper",
+      "x": 183,
+      "y": 2319,
+      "biome": "fields"
+    },
+    {
+      "kind": "berries",
+      "x": 1731,
+      "y": 2806,
+      "biome": "fields"
+    },
+    {
+      "kind": "flax",
+      "x": 754,
+      "y": 880,
+      "biome": "fields"
+    },
+    {
+      "kind": "flax",
+      "x": 949,
+      "y": 1719,
+      "biome": "fields"
+    },
+    {
+      "kind": "flax",
+      "x": 575,
+      "y": 591,
+      "biome": "fields"
+    },
+    {
+      "kind": "berries",
+      "x": 194,
+      "y": 699,
+      "biome": "fields"
+    },
+    {
+      "kind": "flax",
+      "x": 955,
+      "y": 298,
+      "biome": "fields"
+    },
+    {
+      "kind": "berries",
+      "x": 1977,
+      "y": 2793,
+      "biome": "fields"
+    },
+    {
+      "kind": "mithril",
+      "x": 3329,
+      "y": 483,
+      "biome": "desert"
+    },
+    {
+      "kind": "willow",
+      "x": 2438,
+      "y": 2867,
+      "biome": "forest"
+    },
+    {
+      "kind": "gloomcap",
+      "x": 4989,
+      "y": 692,
+      "biome": "evil"
+    },
+    {
+      "kind": "palm",
+      "x": 1802,
+      "y": 424,
+      "biome": "desert"
+    },
+    {
+      "kind": "maple",
+      "x": 2036,
+      "y": 812,
+      "biome": "forest"
+    },
+    {
+      "kind": "cursed_rock",
+      "x": 4327,
+      "y": 666,
+      "biome": "evil"
+    },
+    {
+      "kind": "lichen",
+      "x": 3815,
+      "y": 2409,
+      "biome": "winter"
+    },
+    {
+      "kind": "bloom",
+      "x": 3313,
+      "y": 119,
+      "biome": "desert"
+    },
+    {
+      "kind": "maple",
+      "x": 1534,
+      "y": 461,
+      "biome": "forest"
+    },
+    {
+      "kind": "iron",
+      "x": 2502,
+      "y": 2571,
+      "biome": "forest"
+    },
+    {
+      "kind": "flax",
+      "x": 124,
+      "y": 299,
+      "biome": "fields"
+    },
+    {
+      "kind": "lichen",
+      "x": 3047,
+      "y": 2797,
+      "biome": "winter"
+    },
+    {
+      "kind": "flax",
+      "x": 913,
+      "y": 1127,
+      "biome": "fields"
+    },
+    {
+      "kind": "frostpine",
+      "x": 3765,
+      "y": 2496,
+      "biome": "winter"
+    },
+    {
+      "kind": "berries",
+      "x": 169,
+      "y": 130,
+      "biome": "fields"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4003,
+      "y": 2150,
+      "biome": "winter"
+    },
+    {
+      "kind": "flax",
+      "x": 128,
+      "y": 1871,
+      "biome": "fields"
+    },
+    {
+      "kind": "berries",
+      "x": 872,
+      "y": 249,
+      "biome": "fields"
+    },
+    {
+      "kind": "lichen",
+      "x": 3210,
+      "y": 3496,
+      "biome": "winter"
+    },
+    {
+      "kind": "berries",
+      "x": 832,
+      "y": 3217,
+      "biome": "fields"
+    },
+    {
+      "kind": "lichen",
+      "x": 3199,
+      "y": 3375,
+      "biome": "winter"
+    },
+    {
+      "kind": "copper",
+      "x": 1953,
+      "y": 3455,
+      "biome": "fields"
+    },
+    {
+      "kind": "lichen",
+      "x": 4474,
+      "y": 3402,
+      "biome": "winter"
+    },
+    {
+      "kind": "berries",
+      "x": 255,
+      "y": 3504,
+      "biome": "fields"
+    },
+    {
+      "kind": "copper",
+      "x": 1148,
+      "y": 3050,
+      "biome": "fields"
+    },
+    {
+      "kind": "frostpine",
+      "x": 4993,
+      "y": 3377,
+      "biome": "winter"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4391,
+      "y": 3573,
+      "biome": "winter"
+    },
+    {
+      "kind": "runite",
+      "x": 4784,
+      "y": 2977,
+      "biome": "winter"
+    },
+    {
+      "kind": "frostpine",
+      "x": 3995,
+      "y": 3034,
+      "biome": "winter"
+    },
+    {
+      "kind": "flax",
+      "x": 1094,
+      "y": 3422,
+      "biome": "fields"
+    },
+    {
+      "kind": "copper",
+      "x": 121,
+      "y": 3424,
+      "biome": "fields"
+    },
+    {
+      "kind": "tungsten",
+      "x": 3956,
+      "y": 3576,
+      "biome": "winter"
+    },
+    {
+      "kind": "oak",
+      "x": 1399,
+      "y": 3227,
+      "biome": "fields"
+    },
+    {
+      "kind": "copper",
+      "x": 1287,
+      "y": 3002,
+      "biome": "fields"
+    },
+    {
+      "kind": "copper",
+      "x": 307,
+      "y": 3580,
+      "biome": "fields"
+    },
+    {
+      "kind": "tungsten",
+      "x": 3419,
+      "y": 3023,
+      "biome": "winter"
+    },
+    {
+      "kind": "frostpine",
+      "x": 3047,
+      "y": 3104,
+      "biome": "winter"
+    },
+    {
+      "kind": "runite",
+      "x": 2804,
+      "y": 3613,
+      "biome": "winter"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4275,
+      "y": 3319,
+      "biome": "winter"
+    },
+    {
+      "kind": "runite",
+      "x": 3321,
+      "y": 3039,
+      "biome": "winter"
+    },
+    {
+      "kind": "flax",
+      "x": 2150,
+      "y": 3212,
+      "biome": "fields"
+    },
+    {
+      "kind": "tungsten",
+      "x": 5312,
+      "y": 3439,
+      "biome": "winter"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4933,
+      "y": 3178,
+      "biome": "winter"
+    },
+    {
+      "kind": "flax",
+      "x": 308,
+      "y": 3364,
+      "biome": "fields"
+    },
+    {
+      "kind": "frostpine",
+      "x": 2787,
+      "y": 3448,
+      "biome": "winter"
+    },
+    {
+      "kind": "tungsten",
+      "x": 5138,
+      "y": 3503,
+      "biome": "winter"
+    },
+    {
+      "kind": "berries",
+      "x": 444,
+      "y": 3045,
+      "biome": "fields"
+    },
+    {
+      "kind": "copper",
+      "x": 1530,
+      "y": 3095,
+      "biome": "fields"
+    },
+    {
+      "kind": "berries",
+      "x": 2481,
+      "y": 3406,
+      "biome": "fields"
+    },
+    {
+      "kind": "flax",
+      "x": 2561,
+      "y": 3294,
+      "biome": "fields"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4487,
+      "y": 3293,
+      "biome": "winter"
+    },
+    {
+      "kind": "lichen",
+      "x": 5352,
+      "y": 3032,
+      "biome": "winter"
+    },
+    {
+      "kind": "lichen",
+      "x": 5082,
+      "y": 3073,
+      "biome": "winter"
+    },
+    {
+      "kind": "frostpine",
+      "x": 3297,
+      "y": 3252,
+      "biome": "winter"
+    },
+    {
+      "kind": "runite",
+      "x": 5099,
+      "y": 3380,
+      "biome": "winter"
+    },
+    {
+      "kind": "runite",
+      "x": 3765,
+      "y": 3546,
+      "biome": "winter"
+    },
+    {
+      "kind": "tungsten",
+      "x": 3293,
+      "y": 3599,
+      "biome": "winter"
+    },
+    {
+      "kind": "runite",
+      "x": 5067,
+      "y": 3570,
+      "biome": "winter"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4093,
+      "y": 3318,
+      "biome": "winter"
+    },
+    {
+      "kind": "flax",
+      "x": 1598,
+      "y": 3408,
+      "biome": "fields"
+    },
+    {
+      "kind": "oak",
+      "x": 1265,
+      "y": 3332,
+      "biome": "fields"
+    },
+    {
+      "kind": "runite",
+      "x": 5222,
+      "y": 3373,
+      "biome": "winter"
+    },
+    {
+      "kind": "lichen",
+      "x": 4676,
+      "y": 3506,
+      "biome": "winter"
+    },
+    {
+      "kind": "frostpine",
+      "x": 2732,
+      "y": 3525,
+      "biome": "winter"
+    },
+    {
+      "kind": "frostpine",
+      "x": 3187,
+      "y": 3256,
+      "biome": "winter"
+    },
+    {
+      "kind": "berries",
+      "x": 1292,
+      "y": 3117,
+      "biome": "fields"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4464,
+      "y": 3514,
+      "biome": "winter"
+    },
+    {
+      "kind": "frostpine",
+      "x": 4876,
+      "y": 3394,
+      "biome": "winter"
+    },
+    {
+      "kind": "copper",
+      "x": 1600,
+      "y": 3012,
+      "biome": "fields"
+    },
+    {
+      "kind": "lichen",
+      "x": 2852,
+      "y": 3055,
+      "biome": "winter"
+    },
+    {
+      "kind": "berries",
+      "x": 2071,
+      "y": 3452,
+      "biome": "fields"
+    },
+    {
+      "kind": "copper",
+      "x": 2020,
+      "y": 3058,
+      "biome": "fields"
+    },
+    {
+      "kind": "frostpine",
+      "x": 4378,
+      "y": 3049,
+      "biome": "winter"
+    },
+    {
+      "kind": "tungsten",
+      "x": 4186,
+      "y": 3228,
+      "biome": "winter"
+    },
+    {
+      "kind": "berries",
+      "x": 1384,
+      "y": 3613,
+      "biome": "fields"
+    },
+    {
+      "kind": "lichen",
+      "x": 4689,
+      "y": 3598,
+      "biome": "winter"
+    },
+    {
+      "kind": "runite",
+      "x": 3630,
+      "y": 3582,
+      "biome": "winter"
+    },
+    {
+      "kind": "runite",
+      "x": 3964,
+      "y": 3123,
+      "biome": "winter"
+    },
+    {
+      "kind": "oak",
+      "x": 1385,
+      "y": 3442,
+      "biome": "fields"
+    },
+    {
+      "kind": "copper",
+      "x": 415,
+      "y": 3458,
+      "biome": "fields"
+    },
+    {
+      "kind": "runite",
+      "x": 4726,
+      "y": 3365,
+      "biome": "winter"
+    },
+    {
+      "kind": "frostpine",
+      "x": 4327,
+      "y": 3441,
+      "biome": "winter"
+    },
+    {
+      "kind": "flax",
+      "x": 2432,
+      "y": 3257,
+      "biome": "fields"
+    },
+    {
+      "kind": "lichen",
+      "x": 3526,
+      "y": 3169,
+      "biome": "winter"
+    },
+    {
+      "kind": "berries",
+      "x": 2613,
+      "y": 3432,
+      "biome": "fields"
+    },
+    {
+      "kind": "oak",
+      "x": 1397,
+      "y": 3004,
+      "biome": "fields"
+    },
+    {
+      "kind": "lichen",
+      "x": 4973,
+      "y": 2972,
+      "biome": "winter"
+    },
+    {
+      "kind": "lichen",
+      "x": 3676,
+      "y": 3299,
+      "biome": "winter"
+    },
+    {
+      "kind": "flax",
+      "x": 756,
+      "y": 3329,
+      "biome": "fields"
+    },
+    {
+      "kind": "flax",
+      "x": 265,
+      "y": 3031,
+      "biome": "fields"
+    },
+    {
+      "kind": "runite",
+      "x": 5437,
+      "y": 3127,
+      "biome": "winter"
+    },
+    {
+      "kind": "runite",
+      "x": 4057,
+      "y": 3437,
+      "biome": "winter"
+    },
+    {
+      "kind": "flax",
+      "x": 595,
+      "y": 3165,
+      "biome": "fields"
+    },
+    {
+      "kind": "lichen",
+      "x": 5170,
+      "y": 3224,
+      "biome": "winter"
+    }
+  ],
+  "monster_spawns": [
+    {
+      "kind": "shadow_beast",
+      "x": 5370,
+      "y": 301,
+      "biome": "evil"
+    },
+    {
+      "kind": "wraith",
+      "x": 4103,
+      "y": 1635,
+      "biome": "evil"
+    },
+    {
+      "kind": "withered_ghoul",
+      "x": 4810,
+      "y": 322,
+      "biome": "evil"
+    },
+    {
+      "kind": "shadow_beast",
+      "x": 5023,
+      "y": 448,
+      "biome": "evil"
+    },
+    {
+      "kind": "wraith",
+      "x": 4326,
+      "y": 200,
+      "biome": "evil"
+    },
+    {
+      "kind": "bandit",
+      "x": 2275,
+      "y": 672,
+      "biome": "desert"
+    },
+    {
+      "kind": "withered_ghoul",
+      "x": 5444,
+      "y": 1006,
+      "biome": "evil"
+    },
+    {
+      "kind": "wraith",
+      "x": 3581,
+      "y": 2047,
+      "biome": "evil"
+    },
+    {
+      "kind": "shadow_beast",
+      "x": 5438,
+      "y": 115,
+      "biome": "evil"
+    },
+    {
+      "kind": "bear",
+      "x": 1197,
+      "y": 1207,
+      "biome": "forest"
+    },
+    {
+      "kind": "dust_jackal",
+      "x": 1661,
+      "y": 207,
+      "biome": "desert"
+    },
+    {
+      "kind": "serpent",
+      "x": 2940,
+      "y": 199,
+      "biome": "desert"
+    },
+    {
+      "kind": "shadow_beast",
+      "x": 5044,
+      "y": 251,
+      "biome": "evil"
+    },
+    {
+      "kind": "shadow_beast",
+      "x": 5265,
+      "y": 887,
+      "biome": "evil"
+    },
+    {
+      "kind": "scorpion_stalker",
+      "x": 3145,
+      "y": 1711,
+      "biome": "desert"
+    },
+    {
+      "kind": "shadow_beast",
+      "x": 4516,
+      "y": 1697,
+      "biome": "evil"
+    },
+    {
+      "kind": "bandit",
+      "x": 2486,
+      "y": 514,
+      "biome": "desert"
+    },
+    {
+      "kind": "scorpion_stalker",
+      "x": 4034,
+      "y": 588,
+      "biome": "desert"
+    },
+    {
+      "kind": "yeti",
+      "x": 3883,
+      "y": 2249,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 4339,
+      "y": 2356,
+      "biome": "winter"
+    },
+    {
+      "kind": "serpent",
+      "x": 3752,
+      "y": 543,
+      "biome": "desert"
+    },
+    {
+      "kind": "serpent",
+      "x": 2564,
+      "y": 195,
+      "biome": "desert"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 5135,
+      "y": 1506,
+      "biome": "winter"
+    },
+    {
+      "kind": "wolf",
+      "x": 2111,
+      "y": 2490,
+      "biome": "forest"
+    },
+    {
+      "kind": "shadow_beast",
+      "x": 4847,
+      "y": 480,
+      "biome": "evil"
+    },
+    {
+      "kind": "dust_jackal",
+      "x": 3242,
+      "y": 372,
+      "biome": "desert"
+    },
+    {
+      "kind": "shadow_beast",
+      "x": 5295,
+      "y": 432,
+      "biome": "evil"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 3470,
+      "y": 2877,
+      "biome": "winter"
+    },
+    {
+      "kind": "wraith",
+      "x": 4174,
+      "y": 2050,
+      "biome": "evil"
+    },
+    {
+      "kind": "dust_jackal",
+      "x": 2044,
+      "y": 132,
+      "biome": "desert"
+    },
+    {
+      "kind": "wolf",
+      "x": 2733,
+      "y": 2705,
+      "biome": "forest"
+    },
+    {
+      "kind": "shadow_beast",
+      "x": 4410,
+      "y": 249,
+      "biome": "evil"
+    },
+    {
+      "kind": "bandit",
+      "x": 2548,
+      "y": 307,
+      "biome": "desert"
+    },
+    {
+      "kind": "wolf",
+      "x": 2038,
+      "y": 2573,
+      "biome": "forest"
+    },
+    {
+      "kind": "scorpion_stalker",
+      "x": 3528,
+      "y": 1651,
+      "biome": "desert"
+    },
+    {
+      "kind": "scorpion_stalker",
+      "x": 3851,
+      "y": 801,
+      "biome": "desert"
+    },
+    {
+      "kind": "wolf",
+      "x": 2572,
+      "y": 2116,
+      "biome": "forest"
+    },
+    {
+      "kind": "forest_lynx",
+      "x": 1513,
+      "y": 272,
+      "biome": "forest"
+    },
+    {
+      "kind": "serpent",
+      "x": 1740,
+      "y": 351,
+      "biome": "desert"
+    },
+    {
+      "kind": "serpent",
+      "x": 3139,
+      "y": 1380,
+      "biome": "desert"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 1003,
+      "y": 1448,
+      "biome": "fields"
+    },
+    {
+      "kind": "bear",
+      "x": 1161,
+      "y": 654,
+      "biome": "forest"
+    },
+    {
+      "kind": "serpent",
+      "x": 3194,
+      "y": 2272,
+      "biome": "desert"
+    },
+    {
+      "kind": "scorpion_stalker",
+      "x": 3975,
+      "y": 194,
+      "biome": "desert"
+    },
+    {
+      "kind": "forest_lynx",
+      "x": 1249,
+      "y": 744,
+      "biome": "forest"
+    },
+    {
+      "kind": "shadow_beast",
+      "x": 4775,
+      "y": 789,
+      "biome": "evil"
+    },
+    {
+      "kind": "goblin",
+      "x": 750,
+      "y": 633,
+      "biome": "fields"
+    },
+    {
+      "kind": "scorpion_stalker",
+      "x": 2982,
+      "y": 1385,
+      "biome": "desert"
+    },
+    {
+      "kind": "bandit",
+      "x": 2404,
+      "y": 1212,
+      "biome": "desert"
+    },
+    {
+      "kind": "goblin",
+      "x": 1829,
+      "y": 2757,
+      "biome": "fields"
+    },
+    {
+      "kind": "chicken",
+      "x": 231,
+      "y": 2891,
+      "biome": "fields"
+    },
+    {
+      "kind": "scorpion_stalker",
+      "x": 3544,
+      "y": 667,
+      "biome": "desert"
+    },
+    {
+      "kind": "forest_boar",
+      "x": 1637,
+      "y": 302,
+      "biome": "forest"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 4363,
+      "y": 2631,
+      "biome": "winter"
+    },
+    {
+      "kind": "forest_lynx",
+      "x": 1444,
+      "y": 398,
+      "biome": "forest"
+    },
+    {
+      "kind": "scorpion_stalker",
+      "x": 3898,
+      "y": 378,
+      "biome": "desert"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 5246,
+      "y": 1353,
+      "biome": "winter"
+    },
+    {
+      "kind": "forest_lynx",
+      "x": 1574,
+      "y": 550,
+      "biome": "forest"
+    },
+    {
+      "kind": "withered_ghoul",
+      "x": 4471,
+      "y": 430,
+      "biome": "evil"
+    },
+    {
+      "kind": "withered_ghoul",
+      "x": 4901,
+      "y": 389,
+      "biome": "evil"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 4090,
+      "y": 2415,
+      "biome": "winter"
+    },
+    {
+      "kind": "yeti",
+      "x": 3632,
+      "y": 2427,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 1411,
+      "y": 2382,
+      "biome": "fields"
+    },
+    {
+      "kind": "scorpion_stalker",
+      "x": 4075,
+      "y": 374,
+      "biome": "desert"
+    },
+    {
+      "kind": "wolf",
+      "x": 2860,
+      "y": 2410,
+      "biome": "forest"
+    },
+    {
+      "kind": "bear",
+      "x": 2613,
+      "y": 1777,
+      "biome": "forest"
+    },
+    {
+      "kind": "serpent",
+      "x": 2693,
+      "y": 142,
+      "biome": "desert"
+    },
+    {
+      "kind": "withered_ghoul",
+      "x": 4930,
+      "y": 523,
+      "biome": "evil"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 180,
+      "y": 1417,
+      "biome": "fields"
+    },
+    {
+      "kind": "yeti",
+      "x": 4646,
+      "y": 2180,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 951,
+      "y": 713,
+      "biome": "fields"
+    },
+    {
+      "kind": "scorpion_stalker",
+      "x": 4236,
+      "y": 131,
+      "biome": "desert"
+    },
+    {
+      "kind": "forest_boar",
+      "x": 2078,
+      "y": 2171,
+      "biome": "forest"
+    },
+    {
+      "kind": "serpent",
+      "x": 3453,
+      "y": 1264,
+      "biome": "desert"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 4959,
+      "y": 2761,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 1271,
+      "y": 2665,
+      "biome": "fields"
+    },
+    {
+      "kind": "yeti",
+      "x": 3780,
+      "y": 2688,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 690,
+      "y": 1533,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 3054,
+      "y": 2686,
+      "biome": "winter"
+    },
+    {
+      "kind": "yeti",
+      "x": 4590,
+      "y": 2686,
+      "biome": "winter"
+    },
+    {
+      "kind": "bone_reaper",
+      "x": 5323,
+      "y": 747,
+      "biome": "evil"
+    },
+    {
+      "kind": "wolf",
+      "x": 2597,
+      "y": 1963,
+      "biome": "forest"
+    },
+    {
+      "kind": "bear",
+      "x": 1715,
+      "y": 2242,
+      "biome": "forest"
+    },
+    {
+      "kind": "bandit",
+      "x": 2576,
+      "y": 456,
+      "biome": "desert"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 4324,
+      "y": 2448,
+      "biome": "winter"
+    },
+    {
+      "kind": "serpent",
+      "x": 2949,
+      "y": 1893,
+      "biome": "desert"
+    },
+    {
+      "kind": "forest_boar",
+      "x": 2359,
+      "y": 2466,
+      "biome": "forest"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 316,
+      "y": 1658,
+      "biome": "fields"
+    },
+    {
+      "kind": "withered_ghoul",
+      "x": 4974,
+      "y": 1585,
+      "biome": "evil"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 4081,
+      "y": 2217,
+      "biome": "winter"
+    },
+    {
+      "kind": "goblin",
+      "x": 129,
+      "y": 822,
+      "biome": "fields"
+    },
+    {
+      "kind": "forest_lynx",
+      "x": 1166,
+      "y": 950,
+      "biome": "forest"
+    },
+    {
+      "kind": "yeti",
+      "x": 4577,
+      "y": 2465,
+      "biome": "winter"
+    },
+    {
+      "kind": "wraith",
+      "x": 4471,
+      "y": 167,
+      "biome": "evil"
+    },
+    {
+      "kind": "wolf",
+      "x": 2529,
+      "y": 2276,
+      "biome": "forest"
+    },
+    {
+      "kind": "bear",
+      "x": 3082,
+      "y": 2313,
+      "biome": "forest"
+    },
+    {
+      "kind": "withered_ghoul",
+      "x": 4689,
+      "y": 171,
+      "biome": "evil"
+    },
+    {
+      "kind": "forest_boar",
+      "x": 2160,
+      "y": 2249,
+      "biome": "forest"
+    },
+    {
+      "kind": "bone_reaper",
+      "x": 4422,
+      "y": 577,
+      "biome": "evil"
+    },
+    {
+      "kind": "wolf",
+      "x": 1612,
+      "y": 998,
+      "biome": "forest"
+    },
+    {
+      "kind": "forest_boar",
+      "x": 1747,
+      "y": 2108,
+      "biome": "forest"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 5356,
+      "y": 1779,
+      "biome": "winter"
+    },
+    {
+      "kind": "wolf",
+      "x": 2831,
+      "y": 2051,
+      "biome": "forest"
+    },
+    {
+      "kind": "bear",
+      "x": 1361,
+      "y": 1486,
+      "biome": "forest"
+    },
+    {
+      "kind": "wraith",
+      "x": 3750,
+      "y": 2095,
+      "biome": "evil"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 5221,
+      "y": 1732,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 1240,
+      "y": 1881,
+      "biome": "fields"
+    },
+    {
+      "kind": "wraith",
+      "x": 3714,
+      "y": 1450,
+      "biome": "evil"
+    },
+    {
+      "kind": "yeti",
+      "x": 3523,
+      "y": 2436,
+      "biome": "winter"
+    },
+    {
+      "kind": "bandit",
+      "x": 2413,
+      "y": 716,
+      "biome": "desert"
+    },
+    {
+      "kind": "bandit",
+      "x": 2734,
+      "y": 1522,
+      "biome": "desert"
+    },
+    {
+      "kind": "wolf",
+      "x": 2184,
+      "y": 2371,
+      "biome": "forest"
+    },
+    {
+      "kind": "withered_ghoul",
+      "x": 4682,
+      "y": 709,
+      "biome": "evil"
+    },
+    {
+      "kind": "withered_ghoul",
+      "x": 4177,
+      "y": 580,
+      "biome": "evil"
+    },
+    {
+      "kind": "chicken",
+      "x": 289,
+      "y": 2612,
+      "biome": "fields"
+    },
+    {
+      "kind": "dust_jackal",
+      "x": 1936,
+      "y": 366,
+      "biome": "desert"
+    },
+    {
+      "kind": "serpent",
+      "x": 3020,
+      "y": 2121,
+      "biome": "desert"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 4023,
+      "y": 2692,
+      "biome": "winter"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 5411,
+      "y": 1150,
+      "biome": "winter"
+    },
+    {
+      "kind": "dust_jackal",
+      "x": 2040,
+      "y": 225,
+      "biome": "desert"
+    },
+    {
+      "kind": "chicken",
+      "x": 1091,
+      "y": 1613,
+      "biome": "fields"
+    },
+    {
+      "kind": "dust_jackal",
+      "x": 3650,
+      "y": 552,
+      "biome": "desert"
+    },
+    {
+      "kind": "yeti",
+      "x": 3389,
+      "y": 2283,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 100,
+      "y": 1359,
+      "biome": "fields"
+    },
+    {
+      "kind": "withered_ghoul",
+      "x": 3988,
+      "y": 826,
+      "biome": "evil"
+    },
+    {
+      "kind": "forest_lynx",
+      "x": 1326,
+      "y": 834,
+      "biome": "forest"
+    },
+    {
+      "kind": "bone_reaper",
+      "x": 3445,
+      "y": 2122,
+      "biome": "evil"
+    },
+    {
+      "kind": "serpent",
+      "x": 3235,
+      "y": 1378,
+      "biome": "desert"
+    },
+    {
+      "kind": "bandit",
+      "x": 2879,
+      "y": 1396,
+      "biome": "desert"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 5451,
+      "y": 2851,
+      "biome": "winter"
+    },
+    {
+      "kind": "wolf",
+      "x": 2929,
+      "y": 2342,
+      "biome": "forest"
+    },
+    {
+      "kind": "bone_reaper",
+      "x": 3907,
+      "y": 1439,
+      "biome": "evil"
+    },
+    {
+      "kind": "goblin",
+      "x": 98,
+      "y": 709,
+      "biome": "fields"
+    },
+    {
+      "kind": "wolf",
+      "x": 2735,
+      "y": 2479,
+      "biome": "forest"
+    },
+    {
+      "kind": "bear",
+      "x": 2441,
+      "y": 2064,
+      "biome": "forest"
+    },
+    {
+      "kind": "chicken",
+      "x": 1899,
+      "y": 2860,
+      "biome": "fields"
+    },
+    {
+      "kind": "forest_boar",
+      "x": 1055,
+      "y": 443,
+      "biome": "forest"
+    },
+    {
+      "kind": "forest_lynx",
+      "x": 1989,
+      "y": 972,
+      "biome": "forest"
+    },
+    {
+      "kind": "forest_lynx",
+      "x": 1018,
+      "y": 840,
+      "biome": "forest"
+    },
+    {
+      "kind": "goblin",
+      "x": 768,
+      "y": 104,
+      "biome": "fields"
+    },
+    {
+      "kind": "bear",
+      "x": 1382,
+      "y": 1588,
+      "biome": "forest"
+    },
+    {
+      "kind": "forest_lynx",
+      "x": 1732,
+      "y": 615,
+      "biome": "forest"
+    },
+    {
+      "kind": "wraith",
+      "x": 4655,
+      "y": 260,
+      "biome": "evil"
+    },
+    {
+      "kind": "wraith",
+      "x": 4927,
+      "y": 1279,
+      "biome": "evil"
+    },
+    {
+      "kind": "bear",
+      "x": 1408,
+      "y": 1327,
+      "biome": "forest"
+    },
+    {
+      "kind": "dust_jackal",
+      "x": 3013,
+      "y": 333,
+      "biome": "desert"
+    },
+    {
+      "kind": "goblin",
+      "x": 292,
+      "y": 942,
+      "biome": "fields"
+    },
+    {
+      "kind": "bone_reaper",
+      "x": 4617,
+      "y": 1687,
+      "biome": "evil"
+    },
+    {
+      "kind": "forest_boar",
+      "x": 1971,
+      "y": 2152,
+      "biome": "forest"
+    },
+    {
+      "kind": "yeti",
+      "x": 3588,
+      "y": 2313,
+      "biome": "winter"
+    },
+    {
+      "kind": "dust_jackal",
+      "x": 3109,
+      "y": 162,
+      "biome": "desert"
+    },
+    {
+      "kind": "dust_jackal",
+      "x": 3783,
+      "y": 887,
+      "biome": "desert"
+    },
+    {
+      "kind": "wraith",
+      "x": 3863,
+      "y": 1076,
+      "biome": "evil"
+    },
+    {
+      "kind": "goblin",
+      "x": 445,
+      "y": 637,
+      "biome": "fields"
+    },
+    {
+      "kind": "goblin",
+      "x": 1409,
+      "y": 2874,
+      "biome": "fields"
+    },
+    {
+      "kind": "dust_jackal",
+      "x": 2930,
+      "y": 457,
+      "biome": "desert"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 5111,
+      "y": 1734,
+      "biome": "winter"
+    },
+    {
+      "kind": "wraith",
+      "x": 5421,
+      "y": 392,
+      "biome": "evil"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 4209,
+      "y": 2495,
+      "biome": "winter"
+    },
+    {
+      "kind": "forest_boar",
+      "x": 1467,
+      "y": 1087,
+      "biome": "forest"
+    },
+    {
+      "kind": "yeti",
+      "x": 4747,
+      "y": 2100,
+      "biome": "winter"
+    },
+    {
+      "kind": "goblin",
+      "x": 1738,
+      "y": 2657,
+      "biome": "fields"
+    },
+    {
+      "kind": "wolf",
+      "x": 2465,
+      "y": 2192,
+      "biome": "forest"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 696,
+      "y": 2884,
+      "biome": "fields"
+    },
+    {
+      "kind": "bandit",
+      "x": 2695,
+      "y": 509,
+      "biome": "desert"
+    },
+    {
+      "kind": "bone_reaper",
+      "x": 4642,
+      "y": 424,
+      "biome": "evil"
+    },
+    {
+      "kind": "bear",
+      "x": 2061,
+      "y": 1276,
+      "biome": "forest"
+    },
+    {
+      "kind": "bandit",
+      "x": 3392,
+      "y": 333,
+      "biome": "desert"
+    },
+    {
+      "kind": "serpent",
+      "x": 3691,
+      "y": 1137,
+      "biome": "desert"
+    },
+    {
+      "kind": "goblin",
+      "x": 2167,
+      "y": 2850,
+      "biome": "fields"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 3983,
+      "y": 2416,
+      "biome": "winter"
+    },
+    {
+      "kind": "bone_reaper",
+      "x": 5061,
+      "y": 107,
+      "biome": "evil"
+    },
+    {
+      "kind": "chicken",
+      "x": 241,
+      "y": 1845,
+      "biome": "fields"
+    },
+    {
+      "kind": "bone_reaper",
+      "x": 3688,
+      "y": 2024,
+      "biome": "evil"
+    },
+    {
+      "kind": "bandit",
+      "x": 3658,
+      "y": 355,
+      "biome": "desert"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 3212,
+      "y": 2477,
+      "biome": "winter"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 5055,
+      "y": 1456,
+      "biome": "winter"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 4492,
+      "y": 2691,
+      "biome": "winter"
+    },
+    {
+      "kind": "bear",
+      "x": 1264,
+      "y": 1476,
+      "biome": "forest"
+    },
+    {
+      "kind": "bear",
+      "x": 1493,
+      "y": 1660,
+      "biome": "forest"
+    },
+    {
+      "kind": "chicken",
+      "x": 227,
+      "y": 321,
+      "biome": "fields"
+    },
+    {
+      "kind": "forest_boar",
+      "x": 2659,
+      "y": 1660,
+      "biome": "forest"
+    },
+    {
+      "kind": "forest_boar",
+      "x": 1798,
+      "y": 1153,
+      "biome": "forest"
+    },
+    {
+      "kind": "goblin",
+      "x": 497,
+      "y": 145,
+      "biome": "fields"
+    },
+    {
+      "kind": "goblin",
+      "x": 767,
+      "y": 452,
+      "biome": "fields"
+    },
+    {
+      "kind": "wolf",
+      "x": 2282,
+      "y": 2382,
+      "biome": "forest"
+    },
+    {
+      "kind": "forest_lynx",
+      "x": 1351,
+      "y": 1695,
+      "biome": "forest"
+    },
+    {
+      "kind": "chicken",
+      "x": 181,
+      "y": 582,
+      "biome": "fields"
+    },
+    {
+      "kind": "chicken",
+      "x": 931,
+      "y": 125,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 3279,
+      "y": 2688,
+      "biome": "winter"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 4709,
+      "y": 2656,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 5181,
+      "y": 2887,
+      "biome": "winter"
+    },
+    {
+      "kind": "goblin",
+      "x": 913,
+      "y": 524,
+      "biome": "fields"
+    },
+    {
+      "kind": "chicken",
+      "x": 359,
+      "y": 1576,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 5362,
+      "y": 2635,
+      "biome": "winter"
+    },
+    {
+      "kind": "goblin",
+      "x": 1668,
+      "y": 2875,
+      "biome": "fields"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 3495,
+      "y": 2541,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 3238,
+      "y": 2809,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 636,
+      "y": 947,
+      "biome": "fields"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 687,
+      "y": 806,
+      "biome": "fields"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 4138,
+      "y": 2848,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 2825,
+      "y": 2863,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 172,
+      "y": 2085,
+      "biome": "fields"
+    },
+    {
+      "kind": "chicken",
+      "x": 1394,
+      "y": 2176,
+      "biome": "fields"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 3629,
+      "y": 2732,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 127,
+      "y": 1212,
+      "biome": "fields"
+    },
+    {
+      "kind": "chicken",
+      "x": 885,
+      "y": 781,
+      "biome": "fields"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 3010,
+      "y": 2600,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 129,
+      "y": 2897,
+      "biome": "fields"
+    },
+    {
+      "kind": "chicken",
+      "x": 1003,
+      "y": 1553,
+      "biome": "fields"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 4856,
+      "y": 3076,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 4938,
+      "y": 3581,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 1006,
+      "y": 3171,
+      "biome": "fields"
+    },
+    {
+      "kind": "goblin",
+      "x": 1673,
+      "y": 3178,
+      "biome": "fields"
+    },
+    {
+      "kind": "goblin",
+      "x": 2420,
+      "y": 3121,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 4194,
+      "y": 3040,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 5290,
+      "y": 3248,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 2301,
+      "y": 3401,
+      "biome": "fields"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 1757,
+      "y": 3291,
+      "biome": "fields"
+    },
+    {
+      "kind": "goblin",
+      "x": 879,
+      "y": 3330,
+      "biome": "fields"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 3551,
+      "y": 3386,
+      "biome": "winter"
+    },
+    {
+      "kind": "yeti",
+      "x": 3040,
+      "y": 3289,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 843,
+      "y": 3073,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 3644,
+      "y": 3442,
+      "biome": "winter"
+    },
+    {
+      "kind": "goblin",
+      "x": 1075,
+      "y": 3572,
+      "biome": "fields"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 901,
+      "y": 3536,
+      "biome": "fields"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 3139,
+      "y": 3564,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 1284,
+      "y": 3471,
+      "biome": "fields"
+    },
+    {
+      "kind": "yeti",
+      "x": 3849,
+      "y": 3437,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 614,
+      "y": 3432,
+      "biome": "fields"
+    },
+    {
+      "kind": "goblin",
+      "x": 385,
+      "y": 3313,
+      "biome": "fields"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 349,
+      "y": 2972,
+      "biome": "fields"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 5417,
+      "y": 3361,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 1872,
+      "y": 3570,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 3815,
+      "y": 3012,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 1659,
+      "y": 3518,
+      "biome": "fields"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 555,
+      "y": 3316,
+      "biome": "fields"
+    },
+    {
+      "kind": "yeti",
+      "x": 4527,
+      "y": 3128,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 4651,
+      "y": 3111,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 1587,
+      "y": 3610,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 4610,
+      "y": 3322,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 2593,
+      "y": 3610,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 5083,
+      "y": 3174,
+      "biome": "winter"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 5385,
+      "y": 3569,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 5443,
+      "y": 3007,
+      "biome": "winter"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 2975,
+      "y": 3451,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 2344,
+      "y": 3590,
+      "biome": "fields"
+    },
+    {
+      "kind": "yeti",
+      "x": 3876,
+      "y": 3240,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 216,
+      "y": 3254,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 3994,
+      "y": 3216,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 2423,
+      "y": 3502,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 3774,
+      "y": 3257,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 2029,
+      "y": 3589,
+      "biome": "fields"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 183,
+      "y": 3114,
+      "biome": "fields"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 803,
+      "y": 3569,
+      "biome": "fields"
+    },
+    {
+      "kind": "goblin",
+      "x": 1055,
+      "y": 3267,
+      "biome": "fields"
+    },
+    {
+      "kind": "yeti",
+      "x": 4810,
+      "y": 3518,
+      "biome": "winter"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 4158,
+      "y": 3430,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 5299,
+      "y": 3531,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 2146,
+      "y": 3518,
+      "biome": "fields"
+    },
+    {
+      "kind": "goblin",
+      "x": 1637,
+      "y": 3290,
+      "biome": "fields"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 1964,
+      "y": 3169,
+      "biome": "fields"
+    },
+    {
+      "kind": "ice_wraith",
+      "x": 4585,
+      "y": 3232,
+      "biome": "winter"
+    },
+    {
+      "kind": "chicken",
+      "x": 672,
+      "y": 3111,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 4620,
+      "y": 3008,
+      "biome": "winter"
+    },
+    {
+      "kind": "goblin",
+      "x": 2314,
+      "y": 3084,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 4232,
+      "y": 3143,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 1395,
+      "y": 3101,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 4257,
+      "y": 3615,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 3411,
+      "y": 3292,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 3133,
+      "y": 3044,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 1222,
+      "y": 3594,
+      "biome": "fields"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 2772,
+      "y": 3335,
+      "biome": "winter"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 144,
+      "y": 3613,
+      "biome": "fields"
+    },
+    {
+      "kind": "chicken",
+      "x": 611,
+      "y": 3614,
+      "biome": "fields"
+    },
+    {
+      "kind": "goblin",
+      "x": 1082,
+      "y": 2973,
+      "biome": "fields"
+    },
+    {
+      "kind": "frost_wolf",
+      "x": 5236,
+      "y": 3022,
+      "biome": "winter"
+    },
+    {
+      "kind": "yeti",
+      "x": 3669,
+      "y": 3175,
+      "biome": "winter"
+    },
+    {
+      "kind": "yeti",
+      "x": 2863,
+      "y": 3147,
+      "biome": "winter"
+    },
+    {
+      "kind": "goblin",
+      "x": 944,
+      "y": 3010,
+      "biome": "fields"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 2291,
+      "y": 3265,
+      "biome": "fields"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 1783,
+      "y": 3032,
+      "biome": "fields"
+    },
+    {
+      "kind": "disgruntled_ram",
+      "x": 519,
+      "y": 3112,
+      "biome": "fields"
+    },
+    {
+      "kind": "ancient_frost_wyrm",
+      "x": 3403,
+      "y": 3580,
+      "biome": "winter"
+    },
+    {
+      "kind": "yeti",
+      "x": 2919,
+      "y": 3301,
+      "biome": "winter"
+    },
+    {
+      "kind": "frost_giant",
+      "x": 3469,
+      "y": 3478,
+      "biome": "winter"
+    },
+    {
+      "kind": "goblin",
+      "x": 2245,
+      "y": 3516,
+      "biome": "fields"
+    },
+    {
+      "kind": "goblin",
+      "x": 1892,
+      "y": 3321,
+      "biome": "fields"
+    },
+    {
+      "kind": "goblin",
+      "x": 1526,
+      "y": 3234,
+      "biome": "fields"
+    }
+  ]
+}

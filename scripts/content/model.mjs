@@ -32,18 +32,19 @@ const SKILLS = new Set([
 const CRAFTING_SKILLS = new Set(["smithing", "tailoring", "skinning", "cooking", "alchemy"]);
 const NODE_SKILLS = new Set(["mining", "woodcutting", "gathering"]);
 const STATIONS = new Set(["smelt", "forge", "weave", "armor", "skin", "cook", "alchemy"]);
-const STATION_SKILL = Object.freeze({
-  smelt: "smithing",
-  forge: "smithing",
-  armor: "smithing",
-  weave: "tailoring",
-  skin: "skinning",
-  cook: "cooking",
-  alchemy: "alchemy",
+const STATION_SKILLS = Object.freeze({
+  smelt: new Set(["smithing"]),
+  forge: new Set(["smithing"]),
+  armor: new Set(["smithing", "tailoring"]),
+  weave: new Set(["tailoring"]),
+  skin: new Set(["skinning"]),
+  cook: new Set(["cooking"]),
+  alchemy: new Set(["alchemy"]),
 });
 const QUEST_KINDS = new Set(["kill", "gather"]);
 const LOOT_CHANNELS = new Set(["drop", "hide"]);
-const MIGRATION_ACTIONS = new Set(["retain", "replace", "compensate", "stop"]);
+const MIGRATION_ACTIONS = new Set(["retain", "replace", "replace_or_compensate", "compensate", "stop"]);
+const FALLBACK_EARS = new Set(["none", "beak", "horns", "spikes"]);
 
 export class ManifestValidationError extends Error {
   constructor(issues) {
@@ -236,8 +237,11 @@ export function validateManifest(manifest, lockedRegistry) {
   const validateTierPair = (entity, path) => {
     const tierIndex = numberAt(entity.tier_index, `${path}.tier_index`, { integer: true, min: 1, max: 16 });
     const level = numberAt(entity.level_requirement, `${path}.level_requirement`, { integer: true, min: 1, max: 150 });
-    if (lockedPair.get(tierIndex) !== level) {
-      issue(`${path}.level_requirement`, `does not match locked tier_index ${tierIndex}`);
+    const expectedTier = [...lockedTiers]
+      .filter((tier) => tier.level_requirement <= level)
+      .sort((a, b) => b.level_requirement - a.level_requirement)[0]?.tier_index;
+    if (expectedTier !== tierIndex) {
+      issue(`${path}.tier_index`, `must be tier ${expectedTier} for level_requirement ${level}`);
     }
   };
 
@@ -295,7 +299,7 @@ export function validateManifest(manifest, lockedRegistry) {
   const runtime = objectAt(root.runtime, "$manifest.runtime");
   const runtimeKeys = [
     "items", "recipes", "nodes", "monsters", "fish", "fishing_spots", "quests", "bosses",
-    "node_spawns", "monster_spawns", "migration_rules", "player_notice",
+    "node_spawns", "monster_spawns", "migration_rules", "starter_loadout", "mechanics", "player_notice",
   ];
   onlyKeys(runtime, "$manifest.runtime", new Set(runtimeKeys));
   requireKeys(runtime, "$manifest.runtime", runtimeKeys);
@@ -311,6 +315,8 @@ export function validateManifest(manifest, lockedRegistry) {
   const nodeSpawns = arrayAt(runtime.node_spawns, "$manifest.runtime.node_spawns");
   const monsterSpawns = arrayAt(runtime.monster_spawns, "$manifest.runtime.monster_spawns");
   const migrationRules = arrayAt(runtime.migration_rules, "$manifest.runtime.migration_rules");
+  const starterLoadout = objectAt(runtime.starter_loadout, "$manifest.runtime.starter_loadout");
+  const mechanics = objectAt(runtime.mechanics, "$manifest.runtime.mechanics");
   objectAt(runtime.player_notice, "$manifest.runtime.player_notice");
 
   for (const [name, rows] of Object.entries({
@@ -345,7 +351,7 @@ export function validateManifest(manifest, lockedRegistry) {
     const item = objectAt(rawItem, path);
     const required = [
       "id", "name", "active", "tier_index", "level_requirement", "kind", "family", "colour",
-      "rarity", "tradable", "stackable", "value", "stats",
+      "icon_key", "rarity", "tradable", "stackable", "value", "stats",
     ];
     onlyKeys(item, path, new Set([...required, "equip_skill"]));
     requireKeys(item, path, required);
@@ -355,6 +361,7 @@ export function validateManifest(manifest, lockedRegistry) {
     validateTierPair(item, path);
     const kind = enumAt(item.kind, `${path}.kind`, ITEM_KINDS);
     idAt(item.family, `${path}.family`);
+    idAt(item.icon_key, `${path}.icon_key`);
     stringAt(item.colour, `${path}.colour`, HEX_COLOUR);
     enumAt(item.rarity, `${path}.rarity`, RARITIES);
     booleanAt(item.tradable, `${path}.tradable`);
@@ -406,8 +413,8 @@ export function validateManifest(manifest, lockedRegistry) {
     validateTierPair(recipe, path);
     const station = enumAt(recipe.station, `${path}.station`, STATIONS);
     const skill = enumAt(recipe.skill, `${path}.skill`, CRAFTING_SKILLS);
-    if (station && skill && STATION_SKILL[station] !== skill) {
-      issue(`${path}.skill`, `station ${station} requires ${STATION_SKILL[station]}`);
+    if (station && skill && !STATION_SKILLS[station]?.has(skill)) {
+      issue(`${path}.skill`, `station ${station} requires one of: ${[...(STATION_SKILLS[station] ?? [])].join(", ")}`);
     }
     const outputId = idAt(recipe.output_item_id, `${path}.output_item_id`);
     if (id && station && outputId && id !== `${station}_${outputId}`) {
@@ -438,7 +445,7 @@ export function validateManifest(manifest, lockedRegistry) {
     const node = objectAt(rawNode, path);
     const required = [
       "kind", "name", "active", "tier_index", "level_requirement", "skill", "item_id", "xp",
-      "gather_s", "respawn_s", "max_charges", "family", "colour", "visual_key",
+      "gather_s", "respawn_s", "max_charges", "cluster_min", "shape", "family", "colour", "visual_key",
     ];
     onlyKeys(node, path, new Set(required));
     requireKeys(node, path, required);
@@ -453,6 +460,8 @@ export function validateManifest(manifest, lockedRegistry) {
     numberAt(node.gather_s, `${path}.gather_s`, { min: 0.1, max: 86_400 });
     numberAt(node.respawn_s, `${path}.respawn_s`, { integer: true, min: 1, max: 2_592_000 });
     numberAt(node.max_charges, `${path}.max_charges`, { integer: true, min: 1, max: 1_000_000 });
+    numberAt(node.cluster_min, `${path}.cluster_min`, { integer: true, min: 1, max: 1_000_000 });
+    enumAt(node.shape, `${path}.shape`, new Set(["rock", "tree", "bush"]));
     idAt(node.family, `${path}.family`);
     stringAt(node.colour, `${path}.colour`, HEX_COLOUR);
     idAt(node.visual_key, `${path}.visual_key`);
@@ -465,7 +474,7 @@ export function validateManifest(manifest, lockedRegistry) {
     const monster = objectAt(rawMonster, path);
     const required = [
       "kind", "name", "active", "tier_index", "level_requirement", "hp", "attack", "defense",
-      "xp", "gold_min", "gold_max", "respawn_s", "visual_key", "loot",
+      "xp", "gold_min", "gold_max", "respawn_s", "visual_key", "visual", "loot",
     ];
     onlyKeys(monster, path, new Set(required));
     requireKeys(monster, path, required);
@@ -482,6 +491,51 @@ export function validateManifest(manifest, lockedRegistry) {
     if (goldMax < goldMin) issue(`${path}.gold_max`, "must be greater than or equal to gold_min");
     numberAt(monster.respawn_s, `${path}.respawn_s`, { integer: true, min: 1, max: 2_592_000 });
     idAt(monster.visual_key, `${path}.visual_key`);
+    const visual = objectAt(monster.visual, `${path}.visual`);
+    const visualKeys = [
+      "asset_key", "asset_path", "source_sha256", "padded_sha256", "canvas", "pivot",
+      "visual_bounds", "click_bounds", "render_scale", "ground_offset_y", "motion_profile", "fallback",
+    ];
+    onlyKeys(visual, `${path}.visual`, new Set(visualKeys));
+    requireKeys(visual, `${path}.visual`, visualKeys);
+    idAt(visual.asset_key, `${path}.visual.asset_key`);
+    stringAt(visual.asset_path, `${path}.visual.asset_path`);
+    stringAt(visual.source_sha256, `${path}.visual.source_sha256`, SHA256);
+    stringAt(visual.padded_sha256, `${path}.visual.padded_sha256`, SHA256);
+    const canvas = objectAt(visual.canvas, `${path}.visual.canvas`);
+    onlyKeys(canvas, `${path}.visual.canvas`, new Set(["width", "height"]));
+    requireKeys(canvas, `${path}.visual.canvas`, ["width", "height"]);
+    const canvasWidth = numberAt(canvas.width, `${path}.visual.canvas.width`, { min: 1, max: 8192 });
+    const canvasHeight = numberAt(canvas.height, `${path}.visual.canvas.height`, { min: 1, max: 8192 });
+    const pivot = objectAt(visual.pivot, `${path}.visual.pivot`);
+    onlyKeys(pivot, `${path}.visual.pivot`, new Set(["x", "y"]));
+    requireKeys(pivot, `${path}.visual.pivot`, ["x", "y"]);
+    numberAt(pivot.x, `${path}.visual.pivot.x`, { min: 0, max: canvasWidth });
+    numberAt(pivot.y, `${path}.visual.pivot.y`, { min: 0, max: canvasHeight });
+    for (const boundsKey of ["visual_bounds", "click_bounds"]) {
+      const boundsPath = `${path}.visual.${boundsKey}`;
+      const bounds = objectAt(visual[boundsKey], boundsPath);
+      onlyKeys(bounds, boundsPath, new Set(["left", "top", "right", "bottom"]));
+      requireKeys(bounds, boundsPath, ["left", "top", "right", "bottom"]);
+      const left = numberAt(bounds.left, `${boundsPath}.left`, { min: 0, max: canvasWidth });
+      const top = numberAt(bounds.top, `${boundsPath}.top`, { min: 0, max: canvasHeight });
+      const right = numberAt(bounds.right, `${boundsPath}.right`, { min: 0, max: canvasWidth });
+      const bottom = numberAt(bounds.bottom, `${boundsPath}.bottom`, { min: 0, max: canvasHeight });
+      if (right <= left) issue(`${boundsPath}.right`, "must be greater than left");
+      if (bottom <= top) issue(`${boundsPath}.bottom`, "must be greater than top");
+    }
+    numberAt(visual.render_scale, `${path}.visual.render_scale`, { min: 0.01, max: 100 });
+    numberAt(visual.ground_offset_y, `${path}.visual.ground_offset_y`, { min: 0, max: 10_000 });
+    if (stringAt(visual.motion_profile, `${path}.visual.motion_profile`) !== "static_front_facing_bob") {
+      issue(`${path}.visual.motion_profile`, "must be static_front_facing_bob");
+    }
+    const fallback = objectAt(visual.fallback, `${path}.visual.fallback`);
+    onlyKeys(fallback, `${path}.visual.fallback`, new Set(["body", "accent", "size", "ears"]));
+    requireKeys(fallback, `${path}.visual.fallback`, ["body", "accent", "size", "ears"]);
+    stringAt(fallback.body, `${path}.visual.fallback.body`, HEX_COLOUR);
+    stringAt(fallback.accent, `${path}.visual.fallback.accent`, HEX_COLOUR);
+    numberAt(fallback.size, `${path}.visual.fallback.size`, { min: 0.01, max: 100 });
+    enumAt(fallback.ears, `${path}.visual.fallback.ears`, FALLBACK_EARS);
     const loot = arrayAt(monster.loot, `${path}.loot`);
     loot.forEach((rawLoot, lootIndex) => {
       const lootPath = `${path}.loot[${lootIndex}]`;
@@ -526,6 +580,25 @@ export function validateManifest(manifest, lockedRegistry) {
     });
     if (itemId) fishByItem.set(itemId, rule);
   });
+  if (fish.length > 0) {
+    const checkpointLevels = (weights) => [...new Set(weights.map((entry) => entry.level))].sort((a, b) => a - b);
+    const expectedCheckpoints = checkpointLevels(fish[0].weights);
+    for (const [index, rule] of fish.entries()) {
+      const checkpoints = checkpointLevels(rule.weights);
+      if (!compareCanonical(checkpoints, expectedCheckpoints)) {
+        issue(`$manifest.runtime.fish[${index}].weights`, "must use the same level checkpoints as every fish rule");
+      }
+    }
+    for (const checkpoint of expectedCheckpoints) {
+      const total = fish.reduce(
+        (sum, rule) => sum + (rule.weights.find((entry) => entry.level === checkpoint)?.weight ?? 0),
+        0,
+      );
+      if (Math.abs(total - 1) > 1e-9) {
+        issue("$manifest.runtime.fish", `weights at level ${checkpoint} must sum to 1; received ${total}`);
+      }
+    }
+  }
 
   fishingSpots.forEach((rawSpot, index) => {
     const path = `$manifest.runtime.fishing_spots[${index}]`;
@@ -554,13 +627,14 @@ export function validateManifest(manifest, lockedRegistry) {
     const path = `$manifest.runtime.quests[${index}]`;
     const quest = objectAt(rawQuest, path);
     const required = [
-      "id", "name", "active", "tier_index", "level_requirement", "kind", "target_id", "count",
+      "id", "name", "description", "active", "tier_index", "level_requirement", "kind", "target_id", "count",
       "gold", "xp_skill", "xp", "reward_items",
     ];
     onlyKeys(quest, path, new Set(required));
     requireKeys(quest, path, required);
     idAt(quest.id, `${path}.id`);
     stringAt(quest.name, `${path}.name`);
+    stringAt(quest.description, `${path}.description`);
     booleanAt(quest.active, `${path}.active`);
     validateTierPair(quest, path);
     const kind = enumAt(quest.kind, `${path}.kind`, QUEST_KINDS);
@@ -592,7 +666,9 @@ export function validateManifest(manifest, lockedRegistry) {
     const boss = objectAt(rawBoss, path);
     const required = [
       "id", "name", "active", "level_requirement", "hp", "attack", "defense", "respawn_s",
-      "visual_key", "rewards",
+      "visual_key", "reward_mode", "target_contributors", "minimum_damage", "xp_pool",
+      "xp_per_player_cap", "gold_pool_min", "gold_pool_max", "gold_per_player_cap_min",
+      "gold_per_player_cap_max", "rewards",
     ];
     onlyKeys(boss, path, new Set(required));
     requireKeys(boss, path, required);
@@ -605,8 +681,24 @@ export function validateManifest(manifest, lockedRegistry) {
     numberAt(boss.defense, `${path}.defense`, { integer: true, min: 0, max: 2_000_000_000 });
     numberAt(boss.respawn_s, `${path}.respawn_s`, { integer: true, min: 1, max: 2_592_000 });
     idAt(boss.visual_key, `${path}.visual_key`);
+    if (stringAt(boss.reward_mode, `${path}.reward_mode`) !== "fixed_pool_proportional_damage_with_per_player_cap") {
+      issue(`${path}.reward_mode`, "must be fixed_pool_proportional_damage_with_per_player_cap");
+    }
+    const contributors = numberAt(boss.target_contributors, `${path}.target_contributors`, { integer: true, min: 1, max: 10_000 });
+    const minimumDamage = numberAt(boss.minimum_damage, `${path}.minimum_damage`, { integer: true, min: 1, max: 2_000_000_000 });
+    if (minimumDamage >= boss.hp) issue(`${path}.minimum_damage`, "must be less than boss hp");
+    const xpPool = numberAt(boss.xp_pool, `${path}.xp_pool`, { integer: true, min: 1, max: 2_000_000_000 });
+    const xpCap = numberAt(boss.xp_per_player_cap, `${path}.xp_per_player_cap`, { integer: true, min: 1, max: 2_000_000_000 });
+    const goldPoolMin = numberAt(boss.gold_pool_min, `${path}.gold_pool_min`, { integer: true, min: 1, max: 2_000_000_000 });
+    const goldPoolMax = numberAt(boss.gold_pool_max, `${path}.gold_pool_max`, { integer: true, min: 1, max: 2_000_000_000 });
+    const goldCapMin = numberAt(boss.gold_per_player_cap_min, `${path}.gold_per_player_cap_min`, { integer: true, min: 1, max: 2_000_000_000 });
+    const goldCapMax = numberAt(boss.gold_per_player_cap_max, `${path}.gold_per_player_cap_max`, { integer: true, min: 1, max: 2_000_000_000 });
+    if (goldPoolMax < goldPoolMin) issue(`${path}.gold_pool_max`, "must be greater than or equal to gold_pool_min");
+    if (goldCapMax < goldCapMin) issue(`${path}.gold_per_player_cap_max`, "must be greater than or equal to gold_per_player_cap_min");
+    if (xpCap * contributors !== xpPool) issue(`${path}.xp_per_player_cap`, "times target_contributors must equal xp_pool");
+    if (goldCapMin * contributors !== goldPoolMin) issue(`${path}.gold_per_player_cap_min`, "times target_contributors must equal gold_pool_min");
+    if (goldCapMax * contributors !== goldPoolMax) issue(`${path}.gold_per_player_cap_max`, "times target_contributors must equal gold_pool_max");
     const rewards = arrayAt(boss.rewards, `${path}.rewards`);
-    if (rewards.length === 0) issue(`${path}.rewards`, "must contain at least one reward");
     rewards.forEach((rawReward, rewardIndex) => {
       const rewardPath = `${path}.rewards[${rewardIndex}]`;
       const reward = objectAt(rawReward, rewardPath);
@@ -652,18 +744,66 @@ export function validateManifest(manifest, lockedRegistry) {
     const path = `$manifest.runtime.migration_rules[${index}]`;
     const rule = objectAt(rawRule, path);
     const required = ["from_id", "action", "captured_value_required", "notice_key"];
-    onlyKeys(rule, path, new Set([...required, "to_id"]));
+    onlyKeys(rule, path, new Set([...required, "to_id", "equipped_action", "unequipped_action"]));
     requireKeys(rule, path, required);
     idAt(rule.from_id, `${path}.from_id`);
     const action = enumAt(rule.action, `${path}.action`, MIGRATION_ACTIONS);
     booleanAt(rule.captured_value_required, `${path}.captured_value_required`);
     idAt(rule.notice_key, `${path}.notice_key`);
-    if (action === "replace") {
-      if (!("to_id" in rule)) issue(`${path}.to_id`, "is required for replace actions");
+    if (action === "replace" || action === "replace_or_compensate") {
+      if (!("to_id" in rule)) issue(`${path}.to_id`, `is required for ${action} actions`);
       else requireActiveItem(idAt(rule.to_id, `${path}.to_id`), `${path}.to_id`);
     } else if ("to_id" in rule) {
-      issue(`${path}.to_id`, "is allowed only for replace actions");
+      issue(`${path}.to_id`, "is allowed only for replace or replace_or_compensate actions");
     }
+    if (action === "replace_or_compensate") {
+      if (rule.captured_value_required !== true) issue(`${path}.captured_value_required`, "must be true for replace_or_compensate");
+      if (rule.equipped_action !== "replace_preserve_plus") issue(`${path}.equipped_action`, "must be replace_preserve_plus");
+      if (rule.unequipped_action !== "compensate_captured_value") issue(`${path}.unequipped_action`, "must be compensate_captured_value");
+    } else {
+      if ("equipped_action" in rule) issue(`${path}.equipped_action`, "is allowed only for replace_or_compensate");
+      if ("unequipped_action" in rule) issue(`${path}.unequipped_action`, "is allowed only for replace_or_compensate");
+    }
+  });
+
+  onlyKeys(starterLoadout, "$manifest.runtime.starter_loadout", new Set(["weapon_item_id", "armor_item_id", "plus"]));
+  requireKeys(starterLoadout, "$manifest.runtime.starter_loadout", ["weapon_item_id", "armor_item_id", "plus"]);
+  const starterWeaponId = idAt(starterLoadout.weapon_item_id, "$manifest.runtime.starter_loadout.weapon_item_id");
+  const starterArmorId = idAt(starterLoadout.armor_item_id, "$manifest.runtime.starter_loadout.armor_item_id");
+  const starterWeapon = itemById.get(starterWeaponId);
+  const starterArmor = itemById.get(starterArmorId);
+  if (!starterWeapon?.active || starterWeapon.kind !== "weapon") issue("$manifest.runtime.starter_loadout.weapon_item_id", "must reference an active weapon");
+  if (!starterArmor?.active || starterArmor.kind !== "armor") issue("$manifest.runtime.starter_loadout.armor_item_id", "must reference active armor");
+  numberAt(starterLoadout.plus, "$manifest.runtime.starter_loadout.plus", { integer: true, min: 0, max: 100 });
+
+  const mechanicKeys = [
+    "approved_balance_model_hash", "max_level", "max_plus", "market_fee_pct", "weapon_multiplier_rule",
+    "light_attack_multiplier_rule", "defense_multiplier_rule", "upgrade_cost_rule", "gear_resale_rule",
+    "fishing_xp_curve",
+  ];
+  onlyKeys(mechanics, "$manifest.runtime.mechanics", new Set(mechanicKeys));
+  requireKeys(mechanics, "$manifest.runtime.mechanics", mechanicKeys);
+  stringAt(mechanics.approved_balance_model_hash, "$manifest.runtime.mechanics.approved_balance_model_hash", SHA256);
+  const maxLevel = numberAt(mechanics.max_level, "$manifest.runtime.mechanics.max_level", { integer: true, min: 1, max: 150 });
+  if (maxLevel !== 150) issue("$manifest.runtime.mechanics.max_level", "must equal 150");
+  const maxPlus = numberAt(mechanics.max_plus, "$manifest.runtime.mechanics.max_plus", { integer: true, min: 0, max: 100 });
+  if (maxPlus !== 100) issue("$manifest.runtime.mechanics.max_plus", "must equal 100");
+  numberAt(mechanics.market_fee_pct, "$manifest.runtime.mechanics.market_fee_pct", { min: 0, max: 100 });
+  for (const key of ["weapon_multiplier_rule", "light_attack_multiplier_rule", "defense_multiplier_rule", "upgrade_cost_rule", "gear_resale_rule"]) {
+    stringAt(mechanics[key], `$manifest.runtime.mechanics.${key}`);
+  }
+  const fishingXpCurve = arrayAt(mechanics.fishing_xp_curve, "$manifest.runtime.mechanics.fishing_xp_curve");
+  if (fishingXpCurve.length !== 16) issue("$manifest.runtime.mechanics.fishing_xp_curve", "must contain exactly 16 tier checkpoints");
+  assertUnique(fishingXpCurve, "tier_index", "$manifest.runtime.mechanics.fishing_xp_curve");
+  fishingXpCurve.forEach((rawCheckpoint, index) => {
+    const path = `$manifest.runtime.mechanics.fishing_xp_curve[${index}]`;
+    const checkpoint = objectAt(rawCheckpoint, path);
+    onlyKeys(checkpoint, path, new Set(["tier_index", "level_requirement", "xp_per_action"]));
+    requireKeys(checkpoint, path, ["tier_index", "level_requirement", "xp_per_action"]);
+    const tierIndex = numberAt(checkpoint.tier_index, `${path}.tier_index`, { integer: true, min: 1, max: 16 });
+    const level = numberAt(checkpoint.level_requirement, `${path}.level_requirement`, { integer: true, min: 1, max: 150 });
+    if (lockedPair.get(tierIndex) !== level) issue(`${path}.level_requirement`, `does not match locked tier_index ${tierIndex}`);
+    numberAt(checkpoint.xp_per_action, `${path}.xp_per_action`, { integer: true, min: 1, max: 2_000_000_000 });
   });
 
   const notice = objectAt(runtime.player_notice, "$manifest.runtime.player_notice");
@@ -714,7 +854,11 @@ function tsArray(name, values) {
 }
 
 function generateClient(manifest, hash, ids) {
-  const tiers = manifest.tiers.map(({ tier_index, level_requirement, theme }) => ({ tier_index, level_requirement, theme }));
+  const tiers = manifest.tiers.map(({ tier_index, level_requirement, theme, palette }) =>
+    palette === undefined
+      ? { tier_index, level_requirement, theme }
+      : { tier_index, level_requirement, theme, palette },
+  );
   return `/* eslint-disable */\n/*\n * GENERATED FILE — DO NOT EDIT.\n * Source: content/v2/manifest.authoring.json (or the generator input named in CI)\n * Manifest SHA-256: ${hash}\n */\n\nexport const CONTENT_SCHEMA_VERSION = ${JSON.stringify(manifest.schema_version)};\nexport const CONTENT_VERSION = ${JSON.stringify(manifest.content_version)};\nexport const SPAWN_SET_VERSION = ${JSON.stringify(manifest.spawn_set_version)};\nexport const CONTENT_MANIFEST_HASH = ${JSON.stringify(hash)};\nexport const CONTENT_RUNNABLE = ${manifest.lifecycle === "runtime"};\n\n${tsArray("CONTENT_TIERS", tiers)}\n${tsArray("CONTENT_ITEM_IDS", ids.itemIds)}\n${tsArray("CONTENT_NODE_KINDS", ids.nodeKinds)}\n${tsArray("CONTENT_MONSTER_KINDS", ids.monsterKinds)}\n${tsArray("CONTENT_RECIPE_IDS", ids.recipeIds)}\n${tsArray("RETIRED_CONTENT_IDS", ids.retiredIds)}\n\nexport type ContentItemId = (typeof CONTENT_ITEM_IDS)[number];\nexport type ContentNodeKind = (typeof CONTENT_NODE_KINDS)[number];\nexport type ContentMonsterKind = (typeof CONTENT_MONSTER_KINDS)[number];\nexport type ContentRecipeId = (typeof CONTENT_RECIPE_IDS)[number];\n\nexport class UnknownGeneratedContentIdError extends Error {\n  readonly kind: string;\n  readonly value: string;\n\n  constructor(kind: string, value: string) {\n    super(\`Unknown \${kind} ID: \${value}\`);\n    this.name = "UnknownGeneratedContentIdError";\n    this.kind = kind;\n    this.value = value;\n  }\n}\n\nfunction assertGeneratedId<T extends string>(kind: string, known: readonly T[], value: string): T {\n  if (!(known as readonly string[]).includes(value)) throw new UnknownGeneratedContentIdError(kind, value);\n  return value as T;\n}\n\nexport const assertContentItemId = (value: string): ContentItemId =>\n  assertGeneratedId("item", CONTENT_ITEM_IDS, value);\nexport const assertContentNodeKind = (value: string): ContentNodeKind =>\n  assertGeneratedId("node", CONTENT_NODE_KINDS, value);\nexport const assertContentMonsterKind = (value: string): ContentMonsterKind =>\n  assertGeneratedId("monster", CONTENT_MONSTER_KINDS, value);\nexport const assertContentRecipeId = (value: string): ContentRecipeId =>\n  assertGeneratedId("recipe", CONTENT_RECIPE_IDS, value);\n`;
 }
 
@@ -768,8 +912,8 @@ function runtimeSql(manifest, hash) {
     "$content_not_active$;",
     "",
     "INSERT INTO public.game_content_versions",
-    "  (content_version, spawn_set_version, uuid_namespace, manifest_hash, status, player_notice)",
-    `VALUES (${version}, ${spawnSet}, ${sqlText(manifest.uuid_namespace)}, ${sqlText(hash)}, 'staged', ${sqlJson(r.player_notice)})`,
+    "  (content_version, spawn_set_version, uuid_namespace, manifest_hash, status, starter_loadout, mechanics, player_notice)",
+    `VALUES (${version}, ${spawnSet}, ${sqlText(manifest.uuid_namespace)}, ${sqlText(hash)}, 'staged', ${sqlJson(r.starter_loadout)}, ${sqlJson(r.mechanics)}, ${sqlJson(r.player_notice)})`,
     "ON CONFLICT (content_version) DO NOTHING;",
     "",
     "DELETE FROM public.game_content_spawns WHERE content_version = " + version + ";",
@@ -791,6 +935,8 @@ function runtimeSql(manifest, hash) {
     `  uuid_namespace = ${sqlText(manifest.uuid_namespace)},`,
     `  manifest_hash = ${sqlText(hash)},`,
     "  status = 'staged',",
+    `  starter_loadout = ${sqlJson(r.starter_loadout)},`,
+    `  mechanics = ${sqlJson(r.mechanics)},`,
     `  player_notice = ${sqlJson(r.player_notice)},`,
     "  activated_at = NULL",
     `WHERE content_version = ${version};`,
@@ -820,6 +966,7 @@ function runtimeSql(manifest, hash) {
     sqlNumber(item.level_requirement),
     sqlText(item.kind),
     sqlText(item.family),
+    sqlText(item.icon_key),
     sqlText(item.colour),
     sqlText(item.rarity),
     sqlBool(item.tradable),
@@ -835,7 +982,7 @@ function runtimeSql(manifest, hash) {
   ]);
   if (items.length) lines.push(
     "INSERT INTO public.game_content_items",
-    "  (content_version, id, name, active, tier_index, level_requirement, kind, family, colour, rarity, tradable, stackable, value, equip_skill, attack, defense, heal, speed, dmg_boost, boost_hits)",
+    "  (content_version, id, name, active, tier_index, level_requirement, kind, family, icon_key, colour, rarity, tradable, stackable, value, equip_skill, attack, defense, heal, speed, dmg_boost, boost_hits)",
     `${valuesBlock(items)};`,
     "",
   );
@@ -863,12 +1010,12 @@ function runtimeSql(manifest, hash) {
   const nodes = r.nodes.map((node) => [
     version, sqlText(node.kind), sqlText(node.name), sqlBool(node.active), sqlNumber(node.tier_index),
     sqlNumber(node.level_requirement), sqlText(node.skill), sqlText(node.item_id), sqlNumber(node.xp),
-    sqlNumber(node.gather_s), sqlNumber(node.respawn_s), sqlNumber(node.max_charges), sqlText(node.family),
-    sqlText(node.colour), sqlText(node.visual_key),
+    sqlNumber(node.gather_s), sqlNumber(node.respawn_s), sqlNumber(node.max_charges), sqlNumber(node.cluster_min),
+    sqlText(node.shape), sqlText(node.family), sqlText(node.colour), sqlText(node.visual_key),
   ]);
   if (nodes.length) lines.push(
     "INSERT INTO public.game_content_nodes",
-    "  (content_version, kind, name, active, tier_index, level_requirement, skill, item_id, xp, gather_s, respawn_s, max_charges, family, colour, visual_key)",
+    "  (content_version, kind, name, active, tier_index, level_requirement, skill, item_id, xp, gather_s, respawn_s, max_charges, cluster_min, shape, family, colour, visual_key)",
     `${valuesBlock(nodes)};`,
     "",
   );
@@ -877,11 +1024,11 @@ function runtimeSql(manifest, hash) {
     version, sqlText(monster.kind), sqlText(monster.name), sqlBool(monster.active), sqlNumber(monster.tier_index),
     sqlNumber(monster.level_requirement), sqlNumber(monster.hp), sqlNumber(monster.attack),
     sqlNumber(monster.defense), sqlNumber(monster.xp), sqlNumber(monster.gold_min), sqlNumber(monster.gold_max),
-    sqlNumber(monster.respawn_s), sqlText(monster.visual_key),
+    sqlNumber(monster.respawn_s), sqlText(monster.visual_key), sqlJson(monster.visual),
   ]);
   if (monsters.length) lines.push(
     "INSERT INTO public.game_content_monsters",
-    "  (content_version, kind, name, active, tier_index, level_requirement, hp, attack, defense, xp, gold_min, gold_max, respawn_s, visual_key)",
+    "  (content_version, kind, name, active, tier_index, level_requirement, hp, attack, defense, xp, gold_min, gold_max, respawn_s, visual_key, visual)",
     `${valuesBlock(monsters)};`,
     "",
   );
@@ -918,24 +1065,27 @@ function runtimeSql(manifest, hash) {
   );
 
   const quests = r.quests.map((quest) => [
-    version, sqlText(quest.id), sqlText(quest.name), sqlBool(quest.active), sqlNumber(quest.tier_index),
+    version, sqlText(quest.id), sqlText(quest.name), sqlText(quest.description), sqlBool(quest.active), sqlNumber(quest.tier_index),
     sqlNumber(quest.level_requirement), sqlText(quest.kind), sqlText(quest.target_id), sqlNumber(quest.count),
     sqlNumber(quest.gold), sqlText(quest.xp_skill), sqlNumber(quest.xp), sqlJson(quest.reward_items),
   ]);
   if (quests.length) lines.push(
     "INSERT INTO public.game_content_quests",
-    "  (content_version, id, name, active, tier_index, level_requirement, kind, target_id, count, gold, xp_skill, xp, reward_items)",
+    "  (content_version, id, name, description, active, tier_index, level_requirement, kind, target_id, count, gold, xp_skill, xp, reward_items)",
     `${valuesBlock(quests)};`,
     "",
   );
   const bosses = r.bosses.map((boss) => [
     version, sqlText(boss.id), sqlText(boss.name), sqlBool(boss.active), sqlNumber(boss.level_requirement),
     sqlNumber(boss.hp), sqlNumber(boss.attack), sqlNumber(boss.defense), sqlNumber(boss.respawn_s),
-    sqlText(boss.visual_key), sqlJson(boss.rewards),
+    sqlText(boss.visual_key), sqlText(boss.reward_mode), sqlNumber(boss.target_contributors),
+    sqlNumber(boss.minimum_damage), sqlNumber(boss.xp_pool), sqlNumber(boss.xp_per_player_cap),
+    sqlNumber(boss.gold_pool_min), sqlNumber(boss.gold_pool_max), sqlNumber(boss.gold_per_player_cap_min),
+    sqlNumber(boss.gold_per_player_cap_max), sqlJson(boss.rewards),
   ]);
   if (bosses.length) lines.push(
     "INSERT INTO public.game_content_bosses",
-    "  (content_version, id, name, active, level_requirement, hp, attack, defense, respawn_s, visual_key, rewards)",
+    "  (content_version, id, name, active, level_requirement, hp, attack, defense, respawn_s, visual_key, reward_mode, target_contributors, minimum_damage, xp_pool, xp_per_player_cap, gold_pool_min, gold_pool_max, gold_per_player_cap_min, gold_per_player_cap_max, rewards)",
     `${valuesBlock(bosses)};`,
     "",
   );
@@ -960,11 +1110,12 @@ function runtimeSql(manifest, hash) {
 
   const rules = r.migration_rules.map((rule) => [
     version, sqlText(rule.from_id), sqlText(rule.action), sqlNullableText(rule.to_id),
-    sqlBool(rule.captured_value_required), sqlText(rule.notice_key),
+    sqlBool(rule.captured_value_required), sqlText(rule.notice_key), sqlNullableText(rule.equipped_action),
+    sqlNullableText(rule.unequipped_action),
   ]);
   if (rules.length) lines.push(
     "INSERT INTO public.game_content_migration_rules",
-    "  (content_version, from_id, action, to_id, captured_value_required, notice_key)",
+    "  (content_version, from_id, action, to_id, captured_value_required, notice_key, equipped_action, unequipped_action)",
     `${valuesBlock(rules)};`,
     "",
   );

@@ -27,7 +27,10 @@
     "content:check": "node scripts/content/check.mjs && node scripts/content/generate.mjs --check",
     "test:content": "node --test tests/content/manifest-contract.test.mjs",
     "test:db:gate4": "supabase test db supabase/tests/gate4_content_contract.sql",
-    "test:gate4": "bun run test && bun run typecheck && bun run gate3:check && bun run content:check && bun run test:content"
+    "test:gate4": "bun run test && bun run typecheck && bun run gate3:check && bun run content:check && bun run test:content",
+    "gate5:build": "node scripts/gate5/snapshot-live.mjs && node scripts/gate5/normalize-sprites.mjs && node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/snapshot-live-spawns.mjs && node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/build-new-spawns.mjs && node scripts/gate5/build-manifest.mjs && node scripts/content/generate.mjs",
+    "gate5:check": "node scripts/gate5/check.mjs",
+    "test:gate5": "bun run test && bun run typecheck && bun run gate3:check && bun run gate5:check"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

@@ -24,11 +24,16 @@ select has_column('public', 'game_content_items', 'active', 'items carry active 
 select has_column('public', 'game_content_items', 'tier_index', 'items carry ordinal tier index');
 select has_column('public', 'game_content_items', 'level_requirement', 'items carry gameplay level');
 select has_column('public', 'game_content_items', 'family', 'items carry icon family');
+select has_column('public', 'game_content_items', 'icon_key', 'items carry a canonical UI icon key');
 select has_column('public', 'game_content_items', 'colour', 'items carry canonical colour');
 select has_column('public', 'game_content_items', 'rarity', 'items carry rarity');
 select has_column('public', 'game_content_items', 'tradable', 'items carry positive tradability');
 select has_column('public', 'game_content_items', 'boost_hits', 'items carry required potion duration stat');
 select has_column('public', 'game_content_monsters', 'level_requirement', 'monster level is explicit');
+select has_column('public', 'game_content_monsters', 'visual', 'monster sprite geometry and fallback are canonical');
+select has_column('public', 'game_content_quests', 'description', 'quest descriptions are canonical');
+select has_column('public', 'game_content_versions', 'starter_loadout', 'starter loadout is versioned content');
+select has_column('public', 'game_content_versions', 'mechanics', 'approved mechanics are versioned content');
 select has_column('public', 'game_content_recipes', 'station', 'recipe station is canonical');
 select has_column('public', 'game_content_spawns', 'spawn_id', 'spawns use stable UUID identity');
 select has_column('public', 'game_content_spawns', 'spawn_set_version', 'spawns own a spawn-set version');
@@ -74,13 +79,15 @@ select ok(prosrc like '%content_version, item_id, plus%',
 from pg_proc where oid = 'public.market_buy(uuid,integer)'::regprocedure;
 
 insert into public.game_content_versions
-  (content_version, spawn_set_version, uuid_namespace, manifest_hash, status, player_notice)
+  (content_version, spawn_set_version, uuid_namespace, manifest_hash, status, starter_loadout, mechanics, player_notice)
 values (
   'gate4_test_v1',
   'gate4_test_spawns_v1',
   'bf50882c-ad8a-57ab-bb73-3ea3dd8fcb5c',
   repeat('a', 64),
   'staged',
+  '{"weapon_item_id":"copper_sword","armor_item_id":"cloth_tunic","plus":0}'::jsonb,
+  '{"approved_balance_model_hash":"e1fbe19aac61014b38885ce38cd16d9a12e3852f24858301a2588c65fba4a640","max_level":150,"max_plus":100,"market_fee_pct":5,"weapon_multiplier_rule":"1 + 2% * min(plus, 50) + 0.5% * max(plus - 50, 0)","light_attack_multiplier_rule":"1 + 5% * min(plus, 20) + 1% * max(plus - 20, 0)","defense_multiplier_rule":"1 + 0.1% * plus","upgrade_cost_rule":"round_to_5(max(25, item_value * (0.08 + 3.4 * sqrt(next_plus))))","gear_resale_rule":"floor(item_value * 0.40 + cumulative_upgrade_spend * 0.15)","fishing_xp_curve":[{"tier_index":1,"level_requirement":1,"xp_per_action":3},{"tier_index":2,"level_requirement":10,"xp_per_action":6},{"tier_index":3,"level_requirement":20,"xp_per_action":17},{"tier_index":4,"level_requirement":30,"xp_per_action":40},{"tier_index":5,"level_requirement":40,"xp_per_action":102},{"tier_index":6,"level_requirement":50,"xp_per_action":331},{"tier_index":7,"level_requirement":60,"xp_per_action":588},{"tier_index":8,"level_requirement":70,"xp_per_action":660},{"tier_index":9,"level_requirement":80,"xp_per_action":753},{"tier_index":10,"level_requirement":90,"xp_per_action":844},{"tier_index":11,"level_requirement":100,"xp_per_action":935},{"tier_index":12,"level_requirement":110,"xp_per_action":1025},{"tier_index":13,"level_requirement":120,"xp_per_action":1113},{"tier_index":14,"level_requirement":130,"xp_per_action":1208},{"tier_index":15,"level_requirement":140,"xp_per_action":1312},{"tier_index":16,"level_requirement":150,"xp_per_action":1413}]}'::jsonb,
   '{"title":"Test","summary":"Test staging only","details":["No activation"]}'::jsonb
 );
 
@@ -105,14 +112,15 @@ values
   ('gate4_test_v1',16,150,'Ascendant','{"primary":"#7E55C7","secondary":"#C9A8FF","accent":"#FFF0FF"}');
 
 insert into public.game_content_items
-  (content_version,id,name,active,tier_index,level_requirement,kind,family,colour,rarity,tradable,stackable,value,equip_skill,attack,defense,heal,speed,dmg_boost,boost_hits)
+  (content_version,id,name,active,tier_index,level_requirement,kind,family,icon_key,colour,rarity,tradable,stackable,value,equip_skill,attack,defense,heal,speed,dmg_boost,boost_hits)
 values
-  ('gate4_test_v1','copper_ore','Copper Ore',true,1,1,'resource','ore','#B87333','common',true,true,6,null,0,0,0,0,0,0),
-  ('gate4_test_v1','copper_bar','Copper Bar',true,1,1,'material','bar','#E0A070','common',true,true,18,null,0,0,0,0,0,0),
-  ('gate4_test_v1','copper_sword','Copper Sword',true,1,1,'weapon','weapon','#E0A070','common',true,false,70,'combat',6,0,0,0,0,0),
-  ('gate4_test_v1','goblin_charm','Goblin Charm',true,1,1,'trophy','charm','#A7D97F','uncommon',true,true,14,null,0,0,0,0,0,0),
-  ('gate4_test_v1','river_minnow','River Minnow',true,1,1,'resource','fish','#9FC9D8','common',true,true,8,null,0,0,0,0,0,0),
-  ('gate4_test_v1','ascendant_core','Ascendant Core',true,16,150,'trophy','core','#C9A8FF','legendary',true,true,10000,null,0,0,0,0,0,0);
+  ('gate4_test_v1','copper_ore','Copper Ore',true,1,1,'resource','ore','copper_ore','#B87333','common',true,true,6,null,0,0,0,0,0,0),
+  ('gate4_test_v1','copper_bar','Copper Bar',true,1,1,'material','bar','copper_bar','#E0A070','common',true,true,18,null,0,0,0,0,0,0),
+  ('gate4_test_v1','copper_sword','Copper Sword',true,1,1,'weapon','weapon','copper_sword','#E0A070','common',true,false,70,'combat',6,0,0,0,0,0),
+  ('gate4_test_v1','cloth_tunic','Cloth Tunic',true,1,1,'armor','armor','cloth_tunic','#F2C6D8','common',true,false,18,'combat',1,3.3,0,0.04,0,0),
+  ('gate4_test_v1','goblin_charm','Goblin Charm',true,1,1,'trophy','charm','goblin_charm','#A7D97F','uncommon',true,true,14,null,0,0,0,0,0,0),
+  ('gate4_test_v1','river_minnow','River Minnow',true,1,1,'resource','fish','river_minnow','#9FC9D8','common',true,true,8,null,0,0,0,0,0,0),
+  ('gate4_test_v1','ascendant_core','Ascendant Core',true,16,150,'trophy','core','ascendant_core','#C9A8FF','legendary',true,true,10000,null,0,0,0,0,0,0);
 
 insert into public.game_content_recipes
   (content_version,id,active,tier_index,level_requirement,station,skill,output_item_id,output_qty,xp,time_s)
@@ -120,26 +128,27 @@ values ('gate4_test_v1','smelt_copper_bar',true,1,1,'smelt','smithing','copper_b
 insert into public.game_content_recipe_inputs (content_version,recipe_id,item_id,qty)
 values ('gate4_test_v1','smelt_copper_bar','copper_ore',2);
 insert into public.game_content_nodes
-  (content_version,kind,name,active,tier_index,level_requirement,skill,item_id,xp,gather_s,respawn_s,max_charges,family,colour,visual_key)
-values ('gate4_test_v1','copper_rock','Copper Rock',true,1,1,'mining','copper_ore',18,3.2,9,4,'rock','#B87333','copper_rock');
+  (content_version,kind,name,active,tier_index,level_requirement,skill,item_id,xp,gather_s,respawn_s,max_charges,cluster_min,shape,family,colour,visual_key)
+values ('gate4_test_v1','copper_rock','Copper Rock',true,1,1,'mining','copper_ore',18,3.2,9,4,6,'rock','rock','#B87333','copper_rock');
 insert into public.game_content_monsters
-  (content_version,kind,name,active,tier_index,level_requirement,hp,attack,defense,xp,gold_min,gold_max,respawn_s,visual_key)
-values ('gate4_test_v1','goblin','Goblin',true,1,1,22,5,2,34,4,12,15,'goblin');
+  (content_version,kind,name,active,tier_index,level_requirement,hp,attack,defense,xp,gold_min,gold_max,respawn_s,visual_key,visual)
+values ('gate4_test_v1','goblin','Goblin',true,1,1,22,5,2,34,4,12,15,'goblin',
+  '{"asset_key":"goblin","asset_path":"sprites/creatures/goblin.png","source_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","padded_sha256":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","canvas":{"width":108,"height":166},"pivot":{"x":54,"y":162},"visual_bounds":{"left":4,"top":4,"right":104,"bottom":162},"click_bounds":{"left":4,"top":4,"right":104,"bottom":162},"render_scale":1,"ground_offset_y":16,"motion_profile":"static_front_facing_bob","fallback":{"body":"#A7D97F","accent":"#6FAE52","size":1,"ears":"horns"}}'::jsonb);
 insert into public.game_content_monster_loot
   (content_version,monster_kind,ordinal,item_id,chance,qty_min,qty_max,channel,xp)
 values ('gate4_test_v1','goblin',0,'goblin_charm',0.35,1,1,'drop',0);
 insert into public.game_content_fish
   (content_version,item_id,active,tier_index,level_requirement,xp,weights)
-values ('gate4_test_v1','river_minnow',true,1,1,12,'[{"level":1,"weight":1},{"level":150,"weight":0.1}]');
+values ('gate4_test_v1','river_minnow',true,1,1,12,'[{"level":1,"weight":1},{"level":150,"weight":1}]');
 insert into public.game_content_fishing_spots
   (content_version,id,active,biome,subzone,x,y,fish_item_ids)
 values ('gate4_test_v1','fields_pond',true,'fields','grand_haven_outskirts',330,2780,'["river_minnow"]');
 insert into public.game_content_quests
-  (content_version,id,name,active,tier_index,level_requirement,kind,target_id,count,gold,xp_skill,xp,reward_items)
-values ('gate4_test_v1','goblin_trouble','Goblin Trouble',true,1,1,'kill','goblin',5,20,'combat',50,'[{"item_id":"copper_bar","qty":1}]');
+  (content_version,id,name,description,active,tier_index,level_requirement,kind,target_id,count,gold,xp_skill,xp,reward_items)
+values ('gate4_test_v1','goblin_trouble','Goblin Trouble','Goblins raid the east fields. Defeat 5.',true,1,1,'kill','goblin',5,20,'combat',50,'[{"item_id":"copper_bar","qty":1}]');
 insert into public.game_content_bosses
-  (content_version,id,name,active,level_requirement,hp,attack,defense,respawn_s,visual_key,rewards)
-values ('gate4_test_v1','desolatus','DESOLATUS',true,150,100000,500,250,3600,'desolatus_procedural','[{"item_id":"ascendant_core","chance":0.1,"qty_min":1,"qty_max":1}]');
+  (content_version,id,name,active,level_requirement,hp,attack,defense,respawn_s,visual_key,reward_mode,target_contributors,minimum_damage,xp_pool,xp_per_player_cap,gold_pool_min,gold_pool_max,gold_per_player_cap_min,gold_per_player_cap_max,rewards)
+values ('gate4_test_v1','desolatus','DESOLATUS',true,150,100000,500,250,3600,'desolatus_procedural','fixed_pool_proportional_damage_with_per_player_cap',4,1000,4000,1000,2000,4000,500,1000,'[]');
 insert into public.game_content_spawns
   (spawn_id,content_version,spawn_set_version,entity_type,kind,ordinal,active,biome,subzone,x,y)
 values
@@ -148,6 +157,34 @@ values
 insert into public.game_content_migration_rules
   (content_version,from_id,action,to_id,captured_value_required,notice_key)
 values ('gate4_test_v1','wooden_club','replace','copper_sword',false,'wooden_club_replaced');
+
+update public.game_content_versions
+set mechanics = jsonb_set(mechanics, '{weapon_multiplier_rule}', to_jsonb('tampered'::text))
+where content_version = 'gate4_test_v1';
+select is(
+  (select count(*) from public.game_validate_content_version('gate4_test_v1') where issue_code = 'invalid_mechanics'),
+  1::bigint,
+  'database validator rejects drift from the owner-approved Gate 3 mechanics'
+);
+update public.game_content_versions
+set mechanics = jsonb_set(
+  mechanics,
+  '{weapon_multiplier_rule}',
+  to_jsonb('1 + 2% * min(plus, 50) + 0.5% * max(plus - 50, 0)'::text)
+)
+where content_version = 'gate4_test_v1';
+
+update public.game_content_versions
+set starter_loadout = jsonb_set(starter_loadout, '{plus}', '1'::jsonb)
+where content_version = 'gate4_test_v1';
+select is(
+  (select count(*) from public.game_validate_content_version('gate4_test_v1') where issue_code = 'invalid_starter_loadout'),
+  1::bigint,
+  'database validator rejects drift from the locked +0 starter loadout'
+);
+update public.game_content_versions
+set starter_loadout = jsonb_set(starter_loadout, '{plus}', '0'::jsonb)
+where content_version = 'gate4_test_v1';
 
 insert into public.game_content_spawns
   (spawn_id,content_version,spawn_set_version,entity_type,kind,ordinal,active,biome,subzone,x,y)

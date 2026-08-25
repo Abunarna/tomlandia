@@ -1,0 +1,1145 @@
+{
+  "schema_version": "tomlandia-gate5-new-spawn-placements/v1",
+  "world": {
+    "width": 5600,
+    "height": 3750
+  },
+  "node_spawns": [
+    {
+      "kind": "coal_seam",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1700,
+      "y": 1000
+    },
+    {
+      "kind": "coal_seam",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1732,
+      "y": 1000
+    },
+    {
+      "kind": "coal_seam",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1716,
+      "y": 1028
+    },
+    {
+      "kind": "coal_seam",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1684,
+      "y": 1028
+    },
+    {
+      "kind": "coal_seam",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1668,
+      "y": 1000
+    },
+    {
+      "kind": "coal_seam",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1684,
+      "y": 972
+    },
+    {
+      "kind": "coal_seam",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1716,
+      "y": 972
+    },
+    {
+      "kind": "coal_seam",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1764,
+      "y": 1000
+    },
+    {
+      "kind": "coal_seam",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1755,
+      "y": 1032
+    },
+    {
+      "kind": "coal_seam",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1700,
+      "y": 1064
+    },
+    {
+      "kind": "sunstone_vein",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3000,
+      "y": 1000
+    },
+    {
+      "kind": "sunstone_vein",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3032,
+      "y": 1000
+    },
+    {
+      "kind": "sunstone_vein",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3016,
+      "y": 1028
+    },
+    {
+      "kind": "sunstone_vein",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 2984,
+      "y": 1028
+    },
+    {
+      "kind": "sunstone_vein",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 2968,
+      "y": 1000
+    },
+    {
+      "kind": "sunstone_vein",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 2984,
+      "y": 972
+    },
+    {
+      "kind": "sunstone_vein",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3016,
+      "y": 972
+    },
+    {
+      "kind": "sunstone_vein",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3064,
+      "y": 1000
+    },
+    {
+      "kind": "sunstone_vein",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3055,
+      "y": 1032
+    },
+    {
+      "kind": "sunstone_vein",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3032,
+      "y": 1055
+    },
+    {
+      "kind": "frost_crystal_vein",
+      "biome": "winter",
+      "subzone": "lower_slopes",
+      "x": 5000,
+      "y": 1900
+    },
+    {
+      "kind": "frost_crystal_vein",
+      "biome": "winter",
+      "subzone": "lower_slopes",
+      "x": 4977,
+      "y": 1923
+    },
+    {
+      "kind": "frost_crystal_vein",
+      "biome": "winter",
+      "subzone": "lower_slopes",
+      "x": 4969,
+      "y": 1892
+    },
+    {
+      "kind": "frost_crystal_vein",
+      "biome": "winter",
+      "subzone": "lower_slopes",
+      "x": 4992,
+      "y": 1869
+    },
+    {
+      "kind": "frost_crystal_vein",
+      "biome": "winter",
+      "subzone": "lower_slopes",
+      "x": 5023,
+      "y": 1877
+    },
+    {
+      "kind": "frost_crystal_vein",
+      "biome": "winter",
+      "subzone": "lower_slopes",
+      "x": 5055,
+      "y": 1932
+    },
+    {
+      "kind": "frost_crystal_vein",
+      "biome": "winter",
+      "subzone": "lower_slopes",
+      "x": 5032,
+      "y": 1955
+    },
+    {
+      "kind": "frost_crystal_vein",
+      "biome": "winter",
+      "subzone": "lower_slopes",
+      "x": 4983,
+      "y": 1962
+    },
+    {
+      "kind": "frost_crystal_vein",
+      "biome": "winter",
+      "subzone": "lower_slopes",
+      "x": 4955,
+      "y": 1945
+    },
+    {
+      "kind": "frost_crystal_vein",
+      "biome": "winter",
+      "subzone": "lower_slopes",
+      "x": 4938,
+      "y": 1917
+    },
+    {
+      "kind": "glacial_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4800,
+      "y": 2300
+    },
+    {
+      "kind": "glacial_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4832,
+      "y": 2300
+    },
+    {
+      "kind": "glacial_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4816,
+      "y": 2328
+    },
+    {
+      "kind": "glacial_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4784,
+      "y": 2328
+    },
+    {
+      "kind": "glacial_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4768,
+      "y": 2300
+    },
+    {
+      "kind": "glacial_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4784,
+      "y": 2272
+    },
+    {
+      "kind": "glacial_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4816,
+      "y": 2272
+    },
+    {
+      "kind": "glacial_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4864,
+      "y": 2300
+    },
+    {
+      "kind": "glacial_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4855,
+      "y": 2332
+    },
+    {
+      "kind": "glacial_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4832,
+      "y": 2355
+    },
+    {
+      "kind": "starsteel_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4400,
+      "y": 2700
+    },
+    {
+      "kind": "starsteel_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4432,
+      "y": 2700
+    },
+    {
+      "kind": "starsteel_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4416,
+      "y": 2728
+    },
+    {
+      "kind": "starsteel_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4384,
+      "y": 2728
+    },
+    {
+      "kind": "starsteel_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4368,
+      "y": 2700
+    },
+    {
+      "kind": "starsteel_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4384,
+      "y": 2672
+    },
+    {
+      "kind": "starsteel_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4416,
+      "y": 2672
+    },
+    {
+      "kind": "starsteel_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4464,
+      "y": 2700
+    },
+    {
+      "kind": "starsteel_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4455,
+      "y": 2732
+    },
+    {
+      "kind": "starsteel_vein",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4432,
+      "y": 2755
+    },
+    {
+      "kind": "voidsteel_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4000,
+      "y": 3100
+    },
+    {
+      "kind": "voidsteel_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4032,
+      "y": 3100
+    },
+    {
+      "kind": "voidsteel_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4016,
+      "y": 3128
+    },
+    {
+      "kind": "voidsteel_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3969,
+      "y": 3092
+    },
+    {
+      "kind": "voidsteel_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4008,
+      "y": 3069
+    },
+    {
+      "kind": "voidsteel_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3988,
+      "y": 3146
+    },
+    {
+      "kind": "voidsteel_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4064,
+      "y": 3100
+    },
+    {
+      "kind": "voidsteel_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4055,
+      "y": 3132
+    },
+    {
+      "kind": "voidsteel_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4032,
+      "y": 3155
+    },
+    {
+      "kind": "voidsteel_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3936,
+      "y": 3100
+    },
+    {
+      "kind": "wyrmforged_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3600,
+      "y": 3400
+    },
+    {
+      "kind": "wyrmforged_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3632,
+      "y": 3400
+    },
+    {
+      "kind": "wyrmforged_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3616,
+      "y": 3428
+    },
+    {
+      "kind": "wyrmforged_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3584,
+      "y": 3428
+    },
+    {
+      "kind": "wyrmforged_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3568,
+      "y": 3400
+    },
+    {
+      "kind": "wyrmforged_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3584,
+      "y": 3372
+    },
+    {
+      "kind": "wyrmforged_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3616,
+      "y": 3372
+    },
+    {
+      "kind": "wyrmforged_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3664,
+      "y": 3400
+    },
+    {
+      "kind": "wyrmforged_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3655,
+      "y": 3432
+    },
+    {
+      "kind": "wyrmforged_vein",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3632,
+      "y": 3455
+    },
+    {
+      "kind": "ancient_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4400,
+      "y": 3500
+    },
+    {
+      "kind": "ancient_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4432,
+      "y": 3500
+    },
+    {
+      "kind": "ancient_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4416,
+      "y": 3528
+    },
+    {
+      "kind": "ancient_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4384,
+      "y": 3528
+    },
+    {
+      "kind": "ancient_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4368,
+      "y": 3500
+    },
+    {
+      "kind": "ancient_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4384,
+      "y": 3472
+    },
+    {
+      "kind": "ancient_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4416,
+      "y": 3472
+    },
+    {
+      "kind": "ancient_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4445,
+      "y": 3545
+    },
+    {
+      "kind": "ancient_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4417,
+      "y": 3562
+    },
+    {
+      "kind": "ancient_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4368,
+      "y": 3555
+    },
+    {
+      "kind": "ascendant_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 5000,
+      "y": 3500
+    },
+    {
+      "kind": "ascendant_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 5032,
+      "y": 3500
+    },
+    {
+      "kind": "ascendant_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 5016,
+      "y": 3528
+    },
+    {
+      "kind": "ascendant_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4984,
+      "y": 3528
+    },
+    {
+      "kind": "ascendant_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4968,
+      "y": 3500
+    },
+    {
+      "kind": "ascendant_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4984,
+      "y": 3472
+    },
+    {
+      "kind": "ascendant_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 5016,
+      "y": 3472
+    },
+    {
+      "kind": "ascendant_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 5064,
+      "y": 3500
+    },
+    {
+      "kind": "ascendant_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 5055,
+      "y": 3532
+    },
+    {
+      "kind": "ascendant_vein",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 5032,
+      "y": 3555
+    }
+  ],
+  "monster_spawns": [
+    {
+      "kind": "goblin_brute",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1300,
+      "y": 900
+    },
+    {
+      "kind": "goblin_brute",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1332,
+      "y": 900
+    },
+    {
+      "kind": "goblin_brute",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1316,
+      "y": 928
+    },
+    {
+      "kind": "goblin_brute",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1284,
+      "y": 928
+    },
+    {
+      "kind": "goblin_brute",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1268,
+      "y": 900
+    },
+    {
+      "kind": "goblin_brute",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1284,
+      "y": 872
+    },
+    {
+      "kind": "ironback_boar",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1800,
+      "y": 1300
+    },
+    {
+      "kind": "ironback_boar",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1832,
+      "y": 1300
+    },
+    {
+      "kind": "ironback_boar",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1816,
+      "y": 1328
+    },
+    {
+      "kind": "ironback_boar",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1784,
+      "y": 1328
+    },
+    {
+      "kind": "ironback_boar",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1768,
+      "y": 1300
+    },
+    {
+      "kind": "ironback_boar",
+      "biome": "forest",
+      "subzone": "forest_floor",
+      "x": 1784,
+      "y": 1272
+    },
+    {
+      "kind": "mithril_stalker",
+      "biome": "forest",
+      "subzone": "forest_depths",
+      "x": 2100,
+      "y": 1700
+    },
+    {
+      "kind": "mithril_stalker",
+      "biome": "forest",
+      "subzone": "forest_depths",
+      "x": 2128,
+      "y": 1716
+    },
+    {
+      "kind": "mithril_stalker",
+      "biome": "forest",
+      "subzone": "forest_depths",
+      "x": 2084,
+      "y": 1728
+    },
+    {
+      "kind": "mithril_stalker",
+      "biome": "forest",
+      "subzone": "forest_depths",
+      "x": 2069,
+      "y": 1692
+    },
+    {
+      "kind": "mithril_stalker",
+      "biome": "forest",
+      "subzone": "forest_depths",
+      "x": 2092,
+      "y": 1669
+    },
+    {
+      "kind": "mithril_stalker",
+      "biome": "forest",
+      "subzone": "forest_depths",
+      "x": 2123,
+      "y": 1677
+    },
+    {
+      "kind": "desert_raider",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3000,
+      "y": 700
+    },
+    {
+      "kind": "desert_raider",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3032,
+      "y": 700
+    },
+    {
+      "kind": "desert_raider",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3016,
+      "y": 728
+    },
+    {
+      "kind": "desert_raider",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 2984,
+      "y": 728
+    },
+    {
+      "kind": "desert_raider",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 2968,
+      "y": 700
+    },
+    {
+      "kind": "desert_raider",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 2984,
+      "y": 672
+    },
+    {
+      "kind": "dune_devourer",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3300,
+      "y": 1000
+    },
+    {
+      "kind": "dune_devourer",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3332,
+      "y": 1000
+    },
+    {
+      "kind": "dune_devourer",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3316,
+      "y": 1028
+    },
+    {
+      "kind": "dune_devourer",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3272,
+      "y": 1016
+    },
+    {
+      "kind": "dune_devourer",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3272,
+      "y": 984
+    },
+    {
+      "kind": "dune_devourer",
+      "biome": "desert",
+      "subzone": "sunscorch_interior",
+      "x": 3300,
+      "y": 968
+    },
+    {
+      "kind": "cursed_knight",
+      "biome": "evil",
+      "subzone": "desert_woods_boundary",
+      "x": 4500,
+      "y": 800
+    },
+    {
+      "kind": "cursed_knight",
+      "biome": "evil",
+      "subzone": "desert_woods_boundary",
+      "x": 4532,
+      "y": 800
+    },
+    {
+      "kind": "cursed_knight",
+      "biome": "evil",
+      "subzone": "desert_woods_boundary",
+      "x": 4516,
+      "y": 828
+    },
+    {
+      "kind": "cursed_knight",
+      "biome": "evil",
+      "subzone": "desert_woods_boundary",
+      "x": 4484,
+      "y": 828
+    },
+    {
+      "kind": "cursed_knight",
+      "biome": "evil",
+      "subzone": "desert_woods_boundary",
+      "x": 4468,
+      "y": 800
+    },
+    {
+      "kind": "cursed_knight",
+      "biome": "evil",
+      "subzone": "desert_woods_boundary",
+      "x": 4484,
+      "y": 772
+    },
+    {
+      "kind": "frost_troll",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4900,
+      "y": 1900
+    },
+    {
+      "kind": "frost_troll",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4932,
+      "y": 1900
+    },
+    {
+      "kind": "frost_troll",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4916,
+      "y": 1928
+    },
+    {
+      "kind": "frost_troll",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4884,
+      "y": 1928
+    },
+    {
+      "kind": "frost_troll",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4884,
+      "y": 1872
+    },
+    {
+      "kind": "frost_troll",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4916,
+      "y": 1872
+    },
+    {
+      "kind": "frost_revenant",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4800,
+      "y": 2200
+    },
+    {
+      "kind": "frost_revenant",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4816,
+      "y": 2228
+    },
+    {
+      "kind": "frost_revenant",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4784,
+      "y": 2228
+    },
+    {
+      "kind": "frost_revenant",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4768,
+      "y": 2200
+    },
+    {
+      "kind": "frost_revenant",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4784,
+      "y": 2172
+    },
+    {
+      "kind": "frost_revenant",
+      "biome": "winter",
+      "subzone": "mid_mountain",
+      "x": 4816,
+      "y": 2172
+    },
+    {
+      "kind": "glacial_guardian",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4500,
+      "y": 2600
+    },
+    {
+      "kind": "glacial_guardian",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4532,
+      "y": 2600
+    },
+    {
+      "kind": "glacial_guardian",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4516,
+      "y": 2628
+    },
+    {
+      "kind": "glacial_guardian",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4484,
+      "y": 2628
+    },
+    {
+      "kind": "glacial_guardian",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4468,
+      "y": 2600
+    },
+    {
+      "kind": "glacial_guardian",
+      "biome": "winter",
+      "subzone": "upper_peaks",
+      "x": 4484,
+      "y": 2572
+    },
+    {
+      "kind": "wyrm_knight",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4100,
+      "y": 3000
+    },
+    {
+      "kind": "wyrm_knight",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4132,
+      "y": 3000
+    },
+    {
+      "kind": "wyrm_knight",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4116,
+      "y": 3028
+    },
+    {
+      "kind": "wyrm_knight",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4084,
+      "y": 3028
+    },
+    {
+      "kind": "wyrm_knight",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4068,
+      "y": 3000
+    },
+    {
+      "kind": "wyrm_knight",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 4084,
+      "y": 2972
+    },
+    {
+      "kind": "void_wraith",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3716,
+      "y": 3300
+    },
+    {
+      "kind": "void_wraith",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3716,
+      "y": 3328
+    },
+    {
+      "kind": "void_wraith",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3684,
+      "y": 3328
+    },
+    {
+      "kind": "void_wraith",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3684,
+      "y": 3272
+    },
+    {
+      "kind": "void_wraith",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3716,
+      "y": 3272
+    },
+    {
+      "kind": "void_wraith",
+      "biome": "winter",
+      "subzone": "high_peaks",
+      "x": 3748,
+      "y": 3300
+    },
+    {
+      "kind": "ascendant_wyrm",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 5000,
+      "y": 3500
+    },
+    {
+      "kind": "ascendant_wyrm",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 5032,
+      "y": 3500
+    },
+    {
+      "kind": "ascendant_wyrm",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 5016,
+      "y": 3528
+    },
+    {
+      "kind": "ascendant_wyrm",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4984,
+      "y": 3528
+    },
+    {
+      "kind": "ascendant_wyrm",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4968,
+      "y": 3500
+    },
+    {
+      "kind": "ascendant_wyrm",
+      "biome": "winter",
+      "subzone": "deepest_frontier",
+      "x": 4984,
+      "y": 3472
+    }
+  ]
+}

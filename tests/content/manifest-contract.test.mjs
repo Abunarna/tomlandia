@@ -17,8 +17,23 @@ import {
 
 const readJson = async (path) => JSON.parse(await readFile(path, "utf8"));
 const registry = await readJson("docs/overhaul/gate-0/id-registry.json");
-const draft = await readJson("content/v2/manifest.authoring.json");
+const canonical = await readJson("content/v2/manifest.authoring.json");
 const valid = await readJson("tests/content/fixtures/gate4-valid-runtime.json");
+const draft = {
+  schema_version: "tomlandia-content-manifest/v1",
+  content_version: "v2_draft_contract_test",
+  lifecycle: "draft",
+  spawn_set_version: "v2_draft_contract_test",
+  uuid_namespace: "bf50882c-ad8a-57ab-bb73-3ea3dd8fcb5c",
+  tier_registry_version: registry.registry_version,
+  tiers: structuredClone(registry.tiers),
+  id_inventory: {
+    in_place_ids: structuredClone(registry.in_place_ids),
+    retired_ids: structuredClone(registry.retired_ids),
+    new_ids: structuredClone(registry.new_ids),
+    sprite_kinds: structuredClone(registry.sprite_kinds),
+  },
+};
 
 const clone = (value) => structuredClone(value);
 
@@ -29,14 +44,14 @@ function expectInvalid(manifest, pattern) {
   );
 }
 
-test("canonical Gate 4 authoring manifest is locked and non-runnable", () => {
-  const result = validateManifest(draft, registry);
-  assert.equal(result.lifecycle, "draft");
+test("canonical Gate 5 manifest is complete, runnable and stages without activation", () => {
+  const result = validateManifest(canonical, registry);
+  assert.equal(result.lifecycle, "runtime");
   assert.match(result.hash, /^[0-9a-f]{64}$/);
-  assert.throws(() => generateRuntimeOutputs(draft, registry), /Refusing runtime generation/);
-  const generated = generateOutputs(draft, registry);
-  assert.match(generated.files["supabase/generated/content-manifest.sql"], /draft-only and cannot be applied/);
-  assert.match(generated.files["src/generated/content-manifest.ts"], /CONTENT_RUNNABLE = false/);
+  const generated = generateRuntimeOutputs(canonical, registry);
+  assert.match(generated.files["supabase/generated/content-manifest.sql"], /status = 'staged'/);
+  assert.doesNotMatch(generated.files["supabase/generated/content-manifest.sql"], /VALUES \([^\n]*'active'/);
+  assert.match(generated.files["src/generated/content-manifest.ts"], /CONTENT_RUNNABLE = true/);
   assert.doesNotMatch(generated.files["src/generated/content-manifest.ts"], /^\+/m);
 });
 
@@ -55,7 +70,7 @@ test("complete runtime fixture generates byte-identical artifacts", () => {
 test("checked-in output verification detects a manual edit", async () => {
   const outRoot = await mkdtemp(path.join(tmpdir(), "tomlandia-gate4-drift-"));
   try {
-    const generated = generateOutputs(draft, registry);
+    const generated = generateOutputs(canonical, registry);
     for (const [relativePath, content] of Object.entries(generated.files)) {
       const destination = path.join(outRoot, relativePath);
       await mkdir(path.dirname(destination), { recursive: true });
@@ -132,7 +147,25 @@ test("runtime validation rejects inactive references", () => {
 test("runtime validation rejects mismatched tier index and gameplay level", () => {
   const broken = clone(valid);
   broken.runtime.items[0].tier_index = 10;
-  expectInvalid(broken, /does not match locked tier_index 10/);
+  expectInvalid(broken, /must be tier 1 for level_requirement 1/);
+});
+
+test("runtime validation accepts an intermediate requirement in its locked tier band", () => {
+  const intermediate = clone(valid);
+  intermediate.runtime.items[0].level_requirement = 9;
+  assert.equal(validateManifest(intermediate, registry).lifecycle, "runtime");
+});
+
+test("runtime validation rejects fish distributions that do not sum to one", () => {
+  const broken = clone(valid);
+  broken.runtime.fish[0].weights[1].weight = 0.9;
+  expectInvalid(broken, /weights at level 150 must sum to 1/);
+});
+
+test("runtime validation rejects sprite geometry outside its padded canvas", () => {
+  const broken = clone(valid);
+  broken.runtime.monsters[0].visual.click_bounds.right = 999;
+  expectInvalid(broken, /click_bounds\.right: must be between 0 and 108/);
 });
 
 test("runtime validation rejects a renamed locked tier", () => {
