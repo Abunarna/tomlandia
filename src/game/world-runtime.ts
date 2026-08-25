@@ -1,4 +1,9 @@
-import { CONTENT_MANIFEST_HASH, CONTENT_VERSION } from "@/generated/content-manifest";
+import { CONTENT_VERSION } from "@/generated/content-manifest";
+
+// Locked Gate 7 world-spawn snapshot hash for the V2 renderer. This is distinct
+// from the content-manifest hash: the runtime RPC intentionally reports the
+// spawn-set hash so the client can reject a mismatched world layout.
+const V2_WORLD_SPAWN_HASH = "24130e8725da5f6e339d5037a40e81f5bcc1052a47fc29b056b36b8d8b2d31fa";
 
 export type WorldRuntimeMode = "legacy_v1" | "uuid_v2" | "maintenance";
 
@@ -57,7 +62,7 @@ export function resolveWorldRuntime(value: unknown, supportsUuidV2 = false): Wor
   if (
     !supportsUuidV2 ||
     status.active_content_version !== CONTENT_VERSION ||
-    status.spawn_hash !== CONTENT_MANIFEST_HASH
+    status.spawn_hash !== V2_WORLD_SPAWN_HASH
   ) {
     return {
       mode: "maintenance",
