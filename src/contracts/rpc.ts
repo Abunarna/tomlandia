@@ -15,6 +15,14 @@ const dbTimestamp = z.string().min(1);
 const uuid = z.string().uuid();
 const worldPoint = { _x: finite, _y: finite };
 
+const deathSchema = z
+  .object({
+    at: z.number().finite().nonnegative(),
+    reason: z.string().min(1),
+    lost_gold: nonNegativeInt.optional(),
+  })
+  .strict();
+
 export const harvestResponseSchema = z
   .object({
     ok: z.boolean(),
@@ -63,6 +71,9 @@ export const damageResponseSchema = z
     tagged_by: uuid.nullable().optional(),
     respawn_at: dbTimestamp.nullable().optional(),
     buff: potionBuffSchema.nullable().optional(),
+    death: deathSchema.nullable().optional(),
+    food_used: z.boolean().optional(),
+    skipped_loot: z.array(itemIdSchema).optional(),
     state: serverStateSchema.optional(),
   })
   .strict();
@@ -129,6 +140,10 @@ export const gearResponseSchema = z
     plus: nonNegativeInt.max(100).optional(),
     item: itemIdSchema.optional(),
     gold: nonNegativeInt.optional(),
+    earned: nonNegativeInt.optional(),
+    healed: nonNegativeInt.optional(),
+    death: deathSchema.nullable().optional(),
+    food_used: z.boolean().optional(),
     state: serverStateSchema.optional(),
   })
   .strict();
@@ -228,7 +243,25 @@ export const syncResponseSchema = z
     }
   });
 
+export const worldRuntimeStatusResponseSchema = z
+  .object({
+    contract_version: z.literal(1),
+    active_content_version: z.string().min(1),
+    active_spawn_set_version: z.string().min(1),
+    state_contract: z.enum(["legacy_integer_v1", "uuid_v2"]),
+    spawn_hash: z.string(),
+    world_width: z.number().finite().nullable(),
+    world_height: z.number().finite().nullable(),
+    movement_speed: z.number().finite().nullable(),
+    server_time: dbTimestamp.nullable(),
+  })
+  .strict();
+
 export const rpcContracts = {
+  game_world_runtime_status: {
+    request: z.object({}).strict(),
+    response: worldRuntimeStatusResponseSchema,
+  },
   harvest_node: {
     request: z.object({ _id: nonNegativeInt, ...worldPoint }).strict(),
     response: harvestResponseSchema,
@@ -256,7 +289,7 @@ export const rpcContracts = {
     response: potionResponseSchema,
   },
   gear_equip: {
-    request: z.object({ _index: z.number().int().min(0).max(19) }).strict(),
+    request: z.object({ _index: z.number().int().min(-1).max(19) }).strict(),
     response: gearResponseSchema,
   },
   gear_upgrade: {
@@ -316,6 +349,24 @@ export const rpcContracts = {
     ]),
     response: syncResponseSchema,
   },
+  consume_food: {
+    request: z.object({ _index: z.number().int().min(0).max(19) }).strict(),
+    response: gearResponseSchema,
+  },
+  player_recover: {
+    request: z.object({}).strict(),
+    response: gearResponseSchema,
+  },
+  quest_action: {
+    request: z
+      .object({ _action: z.enum(["accept", "abandon", "claim"]), _quest: itemIdSchema.nullable().default(null) })
+      .strict(),
+    response: gearResponseSchema,
+  },
+  sell_all_resources: {
+    request: z.object({}).strict(),
+    response: gearResponseSchema,
+  },
 } as const;
 
 export type RpcName = keyof typeof rpcContracts;
@@ -348,10 +399,11 @@ export function parseRpcResponse<T>(rpc: RpcName, schema: ZodTypeAny, value: unk
 
 /** Reviewed, serialisable contract index. Its checked-in JSON twin is the Gate 1 snapshot. */
 export const rpcContractManifest = {
-  version: "tomlandia-gate1-rpc-v1",
+  version: "tomlandia-gate2-rpc-v2",
   upgrade_max: 100,
   access: "authenticated",
   rpcs: {
+    game_world_runtime_status: { request: [], response: "world_runtime_status" },
     harvest_node: { request: ["_id", "_x", "_y"], response: "harvest" },
     attack_monster: {
       request: ["_id", "_x", "_y"],
@@ -374,6 +426,10 @@ export const rpcContractManifest = {
     market_cancel: { request: ["_id"], response: "market" },
     leaderboard: { request: ["_skill"], response: "leaderboard" },
     player_sync: { request: ["_data", "_rev?"], response: "sync" },
+    consume_food: { request: ["_index"], response: "gear" },
+    player_recover: { request: [], response: "gear" },
+    quest_action: { request: ["_action", "_quest"], response: "gear" },
+    sell_all_resources: { request: [], response: "gear" },
   },
 } as const;
 
@@ -389,4 +445,5 @@ export type MarketResponse = z.infer<typeof marketResponseSchema>;
 export type LeaderRowContract = z.infer<typeof leaderRowSchema>;
 export type LeaderboardResponse = z.infer<typeof leaderboardResponseSchema>;
 export type SyncResponse = z.infer<typeof syncResponseSchema>;
+export type WorldRuntimeStatusResponse = z.infer<typeof worldRuntimeStatusResponseSchema>;
 export type RpcJsonValue = z.infer<typeof jsonValueSchema>;

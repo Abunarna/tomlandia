@@ -1,0 +1,347 @@
+{
+  "schema_version": "tomlandia-content-manifest/v1",
+  "content_version": "gate4_test_v1",
+  "lifecycle": "runtime",
+  "spawn_set_version": "gate4_test_spawns_v1",
+  "uuid_namespace": "bf50882c-ad8a-57ab-bb73-3ea3dd8fcb5c",
+  "test_fixture": true,
+  "tiers": [
+    { "tier_index": 1, "level_requirement": 1, "theme": "Copper", "palette": { "primary": "#B87333", "secondary": "#E0A070", "accent": "#FFF1D6" } },
+    { "tier_index": 2, "level_requirement": 10, "theme": "Bronze", "palette": { "primary": "#CD7F32", "secondary": "#D9A066", "accent": "#FFF0D0" } },
+    { "tier_index": 3, "level_requirement": 20, "theme": "Iron", "palette": { "primary": "#8E959C", "secondary": "#B0A49B", "accent": "#F0F2F4" } },
+    { "tier_index": 4, "level_requirement": 30, "theme": "Steel", "palette": { "primary": "#6F8194", "secondary": "#CDD8E6", "accent": "#F5FAFF" } },
+    { "tier_index": 5, "level_requirement": 40, "theme": "Mithril", "palette": { "primary": "#5F91C7", "secondary": "#A8CDEE", "accent": "#EAF6FF" } },
+    { "tier_index": 6, "level_requirement": 50, "theme": "Sunsteel", "palette": { "primary": "#E3A82B", "secondary": "#F5D78A", "accent": "#FFF8D8" } },
+    { "tier_index": 7, "level_requirement": 60, "theme": "Runite", "palette": { "primary": "#2C9D8C", "secondary": "#95E6D6", "accent": "#E2FFF9" } },
+    { "tier_index": 8, "level_requirement": 70, "theme": "Shadowsteel", "palette": { "primary": "#50406C", "secondary": "#9B86BD", "accent": "#E9DFFF" } },
+    { "tier_index": 9, "level_requirement": 80, "theme": "Froststeel", "palette": { "primary": "#4B8BAA", "secondary": "#8FD6EE", "accent": "#E7FAFF" } },
+    { "tier_index": 10, "level_requirement": 90, "theme": "Wyrmsteel", "palette": { "primary": "#7B4F45", "secondary": "#C38A77", "accent": "#FFE6DE" } },
+    { "tier_index": 11, "level_requirement": 100, "theme": "Glacial", "palette": { "primary": "#78AFCB", "secondary": "#DCECF7", "accent": "#FFFFFF" } },
+    { "tier_index": 12, "level_requirement": 110, "theme": "Starsteel", "palette": { "primary": "#5368B9", "secondary": "#AAB8F0", "accent": "#F3F5FF" } },
+    { "tier_index": 13, "level_requirement": 120, "theme": "Voidsteel", "palette": { "primary": "#321F4D", "secondary": "#8061A9", "accent": "#E9DCFF" } },
+    { "tier_index": 14, "level_requirement": 130, "theme": "Wyrmforged", "palette": { "primary": "#8D3F35", "secondary": "#D9795D", "accent": "#FFE0D5" } },
+    { "tier_index": 15, "level_requirement": 140, "theme": "Ancient", "palette": { "primary": "#81703D", "secondary": "#C6B86E", "accent": "#FFF6C9" } },
+    { "tier_index": 16, "level_requirement": 150, "theme": "Ascendant", "palette": { "primary": "#7E55C7", "secondary": "#C9A8FF", "accent": "#FFF0FF" } }
+  ],
+  "runtime": {
+    "items": [
+      {
+        "id": "copper_ore",
+        "name": "Copper Ore",
+        "active": true,
+        "tier_index": 1,
+        "level_requirement": 1,
+        "kind": "resource",
+        "family": "ore",
+        "icon_key": "copper_ore",
+        "colour": "#B87333",
+        "rarity": "common",
+        "tradable": true,
+        "stackable": true,
+        "value": 6,
+        "stats": { "attack": 0, "defense": 0, "heal": 0, "speed": 0, "dmg_boost": 0, "boost_hits": 0 }
+      },
+      {
+        "id": "copper_bar",
+        "name": "Copper Bar",
+        "active": true,
+        "tier_index": 1,
+        "level_requirement": 1,
+        "kind": "material",
+        "family": "bar",
+        "icon_key": "copper_bar",
+        "colour": "#E0A070",
+        "rarity": "common",
+        "tradable": true,
+        "stackable": true,
+        "value": 18,
+        "stats": { "attack": 0, "defense": 0, "heal": 0, "speed": 0, "dmg_boost": 0, "boost_hits": 0 }
+      },
+      {
+        "id": "copper_sword",
+        "name": "Copper Sword",
+        "active": true,
+        "tier_index": 1,
+        "level_requirement": 1,
+        "kind": "weapon",
+        "family": "weapon",
+        "icon_key": "copper_sword",
+        "colour": "#E0A070",
+        "rarity": "common",
+        "tradable": true,
+        "stackable": false,
+        "value": 70,
+        "equip_skill": "combat",
+        "stats": { "attack": 6, "defense": 0, "heal": 0, "speed": 0, "dmg_boost": 0, "boost_hits": 0 }
+      },
+      {
+        "id": "goblin_charm",
+        "name": "Goblin Charm",
+        "active": true,
+        "tier_index": 1,
+        "level_requirement": 1,
+        "kind": "trophy",
+        "family": "charm",
+        "icon_key": "goblin_charm",
+        "colour": "#A7D97F",
+        "rarity": "uncommon",
+        "tradable": true,
+        "stackable": true,
+        "value": 14,
+        "stats": { "attack": 0, "defense": 0, "heal": 0, "speed": 0, "dmg_boost": 0, "boost_hits": 0 }
+      },
+      {
+        "id": "cloth_tunic",
+        "name": "Cloth Tunic",
+        "active": true,
+        "tier_index": 1,
+        "level_requirement": 1,
+        "kind": "armor",
+        "family": "armor",
+        "icon_key": "cloth_tunic",
+        "colour": "#F2C6D8",
+        "rarity": "common",
+        "tradable": true,
+        "stackable": false,
+        "value": 18,
+        "equip_skill": "combat",
+        "stats": { "attack": 1, "defense": 3.3, "heal": 0, "speed": 0.04, "dmg_boost": 0, "boost_hits": 0 }
+      },
+      {
+        "id": "river_minnow",
+        "name": "River Minnow",
+        "active": true,
+        "tier_index": 1,
+        "level_requirement": 1,
+        "kind": "resource",
+        "family": "fish",
+        "icon_key": "river_minnow",
+        "colour": "#9FC9D8",
+        "rarity": "common",
+        "tradable": true,
+        "stackable": true,
+        "value": 8,
+        "stats": { "attack": 0, "defense": 0, "heal": 0, "speed": 0, "dmg_boost": 0, "boost_hits": 0 }
+      },
+      {
+        "id": "ascendant_core",
+        "name": "Ascendant Core",
+        "active": true,
+        "tier_index": 16,
+        "level_requirement": 150,
+        "kind": "trophy",
+        "family": "core",
+        "icon_key": "ascendant_core",
+        "colour": "#C9A8FF",
+        "rarity": "legendary",
+        "tradable": true,
+        "stackable": true,
+        "value": 10000,
+        "stats": { "attack": 0, "defense": 0, "heal": 0, "speed": 0, "dmg_boost": 0, "boost_hits": 0 }
+      }
+    ],
+    "recipes": [
+      {
+        "id": "smelt_copper_bar",
+        "active": true,
+        "tier_index": 1,
+        "level_requirement": 1,
+        "station": "smelt",
+        "skill": "smithing",
+        "output_item_id": "copper_bar",
+        "output_qty": 1,
+        "xp": 22,
+        "time_s": 1.6,
+        "inputs": [{ "item_id": "copper_ore", "qty": 2 }]
+      }
+    ],
+    "nodes": [
+      {
+        "kind": "copper_rock",
+        "name": "Copper Rock",
+        "active": true,
+        "tier_index": 1,
+        "level_requirement": 1,
+        "skill": "mining",
+        "item_id": "copper_ore",
+        "xp": 18,
+        "gather_s": 3.2,
+        "respawn_s": 9,
+        "max_charges": 4,
+        "cluster_min": 6,
+        "shape": "rock",
+        "family": "rock",
+        "colour": "#B87333",
+        "visual_key": "copper_rock"
+      }
+    ],
+    "monsters": [
+      {
+        "kind": "goblin",
+        "name": "Goblin",
+        "active": true,
+        "tier_index": 1,
+        "level_requirement": 1,
+        "hp": 22,
+        "attack": 5,
+        "defense": 2,
+        "xp": 34,
+        "gold_min": 4,
+        "gold_max": 12,
+        "respawn_s": 15,
+        "visual_key": "goblin",
+        "visual": {
+          "asset_key": "goblin",
+          "asset_path": "sprites/creatures/goblin.png",
+          "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "padded_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "canvas": { "width": 108, "height": 166 },
+          "pivot": { "x": 54, "y": 162 },
+          "visual_bounds": { "left": 4, "top": 4, "right": 104, "bottom": 162 },
+          "click_bounds": { "left": 4, "top": 4, "right": 104, "bottom": 162 },
+          "render_scale": 1,
+          "ground_offset_y": 16,
+          "motion_profile": "static_front_facing_bob",
+          "fallback": { "body": "#A7D97F", "accent": "#6FAE52", "size": 1, "ears": "horns" }
+        },
+        "loot": [
+          { "item_id": "goblin_charm", "chance": 0.35, "qty_min": 1, "qty_max": 1, "channel": "drop", "xp": 0 }
+        ]
+      }
+    ],
+    "fish": [
+      {
+        "item_id": "river_minnow",
+        "active": true,
+        "tier_index": 1,
+        "level_requirement": 1,
+        "xp": 12,
+        "weights": [{ "level": 1, "weight": 1 }, { "level": 150, "weight": 1 }]
+      }
+    ],
+    "fishing_spots": [
+      {
+        "id": "fields_pond",
+        "active": true,
+        "biome": "fields",
+        "subzone": "grand_haven_outskirts",
+        "x": 330,
+        "y": 2780,
+        "fish_item_ids": ["river_minnow"]
+      }
+    ],
+    "quests": [
+      {
+        "id": "goblin_trouble",
+        "name": "Goblin Trouble",
+        "description": "Goblins raid the east fields. Defeat 5.",
+        "active": true,
+        "tier_index": 1,
+        "level_requirement": 1,
+        "kind": "kill",
+        "target_id": "goblin",
+        "count": 5,
+        "gold": 20,
+        "xp_skill": "combat",
+        "xp": 50,
+        "reward_items": [{ "item_id": "copper_bar", "qty": 1 }]
+      }
+    ],
+    "bosses": [
+      {
+        "id": "desolatus",
+        "name": "DESOLATUS",
+        "active": true,
+        "level_requirement": 150,
+        "hp": 100000,
+        "attack": 500,
+        "defense": 250,
+        "respawn_s": 3600,
+        "visual_key": "desolatus_procedural",
+        "reward_mode": "fixed_pool_proportional_damage_with_per_player_cap",
+        "target_contributors": 4,
+        "minimum_damage": 1000,
+        "xp_pool": 4000,
+        "xp_per_player_cap": 1000,
+        "gold_pool_min": 2000,
+        "gold_pool_max": 4000,
+        "gold_per_player_cap_min": 500,
+        "gold_per_player_cap_max": 1000,
+        "rewards": []
+      }
+    ],
+    "node_spawns": [
+      {
+        "kind": "copper_rock",
+        "ordinal": 0,
+        "active": true,
+        "biome": "fields",
+        "subzone": "grand_haven_outskirts",
+        "x": 250,
+        "y": 210
+      }
+    ],
+    "monster_spawns": [
+      {
+        "kind": "goblin",
+        "ordinal": 0,
+        "active": true,
+        "biome": "fields",
+        "subzone": "grand_haven_outskirts",
+        "x": 980,
+        "y": 700
+      }
+    ],
+    "migration_rules": [
+      {
+        "from_id": "wooden_club",
+        "action": "replace",
+        "to_id": "copper_sword",
+        "captured_value_required": false,
+        "notice_key": "wooden_club_replaced"
+      }
+    ],
+    "starter_loadout": {
+      "weapon_item_id": "copper_sword",
+      "armor_item_id": "cloth_tunic",
+      "plus": 0
+    },
+    "mechanics": {
+      "approved_balance_model_hash": "e1fbe19aac61014b38885ce38cd16d9a12e3852f24858301a2588c65fba4a640",
+      "max_level": 150,
+      "max_plus": 100,
+      "market_fee_pct": 5,
+      "weapon_multiplier_rule": "1 + 2% * min(plus, 50) + 0.5% * max(plus - 50, 0)",
+      "light_attack_multiplier_rule": "1 + 5% * min(plus, 20) + 1% * max(plus - 20, 0)",
+      "defense_multiplier_rule": "1 + 0.1% * plus",
+      "upgrade_cost_rule": "round_to_5(max(25, item_value * (0.08 + 3.4 * sqrt(next_plus))))",
+      "gear_resale_rule": "floor(item_value * 0.40 + cumulative_upgrade_spend * 0.15)",
+      "fishing_xp_curve": [
+        { "tier_index": 1, "level_requirement": 1, "xp_per_action": 3 },
+        { "tier_index": 2, "level_requirement": 10, "xp_per_action": 6 },
+        { "tier_index": 3, "level_requirement": 20, "xp_per_action": 17 },
+        { "tier_index": 4, "level_requirement": 30, "xp_per_action": 40 },
+        { "tier_index": 5, "level_requirement": 40, "xp_per_action": 102 },
+        { "tier_index": 6, "level_requirement": 50, "xp_per_action": 331 },
+        { "tier_index": 7, "level_requirement": 60, "xp_per_action": 588 },
+        { "tier_index": 8, "level_requirement": 70, "xp_per_action": 660 },
+        { "tier_index": 9, "level_requirement": 80, "xp_per_action": 753 },
+        { "tier_index": 10, "level_requirement": 90, "xp_per_action": 844 },
+        { "tier_index": 11, "level_requirement": 100, "xp_per_action": 935 },
+        { "tier_index": 12, "level_requirement": 110, "xp_per_action": 1025 },
+        { "tier_index": 13, "level_requirement": 120, "xp_per_action": 1113 },
+        { "tier_index": 14, "level_requirement": 130, "xp_per_action": 1208 },
+        { "tier_index": 15, "level_requirement": 140, "xp_per_action": 1312 },
+        { "tier_index": 16, "level_requirement": 150, "xp_per_action": 1413 }
+      ]
+    },
+    "player_notice": {
+      "title": "Tomlandia progression overhaul",
+      "summary": "Your preserved progress will be migrated during a scheduled maintenance window.",
+      "details": [
+        "Existing compatible items keep their quantity, upgrade level and location.",
+        "Retired items follow the published replacement or compensation ledger."
+      ]
+    }
+  }
+}

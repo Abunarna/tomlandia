@@ -181,8 +181,20 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
   ].map((d) => [d.id, d]),
 );
 
+export class UnknownItemIdError extends Error {
+  readonly itemId: string;
+
+  constructor(itemId: string) {
+    super(`Unknown item ID: ${itemId}`);
+    this.name = "UnknownItemIdError";
+    this.itemId = itemId;
+  }
+}
+
 export function item(id: ItemId): ItemDef {
-  return ITEMS[id] ?? ITEMS["oak_logs"]!;
+  const definition = ITEMS[id];
+  if (!definition) throw new UnknownItemIdError(id);
+  return definition;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1712,10 +1724,10 @@ export const RECIPES: Recipe[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* Equipment upgrading (+1 .. +1000)                                   */
+/* Equipment upgrading (+1 .. +100)                                    */
 /* ------------------------------------------------------------------ */
 
-export const MAX_PLUS = 1000;
+export const MAX_PLUS = 100;
 /** each upgrade level grants +5% of base stat */
 export const PLUS_STEP = 0.05;
 

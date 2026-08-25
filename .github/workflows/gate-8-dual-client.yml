@@ -1,0 +1,28 @@
+name: Gate 8 dual-compatible client
+
+on:
+  push:
+    branches:
+      - "codex/gate-8-*"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gate-8-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dual-client:
+    name: Version gate, sprites and inherited contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run test:gate8
+      - run: bun run typecheck
+      - run: bun run build

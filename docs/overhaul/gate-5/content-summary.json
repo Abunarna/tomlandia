@@ -1,0 +1,39 @@
+{
+  "approved_balance_model_hash": "e1fbe19aac61014b38885ce38cd16d9a12e3852f24858301a2588c65fba4a640",
+  "audited_resolutions": {
+    "explanation": "The locked Gate 0 inventory contains 4 weapons, 9 armour pieces, 5 foods and 5 potions. The master document's repeated total of 18 omitted the five in-place potions even though Phase 8 requires them to retain IDs.",
+    "in_place_item_count": 23,
+    "light_armor_skill": "tailoring",
+    "light_armor_skill_explanation": "Live Armourer recipes use Smithing for Heavy armour and Tailoring for Light armour. Gate 5 corrects the Gate 4 one-skill station map and preserves that established split.",
+    "meadow_berries_explanation": "The live Berry Bush requirement of 3 conflicted with the locked level-1 Linen Cloth recipe. Gate 5 applies a lower-only requirement correction to 1 so the tier-1 dependency graph is reachable without weakening or replacing the unchanged recipe.",
+    "meadow_berries_level_requirement": 1
+  },
+  "counts": {
+    "active_items": 168,
+    "bosses": 1,
+    "fish": 5,
+    "fishing_spots": 6,
+    "inactive_items": 6,
+    "items": 174,
+    "migration_rules": 6,
+    "monster_spawns": 361,
+    "monsters": 32,
+    "node_spawns": 369,
+    "nodes": 27,
+    "quests": 8,
+    "recipes": 108,
+    "sprites": 32,
+    "tiers": 16
+  },
+  "live_definition_source_sha256": "0babb7e09063dbe1d7973c8ec6e584df38f1fa362312df72baf12f8f8c16cf8f",
+  "live_spawn_source_sha256": "0babb7e09063dbe1d7973c8ec6e584df38f1fa362312df72baf12f8f8c16cf8f",
+  "manifest_hash": "8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9",
+  "safety": {
+    "activation_performed": false,
+    "existing_monster_positions_preserved": 289,
+    "existing_node_positions_preserved": 291,
+    "lifecycle": "runtime",
+    "production_database_writes": false
+  },
+  "schema_version": "tomlandia-gate5-content-summary/v1"
+}

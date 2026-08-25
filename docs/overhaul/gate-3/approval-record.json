@@ -1,0 +1,14 @@
+{
+  "recordVersion": "tomlandia-v2-gate3-approval-1",
+  "status": "owner_approved",
+  "approvedModelHash": "e1fbe19aac61014b38885ce38cd16d9a12e3852f24858301a2588c65fba4a640",
+  "approvedBy": "project_owner",
+  "approvedOn": "2026-08-24",
+  "evidence": "The project owner explicitly replied ‘approved’ to the finished Gate 3 numeric-table approval requirement in the project conversation.",
+  "gate4ImplementationAllowed": true,
+  "runtimeActivationAllowed": false,
+  "productionDatabaseWritesAllowed": false,
+  "mergeToMainAllowed": false,
+  "publishingAllowed": false,
+  "lovableAgentCreditSpendingAllowed": false
+}

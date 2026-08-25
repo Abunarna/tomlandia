@@ -11,14 +11,17 @@ select regexp_replace(
   's'
 ) as body
 from pg_proc
-where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
+where oid = coalesce(
+  to_regprocedure('public.attack_monster_v1(integer,numeric,numeric)'),
+  'public.attack_monster(integer,numeric,numeric)'::regprocedure
+);
 
 -- Gate 2 must standardise the final success object, not add another partial patch.
-select like(body, '%''leveled''%', 'attack_monster returns canonical leveled key') from gate1_attack_final_return;
-select like(body, '%''state''%', 'attack_monster returns canonical state key') from gate1_attack_final_return;
-select like(body, '%''buff''%', 'attack_monster returns canonical buff key') from gate1_attack_final_return;
-select unlike(body, '%''levelup''%', 'attack_monster no longer returns legacy levelup key') from gate1_attack_final_return;
-select unlike(body, '%''save''%', 'attack_monster no longer returns legacy whole-save key') from gate1_attack_final_return;
+select ok(body like '%''leveled''%', 'attack_monster returns canonical leveled key') from gate1_attack_final_return;
+select ok(body like '%''state''%', 'attack_monster returns canonical state key') from gate1_attack_final_return;
+select ok(body like '%''buff''%', 'attack_monster returns canonical buff key') from gate1_attack_final_return;
+select ok(body not like '%''levelup''%', 'attack_monster no longer returns legacy levelup key') from gate1_attack_final_return;
+select ok(body not like '%''save''%', 'attack_monster no longer returns legacy whole-save key') from gate1_attack_final_return;
 
 select is(
   (

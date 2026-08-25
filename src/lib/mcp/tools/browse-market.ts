@@ -1,8 +1,9 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
 import { supabaseForUser } from "../supabase";
-import { item } from "@/game/data";
+import { displayContentItem } from "@/game/content-display";
 import type { BrowseRes } from "@/game/market";
+import { parseRpcResponse, rpcContracts } from "@/contracts/rpc";
 
 export default defineTool({
   name: "browse_market",
@@ -18,15 +19,21 @@ export default defineTool({
       return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
     }
     const supabase = supabaseForUser(ctx);
+    rpcContracts.market_browse.request.parse({});
     const { data, error } = await supabase.rpc("market_browse");
-    if (error) return { content: [{ type: "text", text: error.message }], isError: true };
-
-    const res = (data ?? {}) as unknown as BrowseRes;
+    const res = parseRpcResponse<BrowseRes>(
+      "market_browse",
+      rpcContracts.market_browse.response,
+      error ? { ok: false, reason: error.message } : (data ?? { ok: false, reason: "empty" }),
+    );
+    if (!res.ok) {
+      return { content: [{ type: "text", text: res.reason ?? "Marketplace unavailable" }], isError: true };
+    }
     const all = res.listings ?? [];
-    const listings = (item_id ? all.filter((l) => l.item === item_id) : all).map((l) => ({
-      ...l,
-      name: item(l.item)?.name ?? l.item,
-    }));
+    const listings = (item_id ? all.filter((l) => l.item === item_id) : all).map((l) => {
+      const display = displayContentItem(l.item);
+      return { ...l, name: display.name, contentStatus: display.status };
+    });
     const trades = (res.trades ?? []).slice(0, 20);
 
     const text = listings.length

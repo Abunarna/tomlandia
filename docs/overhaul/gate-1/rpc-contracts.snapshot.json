@@ -1,8 +1,9 @@
 {
-  "version": "tomlandia-gate1-rpc-v1",
+  "version": "tomlandia-gate2-rpc-v2",
   "upgrade_max": 100,
   "access": "authenticated",
   "rpcs": {
+    "game_world_runtime_status": { "request": [], "response": "world_runtime_status" },
     "harvest_node": { "request": ["_id", "_x", "_y"], "response": "harvest" },
     "attack_monster": {
       "request": ["_id", "_x", "_y"],
@@ -24,6 +25,10 @@
     "market_buy": { "request": ["_id", "_qty"], "response": "market" },
     "market_cancel": { "request": ["_id"], "response": "market" },
     "leaderboard": { "request": ["_skill"], "response": "leaderboard" },
-    "player_sync": { "request": ["_data", "_rev?"], "response": "sync" }
+    "player_sync": { "request": ["_data", "_rev?"], "response": "sync" },
+    "consume_food": { "request": ["_index"], "response": "gear" },
+    "player_recover": { "request": [], "response": "gear" },
+    "quest_action": { "request": ["_action", "_quest"], "response": "gear" },
+    "sell_all_resources": { "request": [], "response": "gear" }
   }
 }

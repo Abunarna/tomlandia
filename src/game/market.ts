@@ -1,4 +1,5 @@
 import { item } from "./data";
+import { displayContentItem } from "./content-display";
 import type { ServerState } from "./engine";
 import type { ItemId } from "./types";
 
@@ -89,7 +90,28 @@ export interface MarketRes {
 
 /* ---------- lightweight, deterministic price guidance ---------- */
 
-const TIER_MULT: Record<number, number> = { 1: 1, 2: 2, 3: 5, 4: 12, 5: 30 };
+/**
+ * Approved Gate 8 suggestion curve. It covers every generated v2 tier while
+ * preserving the previous v1 values exactly for tiers one through five.
+ */
+const TIER_MULT: Record<number, number> = {
+  1: 1,
+  2: 2,
+  3: 5,
+  4: 12,
+  5: 30,
+  6: 65,
+  7: 130,
+  8: 260,
+  9: 520,
+  10: 1_050,
+  11: 2_100,
+  12: 4_200,
+  13: 8_400,
+  14: 16_800,
+  15: 33_600,
+  16: 67_200,
+};
 
 const RARITY_MULT: Record<string, number> = {
   common: 1,
@@ -133,7 +155,7 @@ export function feeFor(total: number): number {
 }
 
 export function tradeText(t: TradeRow): string {
-  const name = `${item(t.item).name}${t.plus ? ` +${t.plus}` : ""}`;
+  const name = `${displayContentItem(t.item).name}${t.plus ? ` +${t.plus}` : ""}`;
   return `${t.buyer} bought ${t.qty}× ${name} from ${t.seller} (${t.price}g ea)`;
 }
 

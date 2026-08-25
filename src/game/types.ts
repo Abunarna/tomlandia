@@ -75,7 +75,7 @@ export interface ItemDef {
 export interface InvSlot {
   id: ItemId;
   qty: number;
-  /** upgrade level 0..1000, gear only */
+  /** upgrade level 0..100, gear only */
   plus?: number;
 }
 
@@ -207,4 +207,3 @@ export interface HudSnapshot {
     respawnAt: number;
   };
 }
-

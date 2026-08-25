@@ -72,6 +72,7 @@ import { ORE_PALETTE_BY_NODE, oreSprite } from "./ore-sprite";
 import { TREE_PALETTE_BY_NODE, treeSprite } from "./tree-sprite";
 import { ambience, loops, music, sfx, type LoopId } from "./audio";
 import { KnightRig, preloadKnight, type KnightAnim } from "./knight";
+import { creaturePointerHit, creatureSprite, drawCreatureSprite, preloadCreatureSprites } from "@/generated/creature-sprites";
 import bridgeAsset from "@/assets/bridge.png.asset.json";
 import monasteryAsset from "@/assets/monastery.png.asset.json";
 import groundTownAsset from "@/assets/ground-town-v2.png.asset.json";
@@ -426,6 +427,13 @@ export interface ServerState {
   armor?: EquipState | ItemId | null;
   food?: ItemId | null;
   bank?: { gold?: number; items?: (InvSlot | null)[] } | null;
+  /** Health, position and quests are server-owned from Gate 2 onward. */
+  hp?: number;
+  px?: number;
+  py?: number;
+  quest?: QuestState | null;
+  completed?: string[];
+  autoEatAt?: number;
 }
 
 /** Generic reply from the small bag/gear/bank routines. */
@@ -434,6 +442,11 @@ export interface GearRes {
   reason?: string;
   cost?: number;
   plus?: number;
+  gold?: number;
+  earned?: number;
+  healed?: number;
+  food_used?: boolean;
+  death?: { at: number; reason: string; lost_gold?: number } | null;
   state?: ServerState;
 }
 
@@ -482,6 +495,9 @@ export interface DamageRes {
   tagged_by?: string | null;
   respawn_at?: string | null;
   buff?: { dmg: number; hits: number };
+  death?: { at: number; reason: string; lost_gold?: number } | null;
+  food_used?: boolean;
+  skipped_loot?: ItemId[];
   state?: ServerState;
 }
 
@@ -790,6 +806,7 @@ export class GameEngine {
   private gatherProgress = 0;
   private combatCd = 0;
   private regenCd = 0;
+  private recoveryPending = false;
   private activity = "Wandering";
   private activityProgress = 0;
   /** looping sound effect for the action in progress this frame */
@@ -922,6 +939,14 @@ export class GameEngine {
   onBankGold: ((dir: "in" | "out", amount: number) => Promise<GearRes>) | null = null;
   /** Server-side bank item move. */
   onBankItem: ((dir: "in" | "out", index: number, qty: number) => Promise<GearRes>) | null = null;
+  /** Server-owned manual food use. */
+  onFood: ((index: number) => Promise<GearRes>) | null = null;
+  /** Server-owned out-of-combat health recovery. */
+  onRecover: (() => Promise<GearRes>) | null = null;
+  /** Server-owned quest lifecycle. */
+  onQuestAction: ((action: "accept" | "abandon" | "claim", quest: string | null) => Promise<GearRes>) | null = null;
+  /** Server-owned bulk resource sale. */
+  onSellAllResources: (() => Promise<GearRes>) | null = null;
 
 
   /** Active damage buff from a potion — mirrored from the server. */
@@ -1327,8 +1352,9 @@ export class GameEngine {
       void Promise.resolve(p)
         .then((ack) => {
           if (ack && typeof ack.rev === "number") this.rev = ack.rev;
-          if (ack?.conflict && ack.data) {
-            // The server had newer economy state than we did — take theirs.
+          if (ack?.data) {
+            // Gate 2 always returns the authoritative row, including health,
+            // position and quest state. Adopt it even on a non-conflicting save.
             this.applyAuthoritative(ack.data);
             this.emitHud(true);
           }
@@ -1370,6 +1396,14 @@ export class GameEngine {
         if (typeof xp === "number") this.skills[id] = { xp };
       }
       this.hp = Math.min(this.hp, this.maxHp);
+    }
+    if (typeof s.hp === "number") this.hp = Math.max(0, Math.min(s.hp, this.maxHp));
+    if (typeof s.px === "number") this.px = s.px;
+    if (typeof s.py === "number") this.py = s.py;
+    if ("quest" in s) this.quest = s.quest ?? null;
+    if (Array.isArray(s.completed)) this.completed = [...s.completed];
+    if (typeof s.autoEatAt === "number" && [0.25, 0.5, 0.75].includes(s.autoEatAt)) {
+      this.autoEatAt = s.autoEatAt;
     }
     this.applyGearState(s);
   }
@@ -1476,35 +1510,30 @@ export class GameEngine {
     return this.inv.reduce((n, s) => (s && s.id === id ? n + s.qty : n), 0);
   }
 
-  private removeItem(id: ItemId, qty: number): boolean {
-    if (this.countItem(id) < qty) return false;
-    let left = qty;
-    for (let i = 0; i < this.inv.length && left > 0; i++) {
-      const s = this.inv[i];
-      if (!s || s.id !== id) continue;
-      const take = Math.min(left, s.qty);
-      s.qty -= take;
-      left -= take;
-      if (s.qty <= 0) this.inv[i] = null;
-    }
-    return true;
-  }
-
   addItem(id: ItemId, qty = 1, plus = 0): boolean {
-    // Everything stacks — gear only merges with identical upgrade levels, so
-    // a Steel Sword +14 stays a distinct stack from a plain Steel Sword.
-    const slot = this.inv.find((s) => s && s.id === id && (s.plus ?? 0) === plus);
-    if (slot) {
-      slot.qty += qty;
-      return true;
+    const definition = item(id);
+    if (definition.stackable) {
+      const slot = this.inv.find((s) => s && s.id === id && (s.plus ?? 0) === plus);
+      if (slot) {
+        slot.qty += qty;
+        return true;
+      }
     }
 
-    const idx = this.inv.findIndex((s) => s === null);
-    if (idx === -1) {
+    const needed = definition.stackable ? 1 : qty;
+    const empty = this.inv.reduce<number[]>((indices, slot, index) => {
+      if (slot === null) indices.push(index);
+      return indices;
+    }, []);
+    if (empty.length < needed) {
       this.pushText(this.px, this.py - 50, "Bag full!", "#f2a1a1");
       return false;
     }
-    this.inv[idx] = { id, qty, plus };
+    if (definition.stackable) {
+      this.inv[empty[0]!] = { id, qty, plus };
+    } else {
+      for (let i = 0; i < qty; i += 1) this.inv[empty[i]!] = { id, qty: 1, plus };
+    }
     return true;
   }
 
@@ -1588,20 +1617,32 @@ export class GameEngine {
   }
 
   private bankAdd(slot: InvSlot, qty: number): boolean {
-    const existing = this.bank.items.find(
-      (s) => s && s.id === slot.id && (s.plus ?? 0) === (slot.plus ?? 0),
-    );
-    if (existing) {
-      existing.qty += qty;
-      return true;
+    const definition = item(slot.id);
+    if (definition.stackable) {
+      const existing = this.bank.items.find(
+        (s) => s && s.id === slot.id && (s.plus ?? 0) === (slot.plus ?? 0),
+      );
+      if (existing) {
+        existing.qty += qty;
+        return true;
+      }
     }
-
-    const idx = this.bank.items.findIndex((s) => s === null);
-    if (idx === -1) {
+    const needed = definition.stackable ? 1 : qty;
+    const empty = this.bank.items.reduce<number[]>((indices, current, index) => {
+      if (current === null) indices.push(index);
+      return indices;
+    }, []);
+    if (empty.length < needed) {
       this.pushText(this.px, this.py - 50, "Bank full!", "#f2a1a1");
       return false;
     }
-    this.bank.items[idx] = { id: slot.id, qty, plus: slot.plus ?? 0 };
+    if (definition.stackable) {
+      this.bank.items[empty[0]!] = { id: slot.id, qty, plus: slot.plus ?? 0 };
+    } else {
+      for (let i = 0; i < qty; i += 1) {
+        this.bank.items[empty[i]!] = { id: slot.id, qty: 1, plus: slot.plus ?? 0 };
+      }
+    }
     return true;
   }
 
@@ -1641,25 +1682,11 @@ export class GameEngine {
     if (def.kind !== "weapon" && def.kind !== "armor") return;
     const prev = def.kind === "weapon" ? this.weapon : this.armor;
     const next: EquipState = { id: slot.id, plus: slot.plus ?? 0 };
-    // Equipping from a stack only takes one piece; the swapped-out item goes
-    // back into the bag (needs a free/matching slot when the stack survives).
     if (slot.qty > 1) {
-      if (prev) {
-        const room =
-          this.inv.some((s, i) => i !== index && s === null) ||
-          this.inv.some(
-            (s, i) => i !== index && s && s.id === prev.id && (s.plus ?? 0) === (prev.plus ?? 0),
-          );
-        if (!room) {
-          this.pushText(this.px, this.py - 50, "Bag full!", "#f2a1a1");
-          return;
-        }
-      }
-      slot.qty -= 1;
-      if (prev) this.addItem(prev.id, 1, prev.plus);
-    } else {
-      this.inv[index] = prev ? { id: prev.id, qty: 1, plus: prev.plus } : null;
+      this.pushText(this.px, this.py - 50, "Legacy gear stack needs migration", "#f2a1a1");
+      return;
     }
+    this.inv[index] = prev ? { id: prev.id, qty: 1, plus: prev.plus } : null;
     if (def.kind === "weapon") this.weapon = next;
     else this.armor = next;
     this.emitHud(true);
@@ -1765,7 +1792,8 @@ export class GameEngine {
     for (const m of this.monsters) {
       if (m.dead) continue;
       const d = Math.hypot(m.x - wx, m.y - wy);
-      if (d < 40 && (!best || d < best.d)) best = { d, t: { type: "monster", id: m.id } };
+      const spriteHit = creaturePointerHit(m.kind, m.x, m.y, wx, wy);
+      if ((spriteHit ?? d < 40) && (!best || d < best.d)) best = { d, t: { type: "monster", id: m.id } };
     }
     for (const n of this.nodes) {
       if (n.depleted) continue;
@@ -1792,6 +1820,7 @@ export class GameEngine {
 
   start() {
     preloadKnight();
+    void preloadCreatureSprites();
     this.last = performance.now();
     const loop = (t: number) => {
       const dt = Math.min(0.05, (t - this.last) / 1000);
@@ -1928,12 +1957,19 @@ export class GameEngine {
       }
       this.hp = Math.min(this.hp, this.maxHp);
     }
+    if (typeof state.hp === "number") this.hp = Math.max(0, Math.min(state.hp, this.maxHp));
+    if (typeof state.px === "number") this.px = state.px;
+    if (typeof state.py === "number") this.py = state.py;
+    if ("quest" in state) this.quest = state.quest ?? null;
+    if (Array.isArray(state.completed)) this.completed = [...state.completed];
+    if (typeof state.autoEatAt === "number" && [0.25, 0.5, 0.75].includes(state.autoEatAt)) {
+      this.autoEatAt = state.autoEatAt;
+    }
     this.applyGearState(state);
-    // The server just wrote the row, so our version marker is stale. Push a
-    // sync to pick the new one up before any local bag/bank change is saved.
+    // The action updated the row and therefore advanced its revision. Mark our
+    // revision unknown; the next ordinary sync will refresh it without trying
+    // to resend server-owned state.
     this.rev = null;
-    this.syncNow();
-
   }
 
   /** Level-up fanfare, fired when the server reports a new level. */
@@ -1964,7 +2000,6 @@ export class GameEngine {
       if (!id || !ITEMS[id]) return;
       this.pushText(m.x + (i % 2 ? 16 : -16), m.y - 56 - i * 12, `+${l.qty} ${ITEMS[id]!.name}`, "#dff6c9");
     });
-    this.questTick("kill", m.kind);
     this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
     if (res.leveled) this.celebrateLevel("combat");
     for (let i = 0; i < 12; i++) {
@@ -2064,28 +2099,6 @@ export class GameEngine {
     this.emitHud(true);
   }
 
-  /** Shared damage-taken handling (regular monsters and the boss both use it). */
-  private takeHit(taken: number, killer: string) {
-    if (taken > 0) {
-      this.hp -= taken;
-      this.pushText(this.px, this.py - 34, `-${taken}`, "#f4b0b0");
-    }
-    this.autoEat();
-    if (this.hp <= 0) {
-      const lostGold = Math.floor(this.gold * 0.1);
-      this.hp = Math.ceil(this.maxHp * 0.5);
-      this.px = 2606;
-      this.py = 3223;
-      this.gold = Math.max(0, this.gold - lostGold);
-      this.death = {
-        at: Date.now(),
-        reason: `${killer} struck you down. A villager dragged you back to Grand Haven at half health. You lost ${lostGold} gold (10%) in the chaos.`,
-      };
-      this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
-      this.target = { type: "none" };
-    }
-  }
-
   /** One boss swing (ours, or his free hit when we simply stand too close). */
   private bossSwing(passive: boolean) {
     if (this.boss.pending || !this.onBossAttack) return;
@@ -2110,6 +2123,16 @@ export class GameEngine {
           this.pushText(this.boss.x, this.boss.y - 70, `${res.dmg ?? 0}`, "#ffd3d3");
         }
         this.applyServerState(res.state);
+        if (res.taken) this.pushText(this.px, this.py - 34, `-${res.taken}`, "#f4b0b0");
+        if (res.food_used) {
+          this.autoEatFiredAt = Date.now();
+          this.autoEatCdUntil = this.autoEatFiredAt + 2000;
+        }
+        if (res.death) {
+          this.death = { at: res.death.at, reason: res.death.reason };
+          this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
+          this.target = { type: "none" };
+        }
         if (res.killed) {
           this.boss.respawnAt = res.respawn_at ? Date.parse(res.respawn_at) : Date.now() + 600000;
           this.pushText(this.boss.x, this.boss.y - 100, `${BOSS_NAME} FALLS!`, "#ffd98e");
@@ -2121,8 +2144,6 @@ export class GameEngine {
           });
           if (res.leveled) this.celebrateLevel("combat");
           if (this.target.type === "boss") this.target = { type: "none" };
-        } else {
-          this.takeHit(Math.max(0, res.taken ?? 0), BOSS_NAME);
         }
         this.emitHud(true);
       })
@@ -2154,21 +2175,6 @@ export class GameEngine {
     } else {
       this.bossAggroCd = 0;
     }
-  }
-
-  private autoEat() {
-    if (this.hp / this.maxHp > this.autoEatAt) return;
-    const now = Date.now();
-    if (now < this.autoEatCdUntil) return;
-    const id = this.food;
-    if (!id) return;
-    const def = item(id);
-    if (def.kind !== "food" || !def.heal) return;
-    if (!this.removeItem(id, 1)) return;
-    this.autoEatFiredAt = now;
-    this.autoEatCdUntil = now + 2000;
-    this.hp = Math.min(this.maxHp, this.hp + def.heal);
-    this.pushText(this.px, this.py - 46, `+${def.heal} hp`, "#9fe6a0");
   }
 
   private update(dt: number) {
@@ -2252,7 +2258,6 @@ export class GameEngine {
                 if (res.ok) {
                   this.applyServerState(res.state);
                   if (res.item) {
-                    this.questTick("gather", res.item);
                     this.pushText(n.x, n.y - 20, `+${res.qty ?? 1} ${item(res.item).name}`, "#dff6c9");
                   }
                   this.orbs.push({ x: this.px + (Math.random() - 0.5) * 30, y: this.py - 20, life: 0.9 });
@@ -2323,7 +2328,6 @@ export class GameEngine {
                   this.fishCd = 1.2;
                   if (res.ok && res.item) {
                     this.applyServerState(res.state);
-                    this.questTick("gather", res.item);
                     this.pushText(sp.x, sp.y - 24, `+${res.qty ?? 1} ${item(res.item).name}`, "#dff6c9");
                     this.orbs.push({ x: this.px, y: this.py - 20, life: 0.9 });
                     if (res.leveled) this.celebrateLevel("fishing");
@@ -2394,6 +2398,16 @@ export class GameEngine {
                     } else if (hits > this.buffMaxHits) this.buffMaxHits = hits;
                   }
                   this.applyServerState(res.state);
+                  if (res.taken) this.pushText(this.px, this.py - 34, `-${res.taken}`, "#f4b0b0");
+                  if (res.food_used) {
+                    this.autoEatFiredAt = Date.now();
+                    this.autoEatCdUntil = this.autoEatFiredAt + 2000;
+                  }
+                  if (res.death) {
+                    this.death = { at: res.death.at, reason: res.death.reason };
+                    this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
+                    this.target = { type: "none" };
+                  }
 
                   if (res.killed) {
                     m.dead = true;
@@ -2401,24 +2415,6 @@ export class GameEngine {
                     if (res.credited) this.rewardKill(m, md, res);
                     else this.pushText(m.x, m.y - 40, "Tagged by another player", "#cbb9a4");
                     if (this.target.type === "monster" && this.target.id === m.id) this.target = { type: "none" };
-                  } else {
-                    // Damage taken is the server's number too.
-                    this.hp -= Math.max(0, res.taken ?? 0);
-                    if (res.taken) this.pushText(this.px, this.py - 34, `-${res.taken}`, "#f4b0b0");
-                    this.autoEat();
-                    if (this.hp <= 0) {
-                      const lostGold = Math.floor(this.gold * 0.1);
-                      this.hp = Math.ceil(this.maxHp * 0.5);
-                      this.px = 2606;
-                      this.py = 3223;
-                      this.gold = Math.max(0, this.gold - lostGold);
-                      this.death = {
-                        at: Date.now(),
-                        reason: `A villager dragged you back to Grand Haven at half health. You lost ${lostGold} gold (10%) in the chaos.`,
-                      };
-                      this.pushText(this.px, this.py - 60, "Whew! Rescued by a villager", "#c9d8f5");
-                      this.target = { type: "none" };
-                    }
                   }
                   this.emitHud(true);
                 })
@@ -2489,13 +2485,27 @@ export class GameEngine {
       this.emitHud(true);
     }
 
-    // regen + auto-eat out of combat
-    if (this.target.type !== "monster") {
+    // Gate 2: regeneration and auto-snacking are settled by the server so two
+    // tabs cannot independently heal the same character.
+    if (this.target.type !== "monster" && this.target.type !== "boss") {
       this.regenCd -= dt;
       if (this.regenCd <= 0) {
         this.regenCd = 2.5;
-        if (this.hp < this.maxHp) this.hp = Math.min(this.maxHp, this.hp + 1 + Math.floor(this.maxHp * 0.01));
-        this.autoEat();
+        if (this.hp < this.maxHp && this.onRecover && !this.recoveryPending) {
+          this.recoveryPending = true;
+          void this.onRecover()
+            .then((res) => {
+              if (res.state) this.applyServerState(res.state);
+              if (res.food_used) {
+                this.autoEatFiredAt = Date.now();
+                this.autoEatCdUntil = this.autoEatFiredAt + 2000;
+              }
+              this.emitHud(true);
+            })
+            .finally(() => {
+              this.recoveryPending = false;
+            });
+        }
       }
     }
 
@@ -2692,42 +2702,38 @@ export class GameEngine {
 
   /* ---------- quests, shop, crafting & food ---------- */
 
-  private questTick(kind: "kill" | "gather", key: string) {
-    if (!this.quest) return;
-    const def = QUESTS.find((q) => q.id === this.quest!.id);
-    if (!def || def.kind !== kind || def.key !== key) return;
-    if (this.quest.progress >= def.count) return;
-    this.quest.progress += 1;
-    if (this.quest.progress >= def.count) {
-      this.pushText(this.px, this.py - 60, "Quest ready!", "#ffd98e");
-    }
-    this.emitHud(true);
-  }
-
   acceptQuest(id: string) {
     if (this.quest) return;
     if (!QUESTS.some((q) => q.id === id) || this.completed.includes(id)) return;
-    this.quest = { id, progress: 0 };
-    this.emitHud(true);
+    if (!this.onQuestAction) return;
+    void this.onQuestAction("accept", id).then((res) => {
+      if (res.state) this.applyServerState(res.state);
+      this.emitHud(true);
+    });
   }
 
   abandonQuest() {
-    this.quest = null;
-    this.emitHud(true);
+    if (!this.onQuestAction) return;
+    void this.onQuestAction("abandon", null).then((res) => {
+      if (res.state) this.applyServerState(res.state);
+      this.emitHud(true);
+    });
   }
 
   claimQuest() {
     if (!this.quest) return;
     const def = QUESTS.find((q) => q.id === this.quest!.id);
     if (!def || this.quest.progress < def.count) return;
-    this.gold += def.gold;
-    this.grantXp(def.xpSkill, def.xp);
-    if (def.reward) this.addItem(def.reward, 1);
-    this.completed.push(def.id);
-    this.quest = null;
-    this.pushText(this.px, this.py - 70, `+${def.gold}g quest reward`, "#ffe08a");
-    this.save();
-    this.emitHud(true);
+    if (!this.onQuestAction) return;
+    void this.onQuestAction("claim", null).then((res) => {
+      if (!res.ok) {
+        if (res.reason === "bag_full") this.pushText(this.px, this.py - 70, "Bag is full", "#f4b0b0");
+        return;
+      }
+      if (res.state) this.applyServerState(res.state);
+      this.pushText(this.px, this.py - 70, `+${def.gold}g quest reward`, "#ffe08a");
+      this.emitHud(true);
+    });
   }
 
   buyItem(npc: NpcRole, id: ItemId): boolean {
@@ -2742,18 +2748,13 @@ export class GameEngine {
   }
 
   sellAllResources(): number {
-    let earned = 0;
-    this.inv.forEach((slot, i) => {
-      if (!slot) return;
-      if (item(slot.id).kind !== "resource") return;
-      earned += item(slot.id).value * slot.qty;
-      this.inv[i] = null;
+    if (!this.onSellAllResources) return 0;
+    void this.onSellAllResources().then((res) => {
+      if (res.state) this.applyServerState(res.state);
+      if (res.earned) this.pushText(this.px, this.py - 50, `+${res.earned}g`, "#ffe08a");
+      this.emitHud(true);
     });
-    this.gold += earned;
-    if (earned > 0) this.pushText(this.px, this.py - 50, `+${earned}g`, "#ffe08a");
-    this.syncNow();
-    this.emitHud(true);
-    return earned;
+    return 0;
   }
 
   canCraft(recipeId: string): boolean {
@@ -2904,16 +2905,13 @@ export class GameEngine {
       return;
     }
     if (def.kind !== "food" || !def.heal) return;
-    if (this.hp >= this.maxHp) {
-      this.food = slot.id;
+    if (!this.onFood) return;
+    void this.onFood(index).then((res) => {
+      if (!res.ok) return;
+      if (res.state) this.applyServerState(res.state);
+      if (res.healed) this.pushText(this.px, this.py - 40, `+${res.healed} hp`, "#9fe6a0");
       this.emitHud(true);
-      return;
-    }
-    this.hp = Math.min(this.maxHp, this.hp + def.heal);
-    slot.qty -= 1;
-    if (slot.qty <= 0) this.inv[index] = null;
-    this.pushText(this.px, this.py - 40, `+${def.heal} hp`, "#9fe6a0");
-    this.emitHud(true);
+    });
   }
 
   /* ---------- marketplace (Phase 3) ---------- */
@@ -5123,62 +5121,71 @@ export class GameEngine {
     const d = MONSTER_DEFS[m.kind];
     const s = d.size;
     const bob = Math.sin(this.time * 4 + m.id) * 2;
+    const sprite = creatureSprite(m.kind);
     this.shadow(ctx, m.x, m.y + 14 * s, 14 * s);
-    ctx.fillStyle = m.hitFlash > 0 ? "#ffffff" : d.body;
-    ctx.beginPath();
-    ctx.roundRect(m.x - 10 * s, m.y - 6 * s + bob, 20 * s, 18 * s, 6);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(m.x, m.y - 16 * s + bob, 13 * s, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = d.accent;
-    if (d.ears === "beak") {
+    const usedSprite = drawCreatureSprite(ctx, m.kind, m.x, m.y, bob, m.hitFlash > 0);
+    if (!usedSprite) {
+      ctx.fillStyle = m.hitFlash > 0 ? "#ffffff" : d.body;
       ctx.beginPath();
-      ctx.moveTo(m.x - 4, m.y - 27 * s + bob);
-      ctx.lineTo(m.x, m.y - 34 * s + bob);
-      ctx.lineTo(m.x + 4, m.y - 27 * s + bob);
+      ctx.roundRect(m.x - 10 * s, m.y - 6 * s + bob, 20 * s, 18 * s, 6);
       ctx.fill();
-      ctx.fillRect(m.x + 10 * s, m.y - 17 * s + bob, 6, 4);
-    } else if (d.ears === "horns") {
-      for (const dir of [-1, 1]) {
+      ctx.beginPath();
+      ctx.arc(m.x, m.y - 16 * s + bob, 13 * s, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = d.accent;
+      if (d.ears === "beak") {
         ctx.beginPath();
-        ctx.moveTo(m.x + dir * 13 * s, m.y - 20 * s + bob);
-        ctx.lineTo(m.x + dir * 20 * s, m.y - 27 * s + bob);
-        ctx.lineTo(m.x + dir * 11 * s, m.y - 27 * s + bob);
+        ctx.moveTo(m.x - 4, m.y - 27 * s + bob);
+        ctx.lineTo(m.x, m.y - 34 * s + bob);
+        ctx.lineTo(m.x + 4, m.y - 27 * s + bob);
         ctx.fill();
+        ctx.fillRect(m.x + 10 * s, m.y - 17 * s + bob, 6, 4);
+      } else if (d.ears === "horns") {
+        for (const dir of [-1, 1]) {
+          ctx.beginPath();
+          ctx.moveTo(m.x + dir * 13 * s, m.y - 20 * s + bob);
+          ctx.lineTo(m.x + dir * 20 * s, m.y - 27 * s + bob);
+          ctx.lineTo(m.x + dir * 11 * s, m.y - 27 * s + bob);
+          ctx.fill();
+        }
+      } else if (d.ears === "spikes") {
+        for (let i = -1; i <= 1; i++) {
+          ctx.beginPath();
+          ctx.moveTo(m.x + i * 8 * s - 3, m.y - 26 * s + bob);
+          ctx.lineTo(m.x + i * 8 * s, m.y - 36 * s + bob);
+          ctx.lineTo(m.x + i * 8 * s + 3, m.y - 26 * s + bob);
+          ctx.fill();
+        }
       }
-    } else if (d.ears === "spikes") {
-      for (let i = -1; i <= 1; i++) {
-        ctx.beginPath();
-        ctx.moveTo(m.x + i * 8 * s - 3, m.y - 26 * s + bob);
-        ctx.lineTo(m.x + i * 8 * s, m.y - 36 * s + bob);
-        ctx.lineTo(m.x + i * 8 * s + 3, m.y - 26 * s + bob);
-        ctx.fill();
-      }
+      ctx.fillStyle = "#4a3b52";
+      ctx.fillRect(m.x - 6 * s, m.y - 18 * s + bob, 3, 3);
+      ctx.fillRect(m.x + 3 * s, m.y - 18 * s + bob, 3, 3);
     }
-    ctx.fillStyle = "#4a3b52";
-    ctx.fillRect(m.x - 6 * s, m.y - 18 * s + bob, 3, 3);
-    ctx.fillRect(m.x + 3 * s, m.y - 18 * s + bob, 3, 3);
     // Persistent nameplate: name + level, always shown above the head.
     const label = `${d.name} · Lv ${monsterLevel(d)}`;
+    // Prepared art may be far taller than the legacy primitive; anchor UI to
+    // its visual bounds so labels and shared-health bars never float inside it.
+    const labelTop = sprite
+      ? m.y + bob + (sprite.visual_bounds.top - sprite.pivot.y) * 0.42 - 16
+      : m.y - 54 * s + bob;
     ctx.font = "bold 11px ui-rounded, 'Baloo 2', system-ui, sans-serif";
     ctx.textAlign = "center";
     const lw = ctx.measureText(label).width + 12;
     ctx.fillStyle = "rgba(52,40,64,0.55)";
     ctx.beginPath();
-    ctx.roundRect(m.x - lw / 2, m.y - 54 * s + bob, lw, 16, 8);
+    ctx.roundRect(m.x - lw / 2, labelTop, lw, 16, 8);
     ctx.fill();
     ctx.fillStyle = "#f6f2ff";
-    ctx.fillText(label, m.x, m.y - 43 * s + bob);
+    ctx.fillText(label, m.x, labelTop + 11);
 
     if (m.hp < m.maxHp) {
       // Shared health pool. Amber bar = another player tagged it first, so the
       // loot is theirs. Drawn below the nameplate.
       const mine = !m.taggedBy || m.taggedBy === this.userId;
       ctx.fillStyle = "rgba(70,55,70,0.3)";
-      ctx.fillRect(m.x - 16, m.y - 34 * s, 32, 5);
+      ctx.fillRect(m.x - 16, labelTop + 20, 32, 5);
       ctx.fillStyle = mine ? "#8fd98a" : "#e8b26a";
-      ctx.fillRect(m.x - 16, m.y - 34 * s, 32 * (m.hp / m.maxHp), 5);
+      ctx.fillRect(m.x - 16, labelTop + 20, 32 * (m.hp / m.maxHp), 5);
     }
   }
 

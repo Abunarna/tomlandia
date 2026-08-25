@@ -20,6 +20,7 @@ describe("RPC contract registry", () => {
   test("parses a representative request for every application RPC", () => {
     const id = "0d22314f-0f93-45ef-a1f7-ac4737d5ed6d";
     const requests = {
+      game_world_runtime_status: {},
       harvest_node: { _id: 1, _x: 2, _y: 3 },
       attack_monster: { _id: 1, _x: 2, _y: 3 },
       attack_boss: { _x: 2, _y: 3, _bx: 4, _by: 5, _passive: false },
@@ -38,6 +39,10 @@ describe("RPC contract registry", () => {
       market_cancel: { _id: id },
       leaderboard: { _skill: "total" },
       player_sync: { _data: edgeSaveFixtures.null_slots, _rev: 0 },
+      consume_food: { _index: 0 },
+      player_recover: {},
+      quest_action: { _action: "accept", _quest: "copper_run" },
+      sell_all_resources: {},
     } as const;
 
     for (const name of Object.keys(rpcContracts) as (keyof typeof rpcContracts)[]) {
