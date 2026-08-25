@@ -90,7 +90,9 @@ export class WorldNet {
     const parsedRuntime = runtimeError
       ? null
       : parseRpcResponse("game_world_runtime_status", rpcContracts.game_world_runtime_status.response, runtime);
-    this.sink.onRuntime?.(resolveWorldRuntime(parsedRuntime));
+    // This Gate 8 client contains the UUID/V2 renderer and may activate it
+    // once the server's manifest contract matches.
+    this.sink.onRuntime?.(resolveWorldRuntime(parsedRuntime, true));
     // One cheap full snapshot on join, then per-cell realtime deltas.
     const [nodes, monsters] = await Promise.all([
       supabase.from("world_nodes").select("id,cell,kind,x,y,charges,max_charges,respawn_at"),
