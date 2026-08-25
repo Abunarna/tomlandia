@@ -21,6 +21,8 @@ import {
   biomeAt,
   blockedAt,
   hasClearance,
+  inDecorClear,
+  nodeInDecorClear,
   occludedByLandmark,
   nudgeClear,
   ITEMS,
@@ -74,10 +76,14 @@ import { creaturePointerHit, creatureSprite, drawCreatureSprite, preloadCreature
 import bridgeAsset from "@/assets/bridge.png.asset.json";
 import monasteryAsset from "@/assets/monastery.png.asset.json";
 import groundTownAsset from "@/assets/ground-town-v2.png.asset.json";
+import elvenTownAsset from "@/assets/elven-town-center.png.asset.json";
+import vineBridgeAsset from "@/assets/vine-bridge.png.asset.json";
 import house2Asset from "@/assets/house2.png.asset.json";
 import house3Asset from "@/assets/house3.png.asset.json";
 import castleAsset from "@/assets/castle.png.asset.json";
 import towerAsset from "@/assets/tower.png.asset.json";
+import treeCastleAsset from "@/assets/willow-castle-v2.png.asset.json";
+import greenHallAsset from "@/assets/greenhall-v2.png.asset.json";
 import elderAsset from "@/assets/npc-elder-v2.png.asset.json";
 import armourerAsset from "@/assets/npc-armourer.png.asset.json";
 import weaponsmithAsset from "@/assets/npc-weaponsmith.png.asset.json";
@@ -86,6 +92,8 @@ import exchangeAsset from "@/assets/npc-exchange.png.asset.json";
 import merchantAsset from "@/assets/npc-merchant.png.asset.json";
 import smelterAsset from "@/assets/npc-smelter.png.asset.json";
 import gearUpgraderAsset from "@/assets/npc-gear-upgrader.png.asset.json";
+import tannerAsset from "@/assets/npc-tanner.png.asset.json";
+import chefAsset from "@/assets/npc-chef.png.asset.json";
 
 import {
   MARKET_FEE,
@@ -126,15 +134,21 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * Flat ground decals: painted on top of the terrain/road layers but under all
- * y-sorted objects (buildings, NPCs, creatures, players).
+ * Flat ground decals: painted on top of the terrain/road layers but under water
+ * and all y-sorted objects (buildings, NPCs, creatures, players).
  */
 const GROUND_DECALS: { url: string; x: number; y: number; w: number; h: number }[] = [
   { url: groundTownAsset.url, x: 817, y: 2213, w: 560, h: 560 },
+  // Willowbrook elven town centre paving.
+  { url: elvenTownAsset.url, x: 2051, y: 2151, w: 700, h: 700 },
+];
+const OVER_WATER_DECALS: { url: string; x: number; y: number; w: number; h: number }[] = [
+  // Vine bridge: 1.5x its original placement size and fully traversable.
+  { url: vineBridgeAsset.url, x: 2049, y: 2671, w: 210, h: 485 },
 ];
 const decalImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
 if (typeof window !== "undefined") {
-  for (const d of GROUND_DECALS) {
+  for (const d of [...GROUND_DECALS, ...OVER_WATER_DECALS]) {
     if (decalImgs.has(d.url)) continue;
     const img = new Image();
     const entry = { img, ready: false };
@@ -149,8 +163,9 @@ if (typeof window !== "undefined") {
 function drawGroundDecals(
   ctx: CanvasRenderingContext2D,
   view: { x: number; y: number; w: number; h: number },
+  decals = GROUND_DECALS,
 ) {
-  for (const d of GROUND_DECALS) {
+  for (const d of decals) {
     if (
       d.x - d.w / 2 > view.x + view.w ||
       d.x + d.w / 2 < view.x ||
@@ -312,6 +327,42 @@ if (typeof window !== "undefined") {
   upgraderImg.src = gearUpgraderAsset.url;
 }
 
+/**
+ * Tanner portrait sprite (110x158 source), drawn for the trapper NPC.
+ * Scaled to match the knight player height.
+ */
+const TANNER_SRC_W = 110;
+const TANNER_SRC_H = 158;
+const TANNER_DRAW_H = 59;
+const TANNER_IDS = new Set(["trapper"]);
+let tannerImg: HTMLImageElement | null = null;
+let tannerReady = false;
+if (typeof window !== "undefined") {
+  tannerImg = new Image();
+  tannerImg.onload = () => {
+    tannerReady = true;
+  };
+  tannerImg.src = tannerAsset.url;
+}
+
+/**
+ * Chef portrait sprite (110x158 source), drawn for the brook_chef NPC.
+ * Scaled to match the knight player height.
+ */
+const CHEF_SRC_W = 110;
+const CHEF_SRC_H = 158;
+const CHEF_DRAW_H = 59;
+const CHEF_IDS = new Set(["brook_chef"]);
+let chefImg: HTMLImageElement | null = null;
+let chefReady = false;
+if (typeof window !== "undefined") {
+  chefImg = new Image();
+  chefImg.onload = () => {
+    chefReady = true;
+  };
+  chefImg.src = chefAsset.url;
+}
+
 
 
 
@@ -319,7 +370,7 @@ if (typeof window !== "undefined") {
 /** Landmark sprites, keyed by landmark id. */
 
 /** Landmark sprites, keyed by landmark id. */
-const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url, house2: house2Asset.url, house3: house3Asset.url, castle: castleAsset.url, tower1: towerAsset.url, tower2: towerAsset.url, tower3: towerAsset.url, tower4: towerAsset.url };
+const LANDMARK_SRC: Record<string, string> = { monastery: monasteryAsset.url, house2: house2Asset.url, house3: house3Asset.url, castle: castleAsset.url, tower1: towerAsset.url, tower2: towerAsset.url, tower3: towerAsset.url, tower4: towerAsset.url, treecastle: treeCastleAsset.url, greenhall: greenHallAsset.url };
 const landmarkImgs = new Map<string, { img: HTMLImageElement; ready: boolean }>();
 if (typeof window !== "undefined") {
   for (const [id, url] of Object.entries(LANDMARK_SRC)) {
@@ -826,7 +877,7 @@ export class GameEngine {
       respawnAt: 0,
       pending: false,
       sway: Math.random() * 6,
-    }));
+    })).filter((n) => !nodeInDecorClear(n.kind, n.x, n.y));
     this.monsters = MONSTER_SPAWNS.map((m, i) => {
       const d = MONSTER_DEFS[m.kind];
       return {
@@ -923,6 +974,11 @@ export class GameEngine {
       this.nodes = this.nodes.filter((n) => known.has(n.id));
     }
     for (const row of rows) {
+      const rowKind = row.kind as ResNode["kind"] | undefined;
+      if (rowKind && row.x !== undefined && row.y !== undefined && nodeInDecorClear(rowKind, row.x, row.y)) {
+        this.nodes = this.nodes.filter((n) => n.id !== row.id);
+        continue;
+      }
       let n = this.nodes.find((c) => c.id === row.id);
       if (!n) {
         if (!row.kind || row.x === undefined || row.y === undefined) continue;
@@ -942,6 +998,10 @@ export class GameEngine {
       if (row.kind) n.kind = row.kind as ResNode["kind"];
       if (typeof row.x === "number") n.x = row.x;
       if (typeof row.y === "number") n.y = row.y;
+      if (nodeInDecorClear(n.kind, n.x, n.y)) {
+        this.nodes = this.nodes.filter((candidate) => candidate.id !== n.id);
+        continue;
+      }
       n.charges = row.charges;
       n.respawnAt = row.respawn_at ? Date.parse(row.respawn_at) : 0;
       n.depleted = n.respawnAt > Date.now();
@@ -971,6 +1031,14 @@ export class GameEngine {
       this.monsters = this.monsters.filter((m) => known.has(m.id));
     }
     for (const row of rows) {
+      // Town tiles (DECOR_CLEAR) stay free of creatures, exactly as nodes do.
+      // A monster whose authoritative spawn point sits on a town paving tile is
+      // hidden here and, if persisted, is deleted from the database so it can't
+      // respawn in town.
+      if (typeof row.x === "number" && typeof row.y === "number" && inDecorClear(row.x, row.y)) {
+        this.monsters = this.monsters.filter((c) => c.id !== row.id);
+        continue;
+      }
       let m = this.monsters.find((c) => c.id === row.id);
       if (!m) {
         if (!row.kind || row.x === undefined || row.y === undefined) continue;
@@ -3270,6 +3338,9 @@ export class GameEngine {
     this.drawRiverFlow(ctx, view);
     this.drawMoatFlow(ctx, view);
 
+    // These crossings must sit above every static and animated water layer.
+    drawGroundDecals(ctx, view, OVER_WATER_DECALS);
+
     // bridges are baked into the overlay, so redraw them live on top of the
     // animated water so the wave effects stay visible under, not over, them.
     this.drawBridges(ctx, view);
@@ -3488,15 +3559,8 @@ export class GameEngine {
       ctx.fillRect(b.x - 40, b.y - 40, b.w + 80, b.h + 80);
     }
 
-    // town plaza
-    if (b.plaza) {
-      ctx.fillStyle = b.detail;
-      ctx.globalAlpha = 0.75;
-      ctx.beginPath();
-      ctx.roundRect(b.plaza.x, b.plaza.y, b.plaza.w, b.plaza.h, 40);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-    }
+    // town plaza — disabled: the rounded slab doesn't match the pixel-art ground
+
 
     // grass tufts / dunes / snow speckles (the tiled biomes carry their own)
     if (!tile) {
@@ -3886,7 +3950,9 @@ export class GameEngine {
       }
     }
     // canopy cities: winding forest paths, elevated walkways and rope bridges
-    if (wood) {
+    // (Willowbrook is being rebuilt from pixel-art assets — no procedural
+    // circular walkways there)
+    if (wood && CITY.key !== "willowbrook") {
       ctx.lineCap = "round";
       if (SHOW_PATHS) {
         for (let k = 0; k < 9; k++) {
@@ -4210,7 +4276,9 @@ export class GameEngine {
     // --- the wall itself, broken only at the gate mouths
     // Grand Haven now uses custom asset buildings/towers, so its procedural
     // grey defensive wall is skipped (the moat and gates remain).
-    if (CITY.key === "grand-haven") {
+    // Willowbrook likewise: its palisade ring, gate trees and gatehouses are
+    // gone while it is rebuilt from pixel-art landmark assets.
+    if (CITY.key === "grand-haven" || CITY.key === "willowbrook") {
       return;
     }
     const drawArc = (from: number, to: number, width: number, colour: string) => {
@@ -5269,6 +5337,20 @@ export class GameEngine {
       const smooth = ctx.imageSmoothingEnabled;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(merchantImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else if (CHEF_IDS.has(npc.id) && chefImg && chefReady) {
+      const h = CHEF_DRAW_H;
+      const w = Math.round((CHEF_SRC_W / CHEF_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(chefImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
+      ctx.imageSmoothingEnabled = smooth;
+    } else if (TANNER_IDS.has(npc.id) && tannerImg && tannerReady) {
+      const h = TANNER_DRAW_H;
+      const w = Math.round((TANNER_SRC_W / TANNER_SRC_H) * h);
+      const smooth = ctx.imageSmoothingEnabled;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(tannerImg, Math.round(x - w / 2), Math.round(y + 16 - h), w, h);
       ctx.imageSmoothingEnabled = smooth;
     } else {
       ctx.fillStyle = npc.robe;

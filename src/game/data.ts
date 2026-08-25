@@ -1343,13 +1343,12 @@ for (const t of TOWN_SPECS) {
 // Grand Haven is being rebuilt from external pixel-art assets: clear every
 // procedurally drawn structure inside its walls. Traders keep their plaza
 // spots (re-seated just below).
-{
-  const gh = GRAND_HAVEN;
+for (const town of [GRAND_HAVEN, WILLOWBROOK]) {
   for (let i = buildings.length - 1; i >= 0; i--) {
     const b = buildings[i]!;
     const cx = b.x + b.w / 2;
     const cy = b.y + b.h / 2;
-    if (Math.hypot(cx - gh.cx, cy - gh.cy) <= cityOuterR(gh)) buildings.splice(i, 1);
+    if (Math.hypot(cx - town.cx, cy - town.cy) <= cityOuterR(town)) buildings.splice(i, 1);
   }
 }
 
@@ -1481,6 +1480,31 @@ export const LANDMARKS: LandmarkDef[] = [
     h: 256,
     solid: { dx: 0, dy: 82, w: 96, h: 44 },
   },
+  {
+    id: "treecastle",
+    x: 2049,
+    y: 1981,
+    w: 260,
+    h: 325,
+    solid: { dx: 0, dy: 92, w: 150, h: 110 },
+  },
+  {
+    id: "greenhall",
+    x: 2230,
+    y: 2270,
+    w: 171,
+    h: 256,
+    solid: { dx: 0, dy: 74, w: 108, h: 80 },
+  },
+  {
+    id: "greenhall",
+    x: 1860,
+    y: 2270,
+    w: 171,
+    h: 256,
+    solid: { dx: 0, dy: 74, w: 108, h: 80 },
+  },
+
 
 ];
 
@@ -1581,22 +1605,22 @@ export const NPCS: NpcDef[] = [
   { id: "sun_smith", name: "Master Alric", title: "Sunspire Smelter", ...spot("sun_smith", TILE_W * 2 + 735, 350), robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings once the dross burns away.", services: ["smelt"] },
   { id: "weaver", name: "Lira", title: "Arcane Weaver", ...spot("weaver", TILE_W * 2 + 905, 420), robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["weave"] },
   { id: "banker", name: "Coinmaster Odo", title: "Golden Bank", ...spot("banker", TILE_W * 2 + 565, 440), robe: "#d9a95f", hair: "#4a3b2e", greeting: "Every scrap has a price, friend.", services: ["bank"] },
-  { id: "trapper", name: "Rook", title: "Trapper", ...spot("trapper", TILE_W + 728, 590), robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin"] },
+  { id: "trapper", name: "Tanner", title: "Tanner", x: 1849, y: 2100, robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin"] },
   { id: "frost_smith", name: "Sigrid", title: "Frostforge Smelter", ...spot("frost_smith", 882, TILE_H + 560), robe: "#a9c6e6", hair: "#e6eef7", greeting: "The furnace never sleeps in the cold.", services: ["smelt"] },
   { id: "haven_weaponsmith", name: "Garrick", title: "Weaponsmith", ...spot("haven_weaponsmith", 560, 300), robe: "#c2765a", hair: "#402a20", greeting: "Give me bars and I'll give you an edge.", services: ["forge"] },
   { id: "haven_armourer", name: "Dame Ysolde", title: "Armourer", ...spot("haven_armourer", 870, 300), robe: "#9aa7b8", hair: "#6b5540", greeting: "Plate, mail or robe — I'll fit you proper.", services: ["armor"] },
   { id: "haven_upgrader", name: "Old Whetstone Tam", title: "Gear Upgrader", x: 1017, y: 2507, robe: "#b7a06d", hair: "#d8d2c4", greeting: "Every notch I grind makes you harder to kill.", services: ["upgrade"] },
   { id: "sun_weaponsmith", name: "Zafira", title: "Weaponsmith", ...spot("sun_weaponsmith", TILE_W * 2 + 600, 300), robe: "#e09a4f", hair: "#4a3324", greeting: "Sun-tempered steel, hammered to sing.", services: ["forge"] },
   { id: "sun_alchemist", name: "Nasrin", title: "Alchemist", ...spot("sun_alchemist", TILE_W * 2 + 790, 300), robe: "#a7d9c2", hair: "#5a4470", greeting: "One drop of this and your blade bites twice.", services: ["alchemy"] },
-  { id: "brook_chef", name: "Chef Bramble", title: "Willowbrook Chef", ...spot("brook_chef", TILE_W + 650, 540), robe: "#c9d97f", hair: "#7a5a34", greeting: "Fresh catch? I'll turn it into something warm.", services: ["cook"] },
+  { id: "brook_chef", name: "Chef Bramble", title: "Willowbrook Chef", x: 2249, y: 2100, robe: "#c9d97f", hair: "#7a5a34", greeting: "Fresh catch? I'll turn it into something warm.", services: ["cook"] },
   { id: "frost_weaponsmith", name: "Halvar", title: "Weaponsmith", ...spot("frost_weaponsmith", 720, TILE_H + 560), robe: "#7f9cbd", hair: "#c9d8e6", greeting: "Cold iron, hot hammer. Stand back.", services: ["forge"] },
   { id: "haven_exchange", name: "Clerk Tobin", title: "Grand Market", ...spot("haven_exchange", 800, 300), robe: "#cbb98f", hair: "#5a4a35", greeting: "Ledgers open, offers posted. What'll it be?", services: ["exchange"] },
   { id: "sun_exchange", name: "Clerk Amara", title: "Grand Market", ...spot("sun_exchange", TILE_W * 2 + 680, 300), robe: "#e8c98d", hair: "#4d3a26", greeting: "Every caravan's price, all in one book.", services: ["exchange"] },
-  { id: "brook_exchange", name: "Clerk Nessa", title: "Grand Market", ...spot("brook_exchange", TILE_W + 700, 540), robe: "#a8cf9b", hair: "#6b5233", greeting: "Small village, big ledger. Trade away.", services: ["exchange"] },
+  { id: "brook_exchange", name: "Clerk Nessa", title: "Grand Market", x: 1949, y: 2215, robe: "#a8cf9b", hair: "#6b5233", greeting: "Small village, big ledger. Trade away.", services: ["exchange"] },
   { id: "frost_exchange", name: "Clerk Bjorn", title: "Grand Market", ...spot("frost_exchange", 640, TILE_H + 560), robe: "#b6cbe0", hair: "#dfe8f2", greeting: "Frost keeps the coin cold and the deals honest.", services: ["exchange"] },
   { id: "dusk_exchange", name: "Clerk Mordrey", title: "Grand Market", ...spot("dusk_exchange", 4400, 1400), robe: "#9a86b3", hair: "#2b2533", greeting: "The dead keep no ledgers. The living pay up front.", services: ["exchange"] },
   { id: "haven_banker", name: "Coinmaster Bell", title: "Banker", ...spot("haven_banker", 900, 400), robe: "#d9c07a", hair: "#4a3b2e", greeting: "Your vault travels with you — same coin, any town.", services: ["bank"] },
-  { id: "brook_banker", name: "Coinmaster Wisp", title: "Banker", ...spot("brook_banker", TILE_W + 610, 620), robe: "#bfd9a0", hair: "#6b5233", greeting: "One vault, every branch. Deposit away.", services: ["bank"] },
+  { id: "brook_banker", name: "Coinmaster Wisp", title: "Banker", x: 2149, y: 2215, robe: "#bfd9a0", hair: "#6b5233", greeting: "One vault, every branch. Deposit away.", services: ["bank"] },
   { id: "frost_banker", name: "Coinmaster Hilda", title: "Banker", ...spot("frost_banker", 800, TILE_H + 620), robe: "#c6dcef", hair: "#e6eef7", greeting: "The ice keeps your coin safe wherever you wander.", services: ["bank"] },
   { id: "dusk_banker", name: "Coinmaster Vex", title: "Banker", ...spot("dusk_banker", 4460, 1300), robe: "#a08cb8", hair: "#2b2533", greeting: "Same vault, darker vault-keeper. Deposit if you dare.", services: ["bank"] },
 ];
@@ -1758,7 +1782,7 @@ export const NPC_ICONS: Record<NpcRole, NpcIcon> = {
   brook_banker: { glyph: "\u2605", color: "#bfd9a0", label: "Banker" },
   frost_banker: { glyph: "\u2605", color: "#c6dcef", label: "Banker" },
   dusk_banker: { glyph: "\u2605", color: "#a08cb8", label: "Banker" },
-  trapper: { glyph: "\u2691", color: "#b98a5c", label: "Trapper" },
+  trapper: { glyph: "\u2691", color: "#b98a5c", label: "Tanner" },
   frost_smith: { glyph: "\u2744\uFE0E", color: "#a9c6e6", label: "Frostforge Smelter" },
   haven_weaponsmith: { glyph: "\u2694\uFE0E", color: "#c2765a", label: "Weaponsmith" },
   haven_armourer: { glyph: "\u26E8\uFE0E", color: "#9aa7b8", label: "Armourer" },
@@ -2076,8 +2100,16 @@ function clamp01px(y: number) {
 const RAW_BARRIERS = buildBarriers();
 const GREAT = buildGreatRiver(RAW_BARRIERS);
 
+/** crossings removed by hand — the vine bridge covers this area now */
+const REMOVED_BRIDGES: [number, number][] = [[1473, 2083], [2382, 2532]];
+
 /** wooden bridges crossing the Great River */
-export const BRIDGES: BridgeDef[] = GREAT.bridges;
+export const BRIDGES: BridgeDef[] = GREAT.bridges.filter(
+  (br) => !REMOVED_BRIDGES.some(([rx, ry]) => Math.hypot(br.x - rx, br.y - ry) < 140),
+);
+
+/** Hand-authored vine bridge centred over the southern river crossing. */
+export const VINE_BRIDGE = { x: 2049, y: 2671, w: 210, h: 485 } as const;
 
 const riverXs = GREAT.pts.map((p) => p[0]);
 const riverYs = GREAT.pts.map((p) => p[1]);
@@ -2126,6 +2158,11 @@ export const BARRIERS: Barrier[] = [GREAT_RIVER, MOAT_CHANNEL];
 
 /** true when the point stands on a bridge deck (so the river is crossable there) */
 export function onBridge(x: number, y: number, pad = 0): boolean {
+  if (
+    Math.abs(x - VINE_BRIDGE.x) < VINE_BRIDGE.w / 2 - pad &&
+    Math.abs(y - VINE_BRIDGE.y) < VINE_BRIDGE.h / 2 + 16
+  )
+    return true;
   for (const br of BRIDGES) {
     const dx = x - br.x;
     const dy = y - br.y;
@@ -2168,7 +2205,7 @@ export function blockedAt(x: number, y: number, pad = 10, wadesRivers = false): 
       if (distToSeg(x, y, a[0], a[1], b[0], b[1]) < r) {
         // the world boss wades straight through the river instead of hunting
         // for a bridge, so he never gets stuck on a bank
-        if (bar.kind === "river" && (wadesRivers || (bar.id === "great-river" && onBridge(x, y, pad)))) break;
+        if (bar.kind === "river" && (wadesRivers || onBridge(x, y, pad))) break;
         return true;
       }
     }
@@ -2541,9 +2578,38 @@ function nearTown(x: number, y: number) {
   return false;
 }
 
+/**
+ * Hand-authored keep-out rectangles (centre + half sizes already padded).
+ * Nothing spawns inside these — used for decorative decals like the vine
+ * bridge, which must stay walkable and unobstructed.
+ */
+export const DECOR_CLEAR: { x: number; y: number; w: number; h: number }[] = [
+  // vine bridge at (2049, 2671): 210x485 sprite + 20px margin on every edge
+  { x: VINE_BRIDGE.x, y: VINE_BRIDGE.y, w: VINE_BRIDGE.w + 40, h: VINE_BRIDGE.h + 40 },
+  // Willowbrook town centre paving at (2051, 2151): 700x700 tile — towns stay
+  // free of resource nodes and creatures.
+  { x: 2051, y: 2151, w: 700, h: 700 },
+
+];
+
+export function inDecorClear(x: number, y: number, pad = 0): boolean {
+  for (const z of DECOR_CLEAR) {
+    if (Math.abs(x - z.x) <= z.w / 2 + pad && Math.abs(y - z.y) <= z.h / 2 + pad) return true;
+  }
+  return false;
+}
+
+/** Removes the full visible resource sprite, not merely its ground point. */
+export function nodeInDecorClear(kind: NodeKind, x: number, y: number): boolean {
+  const shape = NODE_DEFS[kind].shape;
+  const artPad = shape === "tree" ? 112 : shape === "rock" ? 28 : 25;
+  return inDecorClear(x, y, artPad);
+}
+
 /** a spot must be walkable, dry, off the roads and clear of anything built */
 function spawnable(x: number, y: number) {
   if (x < 90 || y < 90 || x > WORLD_W - 90 || y > WORLD_H - 90) return false;
+  if (inDecorClear(x, y)) return false;
   if (blockedAt(x, y, 34)) return false;
   // blanket rule: the whole body, not just the centre, keeps 10px off anything solid
   if (!hasClearance(x, y, 14, 10)) return false;
@@ -2719,5 +2785,26 @@ function spawnable(x: number, y: number) {
       MONSTER_SPAWNS.push({ kind, x: Math.round(c.x), y: Math.round(c.y) });
     }
     placed.push({ x: c.x, y: c.y });
+  }
+})();
+
+/**
+ * Final sweep: anything (node, monster or its collision disc) sitting inside a
+ * decorative keep-out zone is removed, so the vine bridge stays clear.
+ */
+(() => {
+  for (let i = NODE_SPAWNS.length - 1; i >= 0; i--) {
+    const n = NODE_SPAWNS[i]!;
+    // Include the node artwork itself, not just its centre, so tall tree
+    // canopies cannot hang over the bridge from outside the clear rectangle.
+    if (nodeInDecorClear(n.kind, n.x, n.y)) NODE_SPAWNS.splice(i, 1);
+  }
+  for (let i = MONSTER_SPAWNS.length - 1; i >= 0; i--) {
+    const m = MONSTER_SPAWNS[i]!;
+    if (inDecorClear(m.x, m.y)) MONSTER_SPAWNS.splice(i, 1);
+  }
+  for (let i = SOLID_DISCS.length - 1; i >= 0; i--) {
+    const d = SOLID_DISCS[i]!;
+    if (inDecorClear(d.x, d.y)) SOLID_DISCS.splice(i, 1);
   }
 })();
