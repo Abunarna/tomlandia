@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Backpack, Hammer, Map as MapIcon, Maximize, Minimize, Music, Music2, Trophy, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { parseRpcResponse, rpcContracts } from "@/contracts/rpc";
 import { GameEngine, clearLegacySave, readLegacySave, type SyncAck } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
@@ -22,7 +23,6 @@ import {
 import { browseMarket, buyFromMarket, cancelMarketListing, listOnMarket } from "@/lib/market.functions";
 import { NPCS, type NpcRole } from "@/game/data";
 import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
-import type { Json } from "@/integrations/supabase/types";
 import { Hud } from "@/components/game/Hud";
 import { AutoEat } from "@/components/game/AutoEat";
 import { AutoPotion } from "@/components/game/AutoPotion";
@@ -154,15 +154,20 @@ function Game() {
     (s: SaveState, rev: number | null): PromiseLike<SyncAck | null> => {
       // Row-locking merge: the server keeps its own economy fields when our
       // copy is stale, instead of us blindly overwriting the row.
-      const req = supabase
-        .rpc("player_sync", rev === null ? { _data: s as unknown as Json } : { _data: s as unknown as Json, _rev: rev })
-        .then(({ data, error }) => {
-          if (error) {
-            console.error("Save failed", error.message);
-            return null;
-          }
-          return (data ?? null) as unknown as SyncAck | null;
-        });
+      const request = rpcContracts.player_sync.request.parse(
+        rev === null ? { _data: s } : { _data: s, _rev: rev },
+      );
+      const req = supabase.rpc("player_sync", request).then(({ data, error }) => {
+        if (error) {
+          console.error("Save failed", error.message);
+          return null;
+        }
+        return parseRpcResponse<SyncAck>(
+          "player_sync",
+          rpcContracts.player_sync.response,
+          data ?? { ok: false, reason: "empty" },
+        );
+      });
       pendingSave.current = req;
       return req;
     },

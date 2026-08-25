@@ -2,14 +2,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { CraftRes, DamageRes, FishRes, GearRes, HarvestRes, PotionRes } from "@/game/engine";
+import { parseRpcResponse, rpcContracts } from "@/contracts/rpc";
 
 /**
  * Phase 9 — server-authoritative actions.
  *
- * The client only ever says "I want to harvest node 12 from here". The database
- * routines behind these functions verify range, level, cooldown and shared
- * world state, compute the outcome, write it into the player's save, and return
- * the authoritative result.
+ * Every request and response crossing the database boundary is parsed by the
+ * shared Gate 1 contract. A SQL/client drift is now a loud protocol error.
  */
 
 const point = { x: z.number().finite(), y: z.number().finite() };
@@ -18,163 +17,169 @@ export const harvestNode = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ id: z.number().int().min(0), ...point }).parse(input))
   .handler(async ({ data, context }): Promise<HarvestRes> => {
-    const { data: res, error } = await context.supabase.rpc("harvest_node", {
-      _id: data.id,
-      _x: data.x,
-      _y: data.y,
-    });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as HarvestRes;
+    const request = rpcContracts.harvest_node.request.parse({ _id: data.id, _x: data.x, _y: data.y });
+    const { data: res, error } = await context.supabase.rpc("harvest_node", request);
+    return parseRpcResponse<HarvestRes>(
+      "harvest_node",
+      rpcContracts.harvest_node.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });
 
 export const attackMonster = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ id: z.number().int().min(0), ...point }).parse(input))
   .handler(async ({ data, context }): Promise<DamageRes> => {
-    const { data: res, error } = await context.supabase.rpc("attack_monster", {
-      _id: data.id,
-      _x: data.x,
-      _y: data.y,
-    });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as DamageRes;
+    const request = rpcContracts.attack_monster.request.parse({ _id: data.id, _x: data.x, _y: data.y });
+    const { data: res, error } = await context.supabase.rpc("attack_monster", request);
+    return parseRpcResponse<DamageRes>(
+      "attack_monster",
+      rpcContracts.attack_monster.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });
 
-/**
- * DESOLATUS. His position is a deterministic client-side calculation, so the
- * caller reports where it believes he is; the routine sanity-checks that
- * against the last position any player reported before resolving the swing.
- */
+/** DESOLATUS coordinates are independently checked by the database routine. */
 export const attackBoss = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) =>
     z
-      .object({
-        ...point,
-        bx: z.number().finite(),
-        by: z.number().finite(),
-        passive: z.boolean().optional(),
-      })
+      .object({ ...point, bx: z.number().finite(), by: z.number().finite(), passive: z.boolean().optional() })
       .parse(input),
   )
   .handler(async ({ data, context }): Promise<DamageRes> => {
-    const { data: res, error } = await context.supabase.rpc("attack_boss", {
+    const request = rpcContracts.attack_boss.request.parse({
       _x: data.x,
       _y: data.y,
       _bx: data.bx,
       _by: data.by,
       _passive: data.passive ?? false,
     });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as DamageRes;
+    const { data: res, error } = await context.supabase.rpc("attack_boss", request);
+    return parseRpcResponse<DamageRes>(
+      "attack_boss",
+      rpcContracts.attack_boss.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });
-
 
 export const craftItem = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ recipe: z.string().min(1).max(64) }).parse(input))
   .handler(async ({ data, context }): Promise<CraftRes> => {
-    const { data: res, error } = await context.supabase.rpc("craft_item", { _recipe: data.recipe });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as CraftRes;
+    const request = rpcContracts.craft_item.request.parse({ _recipe: data.recipe });
+    const { data: res, error } = await context.supabase.rpc("craft_item", request);
+    return parseRpcResponse<CraftRes>(
+      "craft_item",
+      rpcContracts.craft_item.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });
 
 export const fishCast = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ id: z.number().int().min(0), ...point }).parse(input))
   .handler(async ({ data, context }): Promise<FishRes> => {
-    const { data: res, error } = await context.supabase.rpc("fish_cast", {
-      _spot: data.id,
-      _x: data.x,
-      _y: data.y,
-    });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as FishRes;
+    const request = rpcContracts.fish_cast.request.parse({ _spot: data.id, _x: data.x, _y: data.y });
+    const { data: res, error } = await context.supabase.rpc("fish_cast", request);
+    return parseRpcResponse<FishRes>(
+      "fish_cast",
+      rpcContracts.fish_cast.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });
 
 export const usePotion = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ item: z.string().min(1).max(64) }).parse(input))
   .handler(async ({ data, context }): Promise<PotionRes> => {
-    const { data: res, error } = await context.supabase.rpc("use_potion", { _item: data.item });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as PotionRes;
+    const request = rpcContracts.use_potion.request.parse({ _item: data.item });
+    const { data: res, error } = await context.supabase.rpc("use_potion", request);
+    return parseRpcResponse<PotionRes>(
+      "use_potion",
+      rpcContracts.use_potion.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });
 
-/**
- * Bag, gear and bank changes. These cross the boundary between client-owned
- * state (equipment, snack, bank) and server-owned state (inventory, gold), so
- * they are resolved in one locked database step instead of being pushed up as
- * part of a whole-save write that a concurrent reward could overwrite.
- */
 export const equipSlotAction = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ index: z.number().int().min(0).max(19) }).parse(input))
   .handler(async ({ data, context }): Promise<GearRes> => {
-    const { data: res, error } = await context.supabase.rpc("gear_equip", { _index: data.index });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as GearRes;
+    const request = rpcContracts.gear_equip.request.parse({ _index: data.index });
+    const { data: res, error } = await context.supabase.rpc("gear_equip", request);
+    return parseRpcResponse<GearRes>(
+      "gear_equip",
+      rpcContracts.gear_equip.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });
 
 export const upgradeGear = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ which: z.enum(["weapon", "armor"]) }).parse(input))
   .handler(async ({ data, context }): Promise<GearRes> => {
-    const { data: res, error } = await context.supabase.rpc("gear_upgrade", { _which: data.which });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as GearRes;
+    const request = rpcContracts.gear_upgrade.request.parse({ _which: data.which });
+    const { data: res, error } = await context.supabase.rpc("gear_upgrade", request);
+    return parseRpcResponse<GearRes>(
+      "gear_upgrade",
+      rpcContracts.gear_upgrade.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });
 
 export const dropSlotAction = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ index: z.number().int().min(0).max(19) }).parse(input))
   .handler(async ({ data, context }): Promise<GearRes> => {
-    const { data: res, error } = await context.supabase.rpc("inv_drop", { _index: data.index });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as GearRes;
+    const request = rpcContracts.inv_drop.request.parse({ _index: data.index });
+    const { data: res, error } = await context.supabase.rpc("inv_drop", request);
+    return parseRpcResponse<GearRes>(
+      "inv_drop",
+      rpcContracts.inv_drop.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });
 
-/** Sell a bag slot (any item, gear included) to an NPC merchant. */
 export const sellSlotAction = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ index: z.number().int().min(0).max(19) }).parse(input))
   .handler(async ({ data, context }): Promise<GearRes> => {
-    const { data: res, error } = await context.supabase.rpc("inv_sell", { _index: data.index });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as GearRes;
+    const request = rpcContracts.inv_sell.request.parse({ _index: data.index });
+    const { data: res, error } = await context.supabase.rpc("inv_sell", request);
+    return parseRpcResponse<GearRes>(
+      "inv_sell",
+      rpcContracts.inv_sell.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });
 
 export const bankGold = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) =>
-    z.object({ dir: z.enum(["in", "out"]), amount: z.number().int().min(1) }).parse(input),
-  )
+  .inputValidator((input) => z.object({ dir: z.enum(["in", "out"]), amount: z.number().int().min(1) }).parse(input))
   .handler(async ({ data, context }): Promise<GearRes> => {
-    const { data: res, error } = await context.supabase.rpc("bank_gold", {
-      _dir: data.dir,
-      _amount: data.amount,
-    });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as GearRes;
+    const request = rpcContracts.bank_gold.request.parse({ _dir: data.dir, _amount: data.amount });
+    const { data: res, error } = await context.supabase.rpc("bank_gold", request);
+    return parseRpcResponse<GearRes>(
+      "bank_gold",
+      rpcContracts.bank_gold.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });
 
 export const bankItem = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) =>
     z
-      .object({
-        dir: z.enum(["in", "out"]),
-        index: z.number().int().min(0).max(59),
-        qty: z.number().int().min(1),
-      })
+      .object({ dir: z.enum(["in", "out"]), index: z.number().int().min(0).max(59), qty: z.number().int().min(1) })
       .parse(input),
   )
   .handler(async ({ data, context }): Promise<GearRes> => {
-    const { data: res, error } = await context.supabase.rpc("bank_item", {
-      _dir: data.dir,
-      _index: data.index,
-      _qty: data.qty,
-    });
-    if (error) return { ok: false, reason: error.message };
-    return (res ?? { ok: false, reason: "empty" }) as unknown as GearRes;
+    const request = rpcContracts.bank_item.request.parse({ _dir: data.dir, _index: data.index, _qty: data.qty });
+    const { data: res, error } = await context.supabase.rpc("bank_item", request);
+    return parseRpcResponse<GearRes>(
+      "bank_item",
+      rpcContracts.bank_item.response,
+      error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+    );
   });

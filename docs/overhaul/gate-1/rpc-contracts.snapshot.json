@@ -1,0 +1,29 @@
+{
+  "version": "tomlandia-gate1-rpc-v1",
+  "upgrade_max": 100,
+  "access": "authenticated",
+  "rpcs": {
+    "harvest_node": { "request": ["_id", "_x", "_y"], "response": "harvest" },
+    "attack_monster": {
+      "request": ["_id", "_x", "_y"],
+      "response": "damage",
+      "canonical_success_keys": ["leveled", "state", "buff"]
+    },
+    "attack_boss": { "request": ["_x", "_y", "_bx", "_by", "_passive"], "response": "damage" },
+    "craft_item": { "request": ["_recipe"], "response": "craft" },
+    "fish_cast": { "request": ["_spot", "_x", "_y"], "response": "fish" },
+    "use_potion": { "request": ["_item"], "response": "potion" },
+    "gear_equip": { "request": ["_index"], "response": "gear" },
+    "gear_upgrade": { "request": ["_which"], "response": "gear" },
+    "inv_drop": { "request": ["_index"], "response": "gear" },
+    "inv_sell": { "request": ["_index"], "response": "gear" },
+    "bank_gold": { "request": ["_dir", "_amount"], "response": "gear" },
+    "bank_item": { "request": ["_dir", "_index", "_qty"], "response": "gear" },
+    "market_browse": { "request": [], "response": "market_browse" },
+    "market_list": { "request": ["_item", "_qty", "_price", "_plus"], "response": "market" },
+    "market_buy": { "request": ["_id", "_qty"], "response": "market" },
+    "market_cancel": { "request": ["_id"], "response": "market" },
+    "leaderboard": { "request": ["_skill"], "response": "leaderboard" },
+    "player_sync": { "request": ["_data", "_rev?"], "response": "sync" }
+  }
+}
