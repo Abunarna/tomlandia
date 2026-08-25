@@ -22,7 +22,12 @@
     "test:gate2": "bun run test && bun run typecheck && bun run test:db:foundation && bun run test:db:known-defects && bun run test:db:gate2",
     "gate3:generate": "node scripts/gate3/generate.mjs",
     "gate3:check": "node scripts/gate3/check.mjs && node --test tests/balance/gate3-model.test.mjs",
-    "test:gate3": "bun run test && bun run typecheck && bun run gate3:check"
+    "test:gate3": "bun run test && bun run typecheck && bun run gate3:check",
+    "content:generate": "node scripts/content/generate.mjs",
+    "content:check": "node scripts/content/check.mjs && node scripts/content/generate.mjs --check",
+    "test:content": "node --test tests/content/manifest-contract.test.mjs",
+    "test:db:gate4": "supabase test db supabase/tests/gate4_content_contract.sql",
+    "test:gate4": "bun run test && bun run typecheck && bun run gate3:check && bun run content:check && bun run test:content"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
