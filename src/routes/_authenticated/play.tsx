@@ -313,7 +313,10 @@ function Game() {
       const legacy = readLegacySave();
       if (!cloudSave && legacy) setClaimable(legacy);
       else if (legacy) clearLegacySave();
-    })();
+    })().catch((error: unknown) => {
+      console.error("Game boot failed", error);
+      if (!cancelled) setLoadFailed(true);
+    });
 
     return () => {
       cancelled = true;
