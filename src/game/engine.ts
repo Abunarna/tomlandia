@@ -878,9 +878,12 @@ export class GameEngine {
       pending: false,
       sway: Math.random() * 6,
     })).filter((n) => !nodeInDecorClear(n.kind, n.x, n.y));
-    this.monsters = MONSTER_SPAWNS.map((m, i) => {
+    this.monsters = MONSTER_SPAWNS.flatMap((m, i) => {
       const d = MONSTER_DEFS[m.kind];
-      return {
+      // The server world is authoritative. A stale local spawn definition must
+      // never prevent the client from starting while the runtime snapshot loads.
+      if (!d) return [];
+      return [{
         id: i,
         kind: m.kind,
         x: m.x,
@@ -895,7 +898,7 @@ export class GameEngine {
         pending: false,
         wanderAt: 0,
         hitFlash: 0,
-      };
+      }];
     });
     for (let i = 0; i < 20; i++) {
       this.butterflies.push({ x: Math.random() * WORLD_W, y: Math.random() * WORLD_H, p: Math.random() * 10, s: 0.4 + Math.random() * 0.6 });
