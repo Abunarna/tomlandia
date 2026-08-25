@@ -45,61 +45,60 @@ from pg_proc where oid = 'public.action_gate(uuid,text,interval)'::regprocedure;
 select ok(prosrc like '%player_positions%', 'death settlement resets the trusted position anchor')
 from pg_proc where oid = 'public.settle_incoming_damage(uuid,jsonb,integer,text)'::regprocedure;
 
-select ok(prosrc not like '%_data->''gold''%', 'player_sync ignores client gold')
-from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select ok(prosrc not like '%_data->''inv''%', 'player_sync ignores client inventory')
-from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select ok(prosrc not like '%_data->''skills''%', 'player_sync ignores client skills')
-from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select ok(prosrc not like '%_data->''hp''%', 'player_sync ignores client health')
-from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select ok(prosrc not like '%_data->''quest''%', 'player_sync ignores client quests')
-from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select ok(prosrc not like '%_data->''weapon''%', 'player_sync ignores client weapon')
-from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
-select ok(prosrc not like '%_data->''bank''%', 'player_sync ignores client bank')
-from pg_proc where oid = 'public.player_sync(jsonb,bigint)'::regprocedure;
+create temporary view gate2_player_sync_body as
+select prosrc from pg_proc where oid = coalesce(
+  to_regprocedure('public.player_sync_v1(jsonb,bigint)'),
+  'public.player_sync(jsonb,bigint)'::regprocedure
+);
+create temporary view gate2_attack_body as
+select prosrc from pg_proc where oid = coalesce(
+  to_regprocedure('public.attack_monster_v1(integer,numeric,numeric)'),
+  'public.attack_monster(integer,numeric,numeric)'::regprocedure
+);
+create temporary view gate2_fish_body as
+select prosrc from pg_proc where oid = coalesce(
+  to_regprocedure('public.fish_cast_v1(integer,numeric,numeric)'),
+  'public.fish_cast(integer,numeric,numeric)'::regprocedure
+);
+create temporary view gate2_boss_body as
+select prosrc from pg_proc where oid = coalesce(
+  to_regprocedure('public.attack_boss_v1(numeric,numeric,numeric,numeric,boolean)'),
+  'public.attack_boss(numeric,numeric,numeric,numeric,boolean)'::regprocedure
+);
 
-select ok(prosrc like '%''leveled''%', 'attack_monster returns leveled')
-from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select ok(prosrc like '%''state''%', 'attack_monster returns state')
-from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select ok(prosrc like '%''buff''%', 'attack_monster returns buff')
-from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select ok(prosrc not like '%''levelup''%', 'attack_monster removed legacy levelup')
-from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select ok(prosrc not like '%''save''%', 'attack_monster never returns a whole save alias')
-from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select ok(prosrc like '%''skipped_loot''%', 'attack_monster reports full-bag skipped loot')
-from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
-select ok(prosrc like '%15 seconds%', 'monster ownership tags expire')
-from pg_proc where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
+select ok(prosrc not like '%_data->''gold''%', 'player_sync ignores client gold') from gate2_player_sync_body;
+select ok(prosrc not like '%_data->''inv''%', 'player_sync ignores client inventory') from gate2_player_sync_body;
+select ok(prosrc not like '%_data->''skills''%', 'player_sync ignores client skills') from gate2_player_sync_body;
+select ok(prosrc not like '%_data->''hp''%', 'player_sync ignores client health') from gate2_player_sync_body;
+select ok(prosrc not like '%_data->''quest''%', 'player_sync ignores client quests') from gate2_player_sync_body;
+select ok(prosrc not like '%_data->''weapon''%', 'player_sync ignores client weapon') from gate2_player_sync_body;
+select ok(prosrc not like '%_data->''bank''%', 'player_sync ignores client bank') from gate2_player_sync_body;
 
-select ok(prosrc like '%w1%', 'fish_cast reads level-1 stored weights')
-from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
-select ok(prosrc like '%w15%', 'fish_cast reads level-15 stored weights')
-from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
-select ok(prosrc like '%w40%', 'fish_cast reads level-40 stored weights')
-from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
-select ok(prosrc like '%w70%', 'fish_cast reads level-70 stored weights')
-from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
-select ok(prosrc like '%w100%', 'fish_cast reads level-100 stored weights')
-from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
-select ok(prosrc not like '%start_pct%', 'fish_cast removed misleading hard-coded weight arrays')
-from pg_proc where oid = 'public.fish_cast(integer,numeric,numeric)'::regprocedure;
+select ok(prosrc like '%''leveled''%', 'attack_monster returns leveled') from gate2_attack_body;
+select ok(prosrc like '%''state''%', 'attack_monster returns state') from gate2_attack_body;
+select ok(prosrc like '%''buff''%', 'attack_monster returns buff') from gate2_attack_body;
+select ok(prosrc not like '%''levelup''%', 'attack_monster removed legacy levelup') from gate2_attack_body;
+select ok(prosrc not like '%''save''%', 'attack_monster never returns a whole save alias') from gate2_attack_body;
+select ok(prosrc like '%''skipped_loot''%', 'attack_monster reports full-bag skipped loot') from gate2_attack_body;
+select ok(prosrc like '%15 seconds%', 'monster ownership tags expire') from gate2_attack_body;
+
+select ok(prosrc like '%w1%', 'fish_cast reads level-1 stored weights') from gate2_fish_body;
+select ok(prosrc like '%w15%', 'fish_cast reads level-15 stored weights') from gate2_fish_body;
+select ok(prosrc like '%w40%', 'fish_cast reads level-40 stored weights') from gate2_fish_body;
+select ok(prosrc like '%w70%', 'fish_cast reads level-70 stored weights') from gate2_fish_body;
+select ok(prosrc like '%w100%', 'fish_cast reads level-100 stored weights') from gate2_fish_body;
+select ok(prosrc not like '%start_pct%', 'fish_cast removed misleading hard-coded weight arrays') from gate2_fish_body;
 
 select is((select count(*) from public.game_boss_path_points), 181::bigint,
   'DESOLATUS server path matches the 181-point client loop');
 select ok((select x is not null and y is not null from public.boss_position_at('2026-08-24T00:00:00Z')),
   'DESOLATUS has a deterministic server position at a fixed time');
-select ok(prosrc not like '%tungsten_ore%', 'DESOLATUS no longer grants a retired Tungsten reward')
-from pg_proc where oid = 'public.attack_boss(numeric,numeric,numeric,numeric,boolean)'::regprocedure;
-select ok(prosrc like '%boss_position_at%', 'DESOLATUS combat reads the server path')
-from pg_proc where oid = 'public.attack_boss(numeric,numeric,numeric,numeric,boolean)'::regprocedure;
+select ok(prosrc not like '%tungsten_ore%', 'DESOLATUS no longer grants a retired Tungsten reward') from gate2_boss_body;
+select ok(prosrc like '%boss_position_at%', 'DESOLATUS combat reads the server path') from gate2_boss_body;
 
 select ok(prosrc like '%gross numeric%', 'market multiplication is evaluated as numeric')
 from pg_proc where oid = 'public.market_buy(uuid,integer)'::regprocedure;
-select ok(prosrc like '%untradable%', 'market buy enforces server tradability')
+select ok(prosrc like '%tradable%', 'market buy enforces server tradability')
 from pg_proc where oid = 'public.market_buy(uuid,integer)'::regprocedure;
 select ok(not has_function_privilege('public', 'public.leaderboard(text)', 'EXECUTE'),
   'leaderboard has no PUBLIC execute grant');

@@ -11,7 +11,10 @@ select regexp_replace(
   's'
 ) as body
 from pg_proc
-where oid = 'public.attack_monster(integer,numeric,numeric)'::regprocedure;
+where oid = coalesce(
+  to_regprocedure('public.attack_monster_v1(integer,numeric,numeric)'),
+  'public.attack_monster(integer,numeric,numeric)'::regprocedure
+);
 
 -- Gate 2 must standardise the final success object, not add another partial patch.
 select ok(body like '%''leveled''%', 'attack_monster returns canonical leveled key') from gate1_attack_final_return;

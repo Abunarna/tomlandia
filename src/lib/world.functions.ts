@@ -219,7 +219,11 @@ export const settleQuest = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }): Promise<GearRes> => {
     const request = rpcContracts.quest_action.request.parse({ _action: data.action, _quest: data.quest });
-    const { data: res, error } = await context.supabase.rpc("quest_action", request);
+    const args =
+      request._quest === null
+        ? { _action: request._action }
+        : { _action: request._action, _quest: request._quest };
+    const { data: res, error } = await context.supabase.rpc("quest_action", args);
     return parseRpcResponse<GearRes>(
       "quest_action",
       rpcContracts.quest_action.response,
