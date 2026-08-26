@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: gate-7-${{ github.ref }}
@@ -68,22 +68,3 @@ jobs:
       - name: Stop isolated stack
         if: always()
         run: supabase stop --no-backup
-
-  refresh-gate6-derived-migration:
-    name: Refresh Gate 6 derived migration
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
-      - run: node scripts/gate6/build-migration.mjs
-      - name: Commit the single derived migration
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add supabase/migrations/20260824090000_gate6_inactive_server_content.sql
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "chore(gate-6): refresh staged content migration"
-          git push origin HEAD:${{ github.head_ref }}
