@@ -1,5 +1,5 @@
 import type { ItemDef, ItemFamily, ItemId, QuestDef, SkillId } from "./types";
-import { V2_CONTENT_MONSTERS, V2_CONTENT_NODES, V2_ITEM_BY_ID } from "@/generated/content-catalog";
+import { V2_CONTENT_MONSTERS, V2_CONTENT_NODES, V2_ITEM_BY_ID } from "../generated/content-catalog";
 import {
   CITIES,
   CITY,
