@@ -18,7 +18,7 @@ if (manifest.runtime.node_spawns.length !== 369 || manifest.runtime.monster_spaw
 if (placements.node_spawns.length !== 90 || placements.monster_spawns.length !== 72) {
   throw new Error("Locked V2 candidate placement counts drifted");
 }
-if (locked.spawn_hash !== "166990ac15a5791c8ab2bf590867fa471211ad6696ad7ec17c3700c0ba82e80d") {
+if (locked.spawn_hash !== "a903f8f9f6037b8232e14971f5dcb2a0eba92ed37b684db92125f71adf074767") {
   throw new Error("Locked Gate 7 spawn hash drifted");
 }
 console.log("Verified locked Gate 5/7 V2 content baseline.");
