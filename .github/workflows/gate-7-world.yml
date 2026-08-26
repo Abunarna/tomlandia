@@ -89,7 +89,7 @@ jobs:
           fetch-depth: 0
       - name: Apply the four audited coordinate corrections
         run: |
-          rg -l '2184|2282|2408|1848' --glob '!node_modules/**'
+          git grep -l -e 2184 -e 2282 -e 2408 -e 1848
       - name: Regenerate dependent deterministic artifacts
         run: |
           node scripts/gate5/snapshot-live.mjs
