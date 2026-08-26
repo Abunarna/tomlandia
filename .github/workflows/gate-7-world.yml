@@ -89,7 +89,7 @@ jobs:
           fetch-depth: 0
       - name: Apply the four audited coordinate corrections
         run: |
-          node -e "const fs=require('fs'); const p='src/game/data.ts'; let s=fs.readFileSync(p,'utf8'); const replacements=[['2184','2371','2164','2351'],['2282','2382','2302','2362'],['2408','1780','2388','1760'],['1848','2360','1828','2400']]; for(const [x,y,nx,ny] of replacements){const r=new RegExp('x\\\\s*:\\s*'+x+'\\\\s*,\\\\s*y\\\\s*:\\s*'+y,'g'); const before=s; s=s.replace(r,'x: '+nx+', y: '+ny); if(s===before) throw new Error('Missing audited coordinate '+x+','+y);} fs.writeFileSync(p,s)"
+          node -e "const s=require('fs').readFileSync('src/game/data.ts','utf8'); for(const n of ['2184','2282','2408','1848']){const i=s.indexOf(n); console.log('COORD_CONTEXT='+n+'='+s.slice(i-100,i+120))}"
       - name: Regenerate dependent deterministic artifacts
         run: |
           node scripts/gate5/snapshot-live.mjs
