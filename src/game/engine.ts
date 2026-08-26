@@ -1,3 +1,4 @@
+import "./v2-runtime-content";
 import {
   BARRIERS,
   BRIDGES,
