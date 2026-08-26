@@ -905,7 +905,7 @@ for (const node of V2_CONTENT_NODES) {
     skill: node.skill,
     shape,
     xp: 1,
-    item: node.item_id,
+    item: node.item_id as ItemId,
     time: 4,
     respawn: 60,
     req: node.level_requirement,
