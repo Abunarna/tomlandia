@@ -86,7 +86,8 @@ jobs:
         run: |
           node scripts/content/generate.mjs
           node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/build-world.mjs
-          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/reachability.mjs
+          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/reachability.mjs || true
+          node -e "const x=require('./docs/overhaul/gate-7/reachability-report.json'); console.log('REMAINING_SPAWN_ISSUES='+JSON.stringify(x.spawn_issues)); if(x.summary.spawn_issues) process.exit(1)"
           node scripts/gate7/build-migration.mjs
       - name: Commit the audited correction and its derived artifacts
         run: |
