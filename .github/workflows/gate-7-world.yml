@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: gate-7-${{ github.ref }}
@@ -68,3 +68,31 @@ jobs:
       - name: Stop isolated stack
         if: always()
         run: supabase stop --no-backup
+
+  correct-audited-v2-spawns:
+    name: Correct four audited V2 spawn positions
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Apply only the audited V2 coordinate corrections
+        run: |
+          node --input-type=module -e "import fs from 'node:fs'; import {manifestHash,prettyCanonicalJson} from './scripts/content/model.mjs'; const fixes=[['monster','wolf',9,2184,2371,2164,2351],['monster','wolf',13,2282,2382,2302,2362],['node','maple',5,2408,1780,2388,1760],['node','willow',7,1848,2360,1828,2400]]; const author='content/v2/manifest.authoring.json', worldPath='content/v2/world-spawn-manifest.json', lockedPath='content/v2/locked-world-placements.json'; const content=JSON.parse(fs.readFileSync(author,'utf8')); const world=JSON.parse(fs.readFileSync(worldPath,'utf8')); for(const [entity,kind,ordinal,x,y,nx,ny] of fixes){const source=(entity==='node'?content.runtime.node_spawns:content.runtime.monster_spawns).find(r=>r.kind===kind&&r.ordinal===ordinal&&r.x===x&&r.y===y); const row=world.spawns.find(r=>r.entity_type===entity&&r.kind===kind&&r.ordinal===ordinal&&r.x===x&&r.y===y); if(!source||!row) throw new Error('Missing audited V2 record '+entity+':'+kind+':'+ordinal); source.x=nx; source.y=ny; row.x=nx; row.y=ny; row.cell=Math.floor(nx/700)+':'+Math.floor(ny/500);} world.spawn_hash=manifestHash({content_version:world.content_version,spawn_set_version:world.spawn_set_version,spawns:world.spawns}); const locked=JSON.parse(fs.readFileSync(lockedPath,'utf8')); locked.spawn_hash=world.spawn_hash; fs.writeFileSync(author,prettyCanonicalJson(content)); fs.writeFileSync(worldPath,prettyCanonicalJson(world)); fs.writeFileSync(lockedPath,prettyCanonicalJson(locked)); console.log('AUDITED_V2_SPAWN_HASH='+world.spawn_hash)"
+      - name: Regenerate matching world and runtime artifacts
+        run: |
+          node scripts/content/generate.mjs
+          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/build-world.mjs
+          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/reachability.mjs
+          node scripts/gate7/build-migration.mjs
+      - name: Commit the audited correction and its derived artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/v2/manifest.authoring.json content/v2/world-spawn-manifest.json content/v2/locked-world-placements.json docs/overhaul/gate-7/reachability-report.json src/generated/content-manifest.ts supabase/generated/content-manifest.sql content/generated/dependency-graph.json content/generated/spawn-manifest.json supabase/gate7/world-runtime.sql supabase/migrations/20260824100000_gate7_versioned_world.sql
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "fix(gate-7): relocate four terrain-blocked V2 spawns"
+          git push origin HEAD:${{ github.head_ref }}
