@@ -5,7 +5,7 @@ export async function resolve(specifier, context, nextResolve) {
     if (
       error?.code === "ERR_MODULE_NOT_FOUND"
       && (specifier.startsWith("./") || specifier.startsWith("../"))
-      && !/\.[a-z0-9]+$/i.test(specifier)
+      && !/\.(?:[cm]?[jt]sx?|json)$/i.test(specifier)
     ) {
       return nextResolve(`${specifier}.ts`, context);
     }
