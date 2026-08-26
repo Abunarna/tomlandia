@@ -1,5 +1,4 @@
 import type { ItemDef, ItemFamily, ItemId, QuestDef, SkillId } from "./types";
-import { V2_CONTENT_MONSTERS, V2_CONTENT_NODES, V2_ITEM_BY_ID } from "../generated/content-catalog";
 import {
   CITIES,
   CITY,
@@ -182,6 +181,9 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
   ].map((d) => [d.id, d]),
 );
 
+/** V2 renderer definitions are registered by the client-only adapter. */
+export const RUNTIME_ITEM_DEFS: Record<string, ItemDef> = {};
+
 export class UnknownItemIdError extends Error {
   readonly itemId: string;
 
@@ -193,27 +195,9 @@ export class UnknownItemIdError extends Error {
 }
 
 export function item(id: string): ItemDef {
-  const definition = ITEMS[id];
-  if (definition) return definition;
-  const generated = V2_ITEM_BY_ID[id as keyof typeof V2_ITEM_BY_ID];
-  if (generated) {
-    return {
-      id: generated.id,
-      name: generated.name,
-      value: generated.value,
-      color: generated.colour,
-      kind: generated.kind as ItemDef["kind"],
-      family: generated.family as ItemFamily,
-      stackable: generated.stackable,
-      attack: generated.stats.attack,
-      defense: generated.stats.defense,
-      speed: generated.stats.speed,
-      heal: generated.stats.heal,
-      dmgBoost: generated.stats.dmg_boost,
-      boostHits: generated.stats.boost_hits,
-    };
-  }
-  throw new UnknownItemIdError(id);
+  const definition = ITEMS[id] ?? RUNTIME_ITEM_DEFS[id];
+  if (!definition) throw new UnknownItemIdError(id);
+  return definition;
 }
 
 /* ------------------------------------------------------------------ */
@@ -856,8 +840,7 @@ export type NodeKind =
   | "runite"
   | "tungsten"
   | "frostpine"
-  | "lichen"
-  | (typeof V2_CONTENT_NODES)[number]["kind"];
+  | "lichen";
 
 export interface NodeDefT {
   name: string;
@@ -892,28 +875,7 @@ export const NODE_DEFS: Record<NodeKind, NodeDefT> = {
   tungsten: { name: "Tungsten Vein", skill: "mining", shape: "rock", xp: 520, item: "tungsten_ore", time: 7.6, respawn: 88, req: 110, color: "#98a2b5", accent: "#c8cfe0" },
   frostpine: { name: "Frostpine", skill: "woodcutting", shape: "tree", xp: 400, item: "frostpine_logs", time: 6.8, respawn: 76, req: 100, color: "#6f8798", accent: "#a9d8e6" },
   lichen: { name: "Frost Lichen", skill: "gathering", shape: "bush", xp: 380, item: "frost_lichen", time: 5.4, respawn: 64, req: 98, color: "#8bb0c4", accent: "#cfeaf5" },
-} as Record<NodeKind, NodeDefT>;
-
-/* The generated catalog is the V2 source of truth. Legacy art definitions
- * remain where available; new node kinds get a neutral, data-backed renderer. */
-for (const node of V2_CONTENT_NODES) {
-  if (NODE_DEFS[node.kind]) continue;
-  const shape = node.skill === "woodcutting" ? "tree" : node.skill === "gathering" ? "bush" : "rock";
-  const accent = shape === "tree" ? "#9cc7b1" : shape === "bush" ? "#b7d9c0" : "#9fd0e5";
-  NODE_DEFS[node.kind] = {
-    name: node.name,
-    skill: node.skill,
-    shape,
-    xp: 1,
-    item: node.item_id as ItemId,
-    time: 4,
-    respawn: 60,
-    req: node.level_requirement,
-    color: "#637080",
-    accent,
-  };
-}
-
+};
 
 export interface NodeSpawn {
   kind: NodeKind;
@@ -953,8 +915,7 @@ export type MonsterKind =
   | "bone_reaper"
   | "frost_wolf"
   | "ice_wraith"
-  | "ancient_frost_wyrm"
-  | (typeof V2_CONTENT_MONSTERS)[number]["kind"];
+  | "ancient_frost_wyrm";
 
 export interface MonsterDefT {
   name: string;
@@ -995,30 +956,7 @@ export const MONSTER_DEFS: Record<MonsterKind, MonsterDefT> = {
   frost_wolf: { name: "Frost Wolf", hp: 1109, attack: 105, defense: 51, xp: 1766, gold: [212, 408], drop: "frost_fang", dropChance: 0.45, hide: "frost_pelt", hideXp: 600, body: "#dceaf5", accent: "#8fb8d4", size: 1.2, ears: "horns" },
   ice_wraith: { name: "Ice Wraith", hp: 1817, attack: 146, defense: 70, xp: 2857, gold: [335, 637], drop: "wraith_ice_core", dropChance: 0.45, hide: "frost_pelt", hideXp: 800, body: "#cfe8f5", accent: "#5f9ec4", size: 1.35, ears: "spikes" },
   ancient_frost_wyrm: { name: "Ancient Frost Wyrm", hp: 3080, attack: 210, defense: 95, xp: 4760, gold: [560, 1092], drop: "wyrm_scale", dropChance: 0.45, hide: "frost_pelt", hideXp: 1000, body: "#a8d4e8", accent: "#5a6fa0", size: 1.9, ears: "spikes" },
-} as unknown as Record<MonsterKind, MonsterDefT>;
-
-/* Gate 8 generated creature sprites cover the complete V2 roster. This adapter
- * supplies the runtime stats and a procedural fallback palette to the canvas. */
-for (const monster of V2_CONTENT_MONSTERS) {
-  if (MONSTER_DEFS[monster.kind]) continue;
-  const hue = (monster.tier_index * 41) % 360;
-  MONSTER_DEFS[monster.kind] = {
-    name: monster.name,
-    hp: monster.hp,
-    attack: monster.attack,
-    defense: monster.defense,
-    xp: 0,
-    gold: [0, 0],
-    drop: "feather",
-    dropChance: 0,
-    hide: null,
-    hideXp: 0,
-    body: `hsl(${hue} 42% 64%)`,
-    accent: `hsl(${(hue + 30) % 360} 55% 78%)`,
-    size: 1.25,
-    ears: "spikes",
-  };
-}
+};
 
 /** Approximate combat level derived from a monster's HP and attack. */
 export function monsterLevel(md: MonsterDefT): number {
