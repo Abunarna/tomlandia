@@ -23,6 +23,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
+      - name: Rebuild the frozen V1 snapshot for validation
+        run: node scripts/gate5/snapshot-live.mjs
+      - name: Upload rebuilt V1 snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate5-live-v1-snapshot
+          path: docs/overhaul/gate-5/live-v1-snapshot.json
       - run: bun run test:gate5
 
   staged-database:
