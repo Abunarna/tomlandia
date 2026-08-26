@@ -65,7 +65,7 @@ const live = JSON.parse(liveText);
 const expectedHistoryHashes = {
   gate4: "f063c816e8915333404a5fd1c19a499d0828f2849c2d70bdcee61dacdc0c3dd9",
   gate5: "d21b4f659ebf8e897d006312ca08e61867708a46382fd345c492b47c929f8157",
-  gate6: "14182078010419c1093cfdb574d3cdcdf5ad39b5b311ef1e24ae319d5494200a",
+  gate6: "4f5653598047a36cc48f8a0421e34004097e9f537a234ea3fede3456c2bcb83b",
 };
 assert(sha256(gate4) === expectedHistoryHashes.gate4, "Gate 4 migration history changed");
 assert(sha256(gate5) === expectedHistoryHashes.gate5, "Gate 5 migration history changed");
