@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: gate-7-${{ github.ref }}
@@ -21,14 +21,6 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Capture blocked spawn records
-        run: |
-          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs -e "const fs=require('fs'); const ids=new Set(['32ce5718-d425-51d3-abec-4a9b5e298295','4112665b-2768-5fd8-b6e7-0284c2d40022','acb48e28-3411-5350-9a62-152f04296ee7','b590b00d-25fd-59c2-8fc1-7bd65bbf6924']); const rows=JSON.parse(fs.readFileSync('content/v2/world-spawn-manifest.json','utf8')).spawns.filter(x=>ids.has(x.spawn_id)); (async()=>{const {terrainBlockedAt}=await import('./scripts/gate7/terrain-collision.mjs'); for(const row of rows){const hits=[]; for(let r=20;r<=200&&hits.length<6;r+=20){for(let dy=-r;dy<=r&&hits.length<6;dy+=20){for(let dx=-r;dx<=r&&hits.length<6;dx+=20){if(Math.max(Math.abs(dx),Math.abs(dy))!==r) continue; const x=row.x+dx,y=row.y+dy; if(!terrainBlockedAt(x,y,12)) hits.push({x,y,dx,dy});}}} console.log('SPAWN_CANDIDATES='+JSON.stringify({id:row.spawn_id,kind:row.kind,ordinal:row.ordinal,current:{x:row.x,y:row.y},hits}));}})()"
-      - name: Upload blocked spawn records
-        uses: actions/upload-artifact@v4
-        with:
-          name: gate7-blocked-spawns
-          path: gate7-blocked-spawns.json
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bun run test:gate7
@@ -76,35 +68,3 @@ jobs:
       - name: Stop isolated stack
         if: always()
         run: supabase stop --no-backup
-
-  repair-blocked-carry-forward-spawns:
-    name: Repair audited blocked carry-forward spawns
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
-      - name: Apply the four audited coordinate corrections
-        run: |
-          git grep -l -e 2184 -e 2282 -e 2408 -e 1848
-      - name: Regenerate dependent deterministic artifacts
-        run: |
-          node scripts/gate5/snapshot-live.mjs
-          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/snapshot-live-spawns.mjs
-          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/build-new-spawns.mjs
-          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/build-manifest.mjs
-          node scripts/content/generate.mjs
-          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/build-world.mjs
-          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/reachability.mjs
-          node scripts/gate7/build-migration.mjs
-      - name: Commit only the audited source and derived artifacts
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/game/data.ts docs/overhaul/gate-5/live-v1-snapshot.json docs/overhaul/gate-5/live-v1-spawns.json content/v2/manifest.authoring.json content/v2/world-spawn-manifest.json docs/overhaul/gate-7/reachability-report.json supabase/gate7/world-runtime.sql supabase/migrations/20260824100000_gate7_versioned_world.sql
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "fix(gate-7): relocate four terrain-blocked carry-forward spawns"
-          git push origin HEAD:${{ github.head_ref }}
