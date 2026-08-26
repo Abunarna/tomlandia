@@ -23,14 +23,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-      - name: Render through the exact Gate 7 loader command
-        run: node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs ./scripts/gate7/build-world.mjs
-      - name: Upload rendered world manifest
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gate7-rendered-world-manifest
-          path: content/v2/world-spawn-manifest.json
       - run: bun run test:gate7
       - run: bun run build
 
