@@ -181,9 +181,6 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
   ].map((d) => [d.id, d]),
 );
 
-/** V2 renderer definitions are registered by the client-only adapter. */
-export const RUNTIME_ITEM_DEFS: Record<string, ItemDef> = {};
-
 export class UnknownItemIdError extends Error {
   readonly itemId: string;
 
@@ -194,8 +191,8 @@ export class UnknownItemIdError extends Error {
   }
 }
 
-export function item(id: string): ItemDef {
-  const definition = ITEMS[id] ?? RUNTIME_ITEM_DEFS[id];
+export function item(id: ItemId): ItemDef {
+  const definition = ITEMS[id];
   if (!definition) throw new UnknownItemIdError(id);
   return definition;
 }
