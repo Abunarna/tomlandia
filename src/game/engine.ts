@@ -696,6 +696,14 @@ type Target =
   | { type: "fish"; id: number }
   | { type: "boss" };
 
+/** Stable numeric phase for legacy integer and UUID V2 entity IDs. */
+const entityPhase = (id: number | string) => {
+  if (typeof id === "number") return id;
+  let hash = 0;
+  for (let index = 0; index < id.length; index++) hash = (hash * 31 + id.charCodeAt(index)) % 100_003;
+  return hash;
+};
+
 const emptySkills = (): Record<SkillId, { xp: number }> =>
   SKILL_IDS.reduce((acc, id) => ({ ...acc, [id]: { xp: 0 } }), {} as Record<SkillId, { xp: number }>);
 
@@ -2534,9 +2542,9 @@ export class GameEngine {
         continue;
       }
       m.hitFlash = Math.max(0, m.hitFlash - dt);
-      const wobble = Math.sin(now * 1.2 + m.id) * 18;
+      const wobble = Math.sin(now * 1.2 + entityPhase(m.id)) * 18;
       m.x += (m.hx + wobble - m.x) * dt * 0.8;
-      m.y += (m.hy + Math.cos(now * 0.9 + m.id) * 14 - m.y) * dt * 0.8;
+      m.y += (m.hy + Math.cos(now * 0.9 + entityPhase(m.id)) * 14 - m.y) * dt * 0.8;
     }
 
     // fx
@@ -5123,7 +5131,7 @@ export class GameEngine {
   private drawMonster(ctx: CanvasRenderingContext2D, m: Monster) {
     const d = MONSTER_DEFS[m.kind];
     const s = d.size;
-    const bob = Math.sin(this.time * 4 + m.id) * 2;
+    const bob = Math.sin(this.time * 4 + entityPhase(m.id)) * 2;
     const sprite = creatureSprite(m.kind);
     this.shadow(ctx, m.x, m.y + 14 * s, 14 * s);
     const usedSprite = drawCreatureSprite(ctx, m.kind, m.x, m.y, bob, m.hitFlash > 0);
