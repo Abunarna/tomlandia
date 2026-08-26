@@ -18,22 +18,23 @@
     "migration_rules": 6,
     "monster_spawns": 361,
     "monsters": 32,
-    "node_spawns": 369,
+    "node_spawns": 368,
     "nodes": 27,
     "quests": 8,
     "recipes": 108,
     "sprites": 32,
     "tiers": 16
   },
-  "live_definition_source_sha256": "0babb7e09063dbe1d7973c8ec6e584df38f1fa362312df72baf12f8f8c16cf8f",
-  "live_spawn_source_sha256": "0babb7e09063dbe1d7973c8ec6e584df38f1fa362312df72baf12f8f8c16cf8f",
-  "manifest_hash": "8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9",
+  "live_definition_source_sha256": "15d840821c055d1a97498133b913f8a25d2f9c26a4c7b4295258d830d545c69b",
+  "live_spawn_source_sha256": "15d840821c055d1a97498133b913f8a25d2f9c26a4c7b4295258d830d545c69b",
+  "manifest_hash": "a0d654a993f5a213c6ce667b6fbd29053e0432e351872492b0a6bf3d7b1cff77",
   "safety": {
     "activation_performed": false,
     "existing_monster_positions_preserved": 289,
-    "existing_node_positions_preserved": 291,
+    "existing_node_positions_preserved": 290,
     "lifecycle": "runtime",
     "production_database_writes": false
   },
   "schema_version": "tomlandia-gate5-content-summary/v1"
 }
+
