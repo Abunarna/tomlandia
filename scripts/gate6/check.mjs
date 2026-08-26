@@ -65,7 +65,7 @@ for (const worldRpc of ["harvest_node", "fish_cast", "attack_monster", "attack_b
   }
 }
 
-if (!migration.includes("Manifest SHA-256: 8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9")) {
+if (!migration.includes("Manifest SHA-256: a0d654a993f5a213c6ce667b6fbd29053e0432e351872492b0a6bf3d7b1cff77")) {
   throw new Error("Gate 6 did not embed the approved Gate 5 manifest");
 }
 if (!migration.includes("('v2', 150, NULL, 133630835)")) {
