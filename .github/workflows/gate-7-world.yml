@@ -89,7 +89,7 @@ jobs:
           fetch-depth: 0
       - name: Apply the four audited coordinate corrections
         run: |
-          node -e "const s=require('fs').readFileSync('src/game/data.ts','utf8'); for(const n of ['2184','2282','2408','1848']){const i=s.indexOf(n); console.log('COORD_CONTEXT='+n+'='+s.slice(i-100,i+120))}"
+          rg -l '2184|2282|2408|1848' --glob '!node_modules/**'
       - name: Regenerate dependent deterministic artifacts
         run: |
           node scripts/gate5/snapshot-live.mjs
