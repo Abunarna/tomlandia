@@ -966,7 +966,7 @@ export class GameEngine {
 
   /** Mirror authoritative node rows (snapshot or realtime) into the world. */
   applyNodeRows(
-    rows: { id: number; charges: number; respawn_at: string | null; kind?: string; x?: number; y?: number }[],
+    rows: { id: number | string; charges: number; respawn_at: string | null; kind?: string; x?: number; y?: number }[],
     full = false,
   ) {
     // The database is the source of truth for what exists and where it stands.
@@ -1019,7 +1019,7 @@ export class GameEngine {
   /** Mirror authoritative monster rows (snapshot or realtime) into the world. */
   applyMonsterRows(
     rows: {
-      id: number;
+      id: number | string;
       hp: number;
       tagged_by: string | null;
       respawn_at: string | null;
