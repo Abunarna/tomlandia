@@ -23,6 +23,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
+      - name: Rebuild reachability report from the locked snapshot
+        run: node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs ./scripts/gate7/reachability.mjs
+      - name: Upload rebuilt reachability report
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate7-reachability-report
+          path: docs/overhaul/gate-7/reachability-report.json
       - run: bun run test:gate7
       - run: bun run build
 
