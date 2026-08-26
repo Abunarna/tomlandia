@@ -68,3 +68,20 @@ jobs:
       - name: Stop isolated stack
         if: always()
         run: supabase stop --no-backup
+
+  audit-missing-canonical-node:
+    name: Identify canonical node generator drift
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - name: Compare locked authoring source with regenerated node spawns
+        run: |
+          cp content/v2/manifest.authoring.json /tmp/manifest-before.json
+          node scripts/gate5/snapshot-live.mjs
+          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/snapshot-live-spawns.mjs
+          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/build-new-spawns.mjs
+          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/build-manifest.mjs
+          node -e "const fs=require('fs'); const before=JSON.parse(fs.readFileSync('/tmp/manifest-before.json','utf8')).runtime.node_spawns; const after=JSON.parse(fs.readFileSync('content/v2/manifest.authoring.json','utf8')).runtime.node_spawns; const key=x=>x.kind+':'+x.ordinal; const b=new Map(before.map(x=>[key(x),x])); const a=new Map(after.map(x=>[key(x),x])); console.log('MISSING_FROM_GENERATOR='+JSON.stringify([...b].filter(([k])=>!a.has(k)).map(([,v])=>v))); console.log('UNEXPECTED_FROM_GENERATOR='+JSON.stringify([...a].filter(([k])=>!b.has(k)).map(([,v])=>v)));"
