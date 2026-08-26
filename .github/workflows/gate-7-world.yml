@@ -68,3 +68,10 @@ jobs:
       - name: Stop isolated stack
         if: always()
         run: supabase stop --no-backup
+
+  print-gate6-migration-hash:
+    name: Print Gate 6 migration hash
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sha256sum supabase/migrations/20260824090000_gate6_inactive_server_content.sql
