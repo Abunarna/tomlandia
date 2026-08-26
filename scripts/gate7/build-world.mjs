@@ -29,14 +29,16 @@ const PATHS = Object.freeze({
   content: "content/v2/manifest.authoring.json",
   registry: "docs/overhaul/gate-0/id-registry.json",
   liveSpawns: "docs/overhaul/gate-5/live-v1-spawns.json",
+  lockedPlacements: "content/v2/locked-world-placements.json",
   output: "content/v2/world-spawn-manifest.json",
 });
 const checkOnly = process.argv.includes("--check");
 
-const [content, registry, liveSpawns] = await Promise.all([
+const [content, registry, liveSpawns, lockedPlacements] = await Promise.all([
   readFile(PATHS.content, "utf8").then(JSON.parse),
   readFile(PATHS.registry, "utf8").then(JSON.parse),
   readFile(PATHS.liveSpawns, "utf8").then(JSON.parse),
+  readFile(PATHS.lockedPlacements, "utf8").then(JSON.parse),
 ]);
 
 const nodeDefinition = new Map(content.runtime.nodes.map((definition) => [definition.kind, definition]));
@@ -137,54 +139,49 @@ function separated(candidate, entityType) {
   });
 }
 
+const lockedGenerated = new Map(
+  lockedPlacements.placements.map((placement) => [
+    `${placement.entity_type}:${placement.kind}:${placement.ordinal}`,
+    placement,
+  ]),
+);
 const generated = [];
 for (const entityType of ["node", "monster"]) {
   for (const [kind, plan] of Object.entries(GENERATION_PLANS[entityType])) {
-    const source = inputSpawns[entityType].filter((spawn) => spawn.kind === kind).sort((a, b) => a.ordinal - b.ordinal);
-    if (!source.length) throw new Error(`Generation plan ${entityType}:${kind} has no source rows`);
+    const source = inputSpawns[entityType]
+      .filter((spawn) => spawn.kind === kind)
+      .sort((a, b) => a.ordinal - b.ordinal);
     const definition = definitions[entityType].get(kind);
-    if (!definition) throw new Error(`Missing ${entityType} definition ${kind}`);
-    const pool = candidatePool(entityType, kind, definition.level_requirement, plan);
-    const key = `${entityType}:${kind}`;
-    const centers = chooseCenters(pool, plan, source.length, key);
-
+    if (!source.length || !definition) throw new Error(`Missing locked source data for ${entityType}:${kind}`);
     for (const spawn of source) {
-      const roll = stableUnit(`${stableIdentity(entityType, kind, spawn.ordinal)}:cluster-selection`);
-      const clustered = roll < CLUSTER_SELECTION_RATE;
-      const centerIndex = spawn.ordinal % centers.length;
-      const center = centers[centerIndex];
-      const candidates = [...pool].filter((candidate) => separated(candidate, entityType));
-      candidates.sort((left, right) => {
-        if (!clustered) return left.rank - right.rank;
-        const distance = Math.hypot(left.x - center.x, left.y - center.y) - Math.hypot(right.x - center.x, right.y - center.y);
-        return distance || left.rank - right.rank;
-      });
-      const position = candidates[0];
-      if (!position) throw new Error(`No separated candidate remains for ${entityType}:${kind}:${spawn.ordinal}`);
-      occupied.push({ ...position, entity_type: entityType });
-      const biome = plan.biome;
-      const subzone = plan.subzone ?? (biome === "winter"
-        ? winterBandForLevel(definition.level_requirement).id
-        : subzoneAt(biome, position.x, position.y));
+      const key = `${entityType}:${kind}:${spawn.ordinal}`;
+      const placement = lockedGenerated.get(key);
+      if (!placement) throw new Error(`Missing locked placement for ${key}`);
+      if (placement.cell !== subscriptionCellAt(placement.x, placement.y)) {
+        throw new Error(`Locked placement cell drifted for ${key}`);
+      }
+      occupied.push({ x: placement.x, y: placement.y, entity_type: entityType });
       generated.push({
         spawn_id: uuidV5(content.uuid_namespace, stableIdentity(entityType, kind, spawn.ordinal)),
         entity_type: entityType,
         kind,
         ordinal: spawn.ordinal,
         active: spawn.active,
-        biome,
-        subzone,
-        x: position.x,
-        y: position.y,
-        cell: subscriptionCellAt(position.x, position.y),
+        biome: plan.biome,
+        subzone: placement.subzone,
+        x: placement.x,
+        y: placement.y,
+        cell: placement.cell,
         level_requirement: definition.level_requirement,
-        selection_mode: clustered ? "cluster_90" : "fallback_10",
-        placement_cluster: `${entityType}:${kind}:placement:${centerIndex}`,
+        selection_mode: placement.selection_mode,
+        placement_cluster: placement.placement_cluster,
       });
     }
   }
 }
-
+if (generated.length !== lockedGenerated.size) {
+  throw new Error(`Locked placement coverage drifted: generated ${generated.length}, locked ${lockedGenerated.size}`);
+}
 function connectClusters(rows) {
   const groups = new Map();
   for (const row of rows) {
@@ -294,6 +291,10 @@ const output = {
   },
   spawns: rows,
 };
+
+if (output.spawn_hash !== lockedPlacements.spawn_hash) {
+  throw new Error(`Locked Gate 7 spawn hash drifted: ${output.spawn_hash}`);
+}
 
 // Hashing canonical JSON twice catches accidental dependence on object insertion
 // order inside this generator before anything reaches SQL.
