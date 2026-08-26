@@ -23,14 +23,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-      - name: Refresh live spawn snapshot
-        run: node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/snapshot-live-spawns.mjs
-      - name: Upload live spawn snapshot
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gate5-live-spawns
-          path: docs/overhaul/gate-5/live-v1-spawns.json
       - run: bun run test:gate5
 
   staged-database:
