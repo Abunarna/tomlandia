@@ -995,7 +995,7 @@ export const MONSTER_DEFS: Record<MonsterKind, MonsterDefT> = {
   frost_wolf: { name: "Frost Wolf", hp: 1109, attack: 105, defense: 51, xp: 1766, gold: [212, 408], drop: "frost_fang", dropChance: 0.45, hide: "frost_pelt", hideXp: 600, body: "#dceaf5", accent: "#8fb8d4", size: 1.2, ears: "horns" },
   ice_wraith: { name: "Ice Wraith", hp: 1817, attack: 146, defense: 70, xp: 2857, gold: [335, 637], drop: "wraith_ice_core", dropChance: 0.45, hide: "frost_pelt", hideXp: 800, body: "#cfe8f5", accent: "#5f9ec4", size: 1.35, ears: "spikes" },
   ancient_frost_wyrm: { name: "Ancient Frost Wyrm", hp: 3080, attack: 210, defense: 95, xp: 4760, gold: [560, 1092], drop: "wyrm_scale", dropChance: 0.45, hide: "frost_pelt", hideXp: 1000, body: "#a8d4e8", accent: "#5a6fa0", size: 1.9, ears: "spikes" },
-} as Record<MonsterKind, MonsterDefT>;
+} as unknown as Record<MonsterKind, MonsterDefT>;
 
 /* Gate 8 generated creature sprites cover the complete V2 roster. This adapter
  * supplies the runtime stats and a procedural fallback palette to the canvas. */
