@@ -1,7 +1,7 @@
 import {
+  ITEMS,
   MONSTER_DEFS,
   NODE_DEFS,
-  RUNTIME_ITEM_DEFS,
   type MonsterDefT,
   type NodeDefT,
 } from "./data";
@@ -55,8 +55,8 @@ for (const definition of V2_CONTENT_MONSTERS) {
 }
 
 for (const definition of Object.values(V2_ITEM_BY_ID)) {
-  if (RUNTIME_ITEM_DEFS[definition.id]) continue;
-  RUNTIME_ITEM_DEFS[definition.id] = {
+  if (ITEMS[definition.id]) continue;
+  ITEMS[definition.id] = {
     id: definition.id,
     name: definition.name,
     value: definition.value,
