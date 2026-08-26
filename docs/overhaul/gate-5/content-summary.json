@@ -27,7 +27,7 @@
   },
   "live_definition_source_sha256": "0babb7e09063dbe1d7973c8ec6e584df38f1fa362312df72baf12f8f8c16cf8f",
   "live_spawn_source_sha256": "0babb7e09063dbe1d7973c8ec6e584df38f1fa362312df72baf12f8f8c16cf8f",
-  "manifest_hash": "8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9",
+  "manifest_hash": "0efd6ecfe8c3540b06cb91385862f372323fa03fca4a26056655b52a6ce57dcb",
   "safety": {
     "activation_performed": false,
     "existing_monster_positions_preserved": 289,
