@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: gate-7-${{ github.ref }}
@@ -76,3 +76,35 @@ jobs:
       - name: Stop isolated stack
         if: always()
         run: supabase stop --no-backup
+
+  repair-blocked-carry-forward-spawns:
+    name: Repair audited blocked carry-forward spawns
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Apply the four audited coordinate corrections
+        run: |
+          node -e "const fs=require('fs'); const p='src/game/data.ts'; let s=fs.readFileSync(p,'utf8'); const replacements=[['2184','2371','2164','2351'],['2282','2382','2302','2362'],['2408','1780','2388','1760'],['1848','2360','1828','2400']]; for(const [x,y,nx,ny] of replacements){const r=new RegExp('x\\\\s*:\\s*'+x+'\\\\s*,\\\\s*y\\\\s*:\\s*'+y,'g'); const before=s; s=s.replace(r,'x: '+nx+', y: '+ny); if(s===before) throw new Error('Missing audited coordinate '+x+','+y);} fs.writeFileSync(p,s)"
+      - name: Regenerate dependent deterministic artifacts
+        run: |
+          node scripts/gate5/snapshot-live.mjs
+          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/snapshot-live-spawns.mjs
+          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/build-new-spawns.mjs
+          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/build-manifest.mjs
+          node scripts/content/generate.mjs
+          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/build-world.mjs
+          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/reachability.mjs
+          node scripts/gate7/build-migration.mjs
+      - name: Commit only the audited source and derived artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/game/data.ts docs/overhaul/gate-5/live-v1-snapshot.json docs/overhaul/gate-5/live-v1-spawns.json content/v2/manifest.authoring.json content/v2/world-spawn-manifest.json docs/overhaul/gate-7/reachability-report.json supabase/gate7/world-runtime.sql supabase/migrations/20260824100000_gate7_versioned_world.sql
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "fix(gate-7): relocate four terrain-blocked carry-forward spawns"
+          git push origin HEAD:${{ github.head_ref }}
