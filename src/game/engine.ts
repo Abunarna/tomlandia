@@ -629,7 +629,7 @@ interface Leaf {
 
 
 interface ResNode {
-  id: number;
+  id: number | string;
   kind: NodeKind;
   x: number;
   y: number;
@@ -644,7 +644,7 @@ interface ResNode {
 }
 
 interface Monster {
-  id: number;
+  id: number | string;
   kind: MonsterKind;
   x: number;
   y: number;
@@ -690,8 +690,8 @@ interface Particle {
 type Target =
   | { type: "none" }
   | { type: "point"; x: number; y: number }
-  | { type: "node"; id: number }
-  | { type: "monster"; id: number }
+  | { type: "node"; id: number | string }
+  | { type: "monster"; id: number | string }
   | { type: "npc"; id: NpcRole }
   | { type: "fish"; id: number }
   | { type: "boss" };
@@ -921,9 +921,9 @@ export class GameEngine {
   /** Our own user id, so we can tell whether we own a monster's kill credit. */
   userId = "";
   /** Server-side harvest. Position is sent so the server can verify range. */
-  onHarvest: ((id: number, x: number, y: number) => Promise<HarvestRes>) | null = null;
+  onHarvest: ((id: number | string, x: number, y: number) => Promise<HarvestRes>) | null = null;
   /** Server-side attack. The server decides the damage — we never send it. */
-  onAttack: ((id: number, x: number, y: number) => Promise<DamageRes>) | null = null;
+  onAttack: ((id: number | string, x: number, y: number) => Promise<DamageRes>) | null = null;
   /** Server-side crafting. The server checks materials and grants the result. */
   onCraft: ((recipe: string) => Promise<CraftRes>) | null = null;
   /** Server-side fishing cast. The server rolls the catch from the shared table. */
@@ -1013,7 +1013,7 @@ export class GameEngine {
         this.gatherProgress = 0;
       }
     }
-    if (full) this.nodes.sort((a, b) => a.id - b.id);
+    if (full) this.nodes.sort((a, b) => String(a.id).localeCompare(String(b.id)));
   }
 
   /** Mirror authoritative monster rows (snapshot or realtime) into the world. */
@@ -1098,7 +1098,7 @@ export class GameEngine {
         this.target = { type: "none" };
       }
     }
-    if (full) this.monsters.sort((a, b) => a.id - b.id);
+    if (full) this.monsters.sort((a, b) => String(a.id).localeCompare(String(b.id)));
   }
 
   /* ---------- phase 7: shared presence ---------- */
