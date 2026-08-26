@@ -59,20 +59,48 @@
     {
       "biome": "desert",
       "cluster_id": "monster:bandit:sunscorch_reaches:00",
-      "counterpart_cluster_id": "node:willow:willowbrook_wilds:00",
-      "counterpart_kind": "willow",
-      "counterpart_seconds": 10.4,
+      "counterpart_cluster_id": "node:iron:willowbrook_wilds:00",
+      "counterpart_kind": "iron",
+      "counterpart_seconds": 9.3,
       "entity_type": "monster",
       "kind": "bandit",
       "level_requirement": 17,
       "reachable": true,
-      "spawn_count": 6,
-      "station_bank_seconds": 11.84,
+      "spawn_count": 5,
+      "station_bank_seconds": 12.3,
       "subzone": "sunscorch_reaches"
     },
     {
       "biome": "desert",
       "cluster_id": "monster:bandit:sunscorch_reaches:01",
+      "counterpart_cluster_id": "node:iron:willowbrook_wilds:01",
+      "counterpart_kind": "iron",
+      "counterpart_seconds": 14.73,
+      "entity_type": "monster",
+      "kind": "bandit",
+      "level_requirement": 17,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 11.25,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:bandit:sunscorch_reaches:02",
+      "counterpart_cluster_id": "node:willow:willowbrook_wilds:00",
+      "counterpart_kind": "willow",
+      "counterpart_seconds": 5.82,
+      "entity_type": "monster",
+      "kind": "bandit",
+      "level_requirement": 17,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 17.33,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:bandit:sunscorch_reaches:03",
       "counterpart_cluster_id": "node:iron:willowbrook_wilds:01",
       "counterpart_kind": "iron",
       "counterpart_seconds": 3.59,
@@ -85,101 +113,45 @@
       "subzone": "sunscorch_reaches"
     },
     {
-      "biome": "desert",
-      "cluster_id": "monster:bandit:sunscorch_reaches:02",
-      "counterpart_cluster_id": "node:iron:willowbrook_wilds:01",
-      "counterpart_kind": "iron",
-      "counterpart_seconds": 14.6,
-      "entity_type": "monster",
-      "kind": "bandit",
-      "level_requirement": 17,
-      "reachable": true,
-      "spawn_count": 2,
-      "station_bank_seconds": 9.09,
-      "subzone": "sunscorch_reaches"
-    },
-    {
       "biome": "forest",
       "cluster_id": "monster:bear:willowbrook_wilds:00",
-      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:02",
-      "counterpart_kind": "copper",
-      "counterpart_seconds": 9.17,
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_kind": "flax",
+      "counterpart_seconds": 4.2,
       "entity_type": "monster",
       "kind": "bear",
       "level_requirement": 7,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 16.53,
+      "station_bank_seconds": 24.67,
       "subzone": "willowbrook_wilds"
     },
     {
       "biome": "forest",
       "cluster_id": "monster:bear:willowbrook_wilds:01",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 7.86,
+      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:03",
+      "counterpart_kind": "copper",
+      "counterpart_seconds": 9.71,
       "entity_type": "monster",
       "kind": "bear",
       "level_requirement": 7,
       "reachable": true,
-      "spawn_count": 6,
-      "station_bank_seconds": 19.12,
+      "spawn_count": 8,
+      "station_bank_seconds": 28.29,
       "subzone": "willowbrook_wilds"
     },
     {
       "biome": "forest",
       "cluster_id": "monster:bear:willowbrook_wilds:02",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 9.74,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:01",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 10.35,
       "entity_type": "monster",
       "kind": "bear",
       "level_requirement": 7,
       "reachable": true,
-      "spawn_count": 2,
-      "station_bank_seconds": 21.82,
-      "subzone": "willowbrook_wilds"
-    },
-    {
-      "biome": "forest",
-      "cluster_id": "monster:bear:willowbrook_wilds:03",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 11.61,
-      "entity_type": "monster",
-      "kind": "bear",
-      "level_requirement": 7,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 23.27,
-      "subzone": "willowbrook_wilds"
-    },
-    {
-      "biome": "forest",
-      "cluster_id": "monster:bear:willowbrook_wilds:04",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 4.02,
-      "entity_type": "monster",
-      "kind": "bear",
-      "level_requirement": 7,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 24.96,
-      "subzone": "willowbrook_wilds"
-    },
-    {
-      "biome": "forest",
-      "cluster_id": "monster:bear:willowbrook_wilds:05",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 9.3,
-      "entity_type": "monster",
-      "kind": "bear",
-      "level_requirement": 7,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 29.34,
+      "spawn_count": 3,
+      "station_bank_seconds": 28.29,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -187,7 +159,7 @@
       "cluster_id": "monster:bone_reaper:duskmere_wilds:00",
       "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
       "counterpart_kind": "maple",
-      "counterpart_seconds": 15.79,
+      "counterpart_seconds": 18.14,
       "entity_type": "monster",
       "kind": "bone_reaper",
       "level_requirement": 36,
@@ -201,7 +173,7 @@
       "cluster_id": "monster:bone_reaper:duskmere_wilds:01",
       "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
       "counterpart_kind": "maple",
-      "counterpart_seconds": 9.15,
+      "counterpart_seconds": 10.48,
       "entity_type": "monster",
       "kind": "bone_reaper",
       "level_requirement": 36,
@@ -215,7 +187,7 @@
       "cluster_id": "monster:bone_reaper:duskmere_wilds:02",
       "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
       "counterpart_kind": "maple",
-      "counterpart_seconds": 23.94,
+      "counterpart_seconds": 26.3,
       "entity_type": "monster",
       "kind": "bone_reaper",
       "level_requirement": 36,
@@ -229,7 +201,7 @@
       "cluster_id": "monster:bone_reaper:duskmere_wilds:03",
       "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
       "counterpart_kind": "maple",
-      "counterpart_seconds": 24.31,
+      "counterpart_seconds": 26.67,
       "entity_type": "monster",
       "kind": "bone_reaper",
       "level_requirement": 36,
@@ -241,141 +213,43 @@
     {
       "biome": "evil",
       "cluster_id": "monster:bone_reaper:duskmere_wilds:04",
-      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
-      "counterpart_kind": "maple",
-      "counterpart_seconds": 17.49,
-      "entity_type": "monster",
-      "kind": "bone_reaper",
-      "level_requirement": 36,
-      "reachable": true,
-      "spawn_count": 2,
-      "station_bank_seconds": 16.58,
-      "subzone": "duskmere_wilds"
-    },
-    {
-      "biome": "evil",
-      "cluster_id": "monster:bone_reaper:duskmere_wilds:05",
-      "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
-      "counterpart_kind": "maple",
-      "counterpart_seconds": 10.45,
-      "entity_type": "monster",
-      "kind": "bone_reaper",
-      "level_requirement": 36,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 14.17,
-      "subzone": "duskmere_wilds"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:00",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:05",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 2.36,
-      "entity_type": "monster",
-      "kind": "chicken",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 7,
-      "station_bank_seconds": 22.72,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:01",
-      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:02",
-      "counterpart_kind": "berries",
-      "counterpart_seconds": 1.49,
-      "entity_type": "monster",
-      "kind": "chicken",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 20.19,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:02",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:00",
+      "counterpart_cd": "node:flax:grand_haven_outskirts:00",
       "counterpart_kind": "flax",
       "counterpart_seconds": 0.74,
       "entity_type": "monster",
       "kind": "chicken",
       "level_requirement": 1,
       "reachable": true,
-      "spawn_count": 8,
+      "spawn_count": 7,
       "station_bank_seconds": 17.24,
       "subzone": "grand_haven_outskirts"
     },
     {
       "biome": "fields",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:03",
-      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:02",
-      "counterpart_kind": "copper",
-      "counterpart_seconds": 4.15,
-      "entity_type": "monster",
-      "kind": "chicken",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 4,
-      "station_bank_seconds": 13.33,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
       "cluster_id": "monster:chicken:grand_haven_outskirts:04",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:02",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 1.67,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:00",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 3.28,
       "entity_type": "monster",
       "kind": "chicken",
       "level_requirement": 1,
       "reachable": true,
-      "spawn_count": 4,
-      "station_bank_seconds": 16.53,
+      "spawn_count": 2,
+      "station_bank_seconds": 25.81,
       "subzone": "grand_haven_outskirts"
     },
     {
       "biome": "fields",
       "cluster_id": "monster:chicken:grand_haven_outskirts:05",
-      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:03",
-      "counterpart_kind": "copper",
-      "counterpart_seconds": 3.51,
-      "entity_type": "monster",
-      "kind": "chicken",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 26.75,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:06",
-      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:05",
-      "counterpart_kind": "copper",
-      "counterpart_seconds": 3.35,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:00",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 1.23,
       "entity_type": "monster",
       "kind": "chicken",
       "level_requirement": 1,
       "reachable": true,
       "spawn_count": 2,
-      "station_bank_seconds": 23.6,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:07",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 2.05,
-      "entity_type": "monster",
-      "kind": "chicken",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 2,
-      "station_bank_seconds": 22.98,
+      "station_bank_seconds": 25.14,
       "subzone": "grand_haven_outskirts"
     },
     {
@@ -437,29 +311,15 @@
     {
       "biome": "fields",
       "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
-      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:06",
-      "counterpart_kind": "berries",
-      "counterpart_seconds": 2.79,
+      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:02",
+      "counterpart_kind": "copper",
+      "counterpart_seconds": 1.67,
       "entity_type": "monster",
       "kind": "disgruntled_ram",
       "level_requirement": 1,
       "reachable": true,
-      "spawn_count": 5,
+      "spawn_count": 7,
       "station_bank_seconds": 18.04,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:03",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 0.44,
-      "entity_type": "monster",
-      "kind": "disgruntled_ram",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 2,
-      "station_bank_seconds": 20.76,
       "subzone": "grand_haven_outskirts"
     },
     {
@@ -481,21 +341,35 @@
       "cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
       "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
       "counterpart_kind": "flax",
-      "counterpart_seconds": 20.91,
+      "counterpart_seconds": 21.87,
       "entity_type": "monster",
       "kind": "dust_jackal",
       "level_requirement": 10,
       "reachable": true,
-      "spawn_count": 6,
-      "station_bank_seconds": 8.4,
+      "spawn_count": 5,
+      "station_bank_seconds": 8.28,
       "subzone": "sunscorch_reaches"
     },
     {
       "biome": "desert",
       "cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:01",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 16.31,
+      "entity_type": "monster",
+      "kind": "dust_jackal",
+      "level_requirement": 10,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 12.5,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "monster:dust_jackal:sunscorch_reaches:02",
       "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
       "counterpart_kind": "flax",
-      "counterpart_seconds": 11.89,
+      "counterpart_seconds": 12.35,
       "entity_type": "monster",
       "kind": "dust_jackal",
       "level_requirement": 10,
@@ -507,71 +381,43 @@
     {
       "biome": "forest",
       "cluster_id": "monster:forest_boar:willowbrook_wilds:00",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 8.55,
+      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:03",
+      "counterpart_kind": "copper",
+      "counterpart_seconds": 9,
       "entity_type": "monster",
       "kind": "forest_boar",
       "level_requirement": 2,
       "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 29.37,
+      "spawn_count": 7,
+      "station_bank_seconds": 27.58,
       "subzone": "willowbrook_wilds"
     },
     {
       "biome": "forest",
       "cluster_id": "monster:forest_boar:willowbrook_wilds:01",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
       "counterpart_kind": "flax",
-      "counterpart_seconds": 4.1,
+      "counterpart_seconds": 5.36,
       "entity_type": "monster",
       "kind": "forest_boar",
       "level_requirement": 2,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 24.67,
+      "station_bank_seconds": 24.86,
       "subzone": "willowbrook_wilds"
     },
     {
       "biome": "forest",
       "cluster_id": "monster:forest_boar:willowbrook_wilds:02",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 9.58,
-      "entity_type": "monster",
-      "kind": "forest_boar",
-      "level_requirement": 2,
-      "reachable": true,
-      "spawn_count": 5,
-      "station_bank_seconds": 18.87,
-      "subzone": "willowbrook_wilds"
-    },
-    {
-      "biome": "forest",
-      "cluster_id": "monster:forest_boar:willowbrook_wilds:03",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 13.45,
-      "entity_type": "monster",
-      "kind": "forest_boar",
-      "level_requirement": 2,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 24.63,
-      "subzone": "willowbrook_wilds"
-    },
-    {
-      "biome": "forest",
-      "cluster_id": "monster:forest_boar:willowbrook_wilds:04",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 6.48,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:01",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 8.73,
       "entity_type": "monster",
       "kind": "forest_boar",
       "level_requirement": 2,
       "reachable": true,
       "spawn_count": 2,
-      "station_bank_seconds": 22.89,
+      "station_bank_seconds": 26.68,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -579,27 +425,13 @@
       "cluster_id": "monster:forest_lynx:willowbrook_wilds:00",
       "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
       "counterpart_kind": "flax",
-      "counterpart_seconds": 4.38,
+      "counterpart_seconds": 7.15,
       "entity_type": "monster",
       "kind": "forest_lynx",
       "level_requirement": 5,
       "reachable": true,
-      "spawn_count": 9,
-      "station_bank_seconds": 25.32,
-      "subzone": "willowbrook_wilds"
-    },
-    {
-      "biome": "forest",
-      "cluster_id": "monster:forest_lynx:willowbrook_wilds:01",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 9.27,
-      "entity_type": "monster",
-      "kind": "forest_lynx",
-      "level_requirement": 5,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 17.71,
+      "spawn_count": 10,
+      "station_bank_seconds": 27.37,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -675,9 +507,9 @@
     {
       "biome": "forest",
       "cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 5.67,
+      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:03",
+      "counterpart_kind": "copper",
+      "counterpart_seconds": 7.51,
       "entity_type": "monster",
       "kind": "goblin_brute",
       "level_requirement": 10,
@@ -689,20 +521,6 @@
     {
       "biome": "fields",
       "cluster_id": "monster:goblin:grand_haven_outskirts:00",
-      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:05",
-      "counterpart_kind": "copper",
-      "counterpart_seconds": 1.97,
-      "entity_type": "monster",
-      "kind": "goblin",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 9,
-      "station_bank_seconds": 22.22,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "counterpart_cluster_id": "node:flax:grand_haven_outskirts:05",
       "counterpart_kind": "flax",
       "counterpart_seconds": 1.97,
@@ -710,16 +528,30 @@
       "kind": "goblin",
       "level_requirement": 1,
       "reachable": true,
-      "spawn_count": 17,
+      "spawn_count": 15,
       "station_bank_seconds": 19.55,
       "subzone": "grand_haven_outskirts"
     },
     {
       "biome": "fields",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:02",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
       "counterpart_kind": "flax",
-      "counterpart_seconds": 2.05,
+      "counterpart_seconds": 0.92,
+      "entity_type": "monster",
+      "kind": "goblin",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 11,
+      "station_bank_seconds": 22.22,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:02",
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:03",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 1.97,
       "entity_type": "monster",
       "kind": "goblin",
       "level_requirement": 1,
@@ -759,9 +591,9 @@
     {
       "biome": "forest",
       "cluster_id": "monster:ironback_boar:willowbrook_wilds:00",
-      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:01",
+      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:00",
       "counterpart_kind": "herbs",
-      "counterpart_seconds": 3.82,
+      "counterpart_seconds": 2.84,
       "entity_type": "monster",
       "kind": "ironback_boar",
       "level_requirement": 20,
@@ -773,29 +605,15 @@
     {
       "biome": "forest",
       "cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
-      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:00",
-      "counterpart_kind": "herbs",
-      "counterpart_seconds": 3.28,
-      "entity_type": "monster",
-      "kind": "ironback_boar",
-      "level_requirement": 20,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 23.52,
-      "subzone": "willowbrook_wilds"
-    },
-    {
-      "biome": "forest",
-      "cluster_id": "monster:ironback_boar:willowbrook_wilds:02",
       "counterpart_cluster_id": "node:herbs:willowbrook_wilds:01",
       "counterpart_kind": "herbs",
-      "counterpart_seconds": 4.82,
+      "counterpart_seconds": 1.18,
       "entity_type": "monster",
       "kind": "ironback_boar",
       "level_requirement": 20,
       "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 15.89,
+      "spawn_count": 2,
+      "station_bank_seconds": 23.6,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -803,27 +621,27 @@
       "cluster_id": "monster:mithril_stalker:willowbrook_wilds:00",
       "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
       "counterpart_kind": "maple",
-      "counterpart_seconds": 6.94,
+      "counterpart_seconds": 4.1,
       "entity_type": "monster",
       "kind": "mithril_stalker",
       "level_requirement": 30,
       "reachable": true,
       "spawn_count": 5,
-      "station_bank_seconds": 17.06,
+      "station_bank_seconds": 16.65,
       "subzone": "willowbrook_wilds"
     },
     {
       "biome": "forest",
       "cluster_id": "monster:mithril_stalker:willowbrook_wilds:01",
-      "counterpart_cluster_id": "node:maple:willowbrook_wilds:02",
+      "counterpart_cluster_id": "node:maple:willowbrook_wilds:01",
       "counterpart_kind": "maple",
-      "counterpart_seconds": 2.66,
+      "counterpart_seconds": 1.36,
       "entity_type": "monster",
       "kind": "mithril_stalker",
       "level_requirement": 30,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 23.47,
+      "station_bank_seconds": 24.52,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -859,35 +677,21 @@
       "cluster_id": "monster:serpent:sunscorch_reaches:00",
       "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
       "counterpart_kind": "flax",
-      "counterpart_seconds": 17.37,
-      "entity_type": "monster",
-      "kind": "serpent",
-      "level_requirement": 14,
-      "reachable": true,
-      "spawn_count": 3,
-      "station_bank_seconds": 11.63,
-      "subzone": "sunscorch_reaches"
-    },
-    {
-      "biome": "desert",
-      "cluster_id": "monster:serpent:sunscorch_reaches:01",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 18.93,
+      "counterpart_seconds": 19.56,
       "entity_type": "monster",
       "kind": "serpent",
       "level_requirement": 14,
       "reachable": true,
       "spawn_count": 4,
-      "station_bank_seconds": 10.63,
+      "station_bank_seconds": 10.2,
       "subzone": "sunscorch_reaches"
     },
     {
       "biome": "desert",
-      "cluster_id": "monster:serpent:sunscorch_reaches:02",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 12.35,
+      "cluster_id": "monster:serpent:sunscorch_reaches:01",
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:01",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 11.89,
       "entity_type": "monster",
       "kind": "serpent",
       "level_requirement": 14,
@@ -898,10 +702,10 @@
     },
     {
       "biome": "desert",
-      "cluster_id": "monster:serpent:sunscorch_reaches:03",
+      "cluster_id": "monster:serpent:sunscorch_reaches:02",
       "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
       "counterpart_kind": "flax",
-      "counterpart_seconds": 24.1,
+      "counterpart_seconds": 24.82,
       "entity_type": "monster",
       "kind": "serpent",
       "level_requirement": 14,
@@ -912,10 +716,24 @@
     },
     {
       "biome": "desert",
+      "cluster_id": "monster:serpent:sunscorch_reaches:03",
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:01",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 18.61,
+      "entity_type": "monster",
+      "kind": "serpent",
+      "level_requirement": 14,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 10.63,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
       "cluster_id": "monster:serpent:sunscorch_reaches:04",
       "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
       "counterpart_kind": "flax",
-      "counterpart_seconds": 9.35,
+      "counterpart_seconds": 9.82,
       "entity_type": "monster",
       "kind": "serpent",
       "level_requirement": 14,
@@ -927,7 +745,7 @@
     {
       "biome": "evil",
       "cluster_id": "monster:shadow_beast:duskmere_wilds:00",
-      "counterpart_cluster_id": "node:palm:sunscorch_reaches:02",
+      "counterpart_cluster_id": "node:palm:sunscorch_reaches:03",
       "counterpart_kind": "palm",
       "counterpart_seconds": 8.82,
       "entity_type": "monster",
@@ -941,7 +759,7 @@
     {
       "biome": "evil",
       "cluster_id": "monster:shadow_beast:duskmere_wilds:01",
-      "counterpart_cluster_id": "node:mithril:sunscorch_reaches:03",
+      "counterpart_cluster_id": "node:mithril:sunscorch_reaches:01",
       "counterpart_kind": "mithril",
       "counterpart_seconds": 9.82,
       "entity_type": "monster",
@@ -997,9 +815,9 @@
     {
       "biome": "evil",
       "cluster_id": "monster:withered_ghoul:duskmere_wilds:00",
-      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:00",
+      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:01",
       "counterpart_kind": "herbs",
-      "counterpart_seconds": 21.14,
+      "counterpart_seconds": 21.39,
       "entity_type": "monster",
       "kind": "withered_ghoul",
       "level_requirement": 23,
@@ -1011,9 +829,9 @@
     {
       "biome": "evil",
       "cluster_id": "monster:withered_ghoul:duskmere_wilds:01",
-      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:01",
+      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:00",
       "counterpart_kind": "herbs",
-      "counterpart_seconds": 27.85,
+      "counterpart_seconds": 28.58,
       "entity_type": "monster",
       "kind": "withered_ghoul",
       "level_requirement": 23,
@@ -1025,9 +843,9 @@
     {
       "biome": "evil",
       "cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
-      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:01",
+      "counterpart_cluster_id": "node:herbs:willowbrook_wilds:00",
       "counterpart_kind": "herbs",
-      "counterpart_seconds": 20.21,
+      "counterpart_seconds": 20.94,
       "entity_type": "monster",
       "kind": "withered_ghoul",
       "level_requirement": 23,
@@ -1039,29 +857,29 @@
     {
       "biome": "forest",
       "cluster_id": "monster:wolf:willowbrook_wilds:00",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 8.46,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:01",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 7.81,
       "entity_type": "monster",
       "kind": "wolf",
       "level_requirement": 3,
       "reachable": true,
       "spawn_count": 13,
-      "station_bank_seconds": 22.81,
+      "station_bank_seconds": 25.75,
       "subzone": "willowbrook_wilds"
     },
     {
       "biome": "forest",
       "cluster_id": "monster:wolf:willowbrook_wilds:01",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:01",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 7.15,
+      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:03",
+      "counterpart_kind": "copper",
+      "counterpart_seconds": 11.12,
       "entity_type": "monster",
       "kind": "wolf",
       "level_requirement": 3,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 24.32,
+      "station_bank_seconds": 29.7,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -1069,7 +887,7 @@
       "cluster_id": "monster:wraith:duskmere_wilds:00",
       "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
       "counterpart_kind": "maple",
-      "counterpart_seconds": 19.79,
+      "counterpart_seconds": 21.97,
       "entity_type": "monster",
       "kind": "wraith",
       "level_requirement": 32,
@@ -1083,7 +901,7 @@
       "cluster_id": "monster:wraith:duskmere_wilds:01",
       "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
       "counterpart_kind": "maple",
-      "counterpart_seconds": 25.82,
+      "counterpart_seconds": 28.17,
       "entity_type": "monster",
       "kind": "wraith",
       "level_requirement": 32,
@@ -1097,7 +915,7 @@
       "cluster_id": "monster:wraith:duskmere_wilds:02",
       "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
       "counterpart_kind": "maple",
-      "counterpart_seconds": 11.35,
+      "counterpart_seconds": 13.71,
       "entity_type": "monster",
       "kind": "wraith",
       "level_requirement": 32,
@@ -1111,7 +929,7 @@
       "cluster_id": "monster:wraith:duskmere_wilds:03",
       "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
       "counterpart_kind": "maple",
-      "counterpart_seconds": 23.79,
+      "counterpart_seconds": 26.15,
       "entity_type": "monster",
       "kind": "wraith",
       "level_requirement": 32,
@@ -1179,20 +997,34 @@
     {
       "biome": "fields",
       "cluster_id": "node:berries:grand_haven_outskirts:00",
-      "counterpart_cluster_id": "monster:goblin:grand_haven_outskirts:00",
-      "counterpart_kind": "goblin",
-      "counterpart_seconds": 3.51,
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:05",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 1.23,
       "entity_type": "node",
       "kind": "berries",
       "level_requirement": 1,
       "reachable": true,
-      "spawn_count": 10,
-      "station_bank_seconds": 22.22,
+      "spawn_count": 9,
+      "station_bank_seconds": 25.14,
       "subzone": "grand_haven_outskirts"
     },
     {
       "biome": "fields",
       "cluster_id": "node:berries:grand_haven_outskirts:01",
+      "counterpart_cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "counterpart_kind": "goblin",
+      "counterpart_seconds": 5.18,
+      "entity_type": "node",
+      "kind": "berries",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 4,
+      "station_bank_seconds": 19.55,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:berries:grand_haven_outskirts:02",
       "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:00",
       "counterpart_kind": "chicken",
       "counterpart_seconds": 5.13,
@@ -1206,30 +1038,16 @@
     },
     {
       "biome": "fields",
-      "cluster_id": "node:berries:grand_haven_outskirts:02",
-      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:01",
-      "counterpart_kind": "chicken",
-      "counterpart_seconds": 1.49,
-      "entity_type": "node",
-      "kind": "berries",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 3,
-      "station_bank_seconds": 20.19,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
       "cluster_id": "node:berries:grand_haven_outskirts:03",
-      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:02",
-      "counterpart_kind": "chicken",
-      "counterpart_seconds": 2.1,
+      "counterpart_cluster_id": "monster:goblin:grand_haven_outskirts:02",
+      "counterpart_kind": "goblin",
+      "counterpart_seconds": 1.97,
       "entity_type": "node",
       "kind": "berries",
       "level_requirement": 1,
       "reachable": true,
-      "spawn_count": 3,
-      "station_bank_seconds": 17.24,
+      "spawn_count": 4,
+      "station_bank_seconds": 18.83,
       "subzone": "grand_haven_outskirts"
     },
     {
@@ -1261,25 +1079,11 @@
       "subzone": "grand_haven_outskirts"
     },
     {
-      "biome": "fields",
-      "cluster_id": "node:berries:grand_haven_outskirts:06",
-      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:04",
-      "counterpart_kind": "chicken",
-      "counterpart_seconds": 2.48,
-      "entity_type": "node",
-      "kind": "berries",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 16.53,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
       "biome": "desert",
       "cluster_id": "node:bloom:sunscorch_reaches:00",
       "counterpart_cluster_id": "monster:shadow_beast:duskmere_wilds:02",
       "counterpart_kind": "shadow_beast",
-      "counterpart_seconds": 5.25,
+      "counterpart_seconds": 7.77,
       "entity_type": "node",
       "kind": "bloom",
       "level_requirement": 42,
@@ -1293,7 +1097,7 @@
       "cluster_id": "node:bloom:sunscorch_reaches:01",
       "counterpart_cluster_id": "monster:shadow_beast:duskmere_wilds:02",
       "counterpart_kind": "shadow_beast",
-      "counterpart_seconds": 18.05,
+      "counterpart_seconds": 18.3,
       "entity_type": "node",
       "kind": "bloom",
       "level_requirement": 42,
@@ -1307,12 +1111,40 @@
       "cluster_id": "node:coal_seam:willowbrook_wilds:00",
       "counterpart_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
       "counterpart_kind": "withered_ghoul",
-      "counterpart_seconds": 23.4,
+      "counterpart_seconds": 23.5,
       "entity_type": "node",
       "kind": "coal_seam",
       "level_requirement": 25,
       "reachable": true,
-      "spawn_count": 7,
+      "spawn_count": 5,
+      "station_bank_seconds": 17.33,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:coal_seam:willowbrook_wilds:01",
+      "counterpart_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
+      "counterpart_kind": "withered_ghoul",
+      "counterpart_seconds": 26.74,
+      "entity_type": "node",
+      "kind": "coal_seam",
+      "level_requirement": 25,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 17.33,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:coal_seam:willowbrook_wilds:02",
+      "counterpart_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
+      "counterpart_kind": "withered_ghoul",
+      "counterpart_seconds": 22.16,
+      "entity_type": "node",
+      "kind": "coal_seam",
+      "level_requirement": 25,
+      "reachable": true,
+      "spawn_count": 1,
       "station_bank_seconds": 17.33,
       "subzone": "willowbrook_wilds"
     },
@@ -1335,69 +1167,55 @@
       "cluster_id": "node:copper:grand_haven_outskirts:01",
       "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:00",
       "counterpart_kind": "disgruntled_ram",
-      "counterpart_seconds": 3.46,
+      "counterpart_seconds": 2.97,
       "entity_type": "node",
       "kind": "copper",
       "level_requirement": 1,
       "reachable": true,
-      "spawn_count": 14,
+      "spawn_count": 15,
       "station_bank_seconds": 17.5,
       "subzone": "grand_haven_outskirts"
     },
     {
       "biome": "fields",
       "cluster_id": "node:copper:grand_haven_outskirts:02",
-      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:03",
-      "counterpart_kind": "chicken",
-      "counterpart_seconds": 4.15,
-      "entity_type": "node",
-      "kind": "copper",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 4,
-      "station_bank_seconds": 13.33,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "node:copper:grand_haven_outskirts:03",
-      "counterpart_cluster_id": "monster:goblin:grand_haven_outskirts:00",
-      "counterpart_kind": "goblin",
-      "counterpart_seconds": 3.33,
-      "entity_type": "node",
-      "kind": "copper",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 22.22,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "node:copper:grand_haven_outskirts:04",
-      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:04",
-      "counterpart_kind": "chicken",
-      "counterpart_seconds": 3.51,
-      "entity_type": "node",
-      "kind": "copper",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 2,
-      "station_bank_seconds": 16.53,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "node:copper:grand_haven_outskirts:05",
-      "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:03",
+      "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
       "counterpart_kind": "disgruntled_ram",
       "counterpart_seconds": 1.67,
       "entity_type": "node",
       "kind": "copper",
       "level_requirement": 1,
       "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 18.04,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:copper:grand_haven_outskirts:03",
+      "counterpart_cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "counterpart_kind": "goblin",
+      "counterpart_seconds": 1.97,
+      "entity_type": "node",
+      "kind": "copper",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 5,
+      "station_bank_seconds": 22.22,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:copper:grand_haven_outskirts:04",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 4.74,
+      "entity_type": "node",
+      "kind": "copper",
+      "level_requirement": 1,
+      "reachable": true,
       "spawn_count": 2,
-      "station_bank_seconds": 20.76,
+      "station_bank_seconds": 16.53,
       "subzone": "grand_haven_outskirts"
     },
     {
@@ -1473,7 +1291,7 @@
     {
       "biome": "fields",
       "cluster_id": "node:flax:grand_haven_outskirts:00",
-      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:03",
       "counterpart_kind": "chicken",
       "counterpart_seconds": 0.74,
       "entity_type": "node",
@@ -1487,63 +1305,63 @@
     {
       "biome": "fields",
       "cluster_id": "node:flax:grand_haven_outskirts:01",
-      "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:03",
-      "counterpart_kind": "disgruntled_ram",
-      "counterpart_seconds": 0.44,
+      "counterpart_cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "counterpart_kind": "goblin",
+      "counterpart_seconds": 0.92,
       "entity_type": "node",
       "kind": "flax",
       "level_requirement": 1,
       "reachable": true,
-      "spawn_count": 12,
-      "station_bank_seconds": 20.76,
+      "spawn_count": 11,
+      "station_bank_seconds": 22.22,
       "subzone": "grand_haven_outskirts"
     },
     {
       "biome": "fields",
       "cluster_id": "node:flax:grand_haven_outskirts:02",
-      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:04",
-      "counterpart_kind": "chicken",
-      "counterpart_seconds": 1.67,
-      "entity_type": "node",
-      "kind": "flax",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 16.53,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:01",
-      "counterpart_kind": "chicken",
-      "counterpart_seconds": 5.76,
-      "entity_type": "node",
-      "kind": "flax",
-      "level_requirement": 1,
-      "reachable": true,
-      "spawn_count": 3,
-      "station_bank_seconds": 20.19,
-      "subzone": "grand_haven_outskirts"
-    },
-    {
-      "biome": "fields",
-      "cluster_id": "node:flax:grand_haven_outskirts:04",
-      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:03",
       "counterpart_kind": "chicken",
       "counterpart_seconds": 3.1,
       "entity_type": "node",
       "kind": "flax",
       "level_requirement": 1,
       "reachable": true,
-      "spawn_count": 1,
+      "spawn_count": 2,
       "station_bank_seconds": 17.24,
       "subzone": "grand_haven_outskirts"
     },
     {
       "biome": "fields",
+      "cluster_id": "node:flax:grand_haven_outskirts:03",
+      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:00",
+      "counterpart_kind": "chicken",
+      "counterpart_seconds": 5.82,
+      "entity_type": "node",
+      "kind": "flax",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 3,
+      "station_bank_seconds": 22.72,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
+      "cluster_id": "node:flax:grand_haven_outskirts:04",
+      "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
+      "counterpart_kind": "disgruntled_ram",
+      "counterpart_seconds": 6.54,
+      "entity_type": "node",
+      "kind": "flax",
+      "level_requirement": 1,
+      "reachable": true,
+      "spawn_count": 1,
+      "station_bank_seconds": 18.04,
+      "subzone": "grand_haven_outskirts"
+    },
+    {
+      "biome": "fields",
       "cluster_id": "node:flax:grand_haven_outskirts:05",
-      "counterpart_cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "counterpart_cluster_id": "monster:goblin:grand_haven_outskirts:00",
       "counterpart_kind": "goblin",
       "counterpart_seconds": 1.97,
       "entity_type": "node",
@@ -1669,9 +1487,23 @@
     {
       "biome": "forest",
       "cluster_id": "node:herbs:willowbrook_wilds:00",
-      "counterpart_cluster_id": "monster:bandit:sunscorch_reaches:01",
+      "counterpart_cluster_id": "monster:bandit:sunscorch_reaches:00",
       "counterpart_kind": "bandit",
-      "counterpart_seconds": 11.89,
+      "counterpart_seconds": 4.71,
+      "entity_type": "node",
+      "kind": "herbs",
+      "level_requirement": 18,
+      "reachable": true,
+      "spawn_count": 10,
+      "station_bank_seconds": 12.3,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:herbs:willowbrook_wilds:01",
+      "counterpart_cluster_id": "monster:bandit:sunscorch_reaches:03",
+      "counterpart_kind": "bandit",
+      "counterpart_seconds": 12.14,
       "entity_type": "node",
       "kind": "herbs",
       "level_requirement": 18,
@@ -1682,29 +1514,15 @@
     },
     {
       "biome": "forest",
-      "cluster_id": "node:herbs:willowbrook_wilds:01",
-      "counterpart_cluster_id": "monster:bandit:sunscorch_reaches:01",
-      "counterpart_kind": "bandit",
-      "counterpart_seconds": 4.33,
-      "entity_type": "node",
-      "kind": "herbs",
-      "level_requirement": 18,
-      "reachable": true,
-      "spawn_count": 10,
-      "station_bank_seconds": 12.53,
-      "subzone": "willowbrook_wilds"
-    },
-    {
-      "biome": "forest",
       "cluster_id": "node:iron:willowbrook_wilds:00",
       "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
       "counterpart_kind": "scorpion_stalker",
-      "counterpart_seconds": 13.51,
+      "counterpart_seconds": 13.07,
       "entity_type": "node",
       "kind": "iron",
       "level_requirement": 15,
       "reachable": true,
-      "spawn_count": 11,
+      "spawn_count": 13,
       "station_bank_seconds": 14.45,
       "subzone": "willowbrook_wilds"
     },
@@ -1714,34 +1532,6 @@
       "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
       "counterpart_kind": "scorpion_stalker",
       "counterpart_seconds": 2.61,
-      "entity_type": "node",
-      "kind": "iron",
-      "level_requirement": 15,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 14.45,
-      "subzone": "willowbrook_wilds"
-    },
-    {
-      "biome": "forest",
-      "cluster_id": "node:iron:willowbrook_wilds:02",
-      "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
-      "counterpart_kind": "scorpion_stalker",
-      "counterpart_seconds": 10.56,
-      "entity_type": "node",
-      "kind": "iron",
-      "level_requirement": 15,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 14.45,
-      "subzone": "willowbrook_wilds"
-    },
-    {
-      "biome": "forest",
-      "cluster_id": "node:iron:willowbrook_wilds:03",
-      "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
-      "counterpart_kind": "scorpion_stalker",
-      "counterpart_seconds": 7.3,
       "entity_type": "node",
       "kind": "iron",
       "level_requirement": 15,
@@ -1769,7 +1559,7 @@
       "cluster_id": "node:maple:willowbrook_wilds:00",
       "counterpart_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
       "counterpart_kind": "withered_ghoul",
-      "counterpart_seconds": 18.49,
+      "counterpart_seconds": 20.84,
       "entity_type": "node",
       "kind": "maple",
       "level_requirement": 28,
@@ -1781,23 +1571,9 @@
     {
       "biome": "forest",
       "cluster_id": "node:maple:willowbrook_wilds:01",
-      "counterpart_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
-      "counterpart_kind": "withered_ghoul",
-      "counterpart_seconds": 24.69,
-      "entity_type": "node",
-      "kind": "maple",
-      "level_requirement": 28,
-      "reachable": true,
-      "spawn_count": 8,
-      "station_bank_seconds": 17.33,
-      "subzone": "willowbrook_wilds"
-    },
-    {
-      "biome": "forest",
-      "cluster_id": "node:maple:willowbrook_wilds:02",
       "counterpart_cluster_id": "monster:withered_ghoul:duskmere_wilds:00",
       "counterpart_kind": "withered_ghoul",
-      "counterpart_seconds": 24.49,
+      "counterpart_seconds": 22.83,
       "entity_type": "node",
       "kind": "maple",
       "level_requirement": 28,
@@ -1807,50 +1583,36 @@
       "subzone": "willowbrook_wilds"
     },
     {
+      "biome": "forest",
+      "cluster_id": "node:maple:willowbrook_wilds:02",
+      "counterpart_cluster_id": "monster:withered_ghoul:duskmere_wilds:02",
+      "counterpart_kind": "withered_ghoul",
+      "counterpart_seconds": 24.15,
+      "entity_type": "node",
+      "kind": "maple",
+      "level_requirement": 28,
+      "reachable": true,
+      "spawn_count": 7,
+      "station_bank_seconds": 17.33,
+      "subzone": "willowbrook_wilds"
+    },
+    {
       "biome": "desert",
       "cluster_id": "node:mithril:sunscorch_reaches:00",
       "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
       "counterpart_kind": "bone_reaper",
-      "counterpart_seconds": 12.43,
+      "counterpart_seconds": 14.91,
       "entity_type": "node",
       "kind": "mithril",
       "level_requirement": 40,
       "reachable": true,
-      "spawn_count": 6,
+      "spawn_count": 10,
       "station_bank_seconds": 14.17,
       "subzone": "sunscorch_reaches"
     },
     {
       "biome": "desert",
       "cluster_id": "node:mithril:sunscorch_reaches:01",
-      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
-      "counterpart_kind": "bone_reaper",
-      "counterpart_seconds": 18.19,
-      "entity_type": "node",
-      "kind": "mithril",
-      "level_requirement": 40,
-      "reachable": true,
-      "spawn_count": 3,
-      "station_bank_seconds": 14.17,
-      "subzone": "sunscorch_reaches"
-    },
-    {
-      "biome": "desert",
-      "cluster_id": "node:mithril:sunscorch_reaches:02",
-      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:04",
-      "counterpart_kind": "bone_reaper",
-      "counterpart_seconds": 8.69,
-      "entity_type": "node",
-      "kind": "mithril",
-      "level_requirement": 40,
-      "reachable": true,
-      "spawn_count": 1,
-      "station_bank_seconds": 16.58,
-      "subzone": "sunscorch_reaches"
-    },
-    {
-      "biome": "desert",
-      "cluster_id": "node:mithril:sunscorch_reaches:03",
       "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
       "counterpart_kind": "bone_reaper",
       "counterpart_seconds": 4.38,
@@ -1865,15 +1627,15 @@
     {
       "biome": "fields",
       "cluster_id": "node:oak:grand_haven_outskirts:00",
-      "counterpart_cluster_id": "monster:chicken:grand_haven_outskirts:04",
-      "counterpart_kind": "chicken",
-      "counterpart_seconds": 2.54,
+      "counterpart_cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
+      "counterpart_kind": "disgruntled_ram",
+      "counterpart_seconds": 3.59,
       "entity_type": "node",
       "kind": "oak",
       "level_requirement": 1,
       "reachable": true,
       "spawn_count": 17,
-      "station_bank_seconds": 16.53,
+      "station_bank_seconds": 18.04,
       "subzone": "grand_haven_outskirts"
     },
     {
@@ -1907,20 +1669,34 @@
     {
       "biome": "desert",
       "cluster_id": "node:palm:sunscorch_reaches:01",
-      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:04",
       "counterpart_kind": "bone_reaper",
-      "counterpart_seconds": 16.27,
+      "counterpart_seconds": 8.46,
       "entity_type": "node",
       "kind": "palm",
       "level_requirement": 40,
       "reachable": true,
-      "spawn_count": 3,
-      "station_bank_seconds": 14.17,
+      "spawn_count": 1,
+      "station_bank_seconds": 16.58,
       "subzone": "sunscorch_reaches"
     },
     {
       "biome": "desert",
       "cluster_id": "node:palm:sunscorch_reaches:02",
+      "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
+      "counterpart_kind": "bone_reaper",
+      "counterpart_seconds": 14.47,
+      "entity_type": "node",
+      "kind": "palm",
+      "level_requirement": 40,
+      "reachable": true,
+      "spawn_count": 2,
+      "station_bank_seconds": 14.17,
+      "subzone": "sunscorch_reaches"
+    },
+    {
+      "biome": "desert",
+      "cluster_id": "node:palm:sunscorch_reaches:03",
       "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:04",
       "counterpart_kind": "bone_reaper",
       "counterpart_seconds": 3.82,
@@ -1934,7 +1710,7 @@
     },
     {
       "biome": "desert",
-      "cluster_id": "node:palm:sunscorch_reaches:03",
+      "cluster_id": "node:palm:sunscorch_reaches:04",
       "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:04",
       "counterpart_kind": "bone_reaper",
       "counterpart_seconds": 13.09,
@@ -1965,7 +1741,7 @@
       "cluster_id": "node:sandstone:sunscorch_reaches:00",
       "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:04",
       "counterpart_kind": "bone_reaper",
-      "counterpart_seconds": 13.05,
+      "counterpart_seconds": 12.51,
       "entity_type": "node",
       "kind": "sandstone",
       "level_requirement": 40,
@@ -2007,7 +1783,7 @@
       "cluster_id": "node:sandstone:sunscorch_reaches:03",
       "counterpart_cluster_id": "monster:bone_reaper:duskmere_wilds:05",
       "counterpart_kind": "bone_reaper",
-      "counterpart_seconds": 21.23,
+      "counterpart_seconds": 21.05,
       "entity_type": "node",
       "kind": "sandstone",
       "level_requirement": 40,
@@ -2091,12 +1867,12 @@
       "cluster_id": "node:willow:willowbrook_wilds:00",
       "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
       "counterpart_kind": "scorpion_stalker",
-      "counterpart_seconds": 15.58,
+      "counterpart_seconds": 18.01,
       "entity_type": "node",
       "kind": "willow",
       "level_requirement": 15,
       "reachable": true,
-      "spawn_count": 4,
+      "spawn_count": 10,
       "station_bank_seconds": 14.45,
       "subzone": "willowbrook_wilds"
     },
@@ -2105,12 +1881,26 @@
       "cluster_id": "node:willow:willowbrook_wilds:01",
       "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
       "counterpart_kind": "scorpion_stalker",
-      "counterpart_seconds": 8.17,
+      "counterpart_seconds": 12.73,
       "entity_type": "node",
       "kind": "willow",
       "level_requirement": 15,
       "reachable": true,
-      "spawn_count": 10,
+      "spawn_count": 3,
+      "station_bank_seconds": 14.45,
+      "subzone": "willowbrook_wilds"
+    },
+    {
+      "biome": "forest",
+      "cluster_id": "node:willow:willowbrook_wilds:02",
+      "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
+      "counterpart_kind": "scorpion_stalker",
+      "counterpart_seconds": 5.15,
+      "entity_type": "node",
+      "kind": "willow",
+      "level_requirement": 15,
+      "reachable": true,
+      "spawn_count": 1,
       "station_bank_seconds": 14.45,
       "subzone": "willowbrook_wilds"
     },
@@ -2213,41 +2003,41 @@
     }
   },
   "schema_version": "tomlandia-gate7-reachability/v1",
-  "spawn_hash": "24130e8725da5f6e339d5037a40e81f5bcc1052a47fc29b056b36b8d8b2d31fa",
+  "spawn_hash": "9d1bc1c263fb2e5b45e3e1b16c62ec3d2e314d6733a0378c95a0fe06e0cdc9e0",
   "spawn_issues": [],
   "spawn_set_version": "v2",
   "summary": {
-    "clusters_evaluated": 152,
+    "clusters_evaluated": 142,
     "failed_tiers": 0,
     "overall_cluster_counterpart_seconds": {
-      "median": 5.8,
-      "p90": 18.89
+      "median": 6.11,
+      "p90": 21.04
     },
     "overall_cluster_station_bank_seconds": {
-      "median": 18.12,
-      "p90": 26.01
+      "median": 18.04,
+      "p90": 27.24
     },
     "spawn_issues": 0,
-    "spawns_evaluated": 730,
+    "spawns_evaluated": 729,
     "tiers_evaluated": 16,
     "unreachable_clusters": 0
   },
   "tier_reports": [
     {
       "approved_exception_id": null,
-      "evaluated_clusters": 14,
+      "evaluated_clusters": 11,
       "level_requirement": 1,
       "node_monster_seconds": {
         "above_target_samples": 0,
-        "below_target_samples": 14,
-        "median": 4.02,
-        "p90": 4.89,
+        "below_target_samples": 11,
+        "median": 4.89,
+        "p90": 6,
         "target_max": 30,
         "target_min": 15
       },
       "primary_monster_kind": "chicken",
       "primary_node_kind": "copper",
-      "reachable_clusters": 14,
+      "reachable_clusters": 11,
       "requirements": {
         "monster_items": [],
         "node_items": [
@@ -2265,7 +2055,7 @@
       "samples": [
         {
           "modeled_cycle_seconds": 41.34,
-          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:03",
           "node_cluster_id": "node:copper:grand_haven_outskirts:00",
           "node_monster_seconds": 4.89,
           "origin_cluster_id": "node:copper:grand_haven_outskirts:00",
@@ -2279,7 +2069,7 @@
             "modeled_distinct_stacks": 2,
             "monster_respawn_cycles": 1,
             "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 8,
+            "monster_spawns_in_cluster": 7,
             "node_respawn_cycles": 1,
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "copper_ore",
@@ -2294,10 +2084,10 @@
           "walking_loop_seconds": 22.14
         },
         {
-          "modeled_cycle_seconds": 43.78,
-          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:01",
+          "modeled_cycle_seconds": 41.34,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:03",
           "node_cluster_id": "node:copper:grand_haven_outskirts:01",
-          "node_monster_seconds": 4.38,
+          "node_monster_seconds": 4.89,
           "origin_cluster_id": "node:copper:grand_haven_outskirts:01",
           "reachable": true,
           "resource_model": {
@@ -2309,25 +2099,25 @@
             "modeled_distinct_stacks": 2,
             "monster_respawn_cycles": 1,
             "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 1,
+            "monster_spawns_in_cluster": 7,
             "node_respawn_cycles": 1,
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "copper_ore",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 56
+            "shared_node_capacity": 60
           },
           "services": {
             "bank": "haven_banker",
             "forge": "haven_weaponsmith",
             "smelt": "smith"
           },
-          "walking_loop_seconds": 24.58
+          "walking_loop_seconds": 22.14
         },
         {
-          "modeled_cycle_seconds": 36.68,
-          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:03",
+          "modeled_cycle_seconds": 75.99,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:01",
           "node_cluster_id": "node:copper:grand_haven_outskirts:02",
-          "node_monster_seconds": 4.15,
+          "node_monster_seconds": 4.25,
           "origin_cluster_id": "node:copper:grand_haven_outskirts:02",
           "reachable": true,
           "resource_model": {
@@ -2339,25 +2129,25 @@
             "modeled_distinct_stacks": 2,
             "monster_respawn_cycles": 1,
             "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 4,
-            "node_respawn_cycles": 1,
-            "node_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 10,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 36,
             "primary_node_item": "copper_ore",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 16
+            "shared_node_capacity": 4
           },
           "services": {
             "bank": "haven_banker",
             "forge": "haven_weaponsmith",
             "smelt": "smith"
           },
-          "walking_loop_seconds": 17.48
+          "walking_loop_seconds": 20.79
         },
         {
-          "modeled_cycle_seconds": 85.46,
-          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:05",
+          "modeled_cycle_seconds": 46.08,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:02",
           "node_cluster_id": "node:copper:grand_haven_outskirts:03",
-          "node_monster_seconds": 3.51,
+          "node_monster_seconds": 3.89,
           "origin_cluster_id": "node:copper:grand_haven_outskirts:03",
           "reachable": true,
           "resource_model": {
@@ -2370,24 +2160,24 @@
             "monster_respawn_cycles": 1,
             "monster_respawn_wait_seconds": 0,
             "monster_spawns_in_cluster": 1,
-            "node_respawn_cycles": 2,
-            "node_respawn_wait_seconds": 36,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
             "primary_node_item": "copper_ore",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 4
+            "shared_node_capacity": 20
           },
           "services": {
             "bank": "haven_banker",
             "forge": "haven_weaponsmith",
             "smelt": "smith"
           },
-          "walking_loop_seconds": 30.26
+          "walking_loop_seconds": 26.88
         },
         {
-          "modeled_cycle_seconds": 39.24,
-          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:04",
+          "modeled_cycle_seconds": 40.47,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:01",
           "node_cluster_id": "node:copper:grand_haven_outskirts:04",
-          "node_monster_seconds": 3.51,
+          "node_monster_seconds": 4.74,
           "origin_cluster_id": "node:copper:grand_haven_outskirts:04",
           "reachable": true,
           "resource_model": {
@@ -2399,7 +2189,7 @@
             "modeled_distinct_stacks": 2,
             "monster_respawn_cycles": 1,
             "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 4,
+            "monster_spawns_in_cluster": 10,
             "node_respawn_cycles": 1,
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "copper_ore",
@@ -2411,43 +2201,13 @@
             "forge": "haven_weaponsmith",
             "smelt": "smith"
           },
-          "walking_loop_seconds": 20.04
+          "walking_loop_seconds": 21.27
         },
         {
-          "modeled_cycle_seconds": 46.15,
-          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:06",
-          "node_cluster_id": "node:copper:grand_haven_outskirts:05",
-          "node_monster_seconds": 3.35,
-          "origin_cluster_id": "node:copper:grand_haven_outskirts:05",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 1,
-            "expected_trophy_drops": [],
-            "gather_seconds": 19.2,
-            "modeled_distinct_stacks": 2,
-            "monster_respawn_cycles": 1,
-            "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 2,
-            "node_respawn_cycles": 1,
-            "node_respawn_wait_seconds": 0,
-            "primary_node_item": "copper_ore",
-            "primary_node_quantity": 6,
-            "shared_node_capacity": 8
-          },
-          "services": {
-            "bank": "haven_banker",
-            "forge": "haven_weaponsmith",
-            "smelt": "smith"
-          },
-          "walking_loop_seconds": 26.95
-        },
-        {
-          "modeled_cycle_seconds": 50.09,
+          "modeled_cycle_seconds": 50.11,
           "monster_cluster_id": "monster:chicken:grand_haven_outskirts:00",
           "node_cluster_id": "node:copper:grand_haven_outskirts:01",
-          "node_monster_seconds": 8.17,
+          "node_monster_seconds": 8.19,
           "origin_cluster_id": "monster:chicken:grand_haven_outskirts:00",
           "reachable": true,
           "resource_model": {
@@ -2464,21 +2224,51 @@
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "copper_ore",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 56
+            "shared_node_capacity": 60
           },
           "services": {
             "bank": "haven_banker",
             "forge": "haven_weaponsmith",
             "smelt": "smith"
           },
-          "walking_loop_seconds": 30.89
+          "walking_loop_seconds": 30.91
         },
         {
-          "modeled_cycle_seconds": 43.78,
+          "modeled_cycle_seconds": 75.99,
           "monster_cluster_id": "monster:chicken:grand_haven_outskirts:01",
-          "node_cluster_id": "node:copper:grand_haven_outskirts:01",
-          "node_monster_seconds": 4.38,
+          "node_cluster_id": "node:copper:grand_haven_outskirts:02",
+          "node_monster_seconds": 4.25,
           "origin_cluster_id": "monster:chicken:grand_haven_outskirts:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 1,
+            "expected_trophy_drops": [],
+            "gather_seconds": 19.2,
+            "modeled_distinct_stacks": 2,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 10,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 36,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
+          },
+          "walking_loop_seconds": 20.79
+        },
+        {
+          "modeled_cycle_seconds": 46.08,
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:03",
+          "node_monster_seconds": 3.89,
+          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:02",
           "reachable": true,
           "resource_model": {
             "bag_capacity": 20,
@@ -2494,21 +2284,21 @@
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "copper_ore",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 56
+            "shared_node_capacity": 20
           },
           "services": {
             "bank": "haven_banker",
             "forge": "haven_weaponsmith",
             "smelt": "smith"
           },
-          "walking_loop_seconds": 24.58
+          "walking_loop_seconds": 26.88
         },
         {
           "modeled_cycle_seconds": 41.34,
-          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:03",
           "node_cluster_id": "node:copper:grand_haven_outskirts:00",
           "node_monster_seconds": 4.89,
-          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:02",
+          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:03",
           "reachable": true,
           "resource_model": {
             "bag_capacity": 20,
@@ -2519,7 +2309,7 @@
             "modeled_distinct_stacks": 2,
             "monster_respawn_cycles": 1,
             "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 8,
+            "monster_spawns_in_cluster": 7,
             "node_respawn_cycles": 1,
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "copper_ore",
@@ -2534,40 +2324,10 @@
           "walking_loop_seconds": 22.14
         },
         {
-          "modeled_cycle_seconds": 36.68,
-          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:03",
-          "node_cluster_id": "node:copper:grand_haven_outskirts:02",
-          "node_monster_seconds": 4.15,
-          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:03",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 1,
-            "expected_trophy_drops": [],
-            "gather_seconds": 19.2,
-            "modeled_distinct_stacks": 2,
-            "monster_respawn_cycles": 1,
-            "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 4,
-            "node_respawn_cycles": 1,
-            "node_respawn_wait_seconds": 0,
-            "primary_node_item": "copper_ore",
-            "primary_node_quantity": 6,
-            "shared_node_capacity": 16
-          },
-          "services": {
-            "bank": "haven_banker",
-            "forge": "haven_weaponsmith",
-            "smelt": "smith"
-          },
-          "walking_loop_seconds": 17.48
-        },
-        {
-          "modeled_cycle_seconds": 39.24,
+          "modeled_cycle_seconds": 51,
           "monster_cluster_id": "monster:chicken:grand_haven_outskirts:04",
-          "node_cluster_id": "node:copper:grand_haven_outskirts:04",
-          "node_monster_seconds": 3.51,
+          "node_cluster_id": "node:copper:grand_haven_outskirts:03",
+          "node_monster_seconds": 6,
           "origin_cluster_id": "monster:chicken:grand_haven_outskirts:04",
           "reachable": true,
           "resource_model": {
@@ -2579,25 +2339,25 @@
             "modeled_distinct_stacks": 2,
             "monster_respawn_cycles": 1,
             "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 4,
+            "monster_spawns_in_cluster": 2,
             "node_respawn_cycles": 1,
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "copper_ore",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 8
+            "shared_node_capacity": 20
           },
           "services": {
             "bank": "haven_banker",
             "forge": "haven_weaponsmith",
             "smelt": "smith"
           },
-          "walking_loop_seconds": 20.04
+          "walking_loop_seconds": 31.8
         },
         {
-          "modeled_cycle_seconds": 85.46,
+          "modeled_cycle_seconds": 49.23,
           "monster_cluster_id": "monster:chicken:grand_haven_outskirts:05",
           "node_cluster_id": "node:copper:grand_haven_outskirts:03",
-          "node_monster_seconds": 3.51,
+          "node_monster_seconds": 4.89,
           "origin_cluster_id": "monster:chicken:grand_haven_outskirts:05",
           "reachable": true,
           "resource_model": {
@@ -2609,104 +2369,44 @@
             "modeled_distinct_stacks": 2,
             "monster_respawn_cycles": 1,
             "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 1,
-            "node_respawn_cycles": 2,
-            "node_respawn_wait_seconds": 36,
-            "primary_node_item": "copper_ore",
-            "primary_node_quantity": 6,
-            "shared_node_capacity": 4
-          },
-          "services": {
-            "bank": "haven_banker",
-            "forge": "haven_weaponsmith",
-            "smelt": "smith"
-          },
-          "walking_loop_seconds": 30.26
-        },
-        {
-          "modeled_cycle_seconds": 46.15,
-          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:06",
-          "node_cluster_id": "node:copper:grand_haven_outskirts:05",
-          "node_monster_seconds": 3.35,
-          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:06",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 1,
-            "expected_trophy_drops": [],
-            "gather_seconds": 19.2,
-            "modeled_distinct_stacks": 2,
-            "monster_respawn_cycles": 1,
-            "monster_respawn_wait_seconds": 0,
             "monster_spawns_in_cluster": 2,
             "node_respawn_cycles": 1,
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "copper_ore",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 8
+            "shared_node_capacity": 20
           },
           "services": {
             "bank": "haven_banker",
             "forge": "haven_weaponsmith",
             "smelt": "smith"
           },
-          "walking_loop_seconds": 26.95
-        },
-        {
-          "modeled_cycle_seconds": 46.08,
-          "monster_cluster_id": "monster:chicken:grand_haven_outskirts:07",
-          "node_cluster_id": "node:copper:grand_haven_outskirts:05",
-          "node_monster_seconds": 3.89,
-          "origin_cluster_id": "monster:chicken:grand_haven_outskirts:07",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 1,
-            "expected_trophy_drops": [],
-            "gather_seconds": 19.2,
-            "modeled_distinct_stacks": 2,
-            "monster_respawn_cycles": 1,
-            "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 2,
-            "node_respawn_cycles": 1,
-            "node_respawn_wait_seconds": 0,
-            "primary_node_item": "copper_ore",
-            "primary_node_quantity": 6,
-            "shared_node_capacity": 8
-          },
-          "services": {
-            "bank": "haven_banker",
-            "forge": "haven_weaponsmith",
-            "smelt": "smith"
-          },
-          "walking_loop_seconds": 26.88
+          "walking_loop_seconds": 30.03
         }
       ],
       "secondary_node_kinds": [],
       "status": "pass_compact",
       "tier_index": 1,
       "walking_loop_seconds": {
-        "median": 24.58,
-        "p90": 30.26
+        "median": 22.14,
+        "p90": 30.91
       }
     },
     {
       "approved_exception_id": "bronze_fields_forest",
-      "evaluated_clusters": 7,
+      "evaluated_clusters": 6,
       "level_requirement": 10,
       "node_monster_seconds": {
         "above_target_samples": 0,
-        "below_target_samples": 4,
-        "median": 13.33,
-        "p90": 23.1,
+        "below_target_samples": 3,
+        "median": 15.33,
+        "p90": 26,
         "target_max": 30,
         "target_min": 15
       },
       "primary_monster_kind": "goblin_brute",
       "primary_node_kind": "copper",
-      "reachable_clusters": 7,
+      "reachable_clusters": 6,
       "requirements": {
         "monster_items": [
           {
@@ -2738,10 +2438,10 @@
       },
       "samples": [
         {
-          "modeled_cycle_seconds": 84.27,
+          "modeled_cycle_seconds": 86.69,
           "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
           "node_cluster_id": "node:copper:grand_haven_outskirts:00",
-          "node_monster_seconds": 26.83,
+          "node_monster_seconds": 29.24,
           "origin_cluster_id": "node:copper:grand_haven_outskirts:00",
           "reachable": true,
           "resource_model": {
@@ -2770,13 +2470,13 @@
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 45.87
+          "walking_loop_seconds": 48.29
         },
         {
-          "modeled_cycle_seconds": 78.05,
+          "modeled_cycle_seconds": 80.21,
           "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
           "node_cluster_id": "node:copper:grand_haven_outskirts:01",
-          "node_monster_seconds": 20.61,
+          "node_monster_seconds": 22.76,
           "origin_cluster_id": "node:copper:grand_haven_outskirts:01",
           "reachable": true,
           "resource_model": {
@@ -2798,56 +2498,21 @@
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "copper_ore",
             "primary_node_quantity": 12,
-            "shared_node_capacity": 56
+            "shared_node_capacity": 60
           },
           "services": {
             "bank": "banker",
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 39.65
+          "walking_loop_seconds": 41.81
         },
         {
-          "modeled_cycle_seconds": 70.77,
+          "modeled_cycle_seconds": 140.36,
           "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
           "node_cluster_id": "node:copper:grand_haven_outskirts:02",
-          "node_monster_seconds": 13.33,
+          "node_monster_seconds": 10.92,
           "origin_cluster_id": "node:copper:grand_haven_outskirts:02",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 2.22,
-            "expected_trophy_drops": [
-              {
-                "chance": 0.45,
-                "item_id": "brute_fang"
-              }
-            ],
-            "gather_seconds": 38.4,
-            "modeled_distinct_stacks": 4,
-            "monster_respawn_cycles": 1,
-            "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 6,
-            "node_respawn_cycles": 1,
-            "node_respawn_wait_seconds": 0,
-            "primary_node_item": "copper_ore",
-            "primary_node_quantity": 12,
-            "shared_node_capacity": 16
-          },
-          "services": {
-            "bank": "banker",
-            "forge": "sun_weaponsmith",
-            "smelt": "sun_smith"
-          },
-          "walking_loop_seconds": 32.37
-        },
-        {
-          "modeled_cycle_seconds": 139.05,
-          "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
-          "node_cluster_id": "node:copper:grand_haven_outskirts:03",
-          "node_monster_seconds": 9.6,
-          "origin_cluster_id": "node:copper:grand_haven_outskirts:03",
           "reachable": true,
           "resource_model": {
             "bag_capacity": 20,
@@ -2875,13 +2540,48 @@
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 28.65
+          "walking_loop_seconds": 29.96
         },
         {
-          "modeled_cycle_seconds": 111.95,
+          "modeled_cycle_seconds": 64.96,
+          "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:03",
+          "node_monster_seconds": 7.51,
+          "origin_cluster_id": "node:copper:grand_haven_outskirts:03",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "brute_fang"
+              }
+            ],
+            "gather_seconds": 38.4,
+            "modeled_distinct_stacks": 4,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 6,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "copper_ore",
+            "primary_node_quantity": 12,
+            "shared_node_capacity": 20
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 26.56
+        },
+        {
+          "modeled_cycle_seconds": 113.18,
           "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
           "node_cluster_id": "node:copper:grand_haven_outskirts:04",
-          "node_monster_seconds": 18.51,
+          "node_monster_seconds": 19.74,
           "origin_cluster_id": "node:copper:grand_haven_outskirts:04",
           "reachable": true,
           "resource_model": {
@@ -2910,47 +2610,12 @@
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 37.55
+          "walking_loop_seconds": 38.78
         },
         {
-          "modeled_cycle_seconds": 100.96,
+          "modeled_cycle_seconds": 64.96,
           "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
-          "node_cluster_id": "node:copper:grand_haven_outskirts:05",
-          "node_monster_seconds": 7.51,
-          "origin_cluster_id": "node:copper:grand_haven_outskirts:05",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 2.22,
-            "expected_trophy_drops": [
-              {
-                "chance": 0.45,
-                "item_id": "brute_fang"
-              }
-            ],
-            "gather_seconds": 38.4,
-            "modeled_distinct_stacks": 4,
-            "monster_respawn_cycles": 1,
-            "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 6,
-            "node_respawn_cycles": 2,
-            "node_respawn_wait_seconds": 36,
-            "primary_node_item": "copper_ore",
-            "primary_node_quantity": 12,
-            "shared_node_capacity": 8
-          },
-          "services": {
-            "bank": "banker",
-            "forge": "sun_weaponsmith",
-            "smelt": "sun_smith"
-          },
-          "walking_loop_seconds": 26.56
-        },
-        {
-          "modeled_cycle_seconds": 100.96,
-          "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
-          "node_cluster_id": "node:copper:grand_haven_outskirts:05",
+          "node_cluster_id": "node:copper:grand_haven_outskirts:03",
           "node_monster_seconds": 7.51,
           "origin_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
           "reachable": true,
@@ -2969,11 +2634,11 @@
             "monster_respawn_cycles": 1,
             "monster_respawn_wait_seconds": 0,
             "monster_spawns_in_cluster": 6,
-            "node_respawn_cycles": 2,
-            "node_respawn_wait_seconds": 36,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
             "primary_node_item": "copper_ore",
             "primary_node_quantity": 12,
-            "shared_node_capacity": 8
+            "shared_node_capacity": 20
           },
           "services": {
             "bank": "banker",
@@ -2987,25 +2652,25 @@
       "status": "pass_compact",
       "tier_index": 2,
       "walking_loop_seconds": {
-        "median": 32.37,
-        "p90": 42.14
+        "median": 34.37,
+        "p90": 45.05
       }
     },
     {
       "approved_exception_id": null,
-      "evaluated_clusters": 7,
+      "evaluated_clusters": 4,
       "level_requirement": 20,
       "node_monster_seconds": {
         "above_target_samples": 0,
-        "below_target_samples": 7,
-        "median": 2.1,
-        "p90": 3.2,
+        "below_target_samples": 4,
+        "median": 5.36,
+        "p90": 8.61,
         "target_max": 30,
         "target_min": 15
       },
       "primary_monster_kind": "ironback_boar",
       "primary_node_kind": "iron",
-      "reachable_clusters": 7,
+      "reachable_clusters": 4,
       "requirements": {
         "monster_items": [
           {
@@ -3062,7 +2727,7 @@
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "iron_ore",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 44
+            "shared_node_capacity": 52
           },
           "services": {
             "bank": "banker",
@@ -3072,10 +2737,10 @@
           "walking_loop_seconds": 19.45
         },
         {
-          "modeled_cycle_seconds": 111.52,
-          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:02",
+          "modeled_cycle_seconds": 112.21,
+          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
           "node_cluster_id": "node:iron:willowbrook_wilds:01",
-          "node_monster_seconds": 3.64,
+          "node_monster_seconds": 8.61,
           "origin_cluster_id": "node:iron:willowbrook_wilds:01",
           "reachable": true,
           "resource_model": {
@@ -3090,9 +2755,9 @@
             ],
             "gather_seconds": 24,
             "modeled_distinct_stacks": 4,
-            "monster_respawn_cycles": 3,
-            "monster_respawn_wait_seconds": 24,
-            "monster_spawns_in_cluster": 1,
+            "monster_respawn_cycles": 2,
+            "monster_respawn_wait_seconds": 12,
+            "monster_spawns_in_cluster": 2,
             "node_respawn_cycles": 2,
             "node_respawn_wait_seconds": 44,
             "primary_node_item": "iron_ore",
@@ -3104,77 +2769,7 @@
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 19.52
-        },
-        {
-          "modeled_cycle_seconds": 118.42,
-          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
-          "node_cluster_id": "node:iron:willowbrook_wilds:02",
-          "node_monster_seconds": 2.9,
-          "origin_cluster_id": "node:iron:willowbrook_wilds:02",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 2.22,
-            "expected_trophy_drops": [
-              {
-                "chance": 0.45,
-                "item_id": "ironback_tusk"
-              }
-            ],
-            "gather_seconds": 24,
-            "modeled_distinct_stacks": 4,
-            "monster_respawn_cycles": 3,
-            "monster_respawn_wait_seconds": 24,
-            "monster_spawns_in_cluster": 1,
-            "node_respawn_cycles": 2,
-            "node_respawn_wait_seconds": 44,
-            "primary_node_item": "iron_ore",
-            "primary_node_quantity": 6,
-            "shared_node_capacity": 4
-          },
-          "services": {
-            "bank": "banker",
-            "forge": "sun_weaponsmith",
-            "smelt": "sun_smith"
-          },
-          "walking_loop_seconds": 26.42
-        },
-        {
-          "modeled_cycle_seconds": 109.81,
-          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:02",
-          "node_cluster_id": "node:iron:willowbrook_wilds:03",
-          "node_monster_seconds": 1.92,
-          "origin_cluster_id": "node:iron:willowbrook_wilds:03",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 2.22,
-            "expected_trophy_drops": [
-              {
-                "chance": 0.45,
-                "item_id": "ironback_tusk"
-              }
-            ],
-            "gather_seconds": 24,
-            "modeled_distinct_stacks": 4,
-            "monster_respawn_cycles": 3,
-            "monster_respawn_wait_seconds": 24,
-            "monster_spawns_in_cluster": 1,
-            "node_respawn_cycles": 2,
-            "node_respawn_wait_seconds": 44,
-            "primary_node_item": "iron_ore",
-            "primary_node_quantity": 6,
-            "shared_node_capacity": 4
-          },
-          "services": {
-            "bank": "banker",
-            "forge": "sun_weaponsmith",
-            "smelt": "sun_smith"
-          },
-          "walking_loop_seconds": 17.81
+          "walking_loop_seconds": 32.21
         },
         {
           "modeled_cycle_seconds": 43.45,
@@ -3202,7 +2797,7 @@
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "iron_ore",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 44
+            "shared_node_capacity": 52
           },
           "services": {
             "bank": "banker",
@@ -3212,10 +2807,10 @@
           "walking_loop_seconds": 19.45
         },
         {
-          "modeled_cycle_seconds": 118.42,
+          "modeled_cycle_seconds": 112.21,
           "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
-          "node_cluster_id": "node:iron:willowbrook_wilds:02",
-          "node_monster_seconds": 2.9,
+          "node_cluster_id": "node:iron:willowbrook_wilds:01",
+          "node_monster_seconds": 8.61,
           "origin_cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
           "reachable": true,
           "resource_model": {
@@ -3230,9 +2825,9 @@
             ],
             "gather_seconds": 24,
             "modeled_distinct_stacks": 4,
-            "monster_respawn_cycles": 3,
-            "monster_respawn_wait_seconds": 24,
-            "monster_spawns_in_cluster": 1,
+            "monster_respawn_cycles": 2,
+            "monster_respawn_wait_seconds": 12,
+            "monster_spawns_in_cluster": 2,
             "node_respawn_cycles": 2,
             "node_respawn_wait_seconds": 44,
             "primary_node_item": "iron_ore",
@@ -3244,50 +2839,15 @@
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 26.42
-        },
-        {
-          "modeled_cycle_seconds": 109.81,
-          "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:02",
-          "node_cluster_id": "node:iron:willowbrook_wilds:03",
-          "node_monster_seconds": 1.92,
-          "origin_cluster_id": "monster:ironback_boar:willowbrook_wilds:02",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 2.22,
-            "expected_trophy_drops": [
-              {
-                "chance": 0.45,
-                "item_id": "ironback_tusk"
-              }
-            ],
-            "gather_seconds": 24,
-            "modeled_distinct_stacks": 4,
-            "monster_respawn_cycles": 3,
-            "monster_respawn_wait_seconds": 24,
-            "monster_spawns_in_cluster": 1,
-            "node_respawn_cycles": 2,
-            "node_respawn_wait_seconds": 44,
-            "primary_node_item": "iron_ore",
-            "primary_node_quantity": 6,
-            "shared_node_capacity": 4
-          },
-          "services": {
-            "bank": "banker",
-            "forge": "sun_weaponsmith",
-            "smelt": "sun_smith"
-          },
-          "walking_loop_seconds": 17.81
+          "walking_loop_seconds": 32.21
         }
       ],
       "secondary_node_kinds": [],
       "status": "pass_compact",
       "tier_index": 3,
       "walking_loop_seconds": {
-        "median": 19.45,
-        "p90": 26.42
+        "median": 25.83,
+        "p90": 32.21
       }
     },
     {
@@ -3297,8 +2857,8 @@
       "node_monster_seconds": {
         "above_target_samples": 0,
         "below_target_samples": 6,
-        "median": 7.57,
-        "p90": 9.41,
+        "median": 4.71,
+        "p90": 8.8,
         "target_max": 30,
         "target_min": 15
       },
@@ -3343,11 +2903,46 @@
       },
       "samples": [
         {
-          "modeled_cycle_seconds": 56.19,
-          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:04",
+          "modeled_cycle_seconds": 40.43,
+          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:00",
           "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
-          "node_monster_seconds": 2.46,
+          "node_monster_seconds": 0.31,
           "origin_cluster_id": "node:coal_seam:willowbrook_wilds:00",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "boar_tusk"
+              }
+            ],
+            "gather_seconds": 22.56,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 7,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "coal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 20
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 17.87
+        },
+        {
+          "modeled_cycle_seconds": 98.7,
+          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:02",
+          "node_cluster_id": "node:coal_seam:willowbrook_wilds:01",
+          "node_monster_seconds": 6.72,
+          "origin_cluster_id": "node:coal_seam:willowbrook_wilds:01",
           "reachable": true,
           "resource_model": {
             "bag_capacity": 20,
@@ -3364,24 +2959,59 @@
             "monster_respawn_cycles": 2,
             "monster_respawn_wait_seconds": 12,
             "monster_spawns_in_cluster": 2,
-            "node_respawn_cycles": 1,
-            "node_respawn_wait_seconds": 0,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 40,
             "primary_node_item": "coal",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 28
+            "shared_node_capacity": 4
           },
           "services": {
             "bank": "banker",
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 21.63
+          "walking_loop_seconds": 24.14
         },
         {
-          "modeled_cycle_seconds": 72.83,
+          "modeled_cycle_seconds": 96.7,
+          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:02",
+          "node_cluster_id": "node:coal_seam:willowbrook_wilds:02",
+          "node_monster_seconds": 4.71,
+          "origin_cluster_id": "node:coal_seam:willowbrook_wilds:02",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "boar_tusk"
+              }
+            ],
+            "gather_seconds": 22.56,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 2,
+            "monster_respawn_wait_seconds": 12,
+            "monster_spawns_in_cluster": 2,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 40,
+            "primary_node_item": "coal",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 4
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 22.14
+        },
+        {
+          "modeled_cycle_seconds": 40.43,
           "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:00",
           "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
-          "node_monster_seconds": 7.02,
+          "node_monster_seconds": 0.31,
           "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:00",
           "reachable": true,
           "resource_model": {
@@ -3396,27 +3026,27 @@
             ],
             "gather_seconds": 22.56,
             "modeled_distinct_stacks": 5,
-            "monster_respawn_cycles": 3,
-            "monster_respawn_wait_seconds": 24,
-            "monster_spawns_in_cluster": 1,
+            "monster_respawn_cycles": 1,
+            "monster_respawn_wait_seconds": 0,
+            "monster_spawns_in_cluster": 7,
             "node_respawn_cycles": 1,
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "coal",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 28
+            "shared_node_capacity": 20
           },
           "services": {
             "bank": "banker",
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 26.27
+          "walking_loop_seconds": 17.87
         },
         {
-          "modeled_cycle_seconds": 77.72,
+          "modeled_cycle_seconds": 122.31,
           "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:01",
-          "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
-          "node_monster_seconds": 8.12,
+          "node_cluster_id": "node:coal_seam:willowbrook_wilds:01",
+          "node_monster_seconds": 10.89,
           "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:01",
           "reachable": true,
           "resource_model": {
@@ -3434,95 +3064,25 @@
             "monster_respawn_cycles": 3,
             "monster_respawn_wait_seconds": 24,
             "monster_spawns_in_cluster": 1,
-            "node_respawn_cycles": 1,
-            "node_respawn_wait_seconds": 0,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 40,
             "primary_node_item": "coal",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 28
-          },
-          "services": {
-            "bank": "banker",
-            "forge": "sun_weaponsmith",
-            "smelt": "sun_smith"
-          },
-          "walking_loop_seconds": 31.16
-        },
-        {
-          "modeled_cycle_seconds": 51.35,
-          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:02",
-          "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
-          "node_monster_seconds": 9.92,
-          "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:02",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 2.22,
-            "expected_trophy_drops": [
-              {
-                "chance": 0.45,
-                "item_id": "boar_tusk"
-              }
-            ],
-            "gather_seconds": 22.56,
-            "modeled_distinct_stacks": 5,
-            "monster_respawn_cycles": 1,
-            "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 5,
-            "node_respawn_cycles": 1,
-            "node_respawn_wait_seconds": 0,
-            "primary_node_item": "coal",
-            "primary_node_quantity": 6,
-            "shared_node_capacity": 28
+            "shared_node_capacity": 4
           },
           "services": {
             "bank": "haven_banker",
             "forge": "haven_weaponsmith",
             "smelt": "smith"
           },
-          "walking_loop_seconds": 28.79
+          "walking_loop_seconds": 35.75
         },
         {
-          "modeled_cycle_seconds": 69.18,
-          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:03",
-          "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
-          "node_monster_seconds": 8.91,
-          "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:03",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 2.22,
-            "expected_trophy_drops": [
-              {
-                "chance": 0.45,
-                "item_id": "boar_tusk"
-              }
-            ],
-            "gather_seconds": 22.56,
-            "modeled_distinct_stacks": 5,
-            "monster_respawn_cycles": 3,
-            "monster_respawn_wait_seconds": 24,
-            "monster_spawns_in_cluster": 1,
-            "node_respawn_cycles": 1,
-            "node_respawn_wait_seconds": 0,
-            "primary_node_item": "coal",
-            "primary_node_quantity": 6,
-            "shared_node_capacity": 28
-          },
-          "services": {
-            "bank": "banker",
-            "forge": "sun_weaponsmith",
-            "smelt": "sun_smith"
-          },
-          "walking_loop_seconds": 22.62
-        },
-        {
-          "modeled_cycle_seconds": 56.19,
-          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:04",
-          "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
-          "node_monster_seconds": 2.46,
-          "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:04",
+          "modeled_cycle_seconds": 96.7,
+          "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:02",
+          "node_cluster_id": "node:coal_seam:willowbrook_wilds:02",
+          "node_monster_seconds": 4.71,
+          "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:02",
           "reachable": true,
           "resource_model": {
             "bag_capacity": 20,
@@ -3539,43 +3099,43 @@
             "monster_respawn_cycles": 2,
             "monster_respawn_wait_seconds": 12,
             "monster_spawns_in_cluster": 2,
-            "node_respawn_cycles": 1,
-            "node_respawn_wait_seconds": 0,
+            "node_respawn_cycles": 2,
+            "node_respawn_wait_seconds": 40,
             "primary_node_item": "coal",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 28
+            "shared_node_capacity": 4
           },
           "services": {
             "bank": "banker",
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 21.63
+          "walking_loop_seconds": 22.14
         }
       ],
       "secondary_node_kinds": [],
       "status": "pass_compact",
       "tier_index": 4,
       "walking_loop_seconds": {
-        "median": 24.45,
-        "p90": 29.98
+        "median": 22.14,
+        "p90": 29.95
       }
     },
     {
       "approved_exception_id": null,
-      "evaluated_clusters": 6,
+      "evaluated_clusters": 5,
       "level_requirement": 40,
       "node_monster_seconds": {
         "above_target_samples": 0,
-        "below_target_samples": 6,
-        "median": 1.97,
-        "p90": 8.19,
+        "below_target_samples": 5,
+        "median": 4.28,
+        "p90": 6.03,
         "target_max": 30,
         "target_min": 15
       },
       "primary_monster_kind": "dust_jackal",
       "primary_node_kind": "mithril",
-      "reachable_clusters": 6,
+      "reachable_clusters": 5,
       "requirements": {
         "monster_items": [
           {
@@ -3614,10 +3174,10 @@
       },
       "samples": [
         {
-          "modeled_cycle_seconds": 46.93,
-          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
+          "modeled_cycle_seconds": 53.1,
+          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:02",
           "node_cluster_id": "node:mithril:sunscorch_reaches:00",
-          "node_monster_seconds": 6.12,
+          "node_monster_seconds": 4.28,
           "origin_cluster_id": "node:mithril:sunscorch_reaches:00",
           "reachable": true,
           "resource_model": {
@@ -3634,25 +3194,25 @@
             "modeled_distinct_stacks": 5,
             "monster_respawn_cycles": 1,
             "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 6,
+            "monster_spawns_in_cluster": 4,
             "node_respawn_cycles": 1,
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "mithril_ore",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 24
+            "shared_node_capacity": 40
           },
           "services": {
             "bank": "banker",
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 14.53
+          "walking_loop_seconds": 20.7
         },
         {
-          "modeled_cycle_seconds": 50.8,
+          "modeled_cycle_seconds": 131.26,
           "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
           "node_cluster_id": "node:mithril:sunscorch_reaches:01",
-          "node_monster_seconds": 1.97,
+          "node_monster_seconds": 2.36,
           "origin_cluster_id": "node:mithril:sunscorch_reaches:01",
           "reachable": true,
           "resource_model": {
@@ -3667,44 +3227,9 @@
             ],
             "gather_seconds": 32.4,
             "modeled_distinct_stacks": 5,
-            "monster_respawn_cycles": 1,
-            "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 4,
-            "node_respawn_cycles": 1,
-            "node_respawn_wait_seconds": 0,
-            "primary_node_item": "mithril_ore",
-            "primary_node_quantity": 6,
-            "shared_node_capacity": 12
-          },
-          "services": {
-            "bank": "banker",
-            "forge": "sun_weaponsmith",
-            "smelt": "sun_smith"
-          },
-          "walking_loop_seconds": 18.4
-        },
-        {
-          "modeled_cycle_seconds": 101.67,
-          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
-          "node_cluster_id": "node:mithril:sunscorch_reaches:02",
-          "node_monster_seconds": 0.87,
-          "origin_cluster_id": "node:mithril:sunscorch_reaches:02",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 2.22,
-            "expected_trophy_drops": [
-              {
-                "chance": 0.45,
-                "item_id": "jackal_fang"
-              }
-            ],
-            "gather_seconds": 32.4,
-            "modeled_distinct_stacks": 5,
-            "monster_respawn_cycles": 1,
-            "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 6,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
             "node_respawn_cycles": 2,
             "node_respawn_wait_seconds": 60,
             "primary_node_item": "mithril_ore",
@@ -3716,48 +3241,13 @@
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 9.27
+          "walking_loop_seconds": 14.86
         },
         {
-          "modeled_cycle_seconds": 111.05,
+          "modeled_cycle_seconds": 47.88,
           "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
-          "node_cluster_id": "node:mithril:sunscorch_reaches:03",
-          "node_monster_seconds": 10.25,
-          "origin_cluster_id": "node:mithril:sunscorch_reaches:03",
-          "reachable": true,
-          "resource_model": {
-            "bag_capacity": 20,
-            "bag_pass": true,
-            "expected_primary_monster_kills": 2.22,
-            "expected_trophy_drops": [
-              {
-                "chance": 0.45,
-                "item_id": "jackal_fang"
-              }
-            ],
-            "gather_seconds": 32.4,
-            "modeled_distinct_stacks": 5,
-            "monster_respawn_cycles": 1,
-            "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 6,
-            "node_respawn_cycles": 2,
-            "node_respawn_wait_seconds": 60,
-            "primary_node_item": "mithril_ore",
-            "primary_node_quantity": 6,
-            "shared_node_capacity": 4
-          },
-          "services": {
-            "bank": "banker",
-            "forge": "sun_weaponsmith",
-            "smelt": "sun_smith"
-          },
-          "walking_loop_seconds": 18.65
-        },
-        {
-          "modeled_cycle_seconds": 101.67,
-          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
-          "node_cluster_id": "node:mithril:sunscorch_reaches:02",
-          "node_monster_seconds": 0.87,
+          "node_cluster_id": "node:mithril:sunscorch_reaches:00",
+          "node_monster_seconds": 7.2,
           "origin_cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
           "reachable": true,
           "resource_model": {
@@ -3774,7 +3264,42 @@
             "modeled_distinct_stacks": 5,
             "monster_respawn_cycles": 1,
             "monster_respawn_wait_seconds": 0,
-            "monster_spawns_in_cluster": 6,
+            "monster_spawns_in_cluster": 5,
+            "node_respawn_cycles": 1,
+            "node_respawn_wait_seconds": 0,
+            "primary_node_item": "mithril_ore",
+            "primary_node_quantity": 6,
+            "shared_node_capacity": 40
+          },
+          "services": {
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
+          },
+          "walking_loop_seconds": 15.48
+        },
+        {
+          "modeled_cycle_seconds": 131.26,
+          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
+          "node_cluster_id": "node:mithril:sunscorch_reaches:01",
+          "node_monster_seconds": 2.36,
+          "origin_cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
+          "reachable": true,
+          "resource_model": {
+            "bag_capacity": 20,
+            "bag_pass": true,
+            "expected_primary_monster_kills": 2.22,
+            "expected_trophy_drops": [
+              {
+                "chance": 0.45,
+                "item_id": "jackal_fang"
+              }
+            ],
+            "gather_seconds": 32.4,
+            "modeled_distinct_stacks": 5,
+            "monster_respawn_cycles": 3,
+            "monster_respawn_wait_seconds": 24,
+            "monster_spawns_in_cluster": 1,
             "node_respawn_cycles": 2,
             "node_respawn_wait_seconds": 60,
             "primary_node_item": "mithril_ore",
@@ -3786,14 +3311,14 @@
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 9.27
+          "walking_loop_seconds": 14.86
         },
         {
-          "modeled_cycle_seconds": 50.8,
-          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
-          "node_cluster_id": "node:mithril:sunscorch_reaches:01",
-          "node_monster_seconds": 1.97,
-          "origin_cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
+          "modeled_cycle_seconds": 53.1,
+          "monster_cluster_id": "monster:dust_jackal:sunscorch_reaches:02",
+          "node_cluster_id": "node:mithril:sunscorch_reaches:00",
+          "node_monster_seconds": 4.28,
+          "origin_cluster_id": "monster:dust_jackal:sunscorch_reaches:02",
           "reachable": true,
           "resource_model": {
             "bag_capacity": 20,
@@ -3814,22 +3339,22 @@
             "node_respawn_wait_seconds": 0,
             "primary_node_item": "mithril_ore",
             "primary_node_quantity": 6,
-            "shared_node_capacity": 12
+            "shared_node_capacity": 40
           },
           "services": {
             "bank": "banker",
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 18.4
+          "walking_loop_seconds": 20.7
         }
       ],
       "secondary_node_kinds": [],
       "status": "pass_compact",
       "tier_index": 5,
       "walking_loop_seconds": {
-        "median": 16.46,
-        "p90": 18.52
+        "median": 15.48,
+        "p90": 20.7
       }
     },
     {
