@@ -4498,15 +4498,6 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "bear",
-        "ordinal": 0,
-        "subzone": "legacy_v1_position",
-        "x": 1197,
-        "y": 1207
-      },
-      {
-        "active": true,
         "biome": "desert",
         "kind": "dust_jackal",
         "ordinal": 0,
@@ -4558,15 +4549,6 @@
         "subzone": "legacy_v1_position",
         "x": 4516,
         "y": 1697
-      },
-      {
-        "active": true,
-        "biome": "desert",
-        "kind": "bandit",
-        "ordinal": 1,
-        "subzone": "legacy_v1_position",
-        "x": 2486,
-        "y": 514
       },
       {
         "active": true,
@@ -4624,15 +4606,6 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "wolf",
-        "ordinal": 0,
-        "subzone": "legacy_v1_position",
-        "x": 2111,
-        "y": 2490
-      },
-      {
-        "active": true,
         "biome": "evil",
         "kind": "shadow_beast",
         "ordinal": 6,
@@ -4643,7 +4616,7 @@
       {
         "active": true,
         "biome": "desert",
-        "kind": "dust_jackal",
+        "kind": "bandit",
         "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 3242,
@@ -4680,19 +4653,10 @@
         "active": true,
         "biome": "desert",
         "kind": "dust_jackal",
-        "ordinal": 2,
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 2044,
         "y": 132
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "wolf",
-        "ordinal": 1,
-        "subzone": "legacy_v1_position",
-        "x": 2733,
-        "y": 2705
       },
       {
         "active": true,
@@ -4714,15 +4678,6 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "wolf",
-        "ordinal": 2,
-        "subzone": "legacy_v1_position",
-        "x": 2038,
-        "y": 2573
-      },
-      {
-        "active": true,
         "biome": "desert",
         "kind": "scorpion_stalker",
         "ordinal": 2,
@@ -4741,24 +4696,6 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "wolf",
-        "ordinal": 3,
-        "subzone": "legacy_v1_position",
-        "x": 2572,
-        "y": 2116
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "forest_lynx",
-        "ordinal": 0,
-        "subzone": "legacy_v1_position",
-        "x": 1513,
-        "y": 272
-      },
-      {
-        "active": true,
         "biome": "desert",
         "kind": "serpent",
         "ordinal": 3,
@@ -4769,35 +4706,17 @@
       {
         "active": true,
         "biome": "desert",
-        "kind": "serpent",
-        "ordinal": 4,
+        "kind": "dust_jackal",
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 3139,
         "y": 1380
       },
       {
         "active": true,
-        "biome": "fields",
-        "kind": "disgruntled_ram",
-        "ordinal": 0,
-        "subzone": "legacy_v1_position",
-        "x": 1003,
-        "y": 1448
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "bear",
-        "ordinal": 1,
-        "subzone": "legacy_v1_position",
-        "x": 1161,
-        "y": 654
-      },
-      {
-        "active": true,
         "biome": "desert",
         "kind": "serpent",
-        "ordinal": 5,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 3194,
         "y": 2272
@@ -4813,30 +4732,12 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "forest_lynx",
-        "ordinal": 1,
-        "subzone": "legacy_v1_position",
-        "x": 1249,
-        "y": 744
-      },
-      {
-        "active": true,
         "biome": "evil",
         "kind": "shadow_beast",
         "ordinal": 9,
         "subzone": "legacy_v1_position",
         "x": 4775,
         "y": 789
-      },
-      {
-        "active": true,
-        "biome": "fields",
-        "kind": "goblin",
-        "ordinal": 0,
-        "subzone": "legacy_v1_position",
-        "x": 750,
-        "y": 633
       },
       {
         "active": true,
@@ -4853,26 +4754,8 @@
         "kind": "bandit",
         "ordinal": 3,
         "subzone": "legacy_v1_position",
-        "x": 2404,
-        "y": 1212
-      },
-      {
-        "active": true,
-        "biome": "fields",
-        "kind": "goblin",
-        "ordinal": 1,
-        "subzone": "legacy_v1_position",
-        "x": 1829,
-        "y": 2757
-      },
-      {
-        "active": true,
-        "biome": "fields",
-        "kind": "chicken",
-        "ordinal": 0,
-        "subzone": "legacy_v1_position",
-        "x": 231,
-        "y": 2891
+        "x": 2411,
+        "y": 1140
       },
       {
         "active": true,
@@ -4886,11 +4769,11 @@
       {
         "active": true,
         "biome": "forest",
-        "kind": "forest_boar",
+        "kind": "bear",
         "ordinal": 0,
         "subzone": "legacy_v1_position",
-        "x": 1637,
-        "y": 302
+        "x": 2402,
+        "y": 1928
       },
       {
         "active": true,
@@ -4905,7 +4788,7 @@
         "active": true,
         "biome": "forest",
         "kind": "forest_lynx",
-        "ordinal": 2,
+        "ordinal": 0,
         "subzone": "legacy_v1_position",
         "x": 1444,
         "y": 398
@@ -4932,7 +4815,7 @@
         "active": true,
         "biome": "forest",
         "kind": "forest_lynx",
-        "ordinal": 3,
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 1574,
         "y": 550
@@ -4977,7 +4860,7 @@
         "active": true,
         "biome": "fields",
         "kind": "disgruntled_ram",
-        "ordinal": 1,
+        "ordinal": 0,
         "subzone": "legacy_v1_position",
         "x": 1411,
         "y": 2382
@@ -4995,7 +4878,7 @@
         "active": true,
         "biome": "forest",
         "kind": "wolf",
-        "ordinal": 4,
+        "ordinal": 0,
         "subzone": "legacy_v1_position",
         "x": 2860,
         "y": 2410
@@ -5004,7 +4887,7 @@
         "active": true,
         "biome": "forest",
         "kind": "bear",
-        "ordinal": 2,
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 2613,
         "y": 1777
@@ -5013,7 +4896,7 @@
         "active": true,
         "biome": "desert",
         "kind": "serpent",
-        "ordinal": 6,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 2693,
         "y": 142
@@ -5031,7 +4914,7 @@
         "active": true,
         "biome": "fields",
         "kind": "disgruntled_ram",
-        "ordinal": 2,
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 180,
         "y": 1417
@@ -5049,7 +4932,7 @@
         "active": true,
         "biome": "fields",
         "kind": "chicken",
-        "ordinal": 1,
+        "ordinal": 0,
         "subzone": "legacy_v1_position",
         "x": 951,
         "y": 713
@@ -5065,18 +4948,9 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "forest_boar",
-        "ordinal": 1,
-        "subzone": "legacy_v1_position",
-        "x": 2078,
-        "y": 2171
-      },
-      {
-        "active": true,
         "biome": "desert",
         "kind": "serpent",
-        "ordinal": 7,
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 3453,
         "y": 1264
@@ -5092,15 +4966,6 @@
       },
       {
         "active": true,
-        "biome": "fields",
-        "kind": "disgruntled_ram",
-        "ordinal": 3,
-        "subzone": "legacy_v1_position",
-        "x": 1271,
-        "y": 2665
-      },
-      {
-        "active": true,
         "biome": "winter",
         "kind": "yeti",
         "ordinal": 3,
@@ -5110,9 +4975,18 @@
       },
       {
         "active": true,
+        "biome": "desert",
+        "kind": "dust_jackal",
+        "ordinal": 3,
+        "subzone": "legacy_v1_position",
+        "x": 3329,
+        "y": 483
+      },
+      {
+        "active": true,
         "biome": "fields",
         "kind": "disgruntled_ram",
-        "ordinal": 4,
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 690,
         "y": 1533
@@ -5148,28 +5022,10 @@
         "active": true,
         "biome": "forest",
         "kind": "wolf",
-        "ordinal": 5,
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 2597,
         "y": 1963
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "bear",
-        "ordinal": 3,
-        "subzone": "legacy_v1_position",
-        "x": 1715,
-        "y": 2242
-      },
-      {
-        "active": true,
-        "biome": "desert",
-        "kind": "bandit",
-        "ordinal": 4,
-        "subzone": "legacy_v1_position",
-        "x": 2576,
-        "y": 456
       },
       {
         "active": true,
@@ -5184,25 +5040,16 @@
         "active": true,
         "biome": "desert",
         "kind": "serpent",
-        "ordinal": 8,
+        "ordinal": 7,
         "subzone": "legacy_v1_position",
         "x": 2949,
         "y": 1893
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "forest_boar",
-        "ordinal": 2,
-        "subzone": "legacy_v1_position",
-        "x": 2359,
-        "y": 2466
-      },
-      {
-        "active": true,
         "biome": "fields",
         "kind": "disgruntled_ram",
-        "ordinal": 5,
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 316,
         "y": 1658
@@ -5229,19 +5076,10 @@
         "active": true,
         "biome": "fields",
         "kind": "goblin",
-        "ordinal": 2,
+        "ordinal": 0,
         "subzone": "legacy_v1_position",
         "x": 129,
         "y": 822
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "forest_lynx",
-        "ordinal": 4,
-        "subzone": "legacy_v1_position",
-        "x": 1166,
-        "y": 950
       },
       {
         "active": true,
@@ -5251,6 +5089,15 @@
         "subzone": "legacy_v1_position",
         "x": 4577,
         "y": 2465
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "disgruntled_ram",
+        "ordinal": 4,
+        "subzone": "legacy_v1_position",
+        "x": 982,
+        "y": 1714
       },
       {
         "active": true,
@@ -5265,7 +5112,7 @@
         "active": true,
         "biome": "forest",
         "kind": "wolf",
-        "ordinal": 6,
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 2529,
         "y": 2276
@@ -5273,8 +5120,8 @@
       {
         "active": true,
         "biome": "forest",
-        "kind": "bear",
-        "ordinal": 4,
+        "kind": "wolf",
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 3082,
         "y": 2313
@@ -5290,15 +5137,6 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "forest_boar",
-        "ordinal": 3,
-        "subzone": "legacy_v1_position",
-        "x": 2160,
-        "y": 2249
-      },
-      {
-        "active": true,
         "biome": "evil",
         "kind": "bone_reaper",
         "ordinal": 1,
@@ -5309,20 +5147,11 @@
       {
         "active": true,
         "biome": "forest",
-        "kind": "wolf",
-        "ordinal": 7,
+        "kind": "forest_boar",
+        "ordinal": 0,
         "subzone": "legacy_v1_position",
         "x": 1612,
         "y": 998
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "forest_boar",
-        "ordinal": 4,
-        "subzone": "legacy_v1_position",
-        "x": 1747,
-        "y": 2108
       },
       {
         "active": true,
@@ -5337,7 +5166,7 @@
         "active": true,
         "biome": "forest",
         "kind": "wolf",
-        "ordinal": 8,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 2831,
         "y": 2051
@@ -5346,7 +5175,7 @@
         "active": true,
         "biome": "forest",
         "kind": "bear",
-        "ordinal": 5,
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 1361,
         "y": 1486
@@ -5373,7 +5202,7 @@
         "active": true,
         "biome": "fields",
         "kind": "chicken",
-        "ordinal": 2,
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 1240,
         "y": 1881
@@ -5400,7 +5229,7 @@
         "active": true,
         "biome": "desert",
         "kind": "bandit",
-        "ordinal": 5,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 2413,
         "y": 716
@@ -5409,19 +5238,10 @@
         "active": true,
         "biome": "desert",
         "kind": "bandit",
-        "ordinal": 6,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 2734,
         "y": 1522
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "wolf",
-        "ordinal": 9,
-        "subzone": "legacy_v1_position",
-        "x": 2184,
-        "y": 2371
       },
       {
         "active": true,
@@ -5431,6 +5251,15 @@
         "subzone": "legacy_v1_position",
         "x": 4682,
         "y": 709
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "wolf",
+        "ordinal": 5,
+        "subzone": "legacy_v1_position",
+        "x": 2438,
+        "y": 2867
       },
       {
         "active": true,
@@ -5445,7 +5274,7 @@
         "active": true,
         "biome": "fields",
         "kind": "chicken",
-        "ordinal": 3,
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 289,
         "y": 2612
@@ -5454,7 +5283,7 @@
         "active": true,
         "biome": "desert",
         "kind": "dust_jackal",
-        "ordinal": 3,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 1936,
         "y": 366
@@ -5463,7 +5292,7 @@
         "active": true,
         "biome": "desert",
         "kind": "serpent",
-        "ordinal": 9,
+        "ordinal": 8,
         "subzone": "legacy_v1_position",
         "x": 3020,
         "y": 2121
@@ -5490,7 +5319,7 @@
         "active": true,
         "biome": "desert",
         "kind": "dust_jackal",
-        "ordinal": 4,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 2040,
         "y": 225
@@ -5499,7 +5328,7 @@
         "active": true,
         "biome": "fields",
         "kind": "chicken",
-        "ordinal": 4,
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 1091,
         "y": 1613
@@ -5508,7 +5337,7 @@
         "active": true,
         "biome": "desert",
         "kind": "dust_jackal",
-        "ordinal": 5,
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 3650,
         "y": 552
@@ -5526,7 +5355,7 @@
         "active": true,
         "biome": "fields",
         "kind": "disgruntled_ram",
-        "ordinal": 6,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 100,
         "y": 1359
@@ -5544,7 +5373,7 @@
         "active": true,
         "biome": "forest",
         "kind": "forest_lynx",
-        "ordinal": 5,
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 1326,
         "y": 834
@@ -5562,7 +5391,7 @@
         "active": true,
         "biome": "desert",
         "kind": "serpent",
-        "ordinal": 10,
+        "ordinal": 9,
         "subzone": "legacy_v1_position",
         "x": 3235,
         "y": 1378
@@ -5571,7 +5400,7 @@
         "active": true,
         "biome": "desert",
         "kind": "bandit",
-        "ordinal": 7,
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 2879,
         "y": 1396
@@ -5589,7 +5418,7 @@
         "active": true,
         "biome": "forest",
         "kind": "wolf",
-        "ordinal": 10,
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 2929,
         "y": 2342
@@ -5607,7 +5436,7 @@
         "active": true,
         "biome": "fields",
         "kind": "goblin",
-        "ordinal": 3,
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 98,
         "y": 709
@@ -5616,34 +5445,43 @@
         "active": true,
         "biome": "forest",
         "kind": "wolf",
-        "ordinal": 11,
+        "ordinal": 7,
         "subzone": "legacy_v1_position",
         "x": 2735,
         "y": 2479
       },
       {
         "active": true,
+        "biome": "fields",
+        "kind": "chicken",
+        "ordinal": 4,
+        "subzone": "legacy_v1_position",
+        "x": 1387,
+        "y": 2143
+      },
+      {
+        "active": true,
+        "biome": "desert",
+        "kind": "bandit",
+        "ordinal": 7,
+        "subzone": "legacy_v1_position",
+        "x": 1802,
+        "y": 424
+      },
+      {
+        "active": true,
         "biome": "forest",
-        "kind": "bear",
-        "ordinal": 6,
+        "kind": "forest_boar",
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 2441,
         "y": 2064
       },
       {
         "active": true,
-        "biome": "fields",
-        "kind": "chicken",
-        "ordinal": 5,
-        "subzone": "legacy_v1_position",
-        "x": 1899,
-        "y": 2860
-      },
-      {
-        "active": true,
         "biome": "forest",
-        "kind": "forest_boar",
-        "ordinal": 5,
+        "kind": "bear",
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 1055,
         "y": 443
@@ -5652,16 +5490,7 @@
         "active": true,
         "biome": "forest",
         "kind": "forest_lynx",
-        "ordinal": 6,
-        "subzone": "legacy_v1_position",
-        "x": 1989,
-        "y": 972
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "forest_lynx",
-        "ordinal": 7,
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 1018,
         "y": 840
@@ -5670,7 +5499,7 @@
         "active": true,
         "biome": "fields",
         "kind": "goblin",
-        "ordinal": 4,
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 768,
         "y": 104
@@ -5679,7 +5508,7 @@
         "active": true,
         "biome": "forest",
         "kind": "bear",
-        "ordinal": 7,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 1382,
         "y": 1588
@@ -5688,10 +5517,19 @@
         "active": true,
         "biome": "forest",
         "kind": "forest_lynx",
-        "ordinal": 8,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 1732,
         "y": 615
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "forest_boar",
+        "ordinal": 2,
+        "subzone": "legacy_v1_position",
+        "x": 2036,
+        "y": 812
       },
       {
         "active": true,
@@ -5715,7 +5553,7 @@
         "active": true,
         "biome": "forest",
         "kind": "bear",
-        "ordinal": 8,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 1408,
         "y": 1327
@@ -5724,7 +5562,7 @@
         "active": true,
         "biome": "desert",
         "kind": "dust_jackal",
-        "ordinal": 6,
+        "ordinal": 7,
         "subzone": "legacy_v1_position",
         "x": 3013,
         "y": 333
@@ -5733,7 +5571,7 @@
         "active": true,
         "biome": "fields",
         "kind": "goblin",
-        "ordinal": 5,
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 292,
         "y": 942
@@ -5749,12 +5587,12 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "forest_boar",
+        "biome": "fields",
+        "kind": "disgruntled_ram",
         "ordinal": 6,
         "subzone": "legacy_v1_position",
-        "x": 1971,
-        "y": 2152
+        "x": 1281,
+        "y": 2729
       },
       {
         "active": true,
@@ -5764,15 +5602,6 @@
         "subzone": "legacy_v1_position",
         "x": 3588,
         "y": 2313
-      },
-      {
-        "active": true,
-        "biome": "desert",
-        "kind": "dust_jackal",
-        "ordinal": 7,
-        "subzone": "legacy_v1_position",
-        "x": 3109,
-        "y": 162
       },
       {
         "active": true,
@@ -5796,7 +5625,7 @@
         "active": true,
         "biome": "fields",
         "kind": "goblin",
-        "ordinal": 6,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 445,
         "y": 637
@@ -5805,7 +5634,7 @@
         "active": true,
         "biome": "fields",
         "kind": "goblin",
-        "ordinal": 7,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 1409,
         "y": 2874
@@ -5850,7 +5679,7 @@
         "active": true,
         "biome": "forest",
         "kind": "forest_boar",
-        "ordinal": 7,
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 1467,
         "y": 1087
@@ -5866,18 +5695,9 @@
       },
       {
         "active": true,
-        "biome": "fields",
-        "kind": "goblin",
-        "ordinal": 8,
-        "subzone": "legacy_v1_position",
-        "x": 1738,
-        "y": 2657
-      },
-      {
-        "active": true,
         "biome": "forest",
         "kind": "wolf",
-        "ordinal": 12,
+        "ordinal": 8,
         "subzone": "legacy_v1_position",
         "x": 2465,
         "y": 2192
@@ -5913,7 +5733,7 @@
         "active": true,
         "biome": "forest",
         "kind": "bear",
-        "ordinal": 9,
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 2061,
         "y": 1276
@@ -5921,11 +5741,11 @@
       {
         "active": true,
         "biome": "desert",
-        "kind": "bandit",
-        "ordinal": 9,
+        "kind": "serpent",
+        "ordinal": 10,
         "subzone": "legacy_v1_position",
-        "x": 3392,
-        "y": 333
+        "x": 3313,
+        "y": 119
       },
       {
         "active": true,
@@ -5935,15 +5755,6 @@
         "subzone": "legacy_v1_position",
         "x": 3691,
         "y": 1137
-      },
-      {
-        "active": true,
-        "biome": "fields",
-        "kind": "goblin",
-        "ordinal": 9,
-        "subzone": "legacy_v1_position",
-        "x": 2167,
-        "y": 2850
       },
       {
         "active": true,
@@ -5967,7 +5778,7 @@
         "active": true,
         "biome": "fields",
         "kind": "chicken",
-        "ordinal": 6,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 241,
         "y": 1845
@@ -5983,9 +5794,18 @@
       },
       {
         "active": true,
+        "biome": "forest",
+        "kind": "forest_lynx",
+        "ordinal": 5,
+        "subzone": "legacy_v1_position",
+        "x": 1534,
+        "y": 461
+      },
+      {
+        "active": true,
         "biome": "desert",
         "kind": "bandit",
-        "ordinal": 10,
+        "ordinal": 9,
         "subzone": "legacy_v1_position",
         "x": 3658,
         "y": 355
@@ -6021,25 +5841,25 @@
         "active": true,
         "biome": "forest",
         "kind": "bear",
-        "ordinal": 10,
+        "ordinal": 7,
         "subzone": "legacy_v1_position",
         "x": 1264,
         "y": 1476
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "bear",
-        "ordinal": 11,
+        "biome": "desert",
+        "kind": "bandit",
+        "ordinal": 10,
         "subzone": "legacy_v1_position",
-        "x": 1493,
-        "y": 1660
+        "x": 2736,
+        "y": 1720
       },
       {
         "active": true,
         "biome": "fields",
         "kind": "chicken",
-        "ordinal": 7,
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 227,
         "y": 321
@@ -6048,7 +5868,7 @@
         "active": true,
         "biome": "forest",
         "kind": "forest_boar",
-        "ordinal": 8,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 2659,
         "y": 1660
@@ -6057,7 +5877,16 @@
         "active": true,
         "biome": "forest",
         "kind": "forest_boar",
-        "ordinal": 9,
+        "ordinal": 5,
+        "subzone": "legacy_v1_position",
+        "x": 2502,
+        "y": 2571
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "bear",
+        "ordinal": 8,
         "subzone": "legacy_v1_position",
         "x": 1798,
         "y": 1153
@@ -6065,8 +5894,17 @@
       {
         "active": true,
         "biome": "fields",
+        "kind": "chicken",
+        "ordinal": 7,
+        "subzone": "legacy_v1_position",
+        "x": 124,
+        "y": 299
+      },
+      {
+        "active": true,
+        "biome": "fields",
         "kind": "goblin",
-        "ordinal": 10,
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 497,
         "y": 145
@@ -6075,7 +5913,7 @@
         "active": true,
         "biome": "fields",
         "kind": "goblin",
-        "ordinal": 11,
+        "ordinal": 7,
         "subzone": "legacy_v1_position",
         "x": 767,
         "y": 452
@@ -6084,15 +5922,6 @@
         "active": true,
         "biome": "forest",
         "kind": "wolf",
-        "ordinal": 13,
-        "subzone": "legacy_v1_position",
-        "x": 2282,
-        "y": 2382
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "forest_lynx",
         "ordinal": 9,
         "subzone": "legacy_v1_position",
         "x": 1351,
@@ -6100,18 +5929,18 @@
       },
       {
         "active": true,
-        "biome": "fields",
-        "kind": "chicken",
-        "ordinal": 8,
+        "biome": "forest",
+        "kind": "wolf",
+        "ordinal": 10,
         "subzone": "legacy_v1_position",
-        "x": 181,
-        "y": 582
+        "x": 2868,
+        "y": 2217
       },
       {
         "active": true,
         "biome": "fields",
         "kind": "chicken",
-        "ordinal": 9,
+        "ordinal": 8,
         "subzone": "legacy_v1_position",
         "x": 931,
         "y": 125
@@ -6136,6 +5965,24 @@
       },
       {
         "active": true,
+        "biome": "forest",
+        "kind": "bear",
+        "ordinal": 9,
+        "subzone": "legacy_v1_position",
+        "x": 2285,
+        "y": 1268
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "bear",
+        "ordinal": 10,
+        "subzone": "legacy_v1_position",
+        "x": 2491,
+        "y": 1829
+      },
+      {
+        "active": true,
         "biome": "winter",
         "kind": "frost_wolf",
         "ordinal": 8,
@@ -6145,9 +5992,27 @@
       },
       {
         "active": true,
+        "biome": "forest",
+        "kind": "forest_lynx",
+        "ordinal": 6,
+        "subzone": "legacy_v1_position",
+        "x": 1444,
+        "y": 591
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "wolf",
+        "ordinal": 11,
+        "subzone": "legacy_v1_position",
+        "x": 2403,
+        "y": 2302
+      },
+      {
+        "active": true,
         "biome": "fields",
         "kind": "goblin",
-        "ordinal": 12,
+        "ordinal": 8,
         "subzone": "legacy_v1_position",
         "x": 913,
         "y": 524
@@ -6155,11 +6020,56 @@
       {
         "active": true,
         "biome": "fields",
+        "kind": "goblin",
+        "ordinal": 9,
+        "subzone": "legacy_v1_position",
+        "x": 1833,
+        "y": 2883
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "forest_lynx",
+        "ordinal": 7,
+        "subzone": "legacy_v1_position",
+        "x": 1195,
+        "y": 286
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "forest_lynx",
+        "ordinal": 8,
+        "subzone": "legacy_v1_position",
+        "x": 1218,
+        "y": 401
+      },
+      {
+        "active": true,
+        "biome": "fields",
         "kind": "chicken",
-        "ordinal": 10,
+        "ordinal": 9,
         "subzone": "legacy_v1_position",
         "x": 359,
         "y": 1576
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "bear",
+        "ordinal": 11,
+        "subzone": "legacy_v1_position",
+        "x": 1280,
+        "y": 1598
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "wolf",
+        "ordinal": 12,
+        "subzone": "legacy_v1_position",
+        "x": 2540,
+        "y": 2662
       },
       {
         "active": true,
@@ -6174,7 +6084,7 @@
         "active": true,
         "biome": "fields",
         "kind": "goblin",
-        "ordinal": 13,
+        "ordinal": 10,
         "subzone": "legacy_v1_position",
         "x": 1668,
         "y": 2875
@@ -6190,6 +6100,15 @@
       },
       {
         "active": true,
+        "biome": "fields",
+        "kind": "goblin",
+        "ordinal": 11,
+        "subzone": "legacy_v1_position",
+        "x": 913,
+        "y": 1127
+      },
+      {
+        "active": true,
         "biome": "winter",
         "kind": "frost_giant",
         "ordinal": 5,
@@ -6199,18 +6118,18 @@
       },
       {
         "active": true,
-        "biome": "fields",
-        "kind": "disgruntled_ram",
-        "ordinal": 8,
+        "biome": "forest",
+        "kind": "wolf",
+        "ordinal": 13,
         "subzone": "legacy_v1_position",
-        "x": 636,
-        "y": 947
+        "x": 2429,
+        "y": 2429
       },
       {
         "active": true,
         "biome": "fields",
-        "kind": "disgruntled_ram",
-        "ordinal": 9,
+        "kind": "goblin",
+        "ordinal": 12,
         "subzone": "legacy_v1_position",
         "x": 687,
         "y": 806
@@ -6235,21 +6154,21 @@
       },
       {
         "active": true,
-        "biome": "fields",
-        "kind": "chicken",
-        "ordinal": 11,
+        "biome": "forest",
+        "kind": "forest_lynx",
+        "ordinal": 9,
         "subzone": "legacy_v1_position",
-        "x": 172,
-        "y": 2085
+        "x": 1608,
+        "y": 395
       },
       {
         "active": true,
         "biome": "fields",
         "kind": "chicken",
-        "ordinal": 12,
+        "ordinal": 10,
         "subzone": "legacy_v1_position",
-        "x": 1394,
-        "y": 2176
+        "x": 172,
+        "y": 2085
       },
       {
         "active": true,
@@ -6263,8 +6182,8 @@
       {
         "active": true,
         "biome": "fields",
-        "kind": "chicken",
-        "ordinal": 13,
+        "kind": "disgruntled_ram",
+        "ordinal": 8,
         "subzone": "legacy_v1_position",
         "x": 127,
         "y": 1212
@@ -6273,10 +6192,10 @@
         "active": true,
         "biome": "fields",
         "kind": "chicken",
-        "ordinal": 14,
+        "ordinal": 11,
         "subzone": "legacy_v1_position",
-        "x": 885,
-        "y": 781
+        "x": 128,
+        "y": 1871
       },
       {
         "active": true,
@@ -6289,12 +6208,93 @@
       },
       {
         "active": true,
+        "biome": "forest",
+        "kind": "forest_boar",
+        "ordinal": 6,
+        "subzone": "legacy_v1_position",
+        "x": 1702,
+        "y": 1318
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "forest_boar",
+        "ordinal": 7,
+        "subzone": "legacy_v1_position",
+        "x": 1271,
+        "y": 1144
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "chicken",
+        "ordinal": 12,
+        "subzone": "legacy_v1_position",
+        "x": 129,
+        "y": 2897
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "forest_boar",
+        "ordinal": 8,
+        "subzone": "legacy_v1_position",
+        "x": 1834,
+        "y": 671
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "goblin",
+        "ordinal": 13,
+        "subzone": "legacy_v1_position",
+        "x": 872,
+        "y": 249
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "disgruntled_ram",
+        "ordinal": 9,
+        "subzone": "legacy_v1_position",
+        "x": 1003,
+        "y": 1553
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "chicken",
+        "ordinal": 13,
+        "subzone": "legacy_v1_position",
+        "x": 754,
+        "y": 198
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "forest_boar",
+        "ordinal": 9,
+        "subzone": "legacy_v1_position",
+        "x": 1706,
+        "y": 881
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "chicken",
+        "ordinal": 14,
+        "subzone": "legacy_v1_position",
+        "x": 1542,
+        "y": 2316
+      },
+      {
+        "active": true,
         "biome": "fields",
         "kind": "chicken",
         "ordinal": 15,
         "subzone": "legacy_v1_position",
-        "x": 129,
-        "y": 2897
+        "x": 762,
+        "y": 1596
       },
       {
         "active": true,
@@ -6302,8 +6302,8 @@
         "kind": "chicken",
         "ordinal": 16,
         "subzone": "legacy_v1_position",
-        "x": 1003,
-        "y": 1553
+        "x": 141,
+        "y": 1978
       },
       {
         "active": true,
@@ -7139,8 +7139,8 @@
         "kind": "mithril_stalker",
         "ordinal": 1,
         "subzone": "forest_depths",
-        "x": 2128,
-        "y": 1716
+        "x": 2132,
+        "y": 1700
       },
       {
         "active": true,
@@ -7148,7 +7148,7 @@
         "kind": "mithril_stalker",
         "ordinal": 2,
         "subzone": "forest_depths",
-        "x": 2084,
+        "x": 2116,
         "y": 1728
       },
       {
@@ -7157,8 +7157,8 @@
         "kind": "mithril_stalker",
         "ordinal": 3,
         "subzone": "forest_depths",
-        "x": 2069,
-        "y": 1692
+        "x": 2084,
+        "y": 1728
       },
       {
         "active": true,
@@ -7166,8 +7166,8 @@
         "kind": "mithril_stalker",
         "ordinal": 4,
         "subzone": "forest_depths",
-        "x": 2092,
-        "y": 1669
+        "x": 2068,
+        "y": 1700
       },
       {
         "active": true,
@@ -7175,8 +7175,8 @@
         "kind": "mithril_stalker",
         "ordinal": 5,
         "subzone": "forest_depths",
-        "x": 2123,
-        "y": 1677
+        "x": 2084,
+        "y": 1672
       },
       {
         "active": true,
@@ -9938,15 +9938,6 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "herbs",
-        "ordinal": 0,
-        "subzone": "legacy_v1_position",
-        "x": 2371,
-        "y": 2186
-      },
-      {
-        "active": true,
         "biome": "winter",
         "kind": "lichen",
         "ordinal": 0,
@@ -9976,7 +9967,7 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 1,
+        "ordinal": 0,
         "subzone": "legacy_v1_position",
         "x": 1740,
         "y": 1058
@@ -10003,7 +9994,7 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 2,
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 2673,
         "y": 2601
@@ -10075,7 +10066,7 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 3,
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 2089,
         "y": 1000
@@ -10100,15 +10091,6 @@
       },
       {
         "active": true,
-        "biome": "fields",
-        "kind": "oak",
-        "ordinal": 3,
-        "subzone": "legacy_v1_position",
-        "x": 650,
-        "y": 1320
-      },
-      {
-        "active": true,
         "biome": "evil",
         "kind": "cursed_tree",
         "ordinal": 1,
@@ -10120,7 +10102,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 4,
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 659,
         "y": 1732
@@ -10147,7 +10129,7 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 4,
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 2629,
         "y": 2498
@@ -10163,39 +10145,12 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "willow",
-        "ordinal": 1,
-        "subzone": "legacy_v1_position",
-        "x": 1843,
-        "y": 2162
-      },
-      {
-        "active": true,
         "biome": "evil",
         "kind": "cursed_tree",
         "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 4819,
         "y": 1507
-      },
-      {
-        "active": true,
-        "biome": "desert",
-        "kind": "mithril",
-        "ordinal": 1,
-        "subzone": "legacy_v1_position",
-        "x": 2341,
-        "y": 946
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "willow",
-        "ordinal": 2,
-        "subzone": "legacy_v1_position",
-        "x": 2241,
-        "y": 2075
       },
       {
         "active": true,
@@ -10226,6 +10181,15 @@
       },
       {
         "active": true,
+        "biome": "forest",
+        "kind": "iron",
+        "ordinal": 2,
+        "subzone": "legacy_v1_position",
+        "x": 1530,
+        "y": 1989
+      },
+      {
+        "active": true,
         "biome": "fields",
         "kind": "copper",
         "ordinal": 1,
@@ -10241,15 +10205,6 @@
         "subzone": "legacy_v1_position",
         "x": 464,
         "y": 250
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "herbs",
-        "ordinal": 5,
-        "subzone": "legacy_v1_position",
-        "x": 2256,
-        "y": 1362
       },
       {
         "active": true,
@@ -10282,7 +10237,7 @@
         "active": true,
         "biome": "forest",
         "kind": "iron",
-        "ordinal": 2,
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 1340,
         "y": 631
@@ -10300,7 +10255,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 5,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 320,
         "y": 1288
@@ -10309,25 +10264,16 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 6,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 1862,
         "y": 1006
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "willow",
-        "ordinal": 3,
-        "subzone": "legacy_v1_position",
-        "x": 2143,
-        "y": 2755
-      },
-      {
-        "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 6,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 164,
         "y": 2188
@@ -10349,15 +10295,6 @@
         "subzone": "legacy_v1_position",
         "x": 3182,
         "y": 2670
-      },
-      {
-        "active": true,
-        "biome": "fields",
-        "kind": "copper",
-        "ordinal": 2,
-        "subzone": "legacy_v1_position",
-        "x": 1458,
-        "y": 2681
       },
       {
         "active": true,
@@ -10388,15 +10325,6 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "willow",
-        "ordinal": 4,
-        "subzone": "legacy_v1_position",
-        "x": 2244,
-        "y": 2169
-      },
-      {
-        "active": true,
         "biome": "winter",
         "kind": "runite",
         "ordinal": 2,
@@ -10415,15 +10343,6 @@
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "iron",
-        "ordinal": 3,
-        "subzone": "legacy_v1_position",
-        "x": 2338,
-        "y": 2092
-      },
-      {
-        "active": true,
         "biome": "evil",
         "kind": "gloomcap",
         "ordinal": 3,
@@ -10435,7 +10354,7 @@
         "active": true,
         "biome": "desert",
         "kind": "mithril",
-        "ordinal": 2,
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 2098,
         "y": 365
@@ -10480,7 +10399,7 @@
         "active": true,
         "biome": "forest",
         "kind": "willow",
-        "ordinal": 5,
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 2443,
         "y": 2726
@@ -10489,7 +10408,7 @@
         "active": true,
         "biome": "desert",
         "kind": "mithril",
-        "ordinal": 3,
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 1920,
         "y": 608
@@ -10506,7 +10425,7 @@
       {
         "active": true,
         "biome": "forest",
-        "kind": "maple",
+        "kind": "willow",
         "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 1788,
@@ -10552,7 +10471,7 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 7,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 2421,
         "y": 1650
@@ -10570,7 +10489,7 @@
         "active": true,
         "biome": "fields",
         "kind": "copper",
-        "ordinal": 3,
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 361,
         "y": 1401
@@ -10597,7 +10516,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 7,
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 174,
         "y": 1529
@@ -10605,8 +10524,8 @@
       {
         "active": true,
         "biome": "fields",
-        "kind": "flax",
-        "ordinal": 0,
+        "kind": "copper",
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 828,
         "y": 1257
@@ -10633,7 +10552,7 @@
         "active": true,
         "biome": "forest",
         "kind": "maple",
-        "ordinal": 3,
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 1153,
         "y": 112
@@ -10651,7 +10570,7 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 8,
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 2879,
         "y": 2760
@@ -10685,6 +10604,15 @@
       },
       {
         "active": true,
+        "biome": "fields",
+        "kind": "copper",
+        "ordinal": 5,
+        "subzone": "legacy_v1_position",
+        "x": 1315,
+        "y": 2020
+      },
+      {
+        "active": true,
         "biome": "desert",
         "kind": "bloom",
         "ordinal": 6,
@@ -10700,15 +10628,6 @@
         "subzone": "legacy_v1_position",
         "x": 3404,
         "y": 1670
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "willow",
-        "ordinal": 6,
-        "subzone": "legacy_v1_position",
-        "x": 1549,
-        "y": 1923
       },
       {
         "active": true,
@@ -10741,7 +10660,7 @@
         "active": true,
         "biome": "desert",
         "kind": "mithril",
-        "ordinal": 4,
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 3397,
         "y": 1568
@@ -10759,7 +10678,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 8,
+        "ordinal": 7,
         "subzone": "legacy_v1_position",
         "x": 384,
         "y": 1782
@@ -10768,7 +10687,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 9,
+        "ordinal": 8,
         "subzone": "legacy_v1_position",
         "x": 118,
         "y": 2593
@@ -10777,16 +10696,7 @@
         "active": true,
         "biome": "forest",
         "kind": "willow",
-        "ordinal": 7,
-        "subzone": "legacy_v1_position",
-        "x": 1848,
-        "y": 2360
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "willow",
-        "ordinal": 8,
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 1142,
         "y": 822
@@ -10804,7 +10714,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 10,
+        "ordinal": 9,
         "subzone": "legacy_v1_position",
         "x": 362,
         "y": 1911
@@ -10830,7 +10740,7 @@
       {
         "active": true,
         "biome": "forest",
-        "kind": "maple",
+        "kind": "willow",
         "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 1212,
@@ -10840,7 +10750,7 @@
         "active": true,
         "biome": "fields",
         "kind": "copper",
-        "ordinal": 5,
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 1116,
         "y": 1770
@@ -10849,7 +10759,7 @@
         "active": true,
         "biome": "forest",
         "kind": "willow",
-        "ordinal": 9,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 1419,
         "y": 993
@@ -10858,7 +10768,7 @@
         "active": true,
         "biome": "desert",
         "kind": "mithril",
-        "ordinal": 5,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 2415,
         "y": 869
@@ -10876,7 +10786,7 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 9,
+        "ordinal": 7,
         "subzone": "legacy_v1_position",
         "x": 1821,
         "y": 1262
@@ -10892,18 +10802,9 @@
       },
       {
         "active": true,
-        "biome": "fields",
-        "kind": "flax",
-        "ordinal": 1,
-        "subzone": "legacy_v1_position",
-        "x": 897,
-        "y": 912
-      },
-      {
-        "active": true,
         "biome": "desert",
         "kind": "mithril",
-        "ordinal": 6,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 1997,
         "y": 498
@@ -10930,7 +10831,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 11,
+        "ordinal": 10,
         "subzone": "legacy_v1_position",
         "x": 279,
         "y": 2015
@@ -10939,25 +10840,16 @@
         "active": true,
         "biome": "fields",
         "kind": "flax",
-        "ordinal": 2,
+        "ordinal": 0,
         "subzone": "legacy_v1_position",
         "x": 807,
         "y": 323
       },
       {
         "active": true,
-        "biome": "forest",
-        "kind": "maple",
-        "ordinal": 5,
-        "subzone": "legacy_v1_position",
-        "x": 2408,
-        "y": 1780
-      },
-      {
-        "active": true,
         "biome": "fields",
-        "kind": "copper",
-        "ordinal": 6,
+        "kind": "flax",
+        "ordinal": 1,
         "subzone": "legacy_v1_position",
         "x": 574,
         "y": 237
@@ -10966,7 +10858,7 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 10,
+        "ordinal": 8,
         "subzone": "legacy_v1_position",
         "x": 2081,
         "y": 1161
@@ -10992,8 +10884,8 @@
       {
         "active": true,
         "biome": "forest",
-        "kind": "iron",
-        "ordinal": 8,
+        "kind": "willow",
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 1080,
         "y": 545
@@ -11047,7 +10939,7 @@
         "active": true,
         "biome": "fields",
         "kind": "flax",
-        "ordinal": 3,
+        "ordinal": 2,
         "subzone": "legacy_v1_position",
         "x": 518,
         "y": 1186
@@ -11065,7 +10957,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 12,
+        "ordinal": 11,
         "subzone": "legacy_v1_position",
         "x": 950,
         "y": 1283
@@ -11100,7 +10992,7 @@
       {
         "active": true,
         "biome": "desert",
-        "kind": "palm",
+        "kind": "mithril",
         "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 2283,
@@ -11127,8 +11019,8 @@
       {
         "active": true,
         "biome": "desert",
-        "kind": "sandstone",
-        "ordinal": 9,
+        "kind": "palm",
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 2442,
         "y": 626
@@ -11137,7 +11029,7 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 11,
+        "ordinal": 9,
         "subzone": "legacy_v1_position",
         "x": 2491,
         "y": 1486
@@ -11154,7 +11046,7 @@
       {
         "active": true,
         "biome": "fields",
-        "kind": "berries",
+        "kind": "flax",
         "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 450,
@@ -11173,7 +11065,7 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 12,
+        "ordinal": 10,
         "subzone": "legacy_v1_position",
         "x": 2355,
         "y": 1482
@@ -11182,7 +11074,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 13,
+        "ordinal": 12,
         "subzone": "legacy_v1_position",
         "x": 544,
         "y": 1762
@@ -11209,7 +11101,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 14,
+        "ordinal": 13,
         "subzone": "legacy_v1_position",
         "x": 801,
         "y": 1353
@@ -11218,7 +11110,7 @@
         "active": true,
         "biome": "forest",
         "kind": "herbs",
-        "ordinal": 13,
+        "ordinal": 11,
         "subzone": "legacy_v1_position",
         "x": 2445,
         "y": 1355
@@ -11235,8 +11127,8 @@
       {
         "active": true,
         "biome": "fields",
-        "kind": "flax",
-        "ordinal": 4,
+        "kind": "berries",
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 366,
         "y": 315
@@ -11245,7 +11137,7 @@
         "active": true,
         "biome": "desert",
         "kind": "sandstone",
-        "ordinal": 10,
+        "ordinal": 9,
         "subzone": "legacy_v1_position",
         "x": 2862,
         "y": 387
@@ -11263,7 +11155,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 15,
+        "ordinal": 14,
         "subzone": "legacy_v1_position",
         "x": 484,
         "y": 1403
@@ -11290,7 +11182,7 @@
         "active": true,
         "biome": "fields",
         "kind": "oak",
-        "ordinal": 16,
+        "ordinal": 15,
         "subzone": "legacy_v1_position",
         "x": 810,
         "y": 1705
@@ -11299,7 +11191,7 @@
         "active": true,
         "biome": "forest",
         "kind": "iron",
-        "ordinal": 9,
+        "ordinal": 8,
         "subzone": "legacy_v1_position",
         "x": 1500,
         "y": 1774
@@ -11317,7 +11209,7 @@
         "active": true,
         "biome": "fields",
         "kind": "flax",
-        "ordinal": 5,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 632,
         "y": 388
@@ -11335,7 +11227,7 @@
         "active": true,
         "biome": "desert",
         "kind": "sandstone",
-        "ordinal": 11,
+        "ordinal": 10,
         "subzone": "legacy_v1_position",
         "x": 3153,
         "y": 1607
@@ -11344,7 +11236,7 @@
         "active": true,
         "biome": "forest",
         "kind": "maple",
-        "ordinal": 6,
+        "ordinal": 3,
         "subzone": "legacy_v1_position",
         "x": 2748,
         "y": 1931
@@ -11353,7 +11245,7 @@
         "active": true,
         "biome": "desert",
         "kind": "sandstone",
-        "ordinal": 12,
+        "ordinal": 11,
         "subzone": "legacy_v1_position",
         "x": 3041,
         "y": 430
@@ -11361,20 +11253,11 @@
       {
         "active": true,
         "biome": "fields",
-        "kind": "copper",
-        "ordinal": 9,
+        "kind": "oak",
+        "ordinal": 16,
         "subzone": "legacy_v1_position",
         "x": 561,
         "y": 1599
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "willow",
-        "ordinal": 10,
-        "subzone": "legacy_v1_position",
-        "x": 2342,
-        "y": 2293
       },
       {
         "active": true,
@@ -11389,7 +11272,7 @@
         "active": true,
         "biome": "fields",
         "kind": "copper",
-        "ordinal": 10,
+        "ordinal": 9,
         "subzone": "legacy_v1_position",
         "x": 1319,
         "y": 2562
@@ -11407,7 +11290,7 @@
         "active": true,
         "biome": "fields",
         "kind": "copper",
-        "ordinal": 11,
+        "ordinal": 10,
         "subzone": "legacy_v1_position",
         "x": 518,
         "y": 890
@@ -11416,7 +11299,7 @@
         "active": true,
         "biome": "forest",
         "kind": "maple",
-        "ordinal": 7,
+        "ordinal": 4,
         "subzone": "legacy_v1_position",
         "x": 1092,
         "y": 184
@@ -11424,8 +11307,8 @@
       {
         "active": true,
         "biome": "forest",
-        "kind": "iron",
-        "ordinal": 10,
+        "kind": "herbs",
+        "ordinal": 12,
         "subzone": "legacy_v1_position",
         "x": 1920,
         "y": 1250
@@ -11433,8 +11316,8 @@
       {
         "active": true,
         "biome": "forest",
-        "kind": "maple",
-        "ordinal": 8,
+        "kind": "herbs",
+        "ordinal": 13,
         "subzone": "legacy_v1_position",
         "x": 2700,
         "y": 2802
@@ -11451,8 +11334,8 @@
       {
         "active": true,
         "biome": "desert",
-        "kind": "mithril",
-        "ordinal": 8,
+        "kind": "sandstone",
+        "ordinal": 12,
         "subzone": "legacy_v1_position",
         "x": 2791,
         "y": 121
@@ -11470,7 +11353,7 @@
         "active": true,
         "biome": "fields",
         "kind": "copper",
-        "ordinal": 12,
+        "ordinal": 11,
         "subzone": "legacy_v1_position",
         "x": 223,
         "y": 2497
@@ -11479,7 +11362,7 @@
         "active": true,
         "biome": "desert",
         "kind": "mithril",
-        "ordinal": 9,
+        "ordinal": 8,
         "subzone": "legacy_v1_position",
         "x": 2601,
         "y": 889
@@ -11506,19 +11389,10 @@
         "active": true,
         "biome": "forest",
         "kind": "iron",
-        "ordinal": 11,
+        "ordinal": 9,
         "subzone": "legacy_v1_position",
         "x": 2190,
         "y": 1218
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "willow",
-        "ordinal": 11,
-        "subzone": "legacy_v1_position",
-        "x": 2332,
-        "y": 1976
       },
       {
         "active": true,
@@ -11542,7 +11416,7 @@
         "active": true,
         "biome": "fields",
         "kind": "copper",
-        "ordinal": 13,
+        "ordinal": 12,
         "subzone": "legacy_v1_position",
         "x": 809,
         "y": 2883
@@ -11560,19 +11434,10 @@
         "active": true,
         "biome": "fields",
         "kind": "copper",
-        "ordinal": 14,
+        "ordinal": 13,
         "subzone": "legacy_v1_position",
         "x": 548,
         "y": 772
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "iron",
-        "ordinal": 12,
-        "subzone": "legacy_v1_position",
-        "x": 1778,
-        "y": 965
       },
       {
         "active": true,
@@ -11595,17 +11460,8 @@
       {
         "active": true,
         "biome": "fields",
-        "kind": "copper",
-        "ordinal": 15,
-        "subzone": "legacy_v1_position",
-        "x": 845,
-        "y": 1544
-      },
-      {
-        "active": true,
-        "biome": "fields",
         "kind": "flax",
-        "ordinal": 6,
+        "ordinal": 5,
         "subzone": "legacy_v1_position",
         "x": 981,
         "y": 2873
@@ -11613,8 +11469,8 @@
       {
         "active": true,
         "biome": "forest",
-        "kind": "maple",
-        "ordinal": 9,
+        "kind": "willow",
+        "ordinal": 7,
         "subzone": "legacy_v1_position",
         "x": 2318,
         "y": 2786
@@ -11632,7 +11488,7 @@
         "active": true,
         "biome": "forest",
         "kind": "willow",
-        "ordinal": 12,
+        "ordinal": 8,
         "subzone": "legacy_v1_position",
         "x": 1351,
         "y": 1071
@@ -11648,12 +11504,30 @@
       },
       {
         "active": true,
+        "biome": "forest",
+        "kind": "willow",
+        "ordinal": 9,
+        "subzone": "legacy_v1_position",
+        "x": 1197,
+        "y": 1207
+      },
+      {
+        "active": true,
         "biome": "fields",
         "kind": "copper",
-        "ordinal": 16,
+        "ordinal": 14,
         "subzone": "legacy_v1_position",
         "x": 183,
         "y": 2319
+      },
+      {
+        "active": true,
+        "biome": "desert",
+        "kind": "mithril",
+        "ordinal": 9,
+        "subzone": "legacy_v1_position",
+        "x": 2486,
+        "y": 514
       },
       {
         "active": true,
@@ -11667,26 +11541,26 @@
       {
         "active": true,
         "biome": "fields",
-        "kind": "flax",
-        "ordinal": 7,
+        "kind": "copper",
+        "ordinal": 15,
         "subzone": "legacy_v1_position",
         "x": 754,
         "y": 880
       },
       {
         "active": true,
-        "biome": "fields",
-        "kind": "flax",
-        "ordinal": 8,
+        "biome": "forest",
+        "kind": "iron",
+        "ordinal": 10,
         "subzone": "legacy_v1_position",
-        "x": 949,
-        "y": 1719
+        "x": 2218,
+        "y": 1336
       },
       {
         "active": true,
         "biome": "fields",
         "kind": "flax",
-        "ordinal": 9,
+        "ordinal": 6,
         "subzone": "legacy_v1_position",
         "x": 575,
         "y": 591
@@ -11694,20 +11568,101 @@
       {
         "active": true,
         "biome": "fields",
-        "kind": "berries",
-        "ordinal": 10,
+        "kind": "copper",
+        "ordinal": 16,
         "subzone": "legacy_v1_position",
         "x": 194,
         "y": 699
       },
       {
         "active": true,
+        "biome": "forest",
+        "kind": "maple",
+        "ordinal": 5,
+        "subzone": "legacy_v1_position",
+        "x": 2733,
+        "y": 2705
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "maple",
+        "ordinal": 6,
+        "subzone": "legacy_v1_position",
+        "x": 2572,
+        "y": 2116
+      },
+      {
+        "active": true,
         "biome": "fields",
         "kind": "flax",
-        "ordinal": 10,
+        "ordinal": 7,
         "subzone": "legacy_v1_position",
         "x": 955,
         "y": 298
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "maple",
+        "ordinal": 7,
+        "subzone": "legacy_v1_position",
+        "x": 1513,
+        "y": 272
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "iron",
+        "ordinal": 11,
+        "subzone": "legacy_v1_position",
+        "x": 1800,
+        "y": 894
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "flax",
+        "ordinal": 8,
+        "subzone": "legacy_v1_position",
+        "x": 1003,
+        "y": 1448
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "willow",
+        "ordinal": 10,
+        "subzone": "legacy_v1_position",
+        "x": 1161,
+        "y": 654
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "willow",
+        "ordinal": 11,
+        "subzone": "legacy_v1_position",
+        "x": 1249,
+        "y": 744
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "flax",
+        "ordinal": 9,
+        "subzone": "legacy_v1_position",
+        "x": 750,
+        "y": 633
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "berries",
+        "ordinal": 10,
+        "subzone": "legacy_v1_position",
+        "x": 1829,
+        "y": 2757
       },
       {
         "active": true,
@@ -11715,8 +11670,17 @@
         "kind": "berries",
         "ordinal": 11,
         "subzone": "legacy_v1_position",
-        "x": 1977,
-        "y": 2793
+        "x": 231,
+        "y": 2891
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "maple",
+        "ordinal": 8,
+        "subzone": "legacy_v1_position",
+        "x": 1637,
+        "y": 302
       },
       {
         "active": true,
@@ -11724,17 +11688,8 @@
         "kind": "mithril",
         "ordinal": 10,
         "subzone": "legacy_v1_position",
-        "x": 3329,
-        "y": 483
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "willow",
-        "ordinal": 13,
-        "subzone": "legacy_v1_position",
-        "x": 2438,
-        "y": 2867
+        "x": 2576,
+        "y": 456
       },
       {
         "active": true,
@@ -11748,20 +11703,11 @@
       {
         "active": true,
         "biome": "desert",
-        "kind": "palm",
+        "kind": "bloom",
         "ordinal": 10,
         "subzone": "legacy_v1_position",
-        "x": 1802,
-        "y": 424
-      },
-      {
-        "active": true,
-        "biome": "forest",
-        "kind": "maple",
-        "ordinal": 10,
-        "subzone": "legacy_v1_position",
-        "x": 2036,
-        "y": 812
+        "x": 3109,
+        "y": 162
       },
       {
         "active": true,
@@ -11784,20 +11730,29 @@
       {
         "active": true,
         "biome": "desert",
-        "kind": "bloom",
+        "kind": "palm",
         "ordinal": 10,
         "subzone": "legacy_v1_position",
-        "x": 3313,
-        "y": 119
+        "x": 3392,
+        "y": 333
       },
       {
         "active": true,
         "biome": "forest",
-        "kind": "maple",
-        "ordinal": 11,
+        "kind": "iron",
+        "ordinal": 12,
         "subzone": "legacy_v1_position",
-        "x": 1534,
-        "y": 461
+        "x": 1493,
+        "y": 1660
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "flax",
+        "ordinal": 10,
+        "subzone": "legacy_v1_position",
+        "x": 181,
+        "y": 582
       },
       {
         "active": true,
@@ -11805,17 +11760,8 @@
         "kind": "iron",
         "ordinal": 13,
         "subzone": "legacy_v1_position",
-        "x": 2502,
-        "y": 2571
-      },
-      {
-        "active": true,
-        "biome": "fields",
-        "kind": "flax",
-        "ordinal": 11,
-        "subzone": "legacy_v1_position",
-        "x": 124,
-        "y": 299
+        "x": 1921,
+        "y": 1086
       },
       {
         "active": true,
@@ -11828,12 +11774,21 @@
       },
       {
         "active": true,
-        "biome": "fields",
-        "kind": "flax",
+        "biome": "forest",
+        "kind": "willow",
         "ordinal": 12,
         "subzone": "legacy_v1_position",
-        "x": 913,
-        "y": 1127
+        "x": 2303,
+        "y": 2687
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "maple",
+        "ordinal": 9,
+        "subzone": "legacy_v1_position",
+        "x": 1673,
+        "y": 757
       },
       {
         "active": true,
@@ -11857,10 +11812,28 @@
         "active": true,
         "biome": "fields",
         "kind": "flax",
+        "ordinal": 11,
+        "subzone": "legacy_v1_position",
+        "x": 885,
+        "y": 781
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "willow",
         "ordinal": 13,
         "subzone": "legacy_v1_position",
-        "x": 128,
-        "y": 1871
+        "x": 2702,
+        "y": 2193
+      },
+      {
+        "active": true,
+        "biome": "forest",
+        "kind": "maple",
+        "ordinal": 10,
+        "subzone": "legacy_v1_position",
+        "x": 2557,
+        "y": 2761
       },
       {
         "active": true,
@@ -11868,8 +11841,26 @@
         "kind": "berries",
         "ordinal": 13,
         "subzone": "legacy_v1_position",
-        "x": 872,
-        "y": 249
+        "x": 1672,
+        "y": 2414
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "flax",
+        "ordinal": 12,
+        "subzone": "legacy_v1_position",
+        "x": 1073,
+        "y": 2853
+      },
+      {
+        "active": true,
+        "biome": "fields",
+        "kind": "flax",
+        "ordinal": 13,
+        "subzone": "legacy_v1_position",
+        "x": 144,
+        "y": 927
       },
       {
         "active": true,
@@ -16299,3 +16290,4 @@
   ],
   "uuid_namespace": "bf50882c-ad8a-57ab-bb73-3ea3dd8fcb5c"
 }
+
