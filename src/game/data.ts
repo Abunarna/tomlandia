@@ -892,7 +892,7 @@ export const NODE_DEFS: Record<NodeKind, NodeDefT> = {
   tungsten: { name: "Tungsten Vein", skill: "mining", shape: "rock", xp: 520, item: "tungsten_ore", time: 7.6, respawn: 88, req: 110, color: "#98a2b5", accent: "#c8cfe0" },
   frostpine: { name: "Frostpine", skill: "woodcutting", shape: "tree", xp: 400, item: "frostpine_logs", time: 6.8, respawn: 76, req: 100, color: "#6f8798", accent: "#a9d8e6" },
   lichen: { name: "Frost Lichen", skill: "gathering", shape: "bush", xp: 380, item: "frost_lichen", time: 5.4, respawn: 64, req: 98, color: "#8bb0c4", accent: "#cfeaf5" },
-};
+} as Record<NodeKind, NodeDefT>;
 
 /* The generated catalog is the V2 source of truth. Legacy art definitions
  * remain where available; new node kinds get a neutral, data-backed renderer. */
@@ -995,7 +995,7 @@ export const MONSTER_DEFS: Record<MonsterKind, MonsterDefT> = {
   frost_wolf: { name: "Frost Wolf", hp: 1109, attack: 105, defense: 51, xp: 1766, gold: [212, 408], drop: "frost_fang", dropChance: 0.45, hide: "frost_pelt", hideXp: 600, body: "#dceaf5", accent: "#8fb8d4", size: 1.2, ears: "horns" },
   ice_wraith: { name: "Ice Wraith", hp: 1817, attack: 146, defense: 70, xp: 2857, gold: [335, 637], drop: "wraith_ice_core", dropChance: 0.45, hide: "frost_pelt", hideXp: 800, body: "#cfe8f5", accent: "#5f9ec4", size: 1.35, ears: "spikes" },
   ancient_frost_wyrm: { name: "Ancient Frost Wyrm", hp: 3080, attack: 210, defense: 95, xp: 4760, gold: [560, 1092], drop: "wyrm_scale", dropChance: 0.45, hide: "frost_pelt", hideXp: 1000, body: "#a8d4e8", accent: "#5a6fa0", size: 1.9, ears: "spikes" },
-};
+} as Record<MonsterKind, MonsterDefT>;
 
 /* Gate 8 generated creature sprites cover the complete V2 roster. This adapter
  * supplies the runtime stats and a procedural fallback palette to the canvas. */
