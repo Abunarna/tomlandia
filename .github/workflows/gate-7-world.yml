@@ -21,6 +21,14 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+      - name: Capture blocked spawn records
+        run: |
+          node -e "const fs=require('fs'); const ids=new Set(['32ce5718-d425-51d3-abec-4a9b5e298295','4112665b-2768-5fd8-b6e7-0284c2d40022','acb48e28-3411-5350-9a62-152f04296ee7','b590b00d-25fd-59c2-8fc1-7bd65bbf6924']); const rows=JSON.parse(fs.readFileSync('content/v2/world-spawn-manifest.json','utf8')).spawns.filter(x=>ids.has(x.spawn_id)); fs.writeFileSync('gate7-blocked-spawns.json', JSON.stringify(rows,null,2)+'\\n')"
+      - name: Upload blocked spawn records
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate7-blocked-spawns
+          path: gate7-blocked-spawns.json
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bun run test:gate7
