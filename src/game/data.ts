@@ -872,7 +872,7 @@ export interface NodeDefT {
   accent: string;
 }
 
-export const NODE_DEFS: Record<string, NodeDefT> = {
+export const NODE_DEFS: Record<NodeKind, NodeDefT> = {
   copper: { name: "Copper Rock", skill: "mining", shape: "rock", xp: 18, item: "copper_ore", time: 3.2, respawn: 36, req: 1, color: "#b8a999", accent: "#e0955f" },
   oak: { name: "Oak Tree", skill: "woodcutting", shape: "tree", xp: 16, item: "oak_logs", time: 3.0, respawn: 32, req: 1, color: "#8a6a45", accent: "#79c46b" },
   flax: { name: "Flax Patch", skill: "gathering", shape: "bush", xp: 14, item: "flax", time: 2.4, respawn: 28, req: 1, color: "#9ec27a", accent: "#e6e0a6" },
@@ -973,7 +973,7 @@ export interface MonsterDefT {
   ears: "none" | "horns" | "beak" | "spikes";
 }
 
-export const MONSTER_DEFS: Record<string, MonsterDefT> = {
+export const MONSTER_DEFS: Record<MonsterKind, MonsterDefT> = {
   chicken: { name: "Chicken", hp: 8, attack: 2, defense: 0, xp: 12, gold: [1, 4], drop: "feather", dropChance: 0.7, hide: null, hideXp: 0, body: "#fff6e0", accent: "#f2a154", size: 1, ears: "beak" },
   goblin: { name: "Goblin", hp: 22, attack: 5, defense: 2, xp: 34, gold: [4, 12], drop: "goblin_charm", dropChance: 0.35, hide: "raw_hide", hideXp: 16, body: "#a7d97f", accent: "#6fae52", size: 1, ears: "horns" },
   wolf: { name: "Meadow Wolf", hp: 60, attack: 11, defense: 5, xp: 95, gold: [10, 24], drop: "raw_hide", dropChance: 0.6, hide: "raw_hide", hideXp: 40, body: "#c9c2bb", accent: "#8e857c", size: 1.1, ears: "horns" },
