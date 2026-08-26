@@ -101,15 +101,15 @@
     {
       "biome": "forest",
       "cluster_id": "monster:bear:willowbrook_wilds:00",
-      "counterpart_cluster_id": "node:copper:grand_haven_outskirts:02",
-      "counterpart_kind": "copper",
-      "counterpart_seconds": 9.17,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:02",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 7.28,
       "entity_type": "monster",
       "kind": "bear",
       "level_requirement": 7,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 16.53,
+      "station_bank_seconds": 25.48,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -123,21 +123,21 @@
       "level_requirement": 7,
       "reachable": true,
       "spawn_count": 6,
-      "station_bank_seconds": 19.12,
+      "station_bank_seconds": 28.29,
       "subzone": "willowbrook_wilds"
     },
     {
       "biome": "forest",
       "cluster_id": "monster:bear:willowbrook_wilds:02",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 9.74,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:02",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 8.73,
       "entity_type": "monster",
       "kind": "bear",
       "level_requirement": 7,
       "reachable": true,
       "spawn_count": 2,
-      "station_bank_seconds": 21.82,
+      "station_bank_seconds": 26.93,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -151,7 +151,7 @@
       "level_requirement": 7,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 23.27,
+      "station_bank_seconds": 31.71,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -179,7 +179,7 @@
       "level_requirement": 7,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 29.34,
+      "station_bank_seconds": 30.14,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -515,7 +515,7 @@
       "level_requirement": 2,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 29.37,
+      "station_bank_seconds": 29.49,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -535,29 +535,29 @@
     {
       "biome": "forest",
       "cluster_id": "monster:forest_boar:willowbrook_wilds:02",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 9.58,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:02",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 6.18,
       "entity_type": "monster",
       "kind": "forest_boar",
       "level_requirement": 2,
       "reachable": true,
       "spawn_count": 5,
-      "station_bank_seconds": 18.87,
+      "station_bank_seconds": 24.37,
       "subzone": "willowbrook_wilds"
     },
     {
       "biome": "forest",
       "cluster_id": "monster:forest_boar:willowbrook_wilds:03",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 13.45,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:02",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 12.45,
       "entity_type": "monster",
       "kind": "forest_boar",
       "level_requirement": 2,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 24.63,
+      "station_bank_seconds": 30.65,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -571,7 +571,7 @@
       "level_requirement": 2,
       "reachable": true,
       "spawn_count": 2,
-      "station_bank_seconds": 22.89,
+      "station_bank_seconds": 26.91,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -599,7 +599,7 @@
       "level_requirement": 5,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 17.71,
+      "station_bank_seconds": 29.7,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -781,7 +781,7 @@
       "level_requirement": 20,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 23.52,
+      "station_bank_seconds": 24.19,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -803,13 +803,13 @@
       "cluster_id": "monster:mithril_stalker:willowbrook_wilds:00",
       "counterpart_cluster_id": "node:maple:willowbrook_wilds:00",
       "counterpart_kind": "maple",
-      "counterpart_seconds": 6.94,
+      "counterpart_seconds": 5.56,
       "entity_type": "monster",
       "kind": "mithril_stalker",
       "level_requirement": 30,
       "reachable": true,
       "spawn_count": 5,
-      "station_bank_seconds": 17.06,
+      "station_bank_seconds": 16.7,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -823,7 +823,7 @@
       "level_requirement": 30,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 23.47,
+      "station_bank_seconds": 24.52,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -871,9 +871,9 @@
     {
       "biome": "desert",
       "cluster_id": "monster:serpent:sunscorch_reaches:01",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 18.93,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:02",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 18.61,
       "entity_type": "monster",
       "kind": "serpent",
       "level_requirement": 14,
@@ -885,9 +885,9 @@
     {
       "biome": "desert",
       "cluster_id": "monster:serpent:sunscorch_reaches:02",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 12.35,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:02",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 11.89,
       "entity_type": "monster",
       "kind": "serpent",
       "level_requirement": 14,
@@ -1039,15 +1039,15 @@
     {
       "biome": "forest",
       "cluster_id": "monster:wolf:willowbrook_wilds:00",
-      "counterpart_cluster_id": "node:flax:grand_haven_outskirts:03",
-      "counterpart_kind": "flax",
-      "counterpart_seconds": 8.46,
+      "counterpart_cluster_id": "node:berries:grand_haven_outskirts:02",
+      "counterpart_kind": "berries",
+      "counterpart_seconds": 7.81,
       "entity_type": "monster",
       "kind": "wolf",
       "level_requirement": 3,
       "reachable": true,
       "spawn_count": 13,
-      "station_bank_seconds": 22.81,
+      "station_bank_seconds": 26.01,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -1061,7 +1061,7 @@
       "level_requirement": 3,
       "reachable": true,
       "spawn_count": 1,
-      "station_bank_seconds": 24.32,
+      "station_bank_seconds": 27.58,
       "subzone": "willowbrook_wilds"
     },
     {
@@ -1699,7 +1699,7 @@
       "cluster_id": "node:iron:willowbrook_wilds:00",
       "counterpart_cluster_id": "monster:scorpion_stalker:sunscorch_reaches:00",
       "counterpart_kind": "scorpion_stalker",
-      "counterpart_seconds": 13.51,
+      "counterpart_seconds": 13.07,
       "entity_type": "node",
       "kind": "iron",
       "level_requirement": 15,
@@ -2213,19 +2213,19 @@
     }
   },
   "schema_version": "tomlandia-gate7-reachability/v1",
-  "spawn_hash": "24130e8725da5f6e339d5037a40e81f5bcc1052a47fc29b056b36b8d8b2d31fa",
+  "spawn_hash": "a903f8f9f6037b8232e14971f5dcb2a0eba92ed37b684db92125f71adf074767",
   "spawn_issues": [],
   "spawn_set_version": "v2",
   "summary": {
     "clusters_evaluated": 152,
     "failed_tiers": 0,
     "overall_cluster_counterpart_seconds": {
-      "median": 5.8,
-      "p90": 18.89
+      "median": 5.71,
+      "p90": 18.6
     },
     "overall_cluster_station_bank_seconds": {
-      "median": 18.12,
-      "p90": 26.01
+      "median": 18.94,
+      "p90": 27.38
     },
     "spawn_issues": 0,
     "spawns_evaluated": 730,
@@ -2700,7 +2700,7 @@
         "above_target_samples": 0,
         "below_target_samples": 4,
         "median": 13.33,
-        "p90": 23.1,
+        "p90": 24.06,
         "target_max": 30,
         "target_min": 15
       },
@@ -2738,10 +2738,10 @@
       },
       "samples": [
         {
-          "modeled_cycle_seconds": 84.27,
+          "modeled_cycle_seconds": 86.69,
           "monster_cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
           "node_cluster_id": "node:copper:grand_haven_outskirts:00",
-          "node_monster_seconds": 26.83,
+          "node_monster_seconds": 29.24,
           "origin_cluster_id": "node:copper:grand_haven_outskirts:00",
           "reachable": true,
           "resource_model": {
@@ -2770,7 +2770,7 @@
             "forge": "sun_weaponsmith",
             "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 45.87
+          "walking_loop_seconds": 48.29
         },
         {
           "modeled_cycle_seconds": 78.05,
@@ -2988,7 +2988,7 @@
       "tier_index": 2,
       "walking_loop_seconds": {
         "median": 32.37,
-        "p90": 42.14
+        "p90": 43.11
       }
     },
     {
@@ -3107,7 +3107,7 @@
           "walking_loop_seconds": 19.52
         },
         {
-          "modeled_cycle_seconds": 118.42,
+          "modeled_cycle_seconds": 119.09,
           "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
           "node_cluster_id": "node:iron:willowbrook_wilds:02",
           "node_monster_seconds": 2.9,
@@ -3135,11 +3135,11 @@
             "shared_node_capacity": 4
           },
           "services": {
-            "bank": "banker",
-            "forge": "sun_weaponsmith",
-            "smelt": "sun_smith"
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
           },
-          "walking_loop_seconds": 26.42
+          "walking_loop_seconds": 27.09
         },
         {
           "modeled_cycle_seconds": 109.81,
@@ -3212,7 +3212,7 @@
           "walking_loop_seconds": 19.45
         },
         {
-          "modeled_cycle_seconds": 118.42,
+          "modeled_cycle_seconds": 119.09,
           "monster_cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
           "node_cluster_id": "node:iron:willowbrook_wilds:02",
           "node_monster_seconds": 2.9,
@@ -3240,11 +3240,11 @@
             "shared_node_capacity": 4
           },
           "services": {
-            "bank": "banker",
-            "forge": "sun_weaponsmith",
-            "smelt": "sun_smith"
+            "bank": "haven_banker",
+            "forge": "haven_weaponsmith",
+            "smelt": "smith"
           },
-          "walking_loop_seconds": 26.42
+          "walking_loop_seconds": 27.09
         },
         {
           "modeled_cycle_seconds": 109.81,
@@ -3287,7 +3287,7 @@
       "tier_index": 3,
       "walking_loop_seconds": {
         "median": 19.45,
-        "p90": 26.42
+        "p90": 27.09
       }
     },
     {
@@ -3298,7 +3298,7 @@
         "above_target_samples": 0,
         "below_target_samples": 6,
         "median": 7.57,
-        "p90": 9.41,
+        "p90": 9.23,
         "target_max": 30,
         "target_min": 15
       },
@@ -3448,10 +3448,10 @@
           "walking_loop_seconds": 31.16
         },
         {
-          "modeled_cycle_seconds": 51.35,
+          "modeled_cycle_seconds": 52.1,
           "monster_cluster_id": "monster:forest_boar:willowbrook_wilds:02",
           "node_cluster_id": "node:coal_seam:willowbrook_wilds:00",
-          "node_monster_seconds": 9.92,
+          "node_monster_seconds": 9.56,
           "origin_cluster_id": "monster:forest_boar:willowbrook_wilds:02",
           "reachable": true,
           "resource_model": {
@@ -3476,11 +3476,11 @@
             "shared_node_capacity": 28
           },
           "services": {
-            "bank": "haven_banker",
-            "forge": "haven_weaponsmith",
-            "smelt": "smith"
+            "bank": "banker",
+            "forge": "sun_weaponsmith",
+            "smelt": "sun_smith"
           },
-          "walking_loop_seconds": 28.79
+          "walking_loop_seconds": 29.54
         },
         {
           "modeled_cycle_seconds": 69.18,
@@ -3558,7 +3558,7 @@
       "tier_index": 4,
       "walking_loop_seconds": {
         "median": 24.45,
-        "p90": 29.98
+        "p90": 30.35
       }
     },
     {

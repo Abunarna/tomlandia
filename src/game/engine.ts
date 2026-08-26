@@ -1,3 +1,4 @@
+import "./v2-runtime-content";
 import {
   BARRIERS,
   BRIDGES,
@@ -629,7 +630,7 @@ interface Leaf {
 
 
 interface ResNode {
-  id: number;
+  id: number | string;
   kind: NodeKind;
   x: number;
   y: number;
@@ -644,7 +645,7 @@ interface ResNode {
 }
 
 interface Monster {
-  id: number;
+  id: number | string;
   kind: MonsterKind;
   x: number;
   y: number;
@@ -690,11 +691,19 @@ interface Particle {
 type Target =
   | { type: "none" }
   | { type: "point"; x: number; y: number }
-  | { type: "node"; id: number }
-  | { type: "monster"; id: number }
+  | { type: "node"; id: number | string }
+  | { type: "monster"; id: number | string }
   | { type: "npc"; id: NpcRole }
   | { type: "fish"; id: number }
   | { type: "boss" };
+
+/** Stable numeric phase for legacy integer and UUID V2 entity IDs. */
+const entityPhase = (id: number | string) => {
+  if (typeof id === "number") return id;
+  let hash = 0;
+  for (let index = 0; index < id.length; index++) hash = (hash * 31 + id.charCodeAt(index)) % 100_003;
+  return hash;
+};
 
 const emptySkills = (): Record<SkillId, { xp: number }> =>
   SKILL_IDS.reduce((acc, id) => ({ ...acc, [id]: { xp: 0 } }), {} as Record<SkillId, { xp: number }>);
@@ -921,9 +930,9 @@ export class GameEngine {
   /** Our own user id, so we can tell whether we own a monster's kill credit. */
   userId = "";
   /** Server-side harvest. Position is sent so the server can verify range. */
-  onHarvest: ((id: number, x: number, y: number) => Promise<HarvestRes>) | null = null;
+  onHarvest: ((id: number | string, x: number, y: number) => Promise<HarvestRes>) | null = null;
   /** Server-side attack. The server decides the damage — we never send it. */
-  onAttack: ((id: number, x: number, y: number) => Promise<DamageRes>) | null = null;
+  onAttack: ((id: number | string, x: number, y: number) => Promise<DamageRes>) | null = null;
   /** Server-side crafting. The server checks materials and grants the result. */
   onCraft: ((recipe: string) => Promise<CraftRes>) | null = null;
   /** Server-side fishing cast. The server rolls the catch from the shared table. */
@@ -966,7 +975,7 @@ export class GameEngine {
 
   /** Mirror authoritative node rows (snapshot or realtime) into the world. */
   applyNodeRows(
-    rows: { id: number; charges: number; respawn_at: string | null; kind?: string; x?: number; y?: number }[],
+    rows: { id: number | string; charges: number; respawn_at: string | null; kind?: string; x?: number; y?: number }[],
     full = false,
   ) {
     // The database is the source of truth for what exists and where it stands.
@@ -1013,13 +1022,13 @@ export class GameEngine {
         this.gatherProgress = 0;
       }
     }
-    if (full) this.nodes.sort((a, b) => a.id - b.id);
+    if (full) this.nodes.sort((a, b) => String(a.id).localeCompare(String(b.id)));
   }
 
   /** Mirror authoritative monster rows (snapshot or realtime) into the world. */
   applyMonsterRows(
     rows: {
-      id: number;
+      id: number | string;
       hp: number;
       tagged_by: string | null;
       respawn_at: string | null;
@@ -1098,7 +1107,7 @@ export class GameEngine {
         this.target = { type: "none" };
       }
     }
-    if (full) this.monsters.sort((a, b) => a.id - b.id);
+    if (full) this.monsters.sort((a, b) => String(a.id).localeCompare(String(b.id)));
   }
 
   /* ---------- phase 7: shared presence ---------- */
@@ -2534,9 +2543,9 @@ export class GameEngine {
         continue;
       }
       m.hitFlash = Math.max(0, m.hitFlash - dt);
-      const wobble = Math.sin(now * 1.2 + m.id) * 18;
+      const wobble = Math.sin(now * 1.2 + entityPhase(m.id)) * 18;
       m.x += (m.hx + wobble - m.x) * dt * 0.8;
-      m.y += (m.hy + Math.cos(now * 0.9 + m.id) * 14 - m.y) * dt * 0.8;
+      m.y += (m.hy + Math.cos(now * 0.9 + entityPhase(m.id)) * 14 - m.y) * dt * 0.8;
     }
 
     // fx
@@ -5123,7 +5132,7 @@ export class GameEngine {
   private drawMonster(ctx: CanvasRenderingContext2D, m: Monster) {
     const d = MONSTER_DEFS[m.kind];
     const s = d.size;
-    const bob = Math.sin(this.time * 4 + m.id) * 2;
+    const bob = Math.sin(this.time * 4 + entityPhase(m.id)) * 2;
     const sprite = creatureSprite(m.kind);
     this.shadow(ctx, m.x, m.y + 14 * s, 14 * s);
     const usedSprite = drawCreatureSprite(ctx, m.kind, m.x, m.y, bob, m.hitFlash > 0);

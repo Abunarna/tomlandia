@@ -1,5 +1,5 @@
 -- GENERATED FILE — DO NOT EDIT.
--- Manifest SHA-256: 8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9
+-- Manifest SHA-256: 0efd6ecfe8c3540b06cb91385862f372323fa03fca4a26056655b52a6ce57dcb
 -- Content version: v2
 -- This stages content only; it never changes the active control row.
 
@@ -15,7 +15,7 @@ $content_not_active$;
 
 INSERT INTO public.game_content_versions
   (content_version, spawn_set_version, uuid_namespace, manifest_hash, status, starter_loadout, mechanics, player_notice)
-VALUES ('v2', 'v2', 'bf50882c-ad8a-57ab-bb73-3ea3dd8fcb5c', '8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9', 'staged', '{"armor_item_id":"cloth_tunic","plus":0,"weapon_item_id":"copper_sword"}'::jsonb, '{"approved_balance_model_hash":"e1fbe19aac61014b38885ce38cd16d9a12e3852f24858301a2588c65fba4a640","defense_multiplier_rule":"1 + 0.1% * plus","fishing_xp_curve":[{"level_requirement":1,"tier_index":1,"xp_per_action":3},{"level_requirement":10,"tier_index":2,"xp_per_action":6},{"level_requirement":20,"tier_index":3,"xp_per_action":17},{"level_requirement":30,"tier_index":4,"xp_per_action":40},{"level_requirement":40,"tier_index":5,"xp_per_action":102},{"level_requirement":50,"tier_index":6,"xp_per_action":331},{"level_requirement":60,"tier_index":7,"xp_per_action":588},{"level_requirement":70,"tier_index":8,"xp_per_action":660},{"level_requirement":80,"tier_index":9,"xp_per_action":753},{"level_requirement":90,"tier_index":10,"xp_per_action":844},{"level_requirement":100,"tier_index":11,"xp_per_action":935},{"level_requirement":110,"tier_index":12,"xp_per_action":1025},{"level_requirement":120,"tier_index":13,"xp_per_action":1113},{"level_requirement":130,"tier_index":14,"xp_per_action":1208},{"level_requirement":140,"tier_index":15,"xp_per_action":1312},{"level_requirement":150,"tier_index":16,"xp_per_action":1413}],"gear_resale_rule":"floor(item_value * 0.40 + cumulative_upgrade_spend * 0.15)","light_attack_multiplier_rule":"1 + 5% * min(plus, 20) + 1% * max(plus - 20, 0)","market_fee_pct":5,"max_level":150,"max_plus":100,"upgrade_cost_rule":"round_to_5(max(25, item_value * (0.08 + 3.4 * sqrt(next_plus))))","weapon_multiplier_rule":"1 + 2% * min(plus, 50) + 0.5% * max(plus - 50, 0)"}'::jsonb, '{"details":["Existing compatible items keep their quantity, upgrade level and inventory, bank or equipped location.","An equipped Wooden Club becomes a Copper Sword with the same plus level; an unequipped club receives captured-value compensation instead.","Frostguard Plate is reassigned to Starsteel at level 110 and Wyrmscale Plate to Voidsteel at level 120 because the progression ceiling now extends to level 150.","Bronze Dagger, Sunspire Wand, Tungsten Maul, Tungsten Ore and Tungsten Bar receive captured cutover unit value multiplied by owned quantity exactly once.","Market listings for retired or materially changed definitions are cancelled and returned before activation."],"summary":"Your compatible gear and supplies keep their identity; six retired IDs follow the published one-time compensation ledger.","title":"Tomlandia level 1–150 progression overhaul"}'::jsonb)
+VALUES ('v2', 'v2', 'bf50882c-ad8a-57ab-bb73-3ea3dd8fcb5c', '0efd6ecfe8c3540b06cb91385862f372323fa03fca4a26056655b52a6ce57dcb', 'staged', '{"armor_item_id":"cloth_tunic","plus":0,"weapon_item_id":"copper_sword"}'::jsonb, '{"approved_balance_model_hash":"e1fbe19aac61014b38885ce38cd16d9a12e3852f24858301a2588c65fba4a640","defense_multiplier_rule":"1 + 0.1% * plus","fishing_xp_curve":[{"level_requirement":1,"tier_index":1,"xp_per_action":3},{"level_requirement":10,"tier_index":2,"xp_per_action":6},{"level_requirement":20,"tier_index":3,"xp_per_action":17},{"level_requirement":30,"tier_index":4,"xp_per_action":40},{"level_requirement":40,"tier_index":5,"xp_per_action":102},{"level_requirement":50,"tier_index":6,"xp_per_action":331},{"level_requirement":60,"tier_index":7,"xp_per_action":588},{"level_requirement":70,"tier_index":8,"xp_per_action":660},{"level_requirement":80,"tier_index":9,"xp_per_action":753},{"level_requirement":90,"tier_index":10,"xp_per_action":844},{"level_requirement":100,"tier_index":11,"xp_per_action":935},{"level_requirement":110,"tier_index":12,"xp_per_action":1025},{"level_requirement":120,"tier_index":13,"xp_per_action":1113},{"level_requirement":130,"tier_index":14,"xp_per_action":1208},{"level_requirement":140,"tier_index":15,"xp_per_action":1312},{"level_requirement":150,"tier_index":16,"xp_per_action":1413}],"gear_resale_rule":"floor(item_value * 0.40 + cumulative_upgrade_spend * 0.15)","light_attack_multiplier_rule":"1 + 5% * min(plus, 20) + 1% * max(plus - 20, 0)","market_fee_pct":5,"max_level":150,"max_plus":100,"upgrade_cost_rule":"round_to_5(max(25, item_value * (0.08 + 3.4 * sqrt(next_plus))))","weapon_multiplier_rule":"1 + 2% * min(plus, 50) + 0.5% * max(plus - 50, 0)"}'::jsonb, '{"details":["Existing compatible items keep their quantity, upgrade level and inventory, bank or equipped location.","An equipped Wooden Club becomes a Copper Sword with the same plus level; an unequipped club receives captured-value compensation instead.","Frostguard Plate is reassigned to Starsteel at level 110 and Wyrmscale Plate to Voidsteel at level 120 because the progression ceiling now extends to level 150.","Bronze Dagger, Sunspire Wand, Tungsten Maul, Tungsten Ore and Tungsten Bar receive captured cutover unit value multiplied by owned quantity exactly once.","Market listings for retired or materially changed definitions are cancelled and returned before activation."],"summary":"Your compatible gear and supplies keep their identity; six retired IDs follow the published one-time compensation ledger.","title":"Tomlandia level 1–150 progression overhaul"}'::jsonb)
 ON CONFLICT (content_version) DO NOTHING;
 
 DELETE FROM public.game_content_spawns WHERE content_version = 'v2';
@@ -35,7 +35,7 @@ DELETE FROM public.game_content_tiers WHERE content_version = 'v2';
 UPDATE public.game_content_versions SET
   spawn_set_version = 'v2',
   uuid_namespace = 'bf50882c-ad8a-57ab-bb73-3ea3dd8fcb5c',
-  manifest_hash = '8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9',
+  manifest_hash = '0efd6ecfe8c3540b06cb91385862f372323fa03fca4a26056655b52a6ce57dcb',
   status = 'staged',
   starter_loadout = '{"armor_item_id":"cloth_tunic","plus":0,"weapon_item_id":"copper_sword"}'::jsonb,
   mechanics = '{"approved_balance_model_hash":"e1fbe19aac61014b38885ce38cd16d9a12e3852f24858301a2588c65fba4a640","defense_multiplier_rule":"1 + 0.1% * plus","fishing_xp_curve":[{"level_requirement":1,"tier_index":1,"xp_per_action":3},{"level_requirement":10,"tier_index":2,"xp_per_action":6},{"level_requirement":20,"tier_index":3,"xp_per_action":17},{"level_requirement":30,"tier_index":4,"xp_per_action":40},{"level_requirement":40,"tier_index":5,"xp_per_action":102},{"level_requirement":50,"tier_index":6,"xp_per_action":331},{"level_requirement":60,"tier_index":7,"xp_per_action":588},{"level_requirement":70,"tier_index":8,"xp_per_action":660},{"level_requirement":80,"tier_index":9,"xp_per_action":753},{"level_requirement":90,"tier_index":10,"xp_per_action":844},{"level_requirement":100,"tier_index":11,"xp_per_action":935},{"level_requirement":110,"tier_index":12,"xp_per_action":1025},{"level_requirement":120,"tier_index":13,"xp_per_action":1113},{"level_requirement":130,"tier_index":14,"xp_per_action":1208},{"level_requirement":140,"tier_index":15,"xp_per_action":1312},{"level_requirement":150,"tier_index":16,"xp_per_action":1413}],"gear_resale_rule":"floor(item_value * 0.40 + cumulative_upgrade_spend * 0.15)","light_attack_multiplier_rule":"1 + 5% * min(plus, 20) + 1% * max(plus - 20, 0)","market_fee_pct":5,"max_level":150,"max_plus":100,"upgrade_cost_rule":"round_to_5(max(25, item_value * (0.08 + 3.4 * sqrt(next_plus))))","weapon_multiplier_rule":"1 + 2% * min(plus, 50) + 0.5% * max(plus - 50, 0)"}'::jsonb,
@@ -841,7 +841,7 @@ VALUES
   ('4cc64da7-a527-5d76-b7bf-98f494dc05ca', 'v2', 'v2', 'node', 'cursed_rock', 4, true, 'evil', 'legacy_v1_position', 5123, 847),
   ('088febe7-fe7e-54ba-887c-a7725b7bbdce', 'v2', 'v2', 'node', 'oak', 8, true, 'fields', 'legacy_v1_position', 384, 1782),
   ('888ae064-a257-5c87-a75f-ed43dc82b014', 'v2', 'v2', 'node', 'oak', 9, true, 'fields', 'legacy_v1_position', 118, 2593),
-  ('b590b00d-25fd-59c2-8fc1-7bd65bbf6924', 'v2', 'v2', 'node', 'willow', 7, true, 'forest', 'legacy_v1_position', 1848, 2360),
+  ('b590b00d-25fd-59c2-8fc1-7bd65bbf6924', 'v2', 'v2', 'node', 'willow', 7, true, 'forest', 'legacy_v1_position', 1828, 2400),
   ('0064b42d-ed62-5d09-aaac-1c4a03ec00b6', 'v2', 'v2', 'node', 'willow', 8, true, 'forest', 'legacy_v1_position', 1142, 822),
   ('f2654081-c65b-5d84-a030-c7c787353908', 'v2', 'v2', 'node', 'lichen', 4, true, 'winter', 'legacy_v1_position', 4848, 1731),
   ('7416dcc0-cf81-58b7-bdc2-8d7a069e0d8c', 'v2', 'v2', 'node', 'oak', 10, true, 'fields', 'legacy_v1_position', 362, 1911),
@@ -860,7 +860,7 @@ VALUES
   ('3a76b187-bb05-5422-9d44-c7f184c71458', 'v2', 'v2', 'node', 'cursed_tree', 9, true, 'evil', 'legacy_v1_position', 3907, 2099),
   ('59b75446-5691-562b-970b-19198fab8470', 'v2', 'v2', 'node', 'oak', 11, true, 'fields', 'legacy_v1_position', 279, 2015),
   ('40b13ccd-0c95-5f05-924f-58d0357080d5', 'v2', 'v2', 'node', 'flax', 2, true, 'fields', 'legacy_v1_position', 807, 323),
-  ('acb48e28-3411-5350-9a62-152f04296ee7', 'v2', 'v2', 'node', 'maple', 5, true, 'forest', 'legacy_v1_position', 2408, 1780),
+  ('acb48e28-3411-5350-9a62-152f04296ee7', 'v2', 'v2', 'node', 'maple', 5, true, 'forest', 'legacy_v1_position', 2388, 1760),
   ('3f2afc71-f344-54bd-8b7c-c4738e89705a', 'v2', 'v2', 'node', 'copper', 6, true, 'fields', 'legacy_v1_position', 574, 237),
   ('fee00477-56b2-52c1-9225-8a36df06b3c3', 'v2', 'v2', 'node', 'herbs', 10, true, 'forest', 'legacy_v1_position', 2081, 1161),
   ('80081d7a-6f4b-5aa2-b34a-2badfd24b30b', 'v2', 'v2', 'node', 'cursed_rock', 5, true, 'evil', 'legacy_v1_position', 4124, 705),
@@ -1216,7 +1216,7 @@ VALUES
   ('43f14930-17c3-575f-8006-218043e8bb71', 'v2', 'v2', 'monster', 'yeti', 6, true, 'winter', 'legacy_v1_position', 3523, 2436),
   ('7b33b00b-2dde-5f1c-b19a-7d05cad97c86', 'v2', 'v2', 'monster', 'bandit', 5, true, 'desert', 'legacy_v1_position', 2413, 716),
   ('7d11883e-1f82-59c2-812c-cd8f29746ce6', 'v2', 'v2', 'monster', 'bandit', 6, true, 'desert', 'legacy_v1_position', 2734, 1522),
-  ('32ce5718-d425-51d3-abec-4a9b5e298295', 'v2', 'v2', 'monster', 'wolf', 9, true, 'forest', 'legacy_v1_position', 2184, 2371),
+  ('32ce5718-d425-51d3-abec-4a9b5e298295', 'v2', 'v2', 'monster', 'wolf', 9, true, 'forest', 'legacy_v1_position', 2144, 2331),
   ('a90632b0-efb3-5c10-bd99-4b715f249cd9', 'v2', 'v2', 'monster', 'withered_ghoul', 7, true, 'evil', 'legacy_v1_position', 4682, 709),
   ('a66153df-ddf7-5022-af25-6884483ad2aa', 'v2', 'v2', 'monster', 'withered_ghoul', 8, true, 'evil', 'legacy_v1_position', 4177, 580),
   ('1ab98026-52a0-54f0-8eb9-d31bb61d7627', 'v2', 'v2', 'monster', 'chicken', 3, true, 'fields', 'legacy_v1_position', 289, 2612),
@@ -1290,7 +1290,7 @@ VALUES
   ('d69d4b31-5e95-567a-8756-4a0bbbc00010', 'v2', 'v2', 'monster', 'forest_boar', 9, true, 'forest', 'legacy_v1_position', 1798, 1153),
   ('8a4d560f-fe9d-506f-85ec-5e8af443e936', 'v2', 'v2', 'monster', 'goblin', 10, true, 'fields', 'legacy_v1_position', 497, 145),
   ('30934b02-0b78-52fa-a003-ae0a726228ed', 'v2', 'v2', 'monster', 'goblin', 11, true, 'fields', 'legacy_v1_position', 767, 452),
-  ('4112665b-2768-5fd8-b6e7-0284c2d40022', 'v2', 'v2', 'monster', 'wolf', 13, true, 'forest', 'legacy_v1_position', 2282, 2382),
+  ('4112665b-2768-5fd8-b6e7-0284c2d40022', 'v2', 'v2', 'monster', 'wolf', 13, true, 'forest', 'legacy_v1_position', 2302, 2362),
   ('7b2cf423-a9e2-510f-9b3f-67ffffe230e3', 'v2', 'v2', 'monster', 'forest_lynx', 9, true, 'forest', 'legacy_v1_position', 1351, 1695),
   ('a3d64bf5-7b0c-5654-868e-d47ccc26b6ad', 'v2', 'v2', 'monster', 'chicken', 8, true, 'fields', 'legacy_v1_position', 181, 582),
   ('89aa37ce-cbe2-5848-9ac0-f4660d1eaf69', 'v2', 'v2', 'monster', 'chicken', 9, true, 'fields', 'legacy_v1_position', 931, 125),

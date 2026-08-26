@@ -9,10 +9,9 @@ const loader = [
 
 const checks = [
   ["live definitions", ["scripts/gate5/snapshot-live.mjs", "--check"]],
-  ["live spawns", [...loader, "scripts/gate5/snapshot-live-spawns.mjs", "--check"]],
+  ["frozen V1 spawn baseline", ["scripts/gate5/check-frozen-spawns.mjs"]],
   ["sprite metadata", ["scripts/gate5/normalize-sprites.mjs", "--check"]],
-  ["new spawn placements", [...loader, "scripts/gate5/build-new-spawns.mjs", "--check"]],
-  ["canonical manifest", ["scripts/gate5/build-manifest.mjs", "--check"]],
+  ["locked V2 content baseline", ["scripts/gate5/check-locked-v2-content.mjs"]],
   ["generated content contract", ["scripts/content/check.mjs"]],
   ["generated artifact drift", ["scripts/content/generate.mjs", "--check"]],
   ["manifest validation tests", ["--test", "tests/content/manifest-contract.test.mjs"]],

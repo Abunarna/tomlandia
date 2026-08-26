@@ -22,7 +22,9 @@ describe("RPC contract registry", () => {
     const requests = {
       game_world_runtime_status: {},
       harvest_node: { _id: 1, _x: 2, _y: 3 },
+      harvest_node_v2: { _id: id, _x: 2, _y: 3 },
       attack_monster: { _id: 1, _x: 2, _y: 3 },
+      attack_monster_v2: { _id: id, _x: 2, _y: 3 },
       attack_boss: { _x: 2, _y: 3, _bx: 4, _by: 5, _passive: false },
       craft_item: { _recipe: "smith_copper_sword" },
       fish_cast: { _spot: 1, _x: 2, _y: 3 },

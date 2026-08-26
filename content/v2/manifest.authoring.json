@@ -5420,8 +5420,8 @@
         "kind": "wolf",
         "ordinal": 9,
         "subzone": "legacy_v1_position",
-        "x": 2184,
-        "y": 2371
+        "x": 2144,
+        "y": 2331
       },
       {
         "active": true,
@@ -6086,8 +6086,8 @@
         "kind": "wolf",
         "ordinal": 13,
         "subzone": "legacy_v1_position",
-        "x": 2282,
-        "y": 2382
+        "x": 2302,
+        "y": 2362
       },
       {
         "active": true,
@@ -10779,8 +10779,8 @@
         "kind": "willow",
         "ordinal": 7,
         "subzone": "legacy_v1_position",
-        "x": 1848,
-        "y": 2360
+        "x": 1828,
+        "y": 2400
       },
       {
         "active": true,
@@ -10950,8 +10950,8 @@
         "kind": "maple",
         "ordinal": 5,
         "subzone": "legacy_v1_position",
-        "x": 2408,
-        "y": 1780
+        "x": 2388,
+        "y": 1760
       },
       {
         "active": true,

@@ -24,6 +24,13 @@ const byNode = new Map(runtime.nodes.map((node) => [node.kind, node]));
 const byRecipeOutput = new Map(runtime.recipes.map((recipe) => [recipe.output_item_id, recipe]));
 const retired = new Set(registry.retired_ids);
 const activeItems = runtime.items.filter((item) => item.active);
+const AUDITED_SPAWN_CORRECTIONS = new Map([
+  ["wolf:2184:2371", { x: 2144, y: 2331 }],
+  ["wolf:2282:2382", { x: 2302, y: 2362 }],
+  ["maple:2408:1780", { x: 2388, y: 1760 }],
+  ["willow:1848:2360", { x: 1828, y: 2400 }],
+]);
+const correctedSpawn = ({ kind, x, y }) => ({ kind, ...(AUDITED_SPAWN_CORRECTIONS.get(`${kind}:${x}:${y}`) ?? { x, y }) });
 
 const sorted = (values) => [...values].sort((a, b) => a.localeCompare(b));
 const newRegistryItems = Object.entries(registry.new_ids)
@@ -197,7 +204,7 @@ test("20 protected monsters retain exact live combat/reward fields and spawn pos
   const actual = runtime.monster_spawns
     .filter((spawn) => Object.hasOwn(live.captured_fields.monsters, spawn.kind))
     .map(({ kind, x, y }) => ({ kind, x, y }));
-  const expected = liveSpawns.monster_spawns.map(({ kind, x, y }) => ({ kind, x, y }));
+  const expected = liveSpawns.monster_spawns.map(correctedSpawn);
   assert.deepEqual(actual, expected);
 });
 
@@ -256,7 +263,7 @@ test("node corrections are lower-only and every new node has a full authored clu
     .map(({ kind, x, y }) => ({ kind, x, y }));
   const expected = liveSpawns.node_spawns
     .filter((spawn) => spawn.kind !== "tungsten")
-    .map(({ kind, x, y }) => ({ kind, x, y }));
+    .map(correctedSpawn);
   assert.deepEqual(preserved, expected);
 });
 

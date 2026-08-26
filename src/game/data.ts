@@ -181,6 +181,12 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
   ].map((d) => [d.id, d]),
 );
 
+const V2_ITEMS: Record<string, ItemDef> = {};
+
+export function registerV2Items(definitions: Iterable<ItemDef>) {
+  for (const definition of definitions) V2_ITEMS[definition.id] = definition;
+}
+
 export class UnknownItemIdError extends Error {
   readonly itemId: string;
 

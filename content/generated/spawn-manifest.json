@@ -1,6 +1,6 @@
 {
   "content_version": "v2",
-  "manifest_hash": "8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9",
+  "manifest_hash": "0efd6ecfe8c3540b06cb91385862f372323fa03fca4a26056655b52a6ce57dcb",
   "runnable": true,
   "spawn_set_version": "v2",
   "spawns": [
@@ -1729,8 +1729,8 @@
       "spawn_id": "32ce5718-d425-51d3-abec-4a9b5e298295",
       "spawn_set_version": "v2",
       "subzone": "legacy_v1_position",
-      "x": 2184,
-      "y": 2371
+      "x": 2144,
+      "y": 2331
     },
     {
       "active": true,
@@ -2185,8 +2185,8 @@
       "spawn_id": "4112665b-2768-5fd8-b6e7-0284c2d40022",
       "spawn_set_version": "v2",
       "subzone": "legacy_v1_position",
-      "x": 2282,
-      "y": 2382
+      "x": 2302,
+      "y": 2362
     },
     {
       "active": true,
@@ -5821,8 +5821,8 @@
       "spawn_id": "acb48e28-3411-5350-9a62-152f04296ee7",
       "spawn_set_version": "v2",
       "subzone": "legacy_v1_position",
-      "x": 2408,
-      "y": 1780
+      "x": 2388,
+      "y": 1760
     },
     {
       "active": true,
@@ -6097,8 +6097,8 @@
       "spawn_id": "b590b00d-25fd-59c2-8fc1-7bd65bbf6924",
       "spawn_set_version": "v2",
       "subzone": "legacy_v1_position",
-      "x": 1848,
-      "y": 2360
+      "x": 1828,
+      "y": 2400
     },
     {
       "active": true,

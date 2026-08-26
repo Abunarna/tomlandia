@@ -12,8 +12,10 @@ import { resolveWorldRuntime, type WorldRuntimeResolution } from "./world-runtim
  * a player only listens to their own cell plus the eight neighbours.
  */
 
+export type WorldEntityId = number | string;
+
 export interface NodeRow {
-  id: number;
+  id: WorldEntityId;
   cell: string;
   kind?: string;
   x?: number;
@@ -24,7 +26,7 @@ export interface NodeRow {
 }
 
 export interface MonsterRow {
-  id: number;
+  id: WorldEntityId;
   cell: string;
   kind?: string;
   x?: number;
@@ -76,6 +78,7 @@ export class WorldNet {
   private timer: ReturnType<typeof setInterval> | null = null;
   private stopped = false;
   private lastCells = "";
+  private uuidV2 = false;
 
   constructor(private sink: Sink) {}
 
@@ -92,15 +95,15 @@ export class WorldNet {
       : parseRpcResponse("game_world_runtime_status", rpcContracts.game_world_runtime_status.response, runtime);
     // This Gate 8 client contains the UUID/V2 renderer and may activate it
     // once the server's manifest contract matches.
-    this.sink.onRuntime?.(resolveWorldRuntime(parsedRuntime, true));
-    // One cheap full snapshot on join, then per-cell realtime deltas.
-    const [nodes, monsters] = await Promise.all([
-      supabase.from("world_nodes").select("id,cell,kind,x,y,charges,max_charges,respawn_at"),
-      supabase.from("world_monsters").select("id,cell,kind,x,y,hp,max_hp,tagged_by,respawn_at"),
-    ]);
+    const resolution = resolveWorldRuntime(parsedRuntime, true);
+    this.uuidV2 = resolution.mode === "uuid_v2";
+    this.sink.onRuntime?.(resolution);
+    // The active control plane decides which immutable world contract we read.
+    // UUID V2 rows deliberately never pass through the legacy integer tables.
+    const snapshot = await this.readWorld();
     if (this.stopped) return;
-    if (nodes.data) this.sink.onNodes(nodes.data as NodeRow[], true);
-    if (monsters.data) this.sink.onMonsters(monsters.data as MonsterRow[], true);
+    this.sink.onNodes(snapshot.nodes, true);
+    this.sink.onMonsters(snapshot.monsters, true);
 
     // The boss is global, not sharded: he can be anywhere, so everyone follows
     // the single row wherever they stand.
@@ -151,17 +154,38 @@ export class WorldNet {
 
     for (const cell of wanted) {
       if (this.channels.has(cell)) continue;
+      const nodeTable = this.uuidV2 ? "game_world_nodes" : "world_nodes";
+      const monsterTable = this.uuidV2 ? "game_world_monsters" : "world_monsters";
       const ch = supabase
         .channel(`world:${cell}`)
         .on(
           "postgres_changes",
-          { event: "UPDATE", schema: "public", table: "world_nodes", filter: `cell=eq.${cell}` },
-          ({ new: row }) => this.sink.onNodes([row as NodeRow]),
+          { event: "UPDATE", schema: "public", table: nodeTable, filter: `cell=eq.${cell}` },
+          ({ new: row }) => this.sink.onNodes([this.uuidV2 ? {
+            id: String((row as { spawn_id: string }).spawn_id),
+            cell: String((row as { cell: string }).cell),
+            kind: String((row as { kind: string }).kind),
+            x: Number((row as { x: number }).x),
+            y: Number((row as { y: number }).y),
+            charges: Number((row as { charges: number }).charges),
+            max_charges: Number((row as { max_charges: number }).max_charges),
+            respawn_at: (row as { respawn_at: string | null }).respawn_at,
+          } : row as NodeRow]),
         )
         .on(
           "postgres_changes",
-          { event: "UPDATE", schema: "public", table: "world_monsters", filter: `cell=eq.${cell}` },
-          ({ new: row }) => this.sink.onMonsters([row as MonsterRow]),
+          { event: "UPDATE", schema: "public", table: monsterTable, filter: `cell=eq.${cell}` },
+          ({ new: row }) => this.sink.onMonsters([this.uuidV2 ? {
+            id: String((row as { spawn_id: string }).spawn_id),
+            cell: String((row as { cell: string }).cell),
+            kind: String((row as { kind: string }).kind),
+            x: Number((row as { x: number }).x),
+            y: Number((row as { y: number }).y),
+            hp: Number((row as { hp: number }).hp),
+            max_hp: Number((row as { max_hp: number }).max_hp),
+            tagged_by: (row as { tagged_by: string | null }).tagged_by,
+            respawn_at: (row as { respawn_at: string | null }).respawn_at,
+          } : row as MonsterRow]),
         );
       ch.subscribe();
       this.channels.set(cell, ch);
@@ -171,16 +195,63 @@ export class WorldNet {
     void this.refresh(wanted);
   }
 
+  private async readWorld(cells?: string[]) {
+    if (this.uuidV2) {
+      let nodes = supabase
+        .from("game_world_nodes")
+        .select("spawn_id,cell,kind,x,y,charges,max_charges,respawn_at");
+      let monsters = supabase
+        .from("game_world_monsters")
+        .select("spawn_id,cell,kind,x,y,hp,max_hp,tagged_by,respawn_at");
+      if (cells) {
+        nodes = nodes.in("cell", cells);
+        monsters = monsters.in("cell", cells);
+      }
+      const [nodeRes, monsterRes] = await Promise.all([nodes, monsters]);
+      return {
+        nodes: (nodeRes.data ?? []).map((row) => ({
+          id: row.spawn_id,
+          cell: row.cell,
+          kind: row.kind,
+          x: Number(row.x),
+          y: Number(row.y),
+          charges: row.charges,
+          max_charges: row.max_charges,
+          respawn_at: row.respawn_at,
+        })),
+        monsters: (monsterRes.data ?? []).map((row) => ({
+          id: row.spawn_id,
+          cell: row.cell,
+          kind: row.kind,
+          x: Number(row.x),
+          y: Number(row.y),
+          hp: row.hp,
+          max_hp: row.max_hp,
+          tagged_by: row.tagged_by,
+          respawn_at: row.respawn_at,
+        })),
+      };
+    }
+
+    let nodes = supabase.from("world_nodes").select("id,cell,kind,x,y,charges,max_charges,respawn_at");
+    let monsters = supabase
+      .from("world_monsters")
+      .select("id,cell,kind,x,y,hp,max_hp,tagged_by,respawn_at");
+    if (cells) {
+      nodes = nodes.in("cell", cells);
+      monsters = monsters.in("cell", cells);
+    }
+    const [nodeRes, monsterRes] = await Promise.all([nodes, monsters]);
+    return {
+      nodes: (nodeRes.data ?? []) as NodeRow[],
+      monsters: (monsterRes.data ?? []) as MonsterRow[],
+    };
+  }
+
   private async refresh(cells: string[]) {
-    const [nodes, monsters] = await Promise.all([
-      supabase.from("world_nodes").select("id,cell,kind,x,y,charges,max_charges,respawn_at").in("cell", cells),
-      supabase
-        .from("world_monsters")
-        .select("id,cell,kind,x,y,hp,max_hp,tagged_by,respawn_at")
-        .in("cell", cells),
-    ]);
+    const snapshot = await this.readWorld(cells);
     if (this.stopped) return;
-    if (nodes.data) this.sink.onNodes(nodes.data as NodeRow[], true);
-    if (monsters.data) this.sink.onMonsters(monsters.data as MonsterRow[], true);
+    this.sink.onNodes(snapshot.nodes, true);
+    this.sink.onMonsters(snapshot.monsters, true);
   }
 }
