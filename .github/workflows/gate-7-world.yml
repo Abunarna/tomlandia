@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Capture blocked spawn records
         run: |
-          node -e "const fs=require('fs'); const ids=new Set(['32ce5718-d425-51d3-abec-4a9b5e298295','4112665b-2768-5fd8-b6e7-0284c2d40022','acb48e28-3411-5350-9a62-152f04296ee7','b590b00d-25fd-59c2-8fc1-7bd65bbf6924']); const rows=JSON.parse(fs.readFileSync('content/v2/world-spawn-manifest.json','utf8')).spawns.filter(x=>ids.has(x.spawn_id)); console.log('BLOCKED_SPAWNS='+JSON.stringify(rows))"
+          node -e "const fs=require('fs'); const ids=new Set(['32ce5718-d425-51d3-abec-4a9b5e298295','4112665b-2768-5fd8-b6e7-0284c2d40022','acb48e28-3411-5350-9a62-152f04296ee7','b590b00d-25fd-59c2-8fc1-7bd65bbf6924']); const rows=JSON.parse(fs.readFileSync('content/v2/world-spawn-manifest.json','utf8')).spawns.filter(x=>ids.has(x.spawn_id)); (async()=>{const {terrainBlockedAt}=await import('./scripts/gate7/terrain-collision.mjs'); for(const row of rows){const hits=[]; for(let r=20;r<=200&&hits.length<6;r+=20){for(let dy=-r;dy<=r&&hits.length<6;dy+=20){for(let dx=-r;dx<=r&&hits.length<6;dx+=20){if(Math.max(Math.abs(dx),Math.abs(dy))!==r) continue; const x=row.x+dx,y=row.y+dy; if(!terrainBlockedAt(x,y,12)) hits.push({x,y,dx,dy});}}} console.log('SPAWN_CANDIDATES='+JSON.stringify({id:row.spawn_id,kind:row.kind,ordinal:row.ordinal,current:{x:row.x,y:row.y},hits}));}})()"
       - name: Upload blocked spawn records
         uses: actions/upload-artifact@v4
         with:
