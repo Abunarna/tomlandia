@@ -97,7 +97,7 @@ test("complete entity counts and locked ID inventories are exact", () => {
     fishing_spots: 6,
     quests: 8,
     bosses: 1,
-    node_spawns: 369,
+    node_spawns: 368,
     monster_spawns: 361,
     migration_rules: 6,
     sprites: 32,

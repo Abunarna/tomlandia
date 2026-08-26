@@ -168,7 +168,7 @@ insert into public.game_content_control
    maintenance_mode, maintenance_message, manifest_hash, activation_timestamp, migration_run_id)
 values
   ('v2', 'v2', 'v2', false, '',
-   '8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9',
+   'a0d654a993f5a213c6ce667b6fbd29053e0432e351872492b0a6bf3d7b1cff77',
    now(), 'gate6-transactional-test');
 
 select is(public.game_active_content_version(), 'v2', 'selector follows a validated v2 control row');

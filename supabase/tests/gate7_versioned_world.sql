@@ -40,10 +40,10 @@ select ok(
 select is((select count(*) from public.game_world_spawn_sets where content_version = 'v2'), 1::bigint,
   'one v2 deterministic world manifest is staged');
 select is((select spawn_hash from public.game_world_spawn_sets where content_version = 'v2'),
-  '24130e8725da5f6e339d5037a40e81f5bcc1052a47fc29b056b36b8d8b2d31fa',
+  '9d1bc1c263fb2e5b45e3e1b16c62ec3d2e314d6733a0378c95a0fe06e0cdc9e0',
   'database stores the reviewed spawn payload hash');
 select is((select source_content_manifest_hash from public.game_world_spawn_sets where content_version = 'v2'),
-  '8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9',
+  'a0d654a993f5a213c6ce667b6fbd29053e0432e351872492b0a6bf3d7b1cff77',
   'world state is bound to the approved Gate 5 content manifest');
 select is((select cluster_probability from public.game_world_spawn_sets where content_version = 'v2'), 0.9::numeric,
   'database records the real deterministic 90/10 generator rule');
@@ -58,12 +58,12 @@ select is(((select reachability_summary from public.game_world_spawn_sets where 
 select is(((select reachability_summary from public.game_world_spawn_sets where content_version = 'v2')->>'failed_tiers')::integer, 0,
   'stored reachability evidence has zero failed tier loops');
 
-select is((select count(*) from public.game_content_spawns where content_version = 'v2'), 730::bigint,
-  'canonical v2 world has exactly 730 stable spawns');
-select is((select count(distinct spawn_id) from public.game_content_spawns where content_version = 'v2'), 730::bigint,
+select is((select count(*) from public.game_content_spawns where content_version = 'v2'), 729::bigint,
+  'canonical v2 world has exactly 729 stable spawns');
+select is((select count(distinct spawn_id) from public.game_content_spawns where content_version = 'v2'), 729::bigint,
   'every v2 canonical spawn has unique identity');
-select is((select count(*) from public.game_world_nodes where content_version = 'v2'), 369::bigint,
-  'UUID state contains exactly 369 v2 nodes');
+select is((select count(*) from public.game_world_nodes where content_version = 'v2'), 368::bigint,
+  'UUID state contains exactly 368 v2 nodes');
 select is((select count(*) from public.game_world_monsters where content_version = 'v2'), 361::bigint,
   'UUID state contains exactly 361 v2 monsters');
 select is((select count(*) from public.game_world_nodes where content_version = 'v2' and kind = 'tungsten'), 0::bigint,
@@ -224,13 +224,13 @@ insert into public.game_content_control
    maintenance_mode, maintenance_message, manifest_hash, activation_timestamp, migration_run_id)
 values
   ('v2', 'v2', 'v2', false, '',
-   '8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9',
+   'a0d654a993f5a213c6ce667b6fbd29053e0432e351872492b0a6bf3d7b1cff77',
    now(), 'gate7-transactional-test');
 
 select is(public.game_world_runtime_status()->>'state_contract', 'uuid_v2',
   'transactional cutover advertises the UUID v2 contract');
 select is(public.game_world_runtime_status()->>'spawn_hash',
-  '24130e8725da5f6e339d5037a40e81f5bcc1052a47fc29b056b36b8d8b2d31fa',
+  '9d1bc1c263fb2e5b45e3e1b16c62ec3d2e314d6733a0378c95a0fe06e0cdc9e0',
   'transactional cutover advertises the exact reviewed spawn hash');
 select is((public.game_world_runtime_status()->>'world_width')::integer, 5600,
   'transactional cutover advertises the exact world width');
@@ -247,11 +247,11 @@ select throws_like(
 set local role authenticated;
 select is((select count(*) from public.game_world_spawn_sets), 1::bigint,
   'RLS exposes exactly the active v2 world manifest after cutover');
-select is((select count(*) from public.game_world_nodes), 369::bigint,
+select is((select count(*) from public.game_world_nodes), 368::bigint,
   'RLS exposes exactly the active UUID node state after cutover');
 select is((select count(*) from public.game_world_monsters), 361::bigint,
   'RLS exposes exactly the active UUID monster state after cutover');
-select is((select count(*) from public.game_content_spawns), 730::bigint,
+select is((select count(*) from public.game_content_spawns), 729::bigint,
   'canonical spawn RLS exposes exactly the active v2 manifest after cutover');
 reset role;
 

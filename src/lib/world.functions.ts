@@ -13,10 +13,21 @@ import { parseRpcResponse, rpcContracts } from "@/contracts/rpc";
 
 const point = { x: z.number().finite(), y: z.number().finite() };
 
+const worldEntityId = z.union([z.number().int().min(0), z.string().uuid()]);
+
 export const harvestNode = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) => z.object({ id: z.number().int().min(0), ...point }).parse(input))
+  .inputValidator((input) => z.object({ id: worldEntityId, ...point }).parse(input))
   .handler(async ({ data, context }): Promise<HarvestRes> => {
+    if (typeof data.id === "string") {
+      const request = rpcContracts.harvest_node_v2.request.parse({ _id: data.id, _x: data.x, _y: data.y });
+      const { data: res, error } = await context.supabase.rpc("harvest_node_v2", request);
+      return parseRpcResponse<HarvestRes>(
+        "harvest_node_v2",
+        rpcContracts.harvest_node_v2.response,
+        error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+      );
+    }
     const request = rpcContracts.harvest_node.request.parse({ _id: data.id, _x: data.x, _y: data.y });
     const { data: res, error } = await context.supabase.rpc("harvest_node", request);
     return parseRpcResponse<HarvestRes>(
@@ -28,8 +39,17 @@ export const harvestNode = createServerFn({ method: "POST" })
 
 export const attackMonster = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) => z.object({ id: z.number().int().min(0), ...point }).parse(input))
+  .inputValidator((input) => z.object({ id: worldEntityId, ...point }).parse(input))
   .handler(async ({ data, context }): Promise<DamageRes> => {
+    if (typeof data.id === "string") {
+      const request = rpcContracts.attack_monster_v2.request.parse({ _id: data.id, _x: data.x, _y: data.y });
+      const { data: res, error } = await context.supabase.rpc("attack_monster_v2", request);
+      return parseRpcResponse<DamageRes>(
+        "attack_monster_v2",
+        rpcContracts.attack_monster_v2.response,
+        error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
+      );
+    }
     const request = rpcContracts.attack_monster.request.parse({ _id: data.id, _x: data.x, _y: data.y });
     const { data: res, error } = await context.supabase.rpc("attack_monster", request);
     return parseRpcResponse<DamageRes>(

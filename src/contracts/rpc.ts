@@ -266,8 +266,16 @@ export const rpcContracts = {
     request: z.object({ _id: nonNegativeInt, ...worldPoint }).strict(),
     response: harvestResponseSchema,
   },
+  harvest_node_v2: {
+    request: z.object({ _id: uuid, ...worldPoint }).strict(),
+    response: harvestResponseSchema,
+  },
   attack_monster: {
     request: z.object({ _id: nonNegativeInt, ...worldPoint }).strict(),
+    response: attackMonsterResponseSchema,
+  },
+  attack_monster_v2: {
+    request: z.object({ _id: uuid, ...worldPoint }).strict(),
     response: attackMonsterResponseSchema,
   },
   attack_boss: {
@@ -405,7 +413,13 @@ export const rpcContractManifest = {
   rpcs: {
     game_world_runtime_status: { request: [], response: "world_runtime_status" },
     harvest_node: { request: ["_id", "_x", "_y"], response: "harvest" },
+    harvest_node_v2: { request: ["_id", "_x", "_y"], response: "harvest" },
     attack_monster: {
+      request: ["_id", "_x", "_y"],
+      response: "damage",
+      canonical_success_keys: ["leveled", "state", "buff"],
+    },
+    attack_monster_v2: {
       request: ["_id", "_x", "_y"],
       response: "damage",
       canonical_success_keys: ["leveled", "state", "buff"],

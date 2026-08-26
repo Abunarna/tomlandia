@@ -28,7 +28,7 @@ if (!engine.includes("drawCreatureSprite") || !engine.includes("if (!usedSprite)
 if (!engine.includes("sprite.visual_bounds.top") || !engine.includes("labelTop")) {
   throw new Error("Gate 8 sprite labels must follow prepared visual bounds");
 }
-if (!runtime.includes("CONTENT_MANIFEST_HASH") || !runtime.includes('mode: "maintenance"')) {
+if (!runtime.includes("V2_WORLD_SPAWN_HASH") || !runtime.includes('mode: "maintenance"')) {
   throw new Error("Gate 8 version mismatch must fail closed into maintenance");
 }
 if (!world.includes("game_world_runtime_status") || !world.includes("resolveWorldRuntime")) {
