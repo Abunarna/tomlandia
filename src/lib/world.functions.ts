@@ -20,13 +20,11 @@ export const harvestNode = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({ id: worldEntityId, ...point }).parse(input))
   .handler(async ({ data, context }): Promise<HarvestRes> => {
     if (typeof data.id === "string") {
-      const { data: res, error } = await context.supabase.rpc(
-        "harvest_node_v2" as never,
-        { _id: data.id, _x: data.x, _y: data.y } as never,
-      );
+      const request = rpcContracts.harvest_node_v2.request.parse({ _id: data.id, _x: data.x, _y: data.y });
+      const { data: res, error } = await context.supabase.rpc("harvest_node_v2", request);
       return parseRpcResponse<HarvestRes>(
-        "harvest_node",
-        rpcContracts.harvest_node.response,
+        "harvest_node_v2",
+        rpcContracts.harvest_node_v2.response,
         error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
       );
     }
@@ -44,13 +42,11 @@ export const attackMonster = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({ id: worldEntityId, ...point }).parse(input))
   .handler(async ({ data, context }): Promise<DamageRes> => {
     if (typeof data.id === "string") {
-      const { data: res, error } = await context.supabase.rpc(
-        "attack_monster_v2" as never,
-        { _id: data.id, _x: data.x, _y: data.y } as never,
-      );
+      const request = rpcContracts.attack_monster_v2.request.parse({ _id: data.id, _x: data.x, _y: data.y });
+      const { data: res, error } = await context.supabase.rpc("attack_monster_v2", request);
       return parseRpcResponse<DamageRes>(
-        "attack_monster",
-        rpcContracts.attack_monster.response,
+        "attack_monster_v2",
+        rpcContracts.attack_monster_v2.response,
         error ? { ok: false, reason: error.message } : (res ?? { ok: false, reason: "empty" }),
       );
     }
