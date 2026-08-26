@@ -68,13 +68,3 @@ jobs:
       - name: Stop isolated stack
         if: always()
         run: supabase stop --no-backup
-
-  inspect-live-spawn-source:
-    name: Inspect live spawn source records
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - name: Print audited legacy spawn records
-        run: |
-          node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs -e "import('./src/game/data.ts').then(({NODE_SPAWNS,MONSTER_SPAWNS})=>console.log('LIVE_SOURCE='+JSON.stringify({maple:NODE_SPAWNS.filter(x=>x.kind==='maple'), willow:NODE_SPAWNS.filter(x=>x.kind==='willow'&&x.x>=1800&&x.x<=1900&&x.y>=2300&&x.y<=2450), wolf:MONSTER_SPAWNS.filter(x=>x.kind==='wolf'&&x.x>=2100&&x.x<=2350&&x.y>=2300&&x.y<=2450)})))"
