@@ -166,7 +166,7 @@ BEGIN
     'state', public.pl_state(data)
   );
 END
-$function$
+$function$;
 
 REVOKE ALL ON FUNCTION public.attack_monster_v2(uuid, numeric, numeric) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.attack_monster_v2(uuid, numeric, numeric) TO authenticated;
