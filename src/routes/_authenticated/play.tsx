@@ -3,13 +3,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Backpack, Hammer, Map as MapIcon, Maximize, Minimize, Music, Music2, Trophy, Volume2, VolumeX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { parseRpcResponse, rpcContracts } from "@/contracts/rpc";
-import { GameEngine, clearLegacySave, readLegacySave, type SyncAck } from "@/game/engine";
+import { GameEngine, clearLegacySave, readLegacySave, type DamageRes, type SyncAck } from "@/game/engine";
 import { PresenceNet } from "@/game/presence";
 import { WorldNet } from "@/game/world";
 import type { WorldRuntimeResolution } from "@/game/world-runtime";
 import {
   attackBoss,
-  attackMonster,
   bankGold,
   bankItem,
   consumeFood,
@@ -289,7 +288,30 @@ function Game() {
       // Phase 9 — the server resolves every world action and owns the rewards.
       engine.userId = user.id;
       engine.onHarvest = (id, x, y) => harvestNode({ data: { id, x, y } });
-      engine.onAttack = (id, x, y) => attackMonster({ data: { id, x, y } });
+      // World combat must use the browser Supabase client: it owns the player's
+      // access token. A TanStack server-function request does not forward that
+      // token, so it was rejected by the authenticated middleware before the
+      // database combat routine could run.
+      engine.onAttack = (id, x, y): Promise<DamageRes> => {
+        if (typeof id === "string") {
+          const request = rpcContracts.attack_monster_v2.request.parse({ _id: id, _x: x, _y: y });
+          return supabase.rpc("attack_monster_v2", request).then(({ data, error }) =>
+            parseRpcResponse<DamageRes>(
+              "attack_monster_v2",
+              rpcContracts.attack_monster_v2.response,
+              error ? { ok: false, reason: error.message } : (data ?? { ok: false, reason: "empty" }),
+            ),
+          );
+        }
+        const request = rpcContracts.attack_monster.request.parse({ _id: id, _x: x, _y: y });
+        return supabase.rpc("attack_monster", request).then(({ data, error }) =>
+          parseRpcResponse<DamageRes>(
+            "attack_monster",
+            rpcContracts.attack_monster.response,
+            error ? { ok: false, reason: error.message } : (data ?? { ok: false, reason: "empty" }),
+          ),
+        );
+      };
       engine.onBossAttack = (x, y, bx, by, passive) => attackBoss({ data: { x, y, bx, by, passive } });
       engine.onFish = (id, x, y) => fishCast({ data: { id, x, y } });
       engine.onPotion = (itemId) => usePotion({ data: { item: itemId } });
