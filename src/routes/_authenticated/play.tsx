@@ -292,7 +292,7 @@ function Game() {
       // access token. A TanStack server-function request does not forward that
       // token, so it was rejected by the authenticated middleware before the
       // database combat routine could run.
-      engine.onAttack = (id, x, y): Promise<DamageRes> => {
+      engine.onAttack = async (id, x, y): Promise<DamageRes> => {
         if (typeof id === "string") {
           const request = rpcContracts.attack_monster_v2.request.parse({ _id: id, _x: x, _y: y });
           return supabase.rpc("attack_monster_v2", request).then(({ data, error }) =>
