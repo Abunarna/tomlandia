@@ -842,7 +842,7 @@ export class GameEngine {
   private fishCd = 0;
   private fishPending = false;
   private potionPending = false;
-  private saveCd = 30;
+  private saveCd = 5;
 
 
   /**
@@ -1409,8 +1409,8 @@ export class GameEngine {
       this.hp = Math.min(this.hp, this.maxHp);
     }
     if (typeof s.hp === "number") this.hp = Math.max(0, Math.min(s.hp, this.maxHp));
-    if (typeof s.px === "number") this.px = s.px;
-    if (typeof s.py === "number") this.py = s.py;
+    // Position is synced separately. An older save acknowledgement must never
+    // pull a moving player backwards.
     if ("quest" in s) this.quest = s.quest ?? null;
     if (Array.isArray(s.completed)) this.completed = [...s.completed];
     if (typeof s.autoEatAt === "number" && [0.25, 0.5, 0.75].includes(s.autoEatAt)) {
@@ -1969,8 +1969,8 @@ export class GameEngine {
       this.hp = Math.min(this.hp, this.maxHp);
     }
     if (typeof state.hp === "number") this.hp = Math.max(0, Math.min(state.hp, this.maxHp));
-    if (typeof state.px === "number") this.px = state.px;
-    if (typeof state.py === "number") this.py = state.py;
+    // World actions already validate the live position server-side. Keep the
+    // local movement loop authoritative between position heartbeats.
     if ("quest" in state) this.quest = state.quest ?? null;
     if (Array.isArray(state.completed)) this.completed = [...state.completed];
     if (typeof state.autoEatAt === "number" && [0.25, 0.5, 0.75].includes(state.autoEatAt)) {
@@ -2706,7 +2706,7 @@ export class GameEngine {
     }
     this.saveCd -= dt;
     if (this.saveCd <= 0) {
-      this.saveCd = 30;
+      this.saveCd = 5;
       this.save();
     }
   }
