@@ -1804,7 +1804,9 @@ export class GameEngine {
       if (m.dead) continue;
       const d = Math.hypot(m.x - wx, m.y - wy);
       const spriteHit = creaturePointerHit(m.kind, m.x, m.y, wx, wy);
-      if ((spriteHit ?? d < 40) && (!best || d < best.d)) best = { d, t: { type: "monster", id: m.id } };
+      // A sprite hit-test returns false for transparent pixels. Keep the normal
+      // circular touch target as a fallback instead of treating false as a hit-test result.
+      if ((spriteHit === true || d < 40) && (!best || d < best.d)) best = { d, t: { type: "monster", id: m.id } };
     }
     for (const n of this.nodes) {
       if (n.depleted) continue;
@@ -2391,7 +2393,16 @@ export class GameEngine {
                     if (res.reason === "dead") {
                       m.dead = true;
                       if (this.target.type === "monster" && this.target.id === m.id) this.target = { type: "none" };
+                    } else {
+                      const message =
+                        res.reason === "too_far" ? "Move closer" :
+                        res.reason === "too_fast" ? "Catching breath" :
+                        res.reason === "no_save" ? "Save unavailable" :
+                        res.reason === "missing" ? "Monster unavailable" :
+                        "Combat rejected";
+                      this.pushText(m.x, m.y - 42, message, "#f4b0b0");
                     }
+                    this.emitHud(true);
                     return;
                   }
 
@@ -2429,8 +2440,11 @@ export class GameEngine {
                   }
                   this.emitHud(true);
                 })
-                .catch(() => {
+                .catch((error: unknown) => {
                   m.pending = false;
+                  console.error("Combat request failed", error);
+                  this.pushText(m.x, m.y - 42, "Combat connection failed", "#f4b0b0");
+                  this.emitHud(true);
                 });
             }
           }
