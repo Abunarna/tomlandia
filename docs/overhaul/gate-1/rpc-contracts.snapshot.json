@@ -32,6 +32,7 @@
     "market_cancel": { "request": ["_id"], "response": "market" },
     "leaderboard": { "request": ["_skill"], "response": "leaderboard" },
     "player_sync": { "request": ["_data", "_rev?"], "response": "sync" },
+    "track_position": { "request": ["_uid", "_x", "_y"], "response": "boolean" },
     "consume_food": { "request": ["_index"], "response": "gear" },
     "player_recover": { "request": [], "response": "gear" },
     "quest_action": { "request": ["_action", "_quest"], "response": "gear" },

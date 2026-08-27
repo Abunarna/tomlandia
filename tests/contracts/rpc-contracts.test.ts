@@ -41,6 +41,7 @@ describe("RPC contract registry", () => {
       market_cancel: { _id: id },
       leaderboard: { _skill: "total" },
       player_sync: { _data: edgeSaveFixtures.null_slots, _rev: 0 },
+      track_position: { _uid: id, _x: 2, _y: 3 },
       consume_food: { _index: 0 },
       player_recover: {},
       quest_action: { _action: "accept", _quest: "copper_run" },

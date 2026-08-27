@@ -280,6 +280,10 @@ export const rpcContracts = {
     request: z.object({ _id: uuid, ...worldPoint }).strict(),
     response: attackMonsterResponseSchema,
   },
+  track_position: {
+    request: z.object({ _uid: uuid, ...worldPoint }).strict(),
+    response: z.boolean(),
+  },
   attack_boss: {
     request: z
       .object({ ...worldPoint, _bx: finite, _by: finite, _passive: z.boolean().default(false) })
@@ -442,6 +446,7 @@ export const rpcContractManifest = {
     market_cancel: { request: ["_id"], response: "market" },
     leaderboard: { request: ["_skill"], response: "leaderboard" },
     player_sync: { request: ["_data", "_rev?"], response: "sync" },
+    track_position: { request: ["_uid", "_x", "_y"], response: "boolean" },
     consume_food: { request: ["_index"], response: "gear" },
     player_recover: { request: [], response: "gear" },
     quest_action: { request: ["_action", "_quest"], response: "gear" },
