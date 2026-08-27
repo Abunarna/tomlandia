@@ -5,14 +5,12 @@ import { CELL_H, CELL_W, COLS, ROWS } from "./presence";
 import { resolveWorldRuntime, type WorldRuntimeResolution } from "./world-runtime";
 
 /**
- * Phase 8 — shared world state (nodes & monsters).
+ * Live UUID/V2 world transport.
  *
- * The authoritative state lives in the database. Clients read it and follow
- * realtime updates, sharded by the same grid cells the presence system uses:
- * a player only listens to their own cell plus the eight neighbours.
+ * The authenticated game never renders local or legacy world rows. Startup
+ * either installs a validated UUID snapshot or reports maintenance.
  */
-
-export type WorldEntityId = number | string;
+export type WorldEntityId = string;
 
 export interface NodeRow {
   id: WorldEntityId;
@@ -37,7 +35,6 @@ export interface MonsterRow {
   respawn_at: string | null;
 }
 
-/** DESOLATUS — one global row. Only his HP is shared state; he roams by clock. */
 export interface BossRow {
   hp: number;
   max_hp: number;
@@ -54,8 +51,8 @@ function neighbourCells(x: number, y: number): string[] {
   const cx = Math.max(0, Math.min(COLS - 1, Math.floor(x / CELL_W)));
   const cy = Math.max(0, Math.min(ROWS - 1, Math.floor(y / CELL_H)));
   const out: string[] = [];
-  for (let dy = -1; dy <= 1; dy++) {
-    for (let dx = -1; dx <= 1; dx++) {
+  for (let dy = -1; dy <= 1; dy += 1) {
+    for (let dx = -1; dx <= 1; dx += 1) {
       const nx = cx + dx;
       const ny = cy + dy;
       if (nx >= 0 && ny >= 0 && nx < COLS && ny < ROWS) out.push(`${nx}:${ny}`);
@@ -72,57 +69,85 @@ interface Sink {
   onRuntime?: (runtime: WorldRuntimeResolution) => void;
 }
 
+const nodeRow = (row: Record<string, unknown>): NodeRow => ({
+  id: String(row["spawn_id"]),
+  cell: String(row["cell"]),
+  kind: String(row["kind"]),
+  x: Number(row["x"]),
+  y: Number(row["y"]),
+  charges: Number(row["charges"]),
+  max_charges: Number(row["max_charges"]),
+  respawn_at: row["respawn_at"] == null ? null : String(row["respawn_at"]),
+});
+
+const monsterRow = (row: Record<string, unknown>): MonsterRow => ({
+  id: String(row["spawn_id"]),
+  cell: String(row["cell"]),
+  kind: String(row["kind"]),
+  x: Number(row["x"]),
+  y: Number(row["y"]),
+  hp: Number(row["hp"]),
+  max_hp: Number(row["max_hp"]),
+  tagged_by: row["tagged_by"] == null ? null : String(row["tagged_by"]),
+  respawn_at: row["respawn_at"] == null ? null : String(row["respawn_at"]),
+});
+
 export class WorldNet {
   private channels = new Map<string, RealtimeChannel>();
   private bossChannel: RealtimeChannel | null = null;
   private timer: ReturnType<typeof setInterval> | null = null;
   private stopped = false;
   private lastCells = "";
-  private uuidV2 = false;
 
   constructor(private sink: Sink) {}
 
+  private maintenance(message: string, status: WorldRuntimeResolution["status"] = null) {
+    this.sink.onRuntime?.({ mode: "maintenance", status, message });
+  }
+
   async start() {
     this.stopped = false;
-    // Gate 8 reads the version control plane before subscribing. A missing
-    // Gate 7 RPC remains a legacy-safe fallback, which preserves existing v1
-    // deployments while the dual client is rolled out.
     rpcContracts.game_world_runtime_status.request.parse({});
     const { data: runtime, error: runtimeError } = await supabase.rpc("game_world_runtime_status");
     if (this.stopped) return;
-    // A status-schema mismatch must not silently revive the disabled legacy
-    // world. Preserve the parsed value where possible, but honour production's
-    // explicit UUID/V2 control-plane signal for this V2-capable renderer.
-    let parsedRuntime: unknown = null;
-    if (!runtimeError) {
-      try {
-        parsedRuntime = parseRpcResponse("game_world_runtime_status", rpcContracts.game_world_runtime_status.response, runtime);
-      } catch {
-        // The raw V2 control-plane signal below is still sufficient to prevent
-        // a disabled legacy-world fallback in this V2-capable client.
-      }
+    if (runtimeError) {
+      this.maintenance("Could not verify the active V2 world. Please retry.");
+      return;
     }
-    const rawV2 = !runtimeError && runtime && typeof runtime === "object" &&
-      (runtime as { state_contract?: unknown }).state_contract === "uuid_v2" &&
-      (runtime as { active_content_version?: unknown }).active_content_version === "v2" &&
-      (runtime as { active_spawn_set_version?: unknown }).active_spawn_set_version === "v2";
-    // This Gate 8 client contains the UUID/V2 renderer and may activate it
-    // once the server's manifest contract matches.
-    const resolved = resolveWorldRuntime(parsedRuntime, true);
-    const resolution = rawV2 && resolved.mode === "legacy_v1"
-      ? { mode: "uuid_v2" as const, status: resolved.status, message: null }
-      : resolved;
-    this.uuidV2 = resolution.mode === "uuid_v2";
+
+    let resolution: WorldRuntimeResolution;
+    try {
+      const parsed = parseRpcResponse(
+        "game_world_runtime_status",
+        rpcContracts.game_world_runtime_status.response,
+        runtime,
+      );
+      resolution = resolveWorldRuntime(parsed, true);
+    } catch {
+      this.maintenance("The server returned an invalid world contract. Please refresh.");
+      return;
+    }
+
+    if (resolution.mode !== "uuid_v2") {
+      this.maintenance(
+        resolution.message ?? "This client requires the active UUID V2 world.",
+        resolution.status,
+      );
+      return;
+    }
     this.sink.onRuntime?.(resolution);
-    // The active control plane decides which immutable world contract we read.
-    // UUID V2 rows deliberately never pass through the legacy integer tables.
-    const snapshot = await this.readWorld();
+
+    let snapshot: { nodes: NodeRow[]; monsters: MonsterRow[] };
+    try {
+      snapshot = await this.readWorld();
+    } catch {
+      if (!this.stopped) this.maintenance("Could not load the UUID V2 world snapshot. Please retry.", resolution.status);
+      return;
+    }
     if (this.stopped) return;
     this.sink.onNodes(snapshot.nodes, true);
     this.sink.onMonsters(snapshot.monsters, true);
 
-    // The boss is global, not sharded: he can be anywhere, so everyone follows
-    // the single row wherever they stand.
     if (this.sink.onBoss) {
       const boss = await supabase.from("world_boss").select("hp,max_hp,respawn_at").eq("id", 1).maybeSingle();
       if (this.stopped) return;
@@ -152,7 +177,6 @@ export class WorldNet {
     this.lastCells = "";
   }
 
-  /** Re-point subscriptions at the player's current 3x3 cell window. */
   private sync() {
     if (this.stopped) return;
     const { x, y } = this.sink.position();
@@ -162,105 +186,52 @@ export class WorldNet {
     this.lastCells = key;
     const set = new Set(wanted);
 
-    for (const [cell, ch] of this.channels) {
+    for (const [cell, channel] of this.channels) {
       if (set.has(cell)) continue;
-      void supabase.removeChannel(ch);
+      void supabase.removeChannel(channel);
       this.channels.delete(cell);
     }
 
     for (const cell of wanted) {
       if (this.channels.has(cell)) continue;
-      const nodeTable = this.uuidV2 ? "game_world_nodes" : "world_nodes";
-      const monsterTable = this.uuidV2 ? "game_world_monsters" : "world_monsters";
-      const ch = supabase
-        .channel(`world:${cell}`)
+      const channel = supabase
+        .channel(`world:v2:${cell}`)
         .on(
           "postgres_changes",
-          { event: "UPDATE", schema: "public", table: nodeTable, filter: `cell=eq.${cell}` },
-          ({ new: row }) => this.sink.onNodes([this.uuidV2 ? {
-            id: String((row as { spawn_id: string }).spawn_id),
-            cell: String((row as { cell: string }).cell),
-            kind: String((row as { kind: string }).kind),
-            x: Number((row as { x: number }).x),
-            y: Number((row as { y: number }).y),
-            charges: Number((row as { charges: number }).charges),
-            max_charges: Number((row as { max_charges: number }).max_charges),
-            respawn_at: (row as { respawn_at: string | null }).respawn_at,
-          } : row as NodeRow]),
+          { event: "UPDATE", schema: "public", table: "game_world_nodes", filter: `cell=eq.${cell}` },
+          ({ new: row }) => this.sink.onNodes([nodeRow(row)]),
         )
         .on(
           "postgres_changes",
-          { event: "UPDATE", schema: "public", table: monsterTable, filter: `cell=eq.${cell}` },
-          ({ new: row }) => this.sink.onMonsters([this.uuidV2 ? {
-            id: String((row as { spawn_id: string }).spawn_id),
-            cell: String((row as { cell: string }).cell),
-            kind: String((row as { kind: string }).kind),
-            x: Number((row as { x: number }).x),
-            y: Number((row as { y: number }).y),
-            hp: Number((row as { hp: number }).hp),
-            max_hp: Number((row as { max_hp: number }).max_hp),
-            tagged_by: (row as { tagged_by: string | null }).tagged_by,
-            respawn_at: (row as { respawn_at: string | null }).respawn_at,
-          } : row as MonsterRow]),
+          { event: "UPDATE", schema: "public", table: "game_world_monsters", filter: `cell=eq.${cell}` },
+          ({ new: row }) => this.sink.onMonsters([monsterRow(row)]),
         );
-      ch.subscribe();
-      this.channels.set(cell, ch);
+      channel.subscribe();
+      this.channels.set(cell, channel);
     }
 
-    // Entering a new area: pull fresh state for the cells we just joined.
-    void this.refresh(wanted);
+    void this.refresh(wanted).catch(() => {
+      if (!this.stopped) this.maintenance("Lost the UUID V2 world connection. Please refresh.");
+    });
   }
 
   private async readWorld(cells?: string[]) {
-    if (this.uuidV2) {
-      let nodes = supabase
-        .from("game_world_nodes")
-        .select("spawn_id,cell,kind,x,y,charges,max_charges,respawn_at");
-      let monsters = supabase
-        .from("game_world_monsters")
-        .select("spawn_id,cell,kind,x,y,hp,max_hp,tagged_by,respawn_at");
-      if (cells) {
-        nodes = nodes.in("cell", cells);
-        monsters = monsters.in("cell", cells);
-      }
-      const [nodeRes, monsterRes] = await Promise.all([nodes, monsters]);
-      return {
-        nodes: (nodeRes.data ?? []).map((row) => ({
-          id: row.spawn_id,
-          cell: row.cell,
-          kind: row.kind,
-          x: Number(row.x),
-          y: Number(row.y),
-          charges: row.charges,
-          max_charges: row.max_charges,
-          respawn_at: row.respawn_at,
-        })),
-        monsters: (monsterRes.data ?? []).map((row) => ({
-          id: row.spawn_id,
-          cell: row.cell,
-          kind: row.kind,
-          x: Number(row.x),
-          y: Number(row.y),
-          hp: row.hp,
-          max_hp: row.max_hp,
-          tagged_by: row.tagged_by,
-          respawn_at: row.respawn_at,
-        })),
-      };
-    }
-
-    let nodes = supabase.from("world_nodes").select("id,cell,kind,x,y,charges,max_charges,respawn_at");
+    let nodes = supabase
+      .from("game_world_nodes")
+      .select("spawn_id,cell,kind,x,y,charges,max_charges,respawn_at");
     let monsters = supabase
-      .from("world_monsters")
-      .select("id,cell,kind,x,y,hp,max_hp,tagged_by,respawn_at");
+      .from("game_world_monsters")
+      .select("spawn_id,cell,kind,x,y,hp,max_hp,tagged_by,respawn_at");
     if (cells) {
       nodes = nodes.in("cell", cells);
       monsters = monsters.in("cell", cells);
     }
-    const [nodeRes, monsterRes] = await Promise.all([nodes, monsters]);
+    const [nodeResult, monsterResult] = await Promise.all([nodes, monsters]);
+    if (nodeResult.error) throw nodeResult.error;
+    if (monsterResult.error) throw monsterResult.error;
     return {
-      nodes: (nodeRes.data ?? []) as NodeRow[],
-      monsters: (monsterRes.data ?? []) as MonsterRow[],
+      nodes: (nodeResult.data ?? []).map((row) => nodeRow(row as Record<string, unknown>)),
+      monsters: (monsterResult.data ?? []).map((row) => monsterRow(row as Record<string, unknown>)),
     };
   }
 

@@ -283,6 +283,9 @@ function Game() {
         initialRev: cloudSave && typeof row?.rev === "number" ? row.rev : null,
         onPersist: persist,
       });
+      // The authenticated game never displays constructor-time offline fixtures.
+      // WorldNet will install the validated UUID V2 snapshot before entities exist.
+      engine.useServerWorld();
 
       engineRef.current = engine;
       // Phase 9 — the server resolves every world action and owns the rewards.
