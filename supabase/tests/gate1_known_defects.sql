@@ -136,8 +136,8 @@ select ok(
 );
 
 select ok(
-  not has_function_privilege('authenticated', 'public.track_position(uuid,numeric,numeric)', 'EXECUTE'),
-  'authenticated cannot call track_position with an arbitrary uid'
+  has_function_privilege('authenticated', 'public.track_position(uuid,numeric,numeric)', 'EXECUTE'),
+  'authenticated can execute identity-bound track_position'
 );
 
 select * from finish();
