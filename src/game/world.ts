@@ -90,12 +90,28 @@ export class WorldNet {
     rpcContracts.game_world_runtime_status.request.parse({});
     const { data: runtime, error: runtimeError } = await supabase.rpc("game_world_runtime_status");
     if (this.stopped) return;
-    const parsedRuntime = runtimeError
-      ? null
-      : parseRpcResponse("game_world_runtime_status", rpcContracts.game_world_runtime_status.response, runtime);
+    // A status-schema mismatch must not silently revive the disabled legacy
+    // world. Preserve the parsed value where possible, but honour production's
+    // explicit UUID/V2 control-plane signal for this V2-capable renderer.
+    let parsedRuntime: unknown = null;
+    if (!runtimeError) {
+      try {
+        parsedRuntime = parseRpcResponse("game_world_runtime_status", rpcContracts.game_world_runtime_status.response, runtime);
+      } catch {
+        // The raw V2 control-plane signal below is still sufficient to prevent
+        // a disabled legacy-world fallback in this V2-capable client.
+      }
+    }
+    const rawV2 = !runtimeError && runtime && typeof runtime === "object" &&
+      (runtime as { state_contract?: unknown }).state_contract === "uuid_v2" &&
+      (runtime as { active_content_version?: unknown }).active_content_version === "v2" &&
+      (runtime as { active_spawn_set_version?: unknown }).active_spawn_set_version === "v2";
     // This Gate 8 client contains the UUID/V2 renderer and may activate it
     // once the server's manifest contract matches.
-    const resolution = resolveWorldRuntime(parsedRuntime, true);
+    const resolved = resolveWorldRuntime(parsedRuntime, true);
+    const resolution = rawV2 && resolved.mode === "legacy_v1"
+      ? { mode: "uuid_v2" as const, status: resolved.status, message: null }
+      : resolved;
     this.uuidV2 = resolution.mode === "uuid_v2";
     this.sink.onRuntime?.(resolution);
     // The active control plane decides which immutable world contract we read.
