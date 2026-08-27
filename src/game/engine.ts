@@ -2391,7 +2391,16 @@ export class GameEngine {
                     if (res.reason === "dead") {
                       m.dead = true;
                       if (this.target.type === "monster" && this.target.id === m.id) this.target = { type: "none" };
+                    } else {
+                      const message =
+                        res.reason === "too_far" ? "Move closer" :
+                        res.reason === "too_fast" ? "Catching breath" :
+                        res.reason === "no_save" ? "Save unavailable" :
+                        res.reason === "missing" ? "Monster unavailable" :
+                        "Combat rejected";
+                      this.pushText(m.x, m.y - 42, message, "#f4b0b0");
                     }
+                    this.emitHud(true);
                     return;
                   }
 
@@ -2429,8 +2438,11 @@ export class GameEngine {
                   }
                   this.emitHud(true);
                 })
-                .catch(() => {
+                .catch((error: unknown) => {
                   m.pending = false;
+                  console.error("Combat request failed", error);
+                  this.pushText(m.x, m.y - 42, "Combat connection failed", "#f4b0b0");
+                  this.emitHud(true);
                 });
             }
           }
