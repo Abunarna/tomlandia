@@ -23,6 +23,10 @@ export const STALE_MS = 6000;
 const HEARTBEAT_MS = 2000;
 /** Movement below this many world units is treated as "no change". */
 const POS_EPSILON = 2;
+/** Persist authoritative combat coordinates at most once per second. */
+const POSITION_SYNC_MS = 1000;
+/** Keep a stationary player\'s authoritative row fresh without busy polling. */
+const POSITION_HEARTBEAT_MS = 5000;
 
 export interface PresencePacket {
   id: string;
@@ -74,6 +78,9 @@ export class PresenceNet {
   private stopped = false;
   private lastSent: Omit<PresencePacket, "id"> | null = null;
   private lastSentAt = 0;
+  private lastPositionAttemptAt = 0;
+  private lastPersistedPosition: { x: number; y: number } | null = null;
+  private positionSyncPending = false;
 
   constructor(
     private userId: string,
@@ -106,13 +113,14 @@ export class PresenceNet {
   private tick() {
     if (this.stopped) return;
     const me = this.source();
+    const now = Date.now();
+    this.persistPosition(me, now);
     const [cx, cy] = cellOf(me.x, me.y);
     this.resubscribe(cx, cy);
 
     const home = this.channels.get(this.homeKey);
     if (!home || !this.joined.has(this.homeKey)) return;
 
-    const now = Date.now();
     const moved =
       !this.lastSent ||
       Math.hypot(me.x - this.lastSent.x, me.y - this.lastSent.y) > POS_EPSILON ||
@@ -132,6 +140,34 @@ export class PresenceNet {
       .catch(() => {});
     this.lastSent = me;
     this.lastSentAt = now;
+  }
+
+  private persistPosition(me: Omit<PresencePacket, "id">, now: number) {
+    if (this.positionSyncPending || now - this.lastPositionAttemptAt < POSITION_SYNC_MS) return;
+    const moved =
+      !this.lastPersistedPosition ||
+      Math.hypot(me.x - this.lastPersistedPosition.x, me.y - this.lastPersistedPosition.y) > POS_EPSILON;
+    const heartbeatDue = now - this.lastPositionAttemptAt >= POSITION_HEARTBEAT_MS;
+    if (!moved && !heartbeatDue) return;
+
+    this.lastPositionAttemptAt = now;
+    this.positionSyncPending = true;
+    const sent = { x: me.x, y: me.y };
+    void supabase
+      .rpc("track_position", { _uid: this.userId, _x: sent.x, _y: sent.y })
+      .then(({ data, error }) => {
+        this.positionSyncPending = false;
+        if (this.stopped) return;
+        if (error) {
+          console.warn("Authoritative position sync failed", error.message);
+          return;
+        }
+        if (data === true) {
+          this.lastPersistedPosition = sent;
+          return;
+        }
+        console.warn("Authoritative position sync rejected");
+      });
   }
 
   private resubscribe(cx: number, cy: number) {
