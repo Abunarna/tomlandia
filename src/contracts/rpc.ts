@@ -39,6 +39,7 @@ export const harvestResponseSchema = z
     leveled: z.boolean().optional(),
     level: positiveInt.optional(),
     req: positiveInt.optional(),
+    spawn_id: uuid.optional(),
     state: serverStateSchema.optional(),
   })
   .strict();
@@ -69,6 +70,7 @@ export const damageResponseSchema = z
     leveled: z.boolean().optional(),
     level: positiveInt.optional(),
     tagged_by: uuid.nullable().optional(),
+    spawn_id: uuid.optional(),
     respawn_at: dbTimestamp.nullable().optional(),
     buff: potionBuffSchema.nullable().optional(),
     death: deathSchema.nullable().optional(),
