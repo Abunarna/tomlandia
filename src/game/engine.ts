@@ -926,6 +926,19 @@ export class GameEngine {
 
   /* ---------- phase 8: shared world state ---------- */
 
+  /**
+   * The authenticated live route is server-world-only. Clear constructor-time
+   * offline fixtures before the first animation frame so numeric local IDs can
+   * never be rendered, selected, or sent to a live action RPC.
+   */
+  useServerWorld() {
+    this.nodes = [];
+    this.monsters = [];
+    this.target = { type: "none" };
+    this.gatherProgress = 0;
+    this.combatCd = 0;
+  }
+
   /** Our own user id, so we can tell whether we own a monster's kill credit. */
   userId = "";
   /** Server-side harvest. Position is sent so the server can verify range. */
