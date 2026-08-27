@@ -34,8 +34,8 @@ select ok(not has_table_privilege('authenticated', 'public.player_saves', 'DELET
   'authenticated cannot delete a save directly');
 select ok(not has_table_privilege('authenticated', 'public.profiles', 'UPDATE'),
   'authenticated cannot desynchronise profile name columns directly');
-select ok(not has_function_privilege('authenticated', 'public.track_position(uuid,numeric,numeric)', 'EXECUTE'),
-  'authenticated cannot provide an arbitrary position owner');
+select ok(has_function_privilege('authenticated', 'public.track_position(uuid,numeric,numeric)', 'EXECUTE'),
+  'authenticated can execute identity-bound position tracking');
 select ok(not has_function_privilege('anon', 'public.track_position(uuid,numeric,numeric)', 'EXECUTE'),
   'anonymous cannot call the position helper');
 select ok(prosrc like '%elapsed < 0.25%', 'same-frame movement cannot ratchet the trusted anchor')
