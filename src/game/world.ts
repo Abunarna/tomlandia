@@ -110,7 +110,7 @@ export class WorldNet {
     // once the server's manifest contract matches.
     const resolved = resolveWorldRuntime(parsedRuntime, true);
     const resolution = rawV2 && resolved.mode === "legacy_v1"
-      ? { mode: "uuid_v2" as const, status: parsedRuntime, message: null }
+      ? { mode: "uuid_v2" as const, status: resolved.status, message: null }
       : resolved;
     this.uuidV2 = resolution.mode === "uuid_v2";
     this.sink.onRuntime?.(resolution);
