@@ -1,6 +1,6 @@
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import { rpcContracts } from "@/contracts/rpc";
+import { parseRpcResponse, rpcContracts } from "@/contracts/rpc";
 import { CELL_H, CELL_W, COLS, ROWS } from "./presence";
 import { resolveWorldRuntime, type WorldRuntimeResolution } from "./world-runtime";
 
@@ -93,10 +93,15 @@ export class WorldNet {
     // A status-schema mismatch must not silently revive the disabled legacy
     // world. Preserve the parsed value where possible, but honour production's
     // explicit UUID/V2 control-plane signal for this V2-capable renderer.
-    const parsed = runtimeError
-      ? null
-      : rpcContracts.game_world_runtime_status.response.safeParse(runtime);
-    const parsedRuntime = parsed?.success ? parsed.data : null;
+    let parsedRuntime: unknown = null;
+    if (!runtimeError) {
+      try {
+        parsedRuntime = parseRpcResponse("game_world_runtime_status", rpcContracts.game_world_runtime_status.response, runtime);
+      } catch {
+        // The raw V2 control-plane signal below is still sufficient to prevent
+        // a disabled legacy-world fallback in this V2-capable client.
+      }
+    }
     const rawV2 = !runtimeError && runtime && typeof runtime === "object" &&
       (runtime as { state_contract?: unknown }).state_contract === "uuid_v2" &&
       (runtime as { active_content_version?: unknown }).active_content_version === "v2" &&
