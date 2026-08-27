@@ -123,6 +123,8 @@ export const serverStateSchema = z
     quest: questStateSchema.nullable().optional(),
     completed: z.array(itemIdSchema).optional(),
     autoEatAt: z.number().finite().min(0).max(1).optional(),
+    // Combat RPCs return the server-owned potion state inside `state`.
+    buff: potionBuffSchema.nullable().optional(),
   })
   .strict();
 
