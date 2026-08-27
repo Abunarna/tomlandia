@@ -16,6 +16,18 @@ import type { ItemDef, ItemFamily } from "./types";
 const nodes = NODE_DEFS as Record<string, NodeDefT>;
 const monsters = MONSTER_DEFS as Record<string, MonsterDefT>;
 
+let initialized = false;
+
+/**
+ * Register generated V2 definitions in the renderer's runtime registries.
+ *
+ * This is intentionally explicit and idempotent. The package declares modules
+ * side-effect-free, so relying on a bare side-effect import allows production
+ * bundlers to remove the registration code entirely.
+ */
+export function ensureV2RuntimeContent() {
+  if (initialized) return;
+
 for (const definition of V2_CONTENT_NODES) {
   if (nodes[definition.kind]) continue;
   const shape = definition.skill === "woodcutting" ? "tree" : definition.skill === "gathering" ? "bush" : "rock";
@@ -72,3 +84,18 @@ for (const definition of Object.values(V2_ITEM_BY_ID)) {
     boostHits: definition.stats.boost_hits,
   };
 }
+
+  const missingNodes = V2_CONTENT_NODES.filter((definition) => !nodes[definition.kind]).map((definition) => definition.kind);
+  const missingMonsters = V2_CONTENT_MONSTERS.filter((definition) => !monsters[definition.kind]).map((definition) => definition.kind);
+  const missingItems = Object.values(V2_ITEM_BY_ID).filter((definition) => !ITEMS[definition.id]).map((definition) => definition.id);
+  if (missingNodes.length || missingMonsters.length || missingItems.length) {
+    throw new Error(
+      `V2 runtime content registry incomplete (nodes=${missingNodes.join(",")}; monsters=${missingMonsters.join(",")}; items=${missingItems.join(",")})`,
+    );
+  }
+  initialized = true;
+}
+
+// Keep eager registration for every current consumer. WorldNet also calls the
+// function explicitly, which makes this module reachable even with sideEffects=false.
+ensureV2RuntimeContent();
