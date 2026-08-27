@@ -1,5 +1,6 @@
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { parseRpcResponse, rpcContracts } from "@/contracts/rpc";
 import { WORLD_H, WORLD_W } from "./data";
 
 /**
@@ -153,21 +154,35 @@ export class PresenceNet {
     this.lastPositionAttemptAt = now;
     this.positionSyncPending = true;
     const sent = { x: me.x, y: me.y };
-    void supabase
-      .rpc("track_position", { _uid: this.userId, _x: sent.x, _y: sent.y })
-      .then(({ data, error }) => {
-        this.positionSyncPending = false;
-        if (this.stopped) return;
-        if (error) {
-          console.warn("Authoritative position sync failed", error.message);
-          return;
-        }
-        if (data === true) {
-          this.lastPersistedPosition = sent;
-          return;
-        }
-        console.warn("Authoritative position sync rejected");
-      });
+    const request = rpcContracts.track_position.request.parse({
+      _uid: this.userId,
+      _x: sent.x,
+      _y: sent.y,
+    });
+    void supabase.rpc("track_position", request).then(({ data, error }) => {
+      this.positionSyncPending = false;
+      if (this.stopped) return;
+      if (error) {
+        console.warn("Authoritative position sync failed", error.message);
+        return;
+      }
+      let accepted: boolean;
+      try {
+        accepted = parseRpcResponse(
+          "track_position",
+          rpcContracts.track_position.response,
+          data,
+        );
+      } catch (contractError) {
+        console.warn("Authoritative position sync returned an invalid contract", contractError);
+        return;
+      }
+      if (accepted) {
+        this.lastPersistedPosition = sent;
+        return;
+      }
+      console.warn("Authoritative position sync rejected");
+    });
   }
 
   private resubscribe(cx: number, cy: number) {
