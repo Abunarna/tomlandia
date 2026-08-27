@@ -2399,6 +2399,7 @@ export class GameEngine {
                         res.reason === "too_fast" ? "Catching breath" :
                         res.reason === "no_save" ? "Save unavailable" :
                         res.reason === "missing" ? "Monster unavailable" :
+                        res.reason ? `Combat: ${res.reason.slice(0, 42)}` :
                         "Combat rejected";
                       this.pushText(m.x, m.y - 42, message, "#f4b0b0");
                     }
