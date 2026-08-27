@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { parseRpcResponse, rpcContracts } from "@/contracts/rpc";
 import { CELL_H, CELL_W, COLS, ROWS } from "./presence";
 import { resolveWorldRuntime, type WorldRuntimeResolution } from "./world-runtime";
+import { ensureV2RuntimeContent } from "./v2-runtime-content";
 
 /**
  * Live UUID/V2 world transport.
@@ -107,6 +108,7 @@ export class WorldNet {
 
   async start() {
     this.stopped = false;
+    ensureV2RuntimeContent();
     rpcContracts.game_world_runtime_status.request.parse({});
     const { data: runtime, error: runtimeError } = await supabase.rpc("game_world_runtime_status");
     if (this.stopped) return;
@@ -140,7 +142,8 @@ export class WorldNet {
     let snapshot: { nodes: NodeRow[]; monsters: MonsterRow[] };
     try {
       snapshot = await this.readWorld();
-    } catch {
+    } catch (error) {
+      console.error("V2 world snapshot failed", error);
       if (!this.stopped) this.maintenance("Could not load the UUID V2 world snapshot. Please retry.", resolution.status);
       return;
     }
@@ -210,7 +213,8 @@ export class WorldNet {
       this.channels.set(cell, channel);
     }
 
-    void this.refresh(wanted).catch(() => {
+    void this.refresh(wanted).catch((error) => {
+      console.error("V2 world refresh failed", error);
       if (!this.stopped) this.maintenance("Lost the UUID V2 world connection. Please refresh.");
     });
   }
