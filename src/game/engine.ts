@@ -1,4 +1,5 @@
 import "./v2-runtime-content";
+import { findWalkPath, type WalkPoint } from "./pathfinding";
 import {
   BARRIERS,
   BRIDGES,
@@ -821,6 +822,8 @@ export class GameEngine {
   private actionLoop: LoopId | null = null;
   private biome: BiomeDef = BIOMES[0]!;
   private blockedFor = 0;
+  private walkPath: { tx: number; ty: number; points: WalkPoint[]; index: number } | null = null;
+  private lastPathAttemptAt = 0;
 
   quest: QuestState | null = null;
   completed: string[] = [];
@@ -1941,26 +1944,72 @@ export class GameEngine {
   }
 
   private moveToward(tx: number, ty: number, dt: number, speed = 130): number {
-    const dx = tx - this.px;
-    const dy = ty - this.py;
-    const d = Math.hypot(dx, dy);
-    if (d > 1) {
-      const step = Math.min(d, speed * dt);
-      const moved = this.tryStep(this.px + (dx / d) * step, this.py + (dy / d) * step);
-      if (!moved) {
-        this.blockedFor += dt;
-        if (this.blockedFor > 0.6 && this.target.type === "point") {
-          this.target = { type: "none" };
-          this.blockedFor = 0;
-          this.pushText(this.px, this.py - 40, "Blocked!", "#e0a5a5");
-        }
-        return d;
+    const finalDistance = Math.hypot(tx - this.px, ty - this.py);
+    if (finalDistance <= 1) {
+      this.walkPath = null;
+      return finalDistance;
+    }
+
+    if (
+      this.walkPath &&
+      (Math.abs(this.walkPath.tx - tx) > 4 || Math.abs(this.walkPath.ty - ty) > 4)
+    ) {
+      this.walkPath = null;
+    }
+
+    let waypoint =
+      this.walkPath && this.walkPath.index < this.walkPath.points.length
+        ? this.walkPath.points[this.walkPath.index]!
+        : { x: tx, y: ty };
+    let waypointDistance = Math.hypot(waypoint.x - this.px, waypoint.y - this.py);
+
+    if (this.walkPath && waypointDistance <= Math.max(8, speed * dt * 1.5)) {
+      this.walkPath.index += 1;
+      if (this.walkPath.index >= this.walkPath.points.length) {
+        this.walkPath = null;
+        waypoint = { x: tx, y: ty };
+      } else {
+        waypoint = this.walkPath.points[this.walkPath.index]!;
       }
+      waypointDistance = Math.hypot(waypoint.x - this.px, waypoint.y - this.py);
+    }
+
+    if (waypointDistance <= 1) return Math.hypot(tx - this.px, ty - this.py);
+
+    const dx = waypoint.x - this.px;
+    const dy = waypoint.y - this.py;
+    const step = Math.min(waypointDistance, speed * dt);
+    const moved = this.tryStep(
+      this.px + (dx / waypointDistance) * step,
+      this.py + (dy / waypointDistance) * step,
+    );
+
+    if (moved) {
       this.blockedFor = 0;
       if (Math.abs(dx) > 2) this.facing = dx > 0 ? 1 : -1;
       this.moveT += dt * 10;
+      return Math.hypot(tx - this.px, ty - this.py);
     }
-    return d;
+
+    this.blockedFor += dt;
+    const now = Date.now();
+    if (this.blockedFor > 0.25 && now - this.lastPathAttemptAt > 750) {
+      this.lastPathAttemptAt = now;
+      const points = findWalkPath(this.px, this.py, tx, ty);
+      if (points && points.length > 0) {
+        this.walkPath = { tx, ty, points, index: 0 };
+        this.blockedFor = 0;
+        return finalDistance;
+      }
+      this.walkPath = null;
+    }
+
+    if (this.blockedFor > 1.2 && this.target.type === "point") {
+      this.target = { type: "none" };
+      this.blockedFor = 0;
+      this.pushText(this.px, this.py - 40, "No route", "#e0a5a5");
+    }
+    return finalDistance;
   }
 
 
