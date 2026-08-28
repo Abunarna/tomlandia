@@ -1,9 +1,9 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
-import { biomeAt, MONSTER_SPAWNS, NODE_SPAWNS } from "../../src/game/data.ts";
+import { biomeAt, MONSTER_SPAWNS, NODE_SPAWNS } from "../../content/v2/frozen/data.ts";
 
-const SOURCE = "src/game/data.ts";
+const SOURCE = "content/v2/frozen/data.ts";
 const OUTPUT = "docs/overhaul/gate-5/live-v1-spawns.json";
 
 function canonicalSpawns(spawns) {

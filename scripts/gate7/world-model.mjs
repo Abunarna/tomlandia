@@ -4,7 +4,7 @@ import {
   biomeAt,
   WORLD_H,
   WORLD_W,
-} from "../../src/game/data.ts";
+} from "../../content/v2/frozen/data.ts";
 import { terrainBlockedAt } from "./terrain-collision.mjs";
 
 export const WORLD_MODEL_VERSION = "tomlandia-gate7-world-model/v1";

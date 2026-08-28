@@ -2,13 +2,13 @@
 /*
  * GENERATED FILE — DO NOT EDIT.
  * Source: content/v2/manifest.authoring.json (or the generator input named in CI)
- * Manifest SHA-256: a0d654a993f5a213c6ce667b6fbd29053e0432e351872492b0a6bf3d7b1cff77
+ * Manifest SHA-256: 8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9
  */
 
 export const CONTENT_SCHEMA_VERSION = "tomlandia-content-manifest/v1";
 export const CONTENT_VERSION = "v2";
 export const SPAWN_SET_VERSION = "v2";
-export const CONTENT_MANIFEST_HASH = "a0d654a993f5a213c6ce667b6fbd29053e0432e351872492b0a6bf3d7b1cff77";
+export const CONTENT_MANIFEST_HASH = "8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9";
 export const CONTENT_RUNNABLE = true;
 
 export const CONTENT_TIERS = [

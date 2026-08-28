@@ -1,6 +1,6 @@
 {
   "cluster_selection": {
-    "carry_forward_rows": 435,
+    "carry_forward_rows": 436,
     "clustered_probability": 0.9,
     "clustered_rows": 262,
     "comparator": "stable_sha256_roll < 0.9",
@@ -9,9 +9,9 @@
   },
   "content_version": "v2",
   "counts": {
-    "clusters": 142,
+    "clusters": 152,
     "monsters": 361,
-    "nodes": 368
+    "nodes": 369
   },
   "model_version": "tomlandia-gate7-world-model/v1",
   "retirement": {
@@ -25,18 +25,18 @@
     "v1_tables_mutated": false
   },
   "schema_version": "tomlandia-world-spawn-manifest/v1",
-  "source_content_manifest_hash": "a0d654a993f5a213c6ce667b6fbd29053e0432e351872492b0a6bf3d7b1cff77",
+  "source_content_manifest_hash": "8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9",
   "southern_extension_policy": {
     "deepest_frontier_preferred": true,
     "min_y": 3000
   },
-  "spawn_hash": "9d1bc1c263fb2e5b45e3e1b16c62ec3d2e314d6733a0378c95a0fe06e0cdc9e0",
+  "spawn_hash": "24130e8725da5f6e339d5037a40e81f5bcc1052a47fc29b056b36b8d8b2d31fa",
   "spawn_set_version": "v2",
   "spawns": [
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:2",
+      "cell": "1:1",
       "charges": 4,
       "cluster_id": "node:willow:willowbrook_wilds:00",
       "collision_offset_y": 8,
@@ -53,8 +53,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "0064b42d-ed62-5d09-aaac-1c4a03ec00b6",
       "subzone": "willowbrook_wilds",
-      "x": 1351,
-      "y": 1071
+      "x": 1142,
+      "y": 822
     },
     {
       "active": true,
@@ -219,7 +219,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:0",
+      "cell": "2:4",
       "cluster_id": "monster:bear:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -249,8 +249,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "0235721b-7dc4-575b-a811-58ab638dcf89",
       "subzone": "willowbrook_wilds",
-      "x": 1055,
-      "y": 443
+      "x": 1715,
+      "y": 2242
     },
     {
       "active": true,
@@ -279,7 +279,7 @@
       "active": true,
       "biome": "desert",
       "cell": "3:2",
-      "cluster_id": "monster:bandit:sunscorch_reaches:00",
+      "cluster_id": "monster:bandit:sunscorch_reaches:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -308,8 +308,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "02a8b4b0-7191-5ee4-a8f5-88f6ea848ca6",
       "subzone": "sunscorch_reaches",
-      "x": 2411,
-      "y": 1140
+      "x": 2404,
+      "y": 1212
     },
     {
       "active": true,
@@ -350,7 +350,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:3",
+      "cell": "2:1",
       "charges": 4,
       "cluster_id": "node:iron:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -367,8 +367,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "0425d96f-0e14-52a6-b8e0-d4f654ae1964",
       "subzone": "willowbrook_wilds",
-      "x": 1493,
-      "y": 1660
+      "x": 1778,
+      "y": 965
     },
     {
       "active": true,
@@ -432,7 +432,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "2:5",
+      "cell": "0:1",
       "cluster_id": "monster:goblin:grand_haven_outskirts:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -462,8 +462,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "0499126e-4161-53f2-8d50-a7254a971a03",
       "subzone": "grand_haven_outskirts",
-      "x": 1409,
-      "y": 2874
+      "x": 292,
+      "y": 942
     },
     {
       "active": true,
@@ -600,7 +600,7 @@
       "active": true,
       "biome": "fields",
       "cell": "1:6",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -694,7 +694,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
+      "cell": "2:1",
       "charges": 4,
       "cluster_id": "node:coal_seam:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -711,8 +711,8 @@
       "selection_mode": "cluster_90",
       "spawn_id": "062967ce-6352-5dd5-99d7-048193e36251",
       "subzone": "willowbrook_wilds",
-      "x": 1736,
-      "y": 1170
+      "x": 1738,
+      "y": 858
     },
     {
       "active": true,
@@ -914,8 +914,8 @@
       "selection_mode": "cluster_90",
       "spawn_id": "07eede0f-0e01-5d9c-a31d-63520d327b3e",
       "subzone": "willowbrook_wilds",
-      "x": 1499,
-      "y": 988
+      "x": 1542,
+      "y": 893
     },
     {
       "active": true,
@@ -956,7 +956,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:5",
+      "cell": "0:3",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -973,8 +973,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "088febe7-fe7e-54ba-887c-a7725b7bbdce",
       "subzone": "grand_haven_outskirts",
-      "x": 118,
-      "y": 2593
+      "x": 384,
+      "y": 1782
     },
     {
       "active": true,
@@ -1146,9 +1146,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "2:4",
+      "cell": "1:0",
       "charges": 4,
-      "cluster_id": "node:berries:grand_haven_outskirts:01",
+      "cluster_id": "node:berries:grand_haven_outskirts:00",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -1163,8 +1163,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "0a2bce9a-aa04-57b8-a705-9df575abeb01",
       "subzone": "grand_haven_outskirts",
-      "x": 1672,
-      "y": 2414
+      "x": 872,
+      "y": 249
     },
     {
       "active": true,
@@ -1303,7 +1303,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:5",
+      "cell": "3:3",
       "cluster_id": "monster:wolf:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -1333,8 +1333,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "0c4e5778-6c91-5db7-9496-aabb62ee7cbc",
       "subzone": "willowbrook_wilds",
-      "x": 2438,
-      "y": 2867
+      "x": 2597,
+      "y": 1963
     },
     {
       "active": true,
@@ -1362,7 +1362,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:4",
+      "cell": "0:2",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -1379,13 +1379,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "0c7f3922-f777-5dfb-8d21-17ab4916dfde",
       "subzone": "grand_haven_outskirts",
-      "x": 164,
-      "y": 2188
+      "x": 320,
+      "y": 1288
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
+      "cell": "2:5",
       "cluster_id": "monster:chicken:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -1408,8 +1408,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "0c9747c0-07b6-52c1-a3d0-999a52e4642d",
       "subzone": "grand_haven_outskirts",
-      "x": 241,
-      "y": 1845
+      "x": 1899,
+      "y": 2860
     },
     {
       "active": true,
@@ -1553,7 +1553,7 @@
       "active": true,
       "biome": "fields",
       "cell": "3:6",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -1706,7 +1706,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
+      "cell": "0:4",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -1723,8 +1723,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "1078d7a4-51a0-5ad8-bde9-69998f37aa56",
       "subzone": "grand_haven_outskirts",
-      "x": 174,
-      "y": 1529
+      "x": 164,
+      "y": 2188
     },
     {
       "active": true,
@@ -1837,7 +1837,7 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:3",
+      "cell": "4:2",
       "cluster_id": "monster:serpent:sunscorch_reaches:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -1867,13 +1867,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "11dceeae-a3ef-50bc-b302-d8051acd76a6",
       "subzone": "sunscorch_reaches",
-      "x": 2949,
-      "y": 1893
+      "x": 3453,
+      "y": 1264
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:1",
+      "cell": "0:1",
       "charges": 4,
       "cluster_id": "node:flax:grand_haven_outskirts:01",
       "collision_offset_y": 2,
@@ -1890,8 +1890,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "11e68d2e-e271-5b7c-aeff-99657bc79719",
       "subzone": "grand_haven_outskirts",
-      "x": 750,
-      "y": 633
+      "x": 575,
+      "y": 591
     },
     {
       "active": true,
@@ -1978,7 +1978,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:4",
+      "cell": "3:3",
       "charges": 4,
       "cluster_id": "node:maple:willowbrook_wilds:00",
       "collision_offset_y": 8,
@@ -1995,8 +1995,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "12b56ab0-fdde-54c2-a9da-54a58f172b24",
       "subzone": "willowbrook_wilds",
-      "x": 2572,
-      "y": 2116
+      "x": 2748,
+      "y": 1931
     },
     {
       "active": true,
@@ -2178,7 +2178,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:0",
+      "cell": "2:1",
       "cluster_id": "monster:forest_lynx:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -2208,8 +2208,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "147317f6-2a0f-565e-b5aa-bfd5280562a7",
       "subzone": "willowbrook_wilds",
-      "x": 1218,
-      "y": 401
+      "x": 1732,
+      "y": 615
     },
     {
       "active": true,
@@ -2273,7 +2273,7 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:2",
+      "cell": "2:0",
       "cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -2303,8 +2303,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "14fe97b2-8824-50e4-a93d-234c76c1d9c0",
       "subzone": "sunscorch_reaches",
-      "x": 3139,
-      "y": 1380
+      "x": 2044,
+      "y": 132
     },
     {
       "active": true,
@@ -2332,8 +2332,8 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "5:0",
-      "cluster_id": "monster:bandit:sunscorch_reaches:01",
+      "cell": "4:0",
+      "cluster_id": "monster:bandit:sunscorch_reaches:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -2362,8 +2362,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "158ab004-061b-5957-ab68-3391ac3ac45d",
       "subzone": "sunscorch_reaches",
-      "x": 3658,
-      "y": 355
+      "x": 3392,
+      "y": 333
     },
     {
       "active": true,
@@ -2532,7 +2532,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:1",
+      "cell": "0:5",
       "cluster_id": "monster:chicken:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
@@ -2555,8 +2555,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "181684f4-3d3a-5177-b7de-b7cf811def4c",
       "subzone": "grand_haven_outskirts",
-      "x": 951,
-      "y": 713
+      "x": 231,
+      "y": 2891
     },
     {
       "active": true,
@@ -2692,8 +2692,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:3",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "cell": "0:5",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -2715,15 +2715,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "1ab98026-52a0-54f0-8eb9-d31bb61d7627",
       "subzone": "grand_haven_outskirts",
-      "x": 1091,
-      "y": 1613
+      "x": 289,
+      "y": 2612
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:1",
+      "cell": "3:4",
       "charges": 4,
-      "cluster_id": "node:willow:willowbrook_wilds:00",
+      "cluster_id": "node:willow:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -2738,8 +2738,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "1ac908d8-e7d9-56e8-9093-db4fca0f38a7",
       "subzone": "willowbrook_wilds",
-      "x": 1212,
-      "y": 551
+      "x": 2244,
+      "y": 2169
     },
     {
       "active": true,
@@ -2931,7 +2931,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:0",
+      "cell": "2:5",
       "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -2961,13 +2961,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "1e62a83f-e3ed-529b-9b2d-f38abb4fef60",
       "subzone": "grand_haven_outskirts",
-      "x": 872,
-      "y": 249
+      "x": 1668,
+      "y": 2875
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
+      "cell": "3:4",
       "charges": 4,
       "cluster_id": "node:herbs:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -2984,14 +2984,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "1eadf7ee-3683-50f1-b128-8efcc5c651b5",
       "subzone": "willowbrook_wilds",
-      "x": 1862,
-      "y": 1006
+      "x": 2629,
+      "y": 2498
     },
     {
       "active": true,
       "biome": "fields",
       "cell": "1:7",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -3102,8 +3102,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "21e4ae13-3e97-5f16-bdc1-c3dbc5c5a51a",
       "subzone": "willowbrook_wilds",
-      "x": 1798,
-      "y": 1153
+      "x": 1408,
+      "y": 1327
     },
     {
       "active": true,
@@ -3556,7 +3556,7 @@
       "biome": "fields",
       "cell": "3:6",
       "charges": 4,
-      "cluster_id": "node:berries:grand_haven_outskirts:02",
+      "cluster_id": "node:berries:grand_haven_outskirts:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -3577,7 +3577,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
+      "cell": "1:1",
       "cluster_id": "monster:forest_lynx:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -3607,8 +3607,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "29332bdc-457e-5889-86b7-219b3e8cffe5",
       "subzone": "willowbrook_wilds",
-      "x": 1732,
-      "y": 615
+      "x": 1166,
+      "y": 950
     },
     {
       "active": true,
@@ -3665,8 +3665,8 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
-      "cluster_id": "monster:bear:willowbrook_wilds:01",
+      "cell": "3:4",
+      "cluster_id": "monster:bear:willowbrook_wilds:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -3695,8 +3695,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "2a5bb877-a9f4-53f7-8bac-2555e9fb0e69",
       "subzone": "willowbrook_wilds",
-      "x": 2061,
-      "y": 1276
+      "x": 2441,
+      "y": 2064
     },
     {
       "active": true,
@@ -3747,7 +3747,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
+      "cell": "4:5",
       "charges": 4,
       "cluster_id": "node:herbs:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -3764,8 +3764,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "2abe367e-1758-5a1b-bb4f-04a239934e95",
       "subzone": "willowbrook_wilds",
-      "x": 2081,
-      "y": 1161
+      "x": 2879,
+      "y": 2760
     },
     {
       "active": true,
@@ -3924,8 +3924,8 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:2",
-      "cluster_id": "monster:bear:willowbrook_wilds:01",
+      "cell": "3:3",
+      "cluster_id": "monster:bear:willowbrook_wilds:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -3954,14 +3954,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "2e913b62-7448-5ed4-8203-e42c1668852d",
       "subzone": "willowbrook_wilds",
-      "x": 1361,
-      "y": 1486
+      "x": 2613,
+      "y": 1777
     },
     {
       "active": true,
       "biome": "fields",
       "cell": "1:6",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -4032,8 +4032,8 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:0",
-      "cluster_id": "monster:bandit:sunscorch_reaches:01",
+      "cell": "3:1",
+      "cluster_id": "monster:bandit:sunscorch_reaches:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -4062,13 +4062,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "2f842bac-b6ec-589c-9e3c-1fb5d615baf8",
       "subzone": "sunscorch_reaches",
-      "x": 3242,
-      "y": 372
+      "x": 2486,
+      "y": 514
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:5",
+      "cell": "1:3",
       "cluster_id": "monster:chicken:grand_haven_outskirts:03",
       "entity_type": "monster",
       "expected_loot": [
@@ -4091,8 +4091,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "2fd87b61-20ca-5de6-a3ba-7c39b7ecb10e",
       "subzone": "grand_haven_outskirts",
-      "x": 289,
-      "y": 2612
+      "x": 1240,
+      "y": 1881
     },
     {
       "active": true,
@@ -4120,8 +4120,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:2",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "cell": "1:0",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -4150,8 +4150,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "30934b02-0b78-52fa-a003-ae0a726228ed",
       "subzone": "grand_haven_outskirts",
-      "x": 913,
-      "y": 1127
+      "x": 767,
+      "y": 452
     },
     {
       "active": true,
@@ -4202,8 +4202,8 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "3:0",
-      "cluster_id": "monster:serpent:sunscorch_reaches:00",
+      "cell": "4:4",
+      "cluster_id": "monster:serpent:sunscorch_reaches:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -4232,14 +4232,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "31f9ac01-81e8-54e6-8f16-28a4cc054c85",
       "subzone": "sunscorch_reaches",
-      "x": 2693,
-      "y": 142
+      "x": 3194,
+      "y": 2272
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:3",
-      "cluster_id": "monster:wolf:willowbrook_wilds:01",
+      "cell": "3:4",
+      "cluster_id": "monster:wolf:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -4268,15 +4268,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "32ce5718-d425-51d3-abec-4a9b5e298295",
       "subzone": "willowbrook_wilds",
-      "x": 1351,
-      "y": 1695
+      "x": 2184,
+      "y": 2371
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:2",
+      "cell": "2:5",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:02",
+      "cluster_id": "node:copper:grand_haven_outskirts:01",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -4291,14 +4291,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "3469e7e1-4d00-5790-99cc-9c54780d8c00",
       "subzone": "grand_haven_outskirts",
-      "x": 361,
-      "y": 1401
+      "x": 1458,
+      "y": 2681
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:3",
-      "cluster_id": "monster:bear:willowbrook_wilds:02",
+      "cell": "1:2",
+      "cluster_id": "monster:bear:willowbrook_wilds:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -4327,8 +4327,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "36035cf1-7f24-57b7-b208-ec0e7fbd3a5f",
       "subzone": "willowbrook_wilds",
-      "x": 2491,
-      "y": 1829
+      "x": 1264,
+      "y": 1476
     },
     {
       "active": true,
@@ -4369,8 +4369,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:0",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "cell": "0:1",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -4399,13 +4399,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "365282d9-f231-5edc-b6bb-1c63de0b934b",
       "subzone": "grand_haven_outskirts",
-      "x": 768,
-      "y": 104
+      "x": 129,
+      "y": 822
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
+      "cell": "2:0",
       "cluster_id": "monster:forest_boar:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -4435,13 +4435,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "36797f1b-111b-5d87-9593-6b0e8aa9c1be",
       "subzone": "willowbrook_wilds",
-      "x": 1612,
-      "y": 998
+      "x": 1637,
+      "y": 302
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:5",
+      "cell": "1:4",
       "cluster_id": "monster:chicken:grand_haven_outskirts:03",
       "entity_type": "monster",
       "expected_loot": [
@@ -4464,8 +4464,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "368af09b-0602-5c3a-9c92-a7dbaa2dc950",
       "subzone": "grand_haven_outskirts",
-      "x": 129,
-      "y": 2897
+      "x": 1394,
+      "y": 2176
     },
     {
       "active": true,
@@ -4493,9 +4493,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:4",
+      "cell": "1:3",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:01",
+      "cluster_id": "node:copper:grand_haven_outskirts:02",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -4510,8 +4510,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "36a25e86-8112-55f8-8944-5b5d8be8bc51",
       "subzone": "grand_haven_outskirts",
-      "x": 1315,
-      "y": 2020
+      "x": 1116,
+      "y": 1770
     },
     {
       "active": true,
@@ -4552,7 +4552,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:0",
+      "cell": "2:5",
       "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -4582,8 +4582,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "374a52ae-cb8a-56be-9ad2-5946b2cb5b9e",
       "subzone": "grand_haven_outskirts",
-      "x": 767,
-      "y": 452
+      "x": 1409,
+      "y": 2874
     },
     {
       "active": true,
@@ -4658,7 +4658,7 @@
       "active": true,
       "biome": "fields",
       "cell": "3:7",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -4752,9 +4752,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:5",
+      "cell": "1:2",
       "charges": 4,
-      "cluster_id": "node:willow:willowbrook_wilds:01",
+      "cluster_id": "node:willow:willowbrook_wilds:00",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -4769,8 +4769,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "38f07938-d53f-5f86-aa1d-42e3fd68c297",
       "subzone": "willowbrook_wilds",
-      "x": 2303,
-      "y": 2687
+      "x": 1351,
+      "y": 1071
     },
     {
       "active": true,
@@ -4836,7 +4836,7 @@
       "biome": "fields",
       "cell": "2:5",
       "charges": 4,
-      "cluster_id": "node:berries:grand_haven_outskirts:01",
+      "cluster_id": "node:berries:grand_haven_outskirts:02",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -4988,9 +4988,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:1",
+      "cell": "0:3",
       "charges": 4,
-      "cluster_id": "node:flax:grand_haven_outskirts:01",
+      "cluster_id": "node:flax:grand_haven_outskirts:02",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -5005,8 +5005,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "3ba9a409-d642-5889-8db6-e0456c5d01d2",
       "subzone": "grand_haven_outskirts",
-      "x": 144,
-      "y": 927
+      "x": 128,
+      "y": 1871
     },
     {
       "active": true,
@@ -5057,8 +5057,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:1",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "cell": "1:1",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -5087,8 +5087,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "3ced1349-afb5-5d95-9714-066b3f219080",
       "subzone": "grand_haven_outskirts",
-      "x": 129,
-      "y": 822
+      "x": 750,
+      "y": 633
     },
     {
       "active": true,
@@ -5129,8 +5129,8 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "2:0",
-      "cluster_id": "monster:bandit:sunscorch_reaches:02",
+      "cell": "4:2",
+      "cluster_id": "monster:bandit:sunscorch_reaches:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -5159,8 +5159,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "3d0eeeed-d5ab-5838-846d-6bf037b2a274",
       "subzone": "sunscorch_reaches",
-      "x": 1802,
-      "y": 424
+      "x": 2879,
+      "y": 1396
     },
     {
       "active": true,
@@ -5247,9 +5247,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:3",
+      "cell": "0:0",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:01",
+      "cluster_id": "node:copper:grand_haven_outskirts:03",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -5264,8 +5264,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "3f2afc71-f344-54bd-8b7c-c4738e89705a",
       "subzone": "grand_haven_outskirts",
-      "x": 1116,
-      "y": 1770
+      "x": 574,
+      "y": 237
     },
     {
       "active": true,
@@ -5293,7 +5293,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:2",
+      "cell": "1:0",
       "charges": 4,
       "cluster_id": "node:flax:grand_haven_outskirts:01",
       "collision_offset_y": 2,
@@ -5310,8 +5310,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "40b13ccd-0c95-5f05-924f-58d0357080d5",
       "subzone": "grand_haven_outskirts",
-      "x": 518,
-      "y": 1186
+      "x": 807,
+      "y": 323
     },
     {
       "active": true,
@@ -5382,8 +5382,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "4112665b-2768-5fd8-b6e7-0284c2d40022",
       "subzone": "willowbrook_wilds",
-      "x": 2429,
-      "y": 2429
+      "x": 2282,
+      "y": 2382
     },
     {
       "active": true,
@@ -5417,8 +5417,8 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:2",
-      "cluster_id": "monster:bear:willowbrook_wilds:01",
+      "cell": "2:2",
+      "cluster_id": "monster:bear:willowbrook_wilds:03",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -5447,13 +5447,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "419b59c0-bbf1-579c-a2b9-381839778a4a",
       "subzone": "willowbrook_wilds",
-      "x": 2285,
-      "y": 1268
+      "x": 2061,
+      "y": 1276
     },
     {
       "active": true,
       "biome": "desert",
-      "cell": "3:0",
+      "cell": "4:0",
       "charges": 4,
       "cluster_id": "node:sandstone:sunscorch_reaches:00",
       "collision_offset_y": 2,
@@ -5470,8 +5470,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "42391fa4-c1d4-5734-85f2-f5af07183e68",
       "subzone": "sunscorch_reaches",
-      "x": 2791,
-      "y": 121
+      "x": 3041,
+      "y": 430
     },
     {
       "active": true,
@@ -5655,6 +5655,29 @@
     },
     {
       "active": true,
+      "biome": "forest",
+      "cell": "2:0",
+      "charges": 4,
+      "cluster_id": "node:maple:willowbrook_wilds:01",
+      "collision_offset_y": 8,
+      "collision_radius": 14,
+      "entity_type": "node",
+      "gather_s": 4.4,
+      "interaction_radius": 70,
+      "kind": "maple",
+      "level_requirement": 28,
+      "max_charges": 4,
+      "ordinal": 11,
+      "placement_cluster": null,
+      "respawn_s": 48,
+      "selection_mode": "carry_forward",
+      "spawn_id": "44b4276c-cae1-5190-89fc-9cb28f4fc53d",
+      "subzone": "willowbrook_wilds",
+      "x": 1534,
+      "y": 461
+    },
+    {
+      "active": true,
       "biome": "evil",
       "cell": "7:1",
       "charges": 4,
@@ -5679,7 +5702,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:5",
+      "cell": "2:1",
       "charges": 4,
       "cluster_id": "node:maple:willowbrook_wilds:01",
       "collision_offset_y": 8,
@@ -5696,8 +5719,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "44c953fd-b02f-5734-8333-82682f67f7ba",
       "subzone": "willowbrook_wilds",
-      "x": 2557,
-      "y": 2761
+      "x": 2036,
+      "y": 812
     },
     {
       "active": true,
@@ -5749,7 +5772,7 @@
       "active": true,
       "biome": "fields",
       "cell": "2:6",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -5786,7 +5809,7 @@
       "biome": "forest",
       "cell": "3:2",
       "charges": 4,
-      "cluster_id": "node:herbs:willowbrook_wilds:00",
+      "cluster_id": "node:herbs:willowbrook_wilds:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -5801,15 +5824,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "47f72c3c-d315-5960-9b6f-6f7daf70ae32",
       "subzone": "willowbrook_wilds",
-      "x": 2445,
-      "y": 1355
+      "x": 2491,
+      "y": 1486
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:4",
+      "cell": "3:5",
       "charges": 4,
-      "cluster_id": "node:willow:willowbrook_wilds:02",
+      "cluster_id": "node:willow:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -5824,8 +5847,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "48f8d0d5-ebde-5ffd-918a-61949826e08c",
       "subzone": "willowbrook_wilds",
-      "x": 2702,
-      "y": 2193
+      "x": 2438,
+      "y": 2867
     },
     {
       "active": true,
@@ -5889,7 +5912,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:4",
+      "cell": "2:5",
       "cluster_id": "monster:wolf:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -5919,13 +5942,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "4a644eb0-4dab-5a05-9901-713ad1cb3eb0",
       "subzone": "willowbrook_wilds",
-      "x": 2529,
-      "y": 2276
+      "x": 2038,
+      "y": 2573
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:2",
+      "cell": "2:3",
       "charges": 4,
       "cluster_id": "node:iron:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -5942,8 +5965,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "4afc851e-0076-5925-8d5e-33ad9a2972d6",
       "subzone": "willowbrook_wilds",
-      "x": 2190,
-      "y": 1218
+      "x": 1500,
+      "y": 1774
     },
     {
       "active": true,
@@ -6066,9 +6089,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:0",
+      "cell": "2:1",
       "charges": 4,
-      "cluster_id": "node:maple:willowbrook_wilds:02",
+      "cluster_id": "node:maple:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -6083,8 +6106,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "4d509385-2e87-5425-8b57-3cc2b02fe277",
       "subzone": "willowbrook_wilds",
-      "x": 1153,
-      "y": 112
+      "x": 1788,
+      "y": 751
     },
     {
       "active": true,
@@ -6125,7 +6148,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:1",
+      "cell": "2:1",
       "cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -6155,8 +6178,8 @@
       "selection_mode": "cluster_90",
       "spawn_id": "4e41f4da-776c-5453-af50-c6338e7353c5",
       "subzone": "willowbrook_wilds",
-      "x": 1383,
-      "y": 908
+      "x": 1499,
+      "y": 988
     },
     {
       "active": true,
@@ -6466,7 +6489,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:5",
+      "cell": "1:0",
       "cluster_id": "monster:forest_boar:willowbrook_wilds:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -6496,8 +6519,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "516713dc-4552-5be9-9c57-f63d95e83785",
       "subzone": "willowbrook_wilds",
-      "x": 2502,
-      "y": 2571
+      "x": 1055,
+      "y": 443
     },
     {
       "active": true,
@@ -6764,7 +6787,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:0",
+      "cell": "0:2",
       "cluster_id": "monster:chicken:grand_haven_outskirts:04",
       "entity_type": "monster",
       "expected_loot": [
@@ -6787,15 +6810,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "5519e5e3-cefc-51b7-844b-e2410909372c",
       "subzone": "grand_haven_outskirts",
-      "x": 754,
-      "y": 198
+      "x": 127,
+      "y": 1212
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:5",
+      "cell": "0:0",
       "charges": 4,
-      "cluster_id": "node:flax:grand_haven_outskirts:02",
+      "cluster_id": "node:flax:grand_haven_outskirts:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -6810,8 +6833,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "55dd2f32-22da-5869-94a8-399935a07eea",
       "subzone": "grand_haven_outskirts",
-      "x": 981,
-      "y": 2873
+      "x": 632,
+      "y": 388
     },
     {
       "active": true,
@@ -6852,9 +6875,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:1",
+      "cell": "0:4",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:03",
+      "cluster_id": "node:copper:grand_haven_outskirts:04",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -6869,8 +6892,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "563cd03e-275c-5498-8a1e-b07bbd6b7614",
       "subzone": "grand_haven_outskirts",
-      "x": 194,
-      "y": 699
+      "x": 183,
+      "y": 2319
     },
     {
       "active": true,
@@ -6898,9 +6921,9 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "2:1",
+      "cell": "2:0",
       "charges": 4,
-      "cluster_id": "node:mithril:sunscorch_reaches:00",
+      "cluster_id": "node:mithril:sunscorch_reaches:01",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -6915,8 +6938,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "5713721a-fedf-5ed7-a696-2031e57a971f",
       "subzone": "sunscorch_reaches",
-      "x": 1920,
-      "y": 608
+      "x": 2098,
+      "y": 365
     },
     {
       "active": true,
@@ -6990,7 +7013,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:2",
+      "cell": "1:2",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -7007,15 +7030,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "5917926c-40e2-517d-8c61-5d9c151e0fac",
       "subzone": "grand_haven_outskirts",
-      "x": 484,
-      "y": 1403
+      "x": 801,
+      "y": 1353
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:0",
+      "cell": "1:1",
       "charges": 4,
-      "cluster_id": "node:maple:willowbrook_wilds:02",
+      "cluster_id": "node:maple:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -7030,8 +7053,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "5925f2f2-dd83-5eae-9362-c4c4444f0134",
       "subzone": "willowbrook_wilds",
-      "x": 1092,
-      "y": 184
+      "x": 1212,
+      "y": 551
     },
     {
       "active": true,
@@ -7072,7 +7095,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:2",
+      "cell": "0:4",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -7089,8 +7112,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "59b75446-5691-562b-970b-19198fab8470",
       "subzone": "grand_haven_outskirts",
-      "x": 950,
-      "y": 1283
+      "x": 279,
+      "y": 2015
     },
     {
       "active": true,
@@ -7119,7 +7142,7 @@
       "active": true,
       "biome": "fields",
       "cell": "0:1",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -7148,8 +7171,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "5a2c6636-2a74-5fc4-b989-b292ee80e374",
       "subzone": "grand_haven_outskirts",
-      "x": 292,
-      "y": 942
+      "x": 98,
+      "y": 709
     },
     {
       "active": true,
@@ -7171,8 +7194,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "5a368500-f3fb-56c5-802f-8f4beda9b4e4",
       "subzone": "sunscorch_reaches",
-      "x": 2486,
-      "y": 514
+      "x": 2601,
+      "y": 889
     },
     {
       "active": true,
@@ -7224,7 +7247,7 @@
       "active": true,
       "biome": "desert",
       "cell": "5:1",
-      "cluster_id": "monster:serpent:sunscorch_reaches:02",
+      "cluster_id": "monster:serpent:sunscorch_reaches:03",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -7426,7 +7449,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:0",
+      "cell": "1:1",
       "cluster_id": "monster:forest_lynx:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -7456,14 +7479,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "5f55727e-f5d6-513c-9809-729abc53ff85",
       "subzone": "willowbrook_wilds",
-      "x": 1195,
-      "y": 286
+      "x": 1018,
+      "y": 840
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
-      "cluster_id": "monster:forest_boar:willowbrook_wilds:00",
+      "cell": "3:4",
+      "cluster_id": "monster:forest_boar:willowbrook_wilds:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -7492,15 +7515,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "5fb92add-8527-5687-a2be-d53600a0dfee",
       "subzone": "willowbrook_wilds",
-      "x": 1467,
-      "y": 1087
+      "x": 2160,
+      "y": 2249
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
+      "cell": "3:2",
       "charges": 4,
-      "cluster_id": "node:herbs:willowbrook_wilds:00",
+      "cluster_id": "node:herbs:willowbrook_wilds:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -7515,8 +7538,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "608bb6b3-3b8c-5152-a987-8e0d18a3ce88",
       "subzone": "willowbrook_wilds",
-      "x": 1920,
-      "y": 1250
+      "x": 2355,
+      "y": 1482
     },
     {
       "active": true,
@@ -7685,8 +7708,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
-      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
+      "cell": "1:5",
+      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -7715,8 +7738,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "62423a7d-f3f2-52b4-9a33-1bdeb732239a",
       "subzone": "grand_haven_outskirts",
-      "x": 316,
-      "y": 1658
+      "x": 1271,
+      "y": 2665
     },
     {
       "active": true,
@@ -7750,7 +7773,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
+      "cell": "1:3",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -7767,15 +7790,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "62a918c7-8429-59a2-a73d-db08e726d4b2",
       "subzone": "grand_haven_outskirts",
-      "x": 561,
-      "y": 1599
+      "x": 810,
+      "y": 1705
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
+      "cell": "3:3",
       "charges": 4,
-      "cluster_id": "node:herbs:willowbrook_wilds:00",
+      "cluster_id": "node:herbs:willowbrook_wilds:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -7790,8 +7813,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "63a35b18-947f-5061-80f6-94eff6cf0fd5",
       "subzone": "willowbrook_wilds",
-      "x": 1821,
-      "y": 1262
+      "x": 2421,
+      "y": 1650
     },
     {
       "active": true,
@@ -7911,7 +7934,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:3",
+      "cell": "2:3",
       "cluster_id": "monster:mithril_stalker:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -7941,8 +7964,8 @@
       "selection_mode": "cluster_90",
       "spawn_id": "6651f3a3-ebb1-5762-9a3e-94f4afac0b5c",
       "subzone": "willowbrook_wilds",
-      "x": 2132,
-      "y": 1770
+      "x": 2066,
+      "y": 1828
     },
     {
       "active": true,
@@ -7983,7 +8006,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:2",
+      "cell": "2:1",
       "charges": 4,
       "cluster_id": "node:willow:willowbrook_wilds:00",
       "collision_offset_y": 8,
@@ -8000,13 +8023,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "66807203-8ba0-5490-bc59-3f0ea1d3d4b4",
       "subzone": "willowbrook_wilds",
-      "x": 1197,
-      "y": 1207
+      "x": 1419,
+      "y": 993
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
+      "cell": "1:2",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -8023,15 +8046,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "66aef172-1972-5d5d-8763-822c1fa1bf7d",
       "subzone": "grand_haven_outskirts",
-      "x": 544,
-      "y": 1762
+      "x": 950,
+      "y": 1283
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
+      "cell": "3:5",
       "charges": 4,
-      "cluster_id": "node:iron:willowbrook_wilds:00",
+      "cluster_id": "node:iron:willowbrook_wilds:02",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -8046,8 +8069,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "66af04f0-1552-516b-b79e-b112e22cbae5",
       "subzone": "willowbrook_wilds",
-      "x": 1921,
-      "y": 1086
+      "x": 2502,
+      "y": 2571
     },
     {
       "active": true,
@@ -8088,8 +8111,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "cell": "0:4",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:04",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -8111,8 +8134,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "671912de-1cd2-5d14-885f-3b9ce88ff5b9",
       "subzone": "grand_haven_outskirts",
-      "x": 128,
-      "y": 1871
+      "x": 172,
+      "y": 2085
     },
     {
       "active": true,
@@ -8212,8 +8235,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "2:4",
-      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:00",
+      "cell": "1:2",
+      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -8242,8 +8265,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "68fd7ada-00a8-5db5-ae70-eb1603a50ad2",
       "subzone": "grand_haven_outskirts",
-      "x": 1411,
-      "y": 2382
+      "x": 1003,
+      "y": 1448
     },
     {
       "active": true,
@@ -8330,9 +8353,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:0",
+      "cell": "1:0",
       "charges": 4,
-      "cluster_id": "node:maple:willowbrook_wilds:02",
+      "cluster_id": "node:maple:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -8347,8 +8370,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "6a6aef3f-3523-5e7e-8dee-42f9f44955fe",
       "subzone": "willowbrook_wilds",
-      "x": 1513,
-      "y": 272
+      "x": 1092,
+      "y": 184
     },
     {
       "active": true,
@@ -8419,15 +8442,15 @@
       "selection_mode": "fallback_10",
       "spawn_id": "6acf70a4-a317-537c-afb7-832014e12006",
       "subzone": "willowbrook_wilds",
-      "x": 2786,
-      "y": 2656
+      "x": 2414,
+      "y": 2772
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
+      "cell": "3:5",
       "charges": 4,
-      "cluster_id": "node:willow:willowbrook_wilds:00",
+      "cluster_id": "node:willow:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -8442,8 +8465,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "6b221401-2bb6-590b-8136-da3d932ab75e",
       "subzone": "willowbrook_wilds",
-      "x": 1419,
-      "y": 993
+      "x": 2443,
+      "y": 2726
     },
     {
       "active": true,
@@ -8471,8 +8494,8 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "3:3",
-      "cluster_id": "monster:bandit:sunscorch_reaches:03",
+      "cell": "5:0",
+      "cluster_id": "monster:bandit:sunscorch_reaches:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -8501,14 +8524,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "6cc7ef7f-985e-51ad-80e4-bab3393997b1",
       "subzone": "sunscorch_reaches",
-      "x": 2736,
-      "y": 1720
+      "x": 3658,
+      "y": 355
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:2",
-      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
+      "cell": "2:4",
+      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -8537,8 +8560,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "6d212202-8f5e-517d-ba9e-49edf5cfe71b",
       "subzone": "grand_haven_outskirts",
-      "x": 180,
-      "y": 1417
+      "x": 1411,
+      "y": 2382
     },
     {
       "active": true,
@@ -8603,7 +8626,7 @@
       "active": true,
       "biome": "fields",
       "cell": "1:5",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -8684,9 +8707,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:1",
+      "cell": "1:5",
       "charges": 4,
-      "cluster_id": "node:flax:grand_haven_outskirts:01",
+      "cluster_id": "node:flax:grand_haven_outskirts:04",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -8701,13 +8724,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "6f6c9fc9-bb22-5f08-ac74-0939d899027f",
       "subzone": "grand_haven_outskirts",
-      "x": 575,
-      "y": 591
+      "x": 981,
+      "y": 2873
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
+      "cell": "3:2",
       "charges": 4,
       "cluster_id": "node:iron:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -8724,15 +8747,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "6f7f8774-4fe7-50e7-9c5a-287489bd8aa5",
       "subzone": "willowbrook_wilds",
-      "x": 1800,
-      "y": 894
+      "x": 2190,
+      "y": 1218
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:2",
+      "cell": "0:2",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:03",
+      "cluster_id": "node:copper:grand_haven_outskirts:02",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -8747,8 +8770,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "6f84f235-e9ea-5ffe-9085-02c8199a8cc6",
       "subzone": "grand_haven_outskirts",
-      "x": 828,
-      "y": 1257
+      "x": 361,
+      "y": 1401
     },
     {
       "active": true,
@@ -8776,7 +8799,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:2",
+      "cell": "2:2",
       "charges": 4,
       "cluster_id": "node:iron:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -8793,8 +8816,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "7015f0d7-d985-57d8-8b4a-4dd1a9f929f6",
       "subzone": "willowbrook_wilds",
-      "x": 2218,
-      "y": 1336
+      "x": 1920,
+      "y": 1250
     },
     {
       "active": true,
@@ -8993,8 +9016,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "72597db5-d9fa-5201-b0d6-f08992ee00a1",
       "subzone": "grand_haven_outskirts",
-      "x": 632,
-      "y": 388
+      "x": 366,
+      "y": 315
     },
     {
       "active": true,
@@ -9127,7 +9150,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:4",
+      "cell": "0:3",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -9144,8 +9167,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "7416dcc0-cf81-58b7-bdc2-8d7a069e0d8c",
       "subzone": "grand_haven_outskirts",
-      "x": 279,
-      "y": 2015
+      "x": 362,
+      "y": 1911
     },
     {
       "active": true,
@@ -9173,7 +9196,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:3",
+      "cell": "3:5",
       "cluster_id": "monster:wolf:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -9203,8 +9226,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "74d3df2a-25bd-512e-8753-88b5294fc612",
       "subzone": "willowbrook_wilds",
-      "x": 2597,
-      "y": 1963
+      "x": 2733,
+      "y": 2705
     },
     {
       "active": true,
@@ -9245,7 +9268,7 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:0",
+      "cell": "2:0",
       "charges": 4,
       "cluster_id": "node:palm:sunscorch_reaches:01",
       "collision_offset_y": 8,
@@ -9262,8 +9285,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "76696825-05d4-5745-abab-be816127ba08",
       "subzone": "sunscorch_reaches",
-      "x": 3392,
-      "y": 333
+      "x": 1802,
+      "y": 424
     },
     {
       "active": true,
@@ -9449,15 +9472,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "77faedf3-2052-5d3f-8b47-f1af0cb6f4e9",
       "subzone": "sunscorch_reaches",
-      "x": 3109,
-      "y": 162
+      "x": 3313,
+      "y": 119
     },
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:3",
+      "cell": "4:0",
       "charges": 4,
-      "cluster_id": "node:sandstone:sunscorch_reaches:01",
+      "cluster_id": "node:sandstone:sunscorch_reaches:00",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -9472,8 +9495,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "7863a483-4662-53ee-bb73-d3ae5ba7b7cf",
       "subzone": "sunscorch_reaches",
-      "x": 3153,
-      "y": 1607
+      "x": 2862,
+      "y": 387
     },
     {
       "active": true,
@@ -9515,7 +9538,7 @@
       "active": true,
       "biome": "fields",
       "cell": "0:6",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:03",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -9612,8 +9635,8 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:0",
-      "cluster_id": "monster:forest_lynx:willowbrook_wilds:00",
+      "cell": "1:3",
+      "cluster_id": "monster:forest_lynx:willowbrook_wilds:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -9642,14 +9665,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "7b2cf423-a9e2-510f-9b3f-67ffffe230e3",
       "subzone": "willowbrook_wilds",
-      "x": 1608,
-      "y": 395
+      "x": 1351,
+      "y": 1695
     },
     {
       "active": true,
       "biome": "desert",
-      "cell": "3:3",
-      "cluster_id": "monster:bandit:sunscorch_reaches:03",
+      "cell": "3:1",
+      "cluster_id": "monster:bandit:sunscorch_reaches:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -9678,8 +9701,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "7b33b00b-2dde-5f1c-b19a-7d05cad97c86",
       "subzone": "sunscorch_reaches",
-      "x": 2734,
-      "y": 1522
+      "x": 2413,
+      "y": 716
     },
     {
       "active": true,
@@ -9720,7 +9743,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:2",
+      "cell": "1:3",
       "cluster_id": "monster:bear:willowbrook_wilds:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -9750,8 +9773,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "7bf1b904-15c7-57d2-8779-c786ccaa8752",
       "subzone": "willowbrook_wilds",
-      "x": 1264,
-      "y": 1476
+      "x": 1382,
+      "y": 1588
     },
     {
       "active": true,
@@ -9779,7 +9802,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
+      "cell": "1:2",
       "cluster_id": "monster:bear:willowbrook_wilds:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -9809,8 +9832,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "7c899084-873d-58a6-8f0d-794e2245bf7a",
       "subzone": "willowbrook_wilds",
-      "x": 1408,
-      "y": 1327
+      "x": 1361,
+      "y": 1486
     },
     {
       "active": true,
@@ -9851,8 +9874,8 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:4",
-      "cluster_id": "monster:wolf:willowbrook_wilds:00",
+      "cell": "2:1",
+      "cluster_id": "monster:wolf:willowbrook_wilds:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -9881,14 +9904,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "7cf9dc23-5c1a-5163-abbc-fc0b5f945601",
       "subzone": "willowbrook_wilds",
-      "x": 2735,
-      "y": 2479
+      "x": 1612,
+      "y": 998
     },
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:2",
-      "cluster_id": "monster:bandit:sunscorch_reaches:03",
+      "cell": "3:3",
+      "cluster_id": "monster:bandit:sunscorch_reaches:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -9917,8 +9940,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "7d11883e-1f82-59c2-812c-cd8f29746ce6",
       "subzone": "sunscorch_reaches",
-      "x": 2879,
-      "y": 1396
+      "x": 2734,
+      "y": 1522
     },
     {
       "active": true,
@@ -9946,9 +9969,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:5",
+      "cell": "0:3",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:01",
+      "cluster_id": "node:copper:grand_haven_outskirts:02",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -9963,8 +9986,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "7dfc9780-8676-5411-afe8-c3d9bdcd8f5d",
       "subzone": "grand_haven_outskirts",
-      "x": 1319,
-      "y": 2562
+      "x": 561,
+      "y": 1599
     },
     {
       "active": true,
@@ -10087,7 +10110,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:1",
+      "cell": "2:1",
       "cluster_id": "monster:forest_lynx:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -10117,8 +10140,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "7e91d5c4-1eb5-50ee-84f2-08fb9cf8bbc4",
       "subzone": "willowbrook_wilds",
-      "x": 1018,
-      "y": 840
+      "x": 1574,
+      "y": 550
     },
     {
       "active": true,
@@ -10293,8 +10316,8 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "2:0",
-      "cluster_id": "monster:dust_jackal:sunscorch_reaches:02",
+      "cell": "4:0",
+      "cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -10323,8 +10346,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "81e68673-65a4-5fa7-a9b1-f566c06d1ecd",
       "subzone": "sunscorch_reaches",
-      "x": 2044,
-      "y": 132
+      "x": 3242,
+      "y": 372
     },
     {
       "active": true,
@@ -10516,7 +10539,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:3",
+      "cell": "1:1",
       "charges": 4,
       "cluster_id": "node:iron:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -10533,8 +10556,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "83d00866-3a0b-5e74-870b-86c14c8a6497",
       "subzone": "willowbrook_wilds",
-      "x": 1500,
-      "y": 1774
+      "x": 1080,
+      "y": 545
     },
     {
       "active": true,
@@ -10605,15 +10628,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "8469533a-902e-50b8-83ff-ed9ad564991e",
       "subzone": "sunscorch_reaches",
-      "x": 3013,
-      "y": 333
+      "x": 3109,
+      "y": 162
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:5",
+      "cell": "0:4",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:01",
+      "cluster_id": "node:copper:grand_haven_outskirts:04",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -10628,8 +10651,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "8486b0f2-cbbb-5653-86b4-e1115fdf17b5",
       "subzone": "grand_haven_outskirts",
-      "x": 809,
-      "y": 2883
+      "x": 223,
+      "y": 2497
     },
     {
       "active": true,
@@ -10694,7 +10717,7 @@
       "active": true,
       "biome": "desert",
       "cell": "5:2",
-      "cluster_id": "monster:serpent:sunscorch_reaches:03",
+      "cluster_id": "monster:serpent:sunscorch_reaches:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -10849,7 +10872,7 @@
       "biome": "forest",
       "cell": "1:0",
       "charges": 4,
-      "cluster_id": "node:maple:willowbrook_wilds:02",
+      "cluster_id": "node:maple:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -10870,9 +10893,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:1",
+      "cell": "1:5",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:03",
+      "cluster_id": "node:copper:grand_haven_outskirts:01",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -10887,8 +10910,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "86aef85b-e7b1-50df-ae4e-1ed08ce6b834",
       "subzone": "grand_haven_outskirts",
-      "x": 548,
-      "y": 772
+      "x": 809,
+      "y": 2883
     },
     {
       "active": true,
@@ -10952,7 +10975,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
+      "cell": "0:5",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -10969,8 +10992,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "888ae064-a257-5c87-a75f-ed43dc82b014",
       "subzone": "grand_haven_outskirts",
-      "x": 362,
-      "y": 1911
+      "x": 118,
+      "y": 2593
     },
     {
       "active": true,
@@ -11093,7 +11116,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:3",
+      "cell": "0:3",
       "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
@@ -11123,8 +11146,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "89614c3e-27e6-502b-b467-fb8393b96c02",
       "subzone": "grand_haven_outskirts",
-      "x": 982,
-      "y": 1714
+      "x": 690,
+      "y": 1533
     },
     {
       "active": true,
@@ -11152,8 +11175,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "cell": "1:0",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:05",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -11175,8 +11198,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "89aa37ce-cbe2-5848-9ac0-f4660d1eaf69",
       "subzone": "grand_haven_outskirts",
-      "x": 359,
-      "y": 1576
+      "x": 931,
+      "y": 125
     },
     {
       "active": true,
@@ -11217,7 +11240,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "2:5",
+      "cell": "0:0",
       "cluster_id": "monster:goblin:grand_haven_outskirts:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -11247,8 +11270,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "8a4d560f-fe9d-506f-85ec-5e8af443e936",
       "subzone": "grand_haven_outskirts",
-      "x": 1668,
-      "y": 2875
+      "x": 497,
+      "y": 145
     },
     {
       "active": true,
@@ -11289,8 +11312,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:3",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "cell": "0:5",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -11312,8 +11335,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "8af2c222-663b-533b-bf8b-d4bbcda60250",
       "subzone": "grand_haven_outskirts",
-      "x": 762,
-      "y": 1596
+      "x": 129,
+      "y": 2897
     },
     {
       "active": true,
@@ -11459,8 +11482,8 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:3",
-      "cluster_id": "monster:bear:willowbrook_wilds:02",
+      "cell": "1:1",
+      "cluster_id": "monster:bear:willowbrook_wilds:04",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -11489,15 +11512,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "8db2fb5c-14b8-5b4d-a6c9-37d111cf8fd4",
       "subzone": "willowbrook_wilds",
-      "x": 2613,
-      "y": 1777
+      "x": 1161,
+      "y": 654
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:5",
+      "cell": "2:5",
       "charges": 4,
-      "cluster_id": "node:berries:grand_haven_outskirts:03",
+      "cluster_id": "node:berries:grand_haven_outskirts:02",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -11512,8 +11535,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "8dc0f6c5-c0a7-5193-8d0c-db9d529f7019",
       "subzone": "grand_haven_outskirts",
-      "x": 231,
-      "y": 2891
+      "x": 1977,
+      "y": 2793
     },
     {
       "active": true,
@@ -11554,8 +11577,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:0",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:05",
+      "cell": "0:3",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:04",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -11577,8 +11600,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "8e662417-6db4-59ca-a889-23a0049cd691",
       "subzone": "grand_haven_outskirts",
-      "x": 227,
-      "y": 321
+      "x": 241,
+      "y": 1845
     },
     {
       "active": true,
@@ -11613,15 +11636,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "8e9db761-6468-5fc6-8ee0-cf7064bb6a78",
       "subzone": "willowbrook_wilds",
-      "x": 1444,
-      "y": 398
+      "x": 1513,
+      "y": 272
     },
     {
       "active": true,
       "biome": "desert",
-      "cell": "3:1",
+      "cell": "3:0",
       "charges": 4,
-      "cluster_id": "node:palm:sunscorch_reaches:02",
+      "cluster_id": "node:palm:sunscorch_reaches:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -11636,13 +11659,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "8f0d2867-cac4-57f0-a606-3d1e791a277a",
       "subzone": "sunscorch_reaches",
-      "x": 2442,
-      "y": 626
+      "x": 2283,
+      "y": 428
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:1",
+      "cell": "1:0",
       "charges": 4,
       "cluster_id": "node:flax:grand_haven_outskirts:01",
       "collision_offset_y": 2,
@@ -11659,15 +11682,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "8f1c0366-b378-5011-8a0f-16cfb3e35255",
       "subzone": "grand_haven_outskirts",
-      "x": 181,
-      "y": 582
+      "x": 955,
+      "y": 298
     },
     {
       "active": true,
       "biome": "fields",
       "cell": "2:5",
       "charges": 4,
-      "cluster_id": "node:berries:grand_haven_outskirts:01",
+      "cluster_id": "node:berries:grand_haven_outskirts:02",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -11989,7 +12012,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:0",
+      "cell": "1:1",
       "charges": 4,
       "cluster_id": "node:flax:grand_haven_outskirts:01",
       "collision_offset_y": 2,
@@ -12006,14 +12029,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "9161592b-7132-5997-88bd-7da4bdf93ed2",
       "subzone": "grand_haven_outskirts",
-      "x": 955,
-      "y": 298
+      "x": 754,
+      "y": 880
     },
     {
       "active": true,
       "biome": "fields",
       "cell": "0:7",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:03",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -12172,9 +12195,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:1",
+      "cell": "3:3",
       "charges": 4,
-      "cluster_id": "node:willow:willowbrook_wilds:00",
+      "cluster_id": "node:willow:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -12189,8 +12212,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "93524b1e-74fd-550d-be1e-514bc1f276cc",
       "subzone": "willowbrook_wilds",
-      "x": 1249,
-      "y": 744
+      "x": 2332,
+      "y": 1976
     },
     {
       "active": true,
@@ -12414,8 +12437,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "cell": "1:3",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:03",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -12437,8 +12460,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "9610079d-bf0b-56fb-8330-bbd8f07cfad4",
       "subzone": "grand_haven_outskirts",
-      "x": 141,
-      "y": 1978
+      "x": 1003,
+      "y": 1553
     },
     {
       "active": true,
@@ -12561,9 +12584,9 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "3:0",
+      "cell": "2:0",
       "charges": 4,
-      "cluster_id": "node:mithril:sunscorch_reaches:00",
+      "cluster_id": "node:mithril:sunscorch_reaches:01",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -12578,13 +12601,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "97835fb6-b633-5f32-8b35-0aed94988774",
       "subzone": "sunscorch_reaches",
-      "x": 2283,
-      "y": 428
+      "x": 1997,
+      "y": 498
     },
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:4",
+      "cell": "4:2",
       "cluster_id": "monster:serpent:sunscorch_reaches:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -12614,8 +12637,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "97d623a2-829e-5ae8-8f79-ebfd50103c84",
       "subzone": "sunscorch_reaches",
-      "x": 3194,
-      "y": 2272
+      "x": 3139,
+      "y": 1380
     },
     {
       "active": true,
@@ -12702,9 +12725,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:1",
+      "cell": "3:5",
       "charges": 4,
-      "cluster_id": "node:willow:willowbrook_wilds:00",
+      "cluster_id": "node:willow:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -12719,13 +12742,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "990a9b08-4e63-516e-a794-8825b8cb0b89",
       "subzone": "willowbrook_wilds",
-      "x": 1142,
-      "y": 822
+      "x": 2143,
+      "y": 2755
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:1",
+      "cell": "2:5",
       "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -12755,8 +12778,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "99a84d62-5172-5d6b-984d-81b3078dc1ef",
       "subzone": "grand_haven_outskirts",
-      "x": 913,
-      "y": 524
+      "x": 1738,
+      "y": 2657
     },
     {
       "active": true,
@@ -12807,8 +12830,8 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:2",
-      "cluster_id": "monster:serpent:sunscorch_reaches:03",
+      "cell": "3:0",
+      "cluster_id": "monster:serpent:sunscorch_reaches:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -12837,13 +12860,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "9b1433f4-f9a7-5687-87bd-399843ffa444",
       "subzone": "sunscorch_reaches",
-      "x": 3453,
-      "y": 1264
+      "x": 2693,
+      "y": 142
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
+      "cell": "0:2",
       "charges": 4,
       "cluster_id": "node:flax:grand_haven_outskirts:01",
       "collision_offset_y": 2,
@@ -12860,14 +12883,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "9c33e8b1-ae66-5807-82cc-07bd6c5692d7",
       "subzone": "grand_haven_outskirts",
-      "x": 450,
-      "y": 1597
+      "x": 518,
+      "y": 1186
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
-      "cluster_id": "monster:forest_boar:willowbrook_wilds:00",
+      "cell": "2:4",
+      "cluster_id": "monster:forest_boar:willowbrook_wilds:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -12896,13 +12919,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "9c3fcc23-8799-532b-8775-7eca1e79e4a3",
       "subzone": "willowbrook_wilds",
-      "x": 1702,
-      "y": 1318
+      "x": 1971,
+      "y": 2152
     },
     {
       "active": true,
       "biome": "desert",
-      "cell": "2:0",
+      "cell": "3:1",
       "charges": 4,
       "cluster_id": "node:mithril:sunscorch_reaches:00",
       "collision_offset_y": 2,
@@ -12919,8 +12942,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "9d4337d4-5fc6-5105-a176-3ba43a79befa",
       "subzone": "sunscorch_reaches",
-      "x": 2098,
-      "y": 365
+      "x": 2341,
+      "y": 946
     },
     {
       "active": true,
@@ -12948,8 +12971,8 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
-      "cluster_id": "monster:forest_boar:willowbrook_wilds:00",
+      "cell": "3:3",
+      "cluster_id": "monster:forest_boar:willowbrook_wilds:03",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -12978,8 +13001,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "9d507435-158c-5b92-a755-c54d0dd5c6e9",
       "subzone": "willowbrook_wilds",
-      "x": 1834,
-      "y": 671
+      "x": 2659,
+      "y": 1660
     },
     {
       "active": true,
@@ -13056,8 +13079,8 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:2",
-      "cluster_id": "monster:forest_boar:willowbrook_wilds:00",
+      "cell": "2:2",
+      "cluster_id": "monster:forest_boar:willowbrook_wilds:04",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -13086,13 +13109,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "9da1c51e-1329-5c37-9ec1-777621af630e",
       "subzone": "willowbrook_wilds",
-      "x": 1271,
-      "y": 1144
+      "x": 1467,
+      "y": 1087
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:0",
+      "cell": "1:2",
       "charges": 4,
       "cluster_id": "node:flax:grand_haven_outskirts:01",
       "collision_offset_y": 2,
@@ -13109,13 +13132,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "9de0bcc9-55f7-5f7e-b7f4-3b74dc79d694",
       "subzone": "grand_haven_outskirts",
-      "x": 807,
-      "y": 323
+      "x": 828,
+      "y": 1257
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
+      "cell": "2:2",
       "charges": 4,
       "cluster_id": "node:coal_seam:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -13132,8 +13155,8 @@
       "selection_mode": "cluster_90",
       "spawn_id": "9df36e7b-62c5-599c-a9fa-225487b02589",
       "subzone": "willowbrook_wilds",
-      "x": 1545,
-      "y": 934
+      "x": 1736,
+      "y": 1170
     },
     {
       "active": true,
@@ -13175,7 +13198,7 @@
       "active": true,
       "biome": "fields",
       "cell": "2:6",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -13246,7 +13269,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:0",
+      "cell": "1:1",
       "charges": 4,
       "cluster_id": "node:flax:grand_haven_outskirts:01",
       "collision_offset_y": 2,
@@ -13263,8 +13286,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "9fa01dcf-d2a4-5f7a-a4c9-cea1aefb8845",
       "subzone": "grand_haven_outskirts",
-      "x": 574,
-      "y": 237
+      "x": 897,
+      "y": 912
     },
     {
       "active": true,
@@ -13400,9 +13423,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:1",
+      "cell": "1:3",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:03",
+      "cluster_id": "node:copper:grand_haven_outskirts:02",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -13417,8 +13440,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "a348ac1c-cc58-5f0f-9e8e-35c09b8db5ae",
       "subzone": "grand_haven_outskirts",
-      "x": 754,
-      "y": 880
+      "x": 845,
+      "y": 1544
     },
     {
       "active": true,
@@ -13482,8 +13505,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:0",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:04",
+      "cell": "0:1",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:06",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -13505,8 +13528,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "a3d64bf5-7b0c-5654-868e-d47ccc26b6ad",
       "subzone": "grand_haven_outskirts",
-      "x": 931,
-      "y": 125
+      "x": 181,
+      "y": 582
     },
     {
       "active": true,
@@ -13534,9 +13557,9 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "3:0",
+      "cell": "4:0",
       "charges": 4,
-      "cluster_id": "node:mithril:sunscorch_reaches:00",
+      "cluster_id": "node:mithril:sunscorch_reaches:02",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -13551,15 +13574,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "a49ca474-0d2e-5ac3-bcb0-e6655274cf28",
       "subzone": "sunscorch_reaches",
-      "x": 2576,
-      "y": 456
+      "x": 3329,
+      "y": 483
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:5",
+      "cell": "1:2",
       "charges": 4,
-      "cluster_id": "node:flax:grand_haven_outskirts:02",
+      "cluster_id": "node:flax:grand_haven_outskirts:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -13574,8 +13597,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "a4a00be6-3a19-539f-9778-5993ae5a24c9",
       "subzone": "grand_haven_outskirts",
-      "x": 1073,
-      "y": 2853
+      "x": 913,
+      "y": 1127
     },
     {
       "active": true,
@@ -13688,7 +13711,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:3",
+      "cell": "2:3",
       "cluster_id": "monster:bear:willowbrook_wilds:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -13718,8 +13741,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "a6d697e6-6768-5ade-ba30-826741f700e0",
       "subzone": "willowbrook_wilds",
-      "x": 1280,
-      "y": 1598
+      "x": 1493,
+      "y": 1660
     },
     {
       "active": true,
@@ -13819,8 +13842,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:0",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "cell": "0:1",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -13849,8 +13872,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "a8f645f0-eda2-57b6-86b6-0fa5e5adaa9c",
       "subzone": "grand_haven_outskirts",
-      "x": 497,
-      "y": 145
+      "x": 445,
+      "y": 637
     },
     {
       "active": true,
@@ -13914,9 +13937,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:4",
+      "cell": "0:1",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:04",
+      "cluster_id": "node:copper:grand_haven_outskirts:05",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -13931,8 +13954,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "aa69573b-efd4-56de-b6da-b919da8d043f",
       "subzone": "grand_haven_outskirts",
-      "x": 223,
-      "y": 2497
+      "x": 518,
+      "y": 890
     },
     {
       "active": true,
@@ -13966,9 +13989,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
+      "cell": "3:4",
       "charges": 4,
-      "cluster_id": "node:willow:willowbrook_wilds:00",
+      "cluster_id": "node:willow:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -13983,8 +14006,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "ab4360c6-dd52-55c9-807d-0aad1c36aa64",
       "subzone": "willowbrook_wilds",
-      "x": 1788,
-      "y": 751
+      "x": 2241,
+      "y": 2075
     },
     {
       "active": true,
@@ -14012,8 +14035,8 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:3",
-      "cluster_id": "monster:bear:willowbrook_wilds:02",
+      "cell": "1:2",
+      "cluster_id": "monster:bear:willowbrook_wilds:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -14042,8 +14065,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "ab9bf23c-2510-59ff-89ad-32dea65add45",
       "subzone": "willowbrook_wilds",
-      "x": 2402,
-      "y": 1928
+      "x": 1197,
+      "y": 1207
     },
     {
       "active": true,
@@ -14130,9 +14153,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:5",
+      "cell": "3:3",
       "charges": 4,
-      "cluster_id": "node:maple:willowbrook_wilds:01",
+      "cluster_id": "node:maple:willowbrook_wilds:00",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -14147,8 +14170,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "acb48e28-3411-5350-9a62-152f04296ee7",
       "subzone": "willowbrook_wilds",
-      "x": 2733,
-      "y": 2705
+      "x": 2408,
+      "y": 1780
     },
     {
       "active": true,
@@ -14182,7 +14205,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
+      "cell": "0:2",
       "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
@@ -14212,8 +14235,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "ae2da30a-f1ad-532b-95ee-2908162b69a9",
       "subzone": "grand_haven_outskirts",
-      "x": 690,
-      "y": 1533
+      "x": 180,
+      "y": 1417
     },
     {
       "active": true,
@@ -14277,8 +14300,8 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:2",
-      "cluster_id": "monster:serpent:sunscorch_reaches:03",
+      "cell": "4:4",
+      "cluster_id": "monster:serpent:sunscorch_reaches:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -14307,8 +14330,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "ae3974b6-344e-5fe2-9ecf-147976b0cbff",
       "subzone": "sunscorch_reaches",
-      "x": 3235,
-      "y": 1378
+      "x": 3020,
+      "y": 2121
     },
     {
       "active": true,
@@ -14454,7 +14477,7 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "3:1",
+      "cell": "3:0",
       "cluster_id": "monster:bandit:sunscorch_reaches:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -14484,8 +14507,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "afca6119-cf37-5831-a626-3b3f614d42d7",
       "subzone": "sunscorch_reaches",
-      "x": 2413,
-      "y": 716
+      "x": 2576,
+      "y": 456
     },
     {
       "active": true,
@@ -14556,14 +14579,14 @@
       "selection_mode": "cluster_90",
       "spawn_id": "b161e506-8589-5611-abea-abc6f8fb63f1",
       "subzone": "willowbrook_wilds",
-      "x": 2024,
-      "y": 1707
+      "x": 2056,
+      "y": 1576
     },
     {
       "active": true,
       "biome": "fields",
       "cell": "0:6",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:03",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -14591,7 +14614,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
+      "cell": "3:5",
       "charges": 4,
       "cluster_id": "node:maple:willowbrook_wilds:02",
       "collision_offset_y": 8,
@@ -14608,14 +14631,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "b27fe5a0-ac44-52d3-8094-2b1cbb7e74a0",
       "subzone": "willowbrook_wilds",
-      "x": 1673,
-      "y": 757
+      "x": 2318,
+      "y": 2786
     },
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:0",
-      "cluster_id": "monster:serpent:sunscorch_reaches:00",
+      "cell": "4:2",
+      "cluster_id": "monster:serpent:sunscorch_reaches:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -14644,8 +14667,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "b28c80f5-c218-52f7-a304-e85ed02f28c5",
       "subzone": "sunscorch_reaches",
-      "x": 3313,
-      "y": 119
+      "x": 3235,
+      "y": 1378
     },
     {
       "active": true,
@@ -14722,8 +14745,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:3",
-      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
+      "cell": "0:1",
+      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:03",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -14752,13 +14775,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "b44b0992-88c2-5a53-9546-fb52739680b9",
       "subzone": "grand_haven_outskirts",
-      "x": 1003,
-      "y": 1553
+      "x": 687,
+      "y": 806
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:2",
+      "cell": "0:3",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -14775,8 +14798,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "b45d6788-5269-553b-998a-81c5af2d4c4e",
       "subzone": "grand_haven_outskirts",
-      "x": 801,
-      "y": 1353
+      "x": 544,
+      "y": 1762
     },
     {
       "active": true,
@@ -14827,7 +14850,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:5",
+      "cell": "2:4",
       "charges": 4,
       "cluster_id": "node:willow:willowbrook_wilds:01",
       "collision_offset_y": 8,
@@ -14844,15 +14867,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "b590b00d-25fd-59c2-8fc1-7bd65bbf6924",
       "subzone": "willowbrook_wilds",
-      "x": 2318,
-      "y": 2786
+      "x": 1848,
+      "y": 2360
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:3",
+      "cell": "3:2",
       "charges": 4,
-      "cluster_id": "node:coal_seam:willowbrook_wilds:01",
+      "cluster_id": "node:coal_seam:willowbrook_wilds:00",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -14867,8 +14890,8 @@
       "selection_mode": "fallback_10",
       "spawn_id": "b5a4a9e8-4620-5acb-8ec1-ebb977bf0be7",
       "subzone": "willowbrook_wilds",
-      "x": 1697,
-      "y": 1939
+      "x": 2143,
+      "y": 1333
     },
     {
       "active": true,
@@ -14903,8 +14926,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "b5adde27-3c15-5ef2-92f7-928a3fe91fa3",
       "subzone": "willowbrook_wilds",
-      "x": 1444,
-      "y": 591
+      "x": 1989,
+      "y": 972
     },
     {
       "active": true,
@@ -14946,7 +14969,7 @@
       "active": true,
       "biome": "fields",
       "cell": "0:0",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:05",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:06",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -14968,8 +14991,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "b7799a3b-b017-58c2-83a4-1e72c5b85c68",
       "subzone": "grand_haven_outskirts",
-      "x": 124,
-      "y": 299
+      "x": 227,
+      "y": 321
     },
     {
       "active": true,
@@ -15157,7 +15180,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
+      "cell": "1:1",
       "cluster_id": "monster:goblin_brute:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -15187,8 +15210,8 @@
       "selection_mode": "cluster_90",
       "spawn_id": "bb463386-d6af-5a7d-b0e6-3c9dc9f9988c",
       "subzone": "willowbrook_wilds",
-      "x": 1463,
-      "y": 1027
+      "x": 1383,
+      "y": 908
     },
     {
       "active": true,
@@ -15289,7 +15312,7 @@
       "active": true,
       "biome": "fields",
       "cell": "3:6",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -15326,7 +15349,7 @@
       "biome": "desert",
       "cell": "5:1",
       "charges": 4,
-      "cluster_id": "node:palm:sunscorch_reaches:03",
+      "cluster_id": "node:palm:sunscorch_reaches:02",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -15348,7 +15371,7 @@
       "active": true,
       "biome": "desert",
       "cell": "2:0",
-      "cluster_id": "monster:dust_jackal:sunscorch_reaches:02",
+      "cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -15377,8 +15400,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "bc6440a6-e886-5b3b-9d08-8f087fab905a",
       "subzone": "sunscorch_reaches",
-      "x": 1936,
-      "y": 366
+      "x": 2040,
+      "y": 225
     },
     {
       "active": true,
@@ -15407,7 +15430,7 @@
       "active": true,
       "biome": "fields",
       "cell": "2:6",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -15501,7 +15524,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:0",
+      "cell": "3:5",
       "charges": 4,
       "cluster_id": "node:maple:willowbrook_wilds:02",
       "collision_offset_y": 8,
@@ -15518,13 +15541,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "bd3942b3-4dcc-5d15-93d7-fdf5e7ed3656",
       "subzone": "willowbrook_wilds",
-      "x": 1637,
-      "y": 302
+      "x": 2700,
+      "y": 2802
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:3",
+      "cell": "0:2",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -15541,8 +15564,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "bd64f3eb-b4f1-5e20-bc2d-0a101583b4d9",
       "subzone": "grand_haven_outskirts",
-      "x": 810,
-      "y": 1705
+      "x": 484,
+      "y": 1403
     },
     {
       "active": true,
@@ -15618,7 +15641,7 @@
       "biome": "fields",
       "cell": "2:6",
       "charges": 4,
-      "cluster_id": "node:berries:grand_haven_outskirts:02",
+      "cluster_id": "node:berries:grand_haven_outskirts:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -15746,7 +15769,7 @@
       "biome": "forest",
       "cell": "1:0",
       "charges": 4,
-      "cluster_id": "node:maple:willowbrook_wilds:02",
+      "cluster_id": "node:maple:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -15767,8 +15790,8 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "2:0",
-      "cluster_id": "monster:dust_jackal:sunscorch_reaches:02",
+      "cell": "5:1",
+      "cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -15797,8 +15820,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c08de1d8-169d-5d47-ad58-0a3482780a37",
       "subzone": "sunscorch_reaches",
-      "x": 2040,
-      "y": 225
+      "x": 3650,
+      "y": 552
     },
     {
       "active": true,
@@ -15872,9 +15895,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:4",
+      "cell": "0:1",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:04",
+      "cluster_id": "node:copper:grand_haven_outskirts:05",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -15889,8 +15912,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c18f1180-72c2-5224-a480-aebec7758438",
       "subzone": "grand_haven_outskirts",
-      "x": 183,
-      "y": 2319
+      "x": 548,
+      "y": 772
     },
     {
       "active": true,
@@ -15955,7 +15978,7 @@
       "active": true,
       "biome": "fields",
       "cell": "2:6",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -16026,7 +16049,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:5",
+      "cell": "3:2",
       "charges": 4,
       "cluster_id": "node:herbs:willowbrook_wilds:01",
       "collision_offset_y": 2,
@@ -16043,15 +16066,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c3901db4-8948-5b70-9ee9-959218dd0a5c",
       "subzone": "willowbrook_wilds",
-      "x": 2700,
-      "y": 2802
+      "x": 2445,
+      "y": 1355
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:1",
+      "cell": "1:5",
       "charges": 4,
-      "cluster_id": "node:copper:grand_haven_outskirts:03",
+      "cluster_id": "node:copper:grand_haven_outskirts:01",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -16066,8 +16089,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c3f8b3f5-0eb9-51f3-bcd0-44ce87266322",
       "subzone": "grand_haven_outskirts",
-      "x": 518,
-      "y": 890
+      "x": 1319,
+      "y": 2562
     },
     {
       "active": true,
@@ -16095,8 +16118,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:3",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "cell": "1:1",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:07",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -16118,8 +16141,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c54a90f6-cd52-59be-9eec-d83716c492fd",
       "subzone": "grand_haven_outskirts",
-      "x": 1240,
-      "y": 1881
+      "x": 951,
+      "y": 713
     },
     {
       "active": true,
@@ -16206,7 +16229,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:5",
+      "cell": "2:4",
       "charges": 4,
       "cluster_id": "node:willow:willowbrook_wilds:01",
       "collision_offset_y": 8,
@@ -16223,8 +16246,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c5c0cec8-ba79-55dd-ac2c-ed57bac0d67e",
       "subzone": "willowbrook_wilds",
-      "x": 2443,
-      "y": 2726
+      "x": 1843,
+      "y": 2162
     },
     {
       "active": true,
@@ -16265,8 +16288,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:2",
-      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
+      "cell": "0:1",
+      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:03",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -16295,8 +16318,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c610e235-708c-5283-8835-31cfca041167",
       "subzone": "grand_haven_outskirts",
-      "x": 127,
-      "y": 1212
+      "x": 636,
+      "y": 947
     },
     {
       "active": true,
@@ -16337,7 +16360,7 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "2:0",
+      "cell": "3:1",
       "charges": 4,
       "cluster_id": "node:mithril:sunscorch_reaches:00",
       "collision_offset_y": 2,
@@ -16354,8 +16377,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c7028e93-04c7-54dd-a3fe-b9286215677b",
       "subzone": "sunscorch_reaches",
-      "x": 1997,
-      "y": 498
+      "x": 2415,
+      "y": 869
     },
     {
       "active": true,
@@ -16446,8 +16469,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c75116ff-fe5f-5ebe-9c66-30dc98a0e6be",
       "subzone": "grand_haven_outskirts",
-      "x": 384,
-      "y": 1782
+      "x": 174,
+      "y": 1529
     },
     {
       "active": true,
@@ -16521,7 +16544,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:2",
+      "cell": "0:3",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -16538,14 +16561,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c8463c2b-2ca3-565c-bc48-66e9f7ec2518",
       "subzone": "grand_haven_outskirts",
-      "x": 320,
-      "y": 1288
+      "x": 659,
+      "y": 1732
     },
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:4",
-      "cluster_id": "monster:serpent:sunscorch_reaches:01",
+      "cell": "4:3",
+      "cluster_id": "monster:serpent:sunscorch_reaches:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -16574,8 +16597,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c851efb6-456c-5e3d-aa33-a09cc2a8e33c",
       "subzone": "sunscorch_reaches",
-      "x": 3020,
-      "y": 2121
+      "x": 2949,
+      "y": 1893
     },
     {
       "active": true,
@@ -16603,8 +16626,8 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:0",
-      "cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
+      "cell": "2:0",
+      "cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -16633,14 +16656,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "c8b5192b-b468-5058-abee-363a91890c66",
       "subzone": "sunscorch_reaches",
-      "x": 3329,
-      "y": 483
+      "x": 1936,
+      "y": 366
     },
     {
       "active": true,
       "biome": "desert",
       "cell": "2:0",
-      "cluster_id": "monster:dust_jackal:sunscorch_reaches:02",
+      "cluster_id": "monster:dust_jackal:sunscorch_reaches:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -16806,7 +16829,7 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "3:1",
+      "cell": "3:0",
       "charges": 4,
       "cluster_id": "node:mithril:sunscorch_reaches:00",
       "collision_offset_y": 2,
@@ -16823,8 +16846,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "cbce74d8-8e70-59b8-a44e-c622b5ca90df",
       "subzone": "sunscorch_reaches",
-      "x": 2601,
-      "y": 889
+      "x": 2791,
+      "y": 121
     },
     {
       "active": true,
@@ -16852,7 +16875,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "4:4",
+      "cell": "3:4",
       "cluster_id": "monster:wolf:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -16882,8 +16905,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "ccbd5d5e-c045-59e5-ae36-f8756527a3f1",
       "subzone": "willowbrook_wilds",
-      "x": 2929,
-      "y": 2342
+      "x": 2529,
+      "y": 2276
     },
     {
       "active": true,
@@ -16911,9 +16934,9 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:0",
+      "cell": "4:3",
       "charges": 4,
-      "cluster_id": "node:sandstone:sunscorch_reaches:00",
+      "cluster_id": "node:sandstone:sunscorch_reaches:01",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -16928,15 +16951,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "cd176976-fbb8-5801-853f-a4be793c7403",
       "subzone": "sunscorch_reaches",
-      "x": 3041,
-      "y": 430
+      "x": 3153,
+      "y": 1607
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:3",
+      "cell": "1:0",
       "charges": 4,
-      "cluster_id": "node:maple:willowbrook_wilds:00",
+      "cluster_id": "node:maple:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -16951,8 +16974,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "cd2e4303-c2c5-5fb4-af68-ecde8b90b69f",
       "subzone": "willowbrook_wilds",
-      "x": 2748,
-      "y": 1931
+      "x": 1153,
+      "y": 112
     },
     {
       "active": true,
@@ -17016,8 +17039,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:4",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "cell": "0:3",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:04",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -17039,13 +17062,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "cdb1d077-5ca4-5480-8f18-c9b8aebd28c7",
       "subzone": "grand_haven_outskirts",
-      "x": 172,
-      "y": 2085
+      "x": 359,
+      "y": 1576
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:4",
+      "cell": "2:2",
       "charges": 4,
       "cluster_id": "node:herbs:willowbrook_wilds:01",
       "collision_offset_y": 2,
@@ -17062,8 +17085,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "cdca6123-9345-556d-9d4c-964ba68f7437",
       "subzone": "willowbrook_wilds",
-      "x": 2629,
-      "y": 2498
+      "x": 2089,
+      "y": 1000
     },
     {
       "active": true,
@@ -17406,9 +17429,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:2",
+      "cell": "1:3",
       "charges": 4,
-      "cluster_id": "node:flax:grand_haven_outskirts:04",
+      "cluster_id": "node:flax:grand_haven_outskirts:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -17423,8 +17446,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d3e5f2c9-a4b5-5121-a4be-b374256a2230",
       "subzone": "grand_haven_outskirts",
-      "x": 1003,
-      "y": 1448
+      "x": 949,
+      "y": 1719
     },
     {
       "active": true,
@@ -17465,7 +17488,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
+      "cell": "1:1",
       "cluster_id": "monster:forest_lynx:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -17495,14 +17518,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d49b8ded-f785-5abd-aa8f-65f5ebcbe083",
       "subzone": "willowbrook_wilds",
-      "x": 1574,
-      "y": 550
+      "x": 1249,
+      "y": 744
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:5",
-      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:00",
+      "cell": "0:2",
+      "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -17531,8 +17554,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d4ac3c00-6373-5848-81d2-78e21cd68593",
       "subzone": "grand_haven_outskirts",
-      "x": 1281,
-      "y": 2729
+      "x": 100,
+      "y": 1359
     },
     {
       "active": true,
@@ -17609,7 +17632,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:1",
+      "cell": "2:0",
       "cluster_id": "monster:forest_lynx:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -17639,15 +17662,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d57af93d-e7da-505e-a379-31cb3dce1b4a",
       "subzone": "willowbrook_wilds",
-      "x": 1326,
-      "y": 834
+      "x": 1444,
+      "y": 398
     },
     {
       "active": true,
       "biome": "desert",
       "cell": "3:1",
       "charges": 4,
-      "cluster_id": "node:palm:sunscorch_reaches:02",
+      "cluster_id": "node:palm:sunscorch_reaches:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -17744,14 +17767,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d67d8238-cd5d-51a8-8ce5-1a2ff84fd648",
       "subzone": "willowbrook_wilds",
-      "x": 2403,
-      "y": 2302
+      "x": 2735,
+      "y": 2479
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
-      "cluster_id": "monster:forest_boar:willowbrook_wilds:00",
+      "cell": "2:2",
+      "cluster_id": "monster:forest_boar:willowbrook_wilds:04",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -17780,13 +17803,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d69d4b31-5e95-567a-8756-4a0bbbc00010",
       "subzone": "willowbrook_wilds",
-      "x": 1706,
-      "y": 881
+      "x": 1798,
+      "y": 1153
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:4",
+      "cell": "2:4",
       "cluster_id": "monster:forest_boar:willowbrook_wilds:02",
       "entity_type": "monster",
       "expected_loot": [
@@ -17816,13 +17839,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d6a8e432-8abb-5fd9-a424-1ab803674606",
       "subzone": "willowbrook_wilds",
-      "x": 2441,
-      "y": 2064
+      "x": 2078,
+      "y": 2171
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
+      "cell": "2:2",
       "charges": 4,
       "cluster_id": "node:coal_seam:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -17839,14 +17862,14 @@
       "selection_mode": "cluster_90",
       "spawn_id": "d7054e63-f15e-5161-9d92-1aad31185c29",
       "subzone": "willowbrook_wilds",
-      "x": 1904,
-      "y": 891
+      "x": 1854,
+      "y": 1101
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:1",
-      "cluster_id": "monster:forest_boar:willowbrook_wilds:00",
+      "cell": "3:4",
+      "cluster_id": "monster:forest_boar:willowbrook_wilds:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -17875,13 +17898,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d750fb12-46c0-51bc-bf3e-f35ac1709609",
       "subzone": "willowbrook_wilds",
-      "x": 2036,
-      "y": 812
+      "x": 2359,
+      "y": 2466
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:3",
+      "cell": "2:4",
       "cluster_id": "monster:forest_boar:willowbrook_wilds:02",
       "entity_type": "monster",
       "expected_loot": [
@@ -17911,15 +17934,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d851374b-43e0-5345-94ac-aa7e17c29abb",
       "subzone": "willowbrook_wilds",
-      "x": 2659,
-      "y": 1660
+      "x": 1747,
+      "y": 2108
     },
     {
       "active": true,
       "biome": "fields",
       "cell": "3:6",
       "charges": 4,
-      "cluster_id": "node:berries:grand_haven_outskirts:02",
+      "cluster_id": "node:berries:grand_haven_outskirts:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -17940,7 +17963,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:5",
+      "cell": "2:2",
       "charges": 4,
       "cluster_id": "node:herbs:willowbrook_wilds:01",
       "collision_offset_y": 2,
@@ -17957,15 +17980,15 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d8897b85-5486-547b-af6b-d046da04a412",
       "subzone": "willowbrook_wilds",
-      "x": 2673,
-      "y": 2601
+      "x": 1740,
+      "y": 1058
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:1",
+      "cell": "3:4",
       "charges": 4,
-      "cluster_id": "node:willow:willowbrook_wilds:00",
+      "cluster_id": "node:willow:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -17980,8 +18003,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d8bf5cea-0a8a-5f45-845c-a57dcd5bb8f6",
       "subzone": "willowbrook_wilds",
-      "x": 1161,
-      "y": 654
+      "x": 2342,
+      "y": 2293
     },
     {
       "active": true,
@@ -18022,7 +18045,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:0",
+      "cell": "1:1",
       "cluster_id": "monster:forest_lynx:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -18052,13 +18075,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d9ef7ce8-129b-5397-936f-74966663239e",
       "subzone": "willowbrook_wilds",
-      "x": 1534,
-      "y": 461
+      "x": 1326,
+      "y": 834
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:1",
+      "cell": "0:0",
       "charges": 4,
       "cluster_id": "node:flax:grand_haven_outskirts:01",
       "collision_offset_y": 2,
@@ -18075,14 +18098,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "d9f4b3b4-5486-526c-be36-7e09096fa9a7",
       "subzone": "grand_haven_outskirts",
-      "x": 885,
-      "y": 781
+      "x": 124,
+      "y": 299
     },
     {
       "active": true,
       "biome": "fields",
       "cell": "1:6",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:03",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -18192,13 +18215,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "dd41afe7-5009-5e67-80b9-b581a5b6d7b5",
       "subzone": "willowbrook_wilds",
-      "x": 2868,
-      "y": 2217
+      "x": 2929,
+      "y": 2342
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:4",
+      "cell": "4:4",
       "cluster_id": "monster:wolf:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -18228,8 +18251,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "dd531bc7-4c80-5cde-8cc3-56799b6a12bb",
       "subzone": "willowbrook_wilds",
-      "x": 2465,
-      "y": 2192
+      "x": 2831,
+      "y": 2051
     },
     {
       "active": true,
@@ -18329,9 +18352,9 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "3:1",
+      "cell": "4:3",
       "charges": 4,
-      "cluster_id": "node:mithril:sunscorch_reaches:00",
+      "cluster_id": "node:mithril:sunscorch_reaches:03",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -18346,13 +18369,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "ddfb49c3-04f0-543d-863e-d490ce4cd322",
       "subzone": "sunscorch_reaches",
-      "x": 2415,
-      "y": 869
+      "x": 3397,
+      "y": 1568
     },
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:0",
+      "cell": "3:1",
       "charges": 4,
       "cluster_id": "node:sandstone:sunscorch_reaches:00",
       "collision_offset_y": 2,
@@ -18369,8 +18392,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "de4d4c1c-c2c6-5b43-b2b1-36b33899ee58",
       "subzone": "sunscorch_reaches",
-      "x": 2862,
-      "y": 387
+      "x": 2442,
+      "y": 626
     },
     {
       "active": true,
@@ -18423,7 +18446,7 @@
       "biome": "desert",
       "cell": "4:0",
       "charges": 4,
-      "cluster_id": "node:palm:sunscorch_reaches:04",
+      "cluster_id": "node:palm:sunscorch_reaches:03",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -18467,8 +18490,8 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:3",
-      "cluster_id": "monster:bear:willowbrook_wilds:01",
+      "cell": "4:4",
+      "cluster_id": "monster:bear:willowbrook_wilds:05",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -18497,8 +18520,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "df24a5df-6e65-53f4-b07a-ae79176a658c",
       "subzone": "willowbrook_wilds",
-      "x": 1382,
-      "y": 1588
+      "x": 3082,
+      "y": 2313
     },
     {
       "active": true,
@@ -18595,7 +18618,7 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:1",
+      "cell": "2:5",
       "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
@@ -18625,8 +18648,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "e0b3087a-6514-56ee-9007-e6c5bff9c801",
       "subzone": "grand_haven_outskirts",
-      "x": 98,
-      "y": 709
+      "x": 1829,
+      "y": 2757
     },
     {
       "active": true,
@@ -18667,9 +18690,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:2",
+      "cell": "2:2",
       "charges": 4,
-      "cluster_id": "node:herbs:willowbrook_wilds:00",
+      "cluster_id": "node:herbs:willowbrook_wilds:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -18684,8 +18707,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "e0d6d641-5fd0-534c-b4a3-3cc6d010deba",
       "subzone": "willowbrook_wilds",
-      "x": 2491,
-      "y": 1486
+      "x": 1821,
+      "y": 1262
     },
     {
       "active": true,
@@ -18808,7 +18831,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
+      "cell": "3:5",
       "charges": 4,
       "cluster_id": "node:herbs:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -18825,13 +18848,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "e2ef4100-ac86-5c76-a808-a1ef8057cea9",
       "subzone": "willowbrook_wilds",
-      "x": 2089,
-      "y": 1000
+      "x": 2673,
+      "y": 2601
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:3",
+      "cell": "1:1",
       "charges": 4,
       "cluster_id": "node:iron:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -18848,8 +18871,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "e32e8cf2-59e0-5884-92dd-8e80a0e00a23",
       "subzone": "willowbrook_wilds",
-      "x": 1530,
-      "y": 1989
+      "x": 1340,
+      "y": 631
     },
     {
       "active": true,
@@ -18878,7 +18901,7 @@
       "active": true,
       "biome": "fields",
       "cell": "0:6",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:03",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -18906,9 +18929,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:3",
+      "cell": "2:2",
       "charges": 4,
-      "cluster_id": "node:coal_seam:willowbrook_wilds:02",
+      "cluster_id": "node:coal_seam:willowbrook_wilds:00",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -18923,8 +18946,8 @@
       "selection_mode": "fallback_10",
       "spawn_id": "e3da0d03-00bb-5e27-ab43-064f8a5952aa",
       "subzone": "willowbrook_wilds",
-      "x": 2109,
-      "y": 1650
+      "x": 1735,
+      "y": 1349
     },
     {
       "active": true,
@@ -19024,7 +19047,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "4:4",
+      "cell": "3:4",
       "cluster_id": "monster:wolf:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -19054,14 +19077,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "e45ce125-839f-53e9-b605-2081bc5635d1",
       "subzone": "willowbrook_wilds",
-      "x": 2860,
-      "y": 2410
+      "x": 2111,
+      "y": 2490
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "2:4",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "cell": "1:1",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:07",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -19083,8 +19106,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "e4ac27a4-a58a-5377-a105-094cceedf174",
       "subzone": "grand_haven_outskirts",
-      "x": 1542,
-      "y": 2316
+      "x": 885,
+      "y": 781
     },
     {
       "active": true,
@@ -19184,8 +19207,8 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:5",
-      "cluster_id": "monster:ironback_boar:willowbrook_wilds:01",
+      "cell": "3:3",
+      "cluster_id": "monster:ironback_boar:willowbrook_wilds:02",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -19214,8 +19237,8 @@
       "selection_mode": "fallback_10",
       "spawn_id": "e7959865-6524-5e46-89be-b356b1e319ad",
       "subzone": "willowbrook_wilds",
-      "x": 2414,
-      "y": 2772
+      "x": 2457,
+      "y": 1862
     },
     {
       "active": true,
@@ -19368,8 +19391,8 @@
       "selection_mode": "cluster_90",
       "spawn_id": "e900a60d-757d-5de9-a892-fef81fc189d1",
       "subzone": "willowbrook_wilds",
-      "x": 2171,
-      "y": 1698
+      "x": 2102,
+      "y": 1613
     },
     {
       "active": true,
@@ -19420,9 +19443,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:1",
+      "cell": "2:3",
       "charges": 4,
-      "cluster_id": "node:willow:willowbrook_wilds:00",
+      "cluster_id": "node:willow:willowbrook_wilds:01",
       "collision_offset_y": 8,
       "collision_radius": 14,
       "entity_type": "node",
@@ -19437,8 +19460,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "eafd9e44-1b5b-5f10-b6e7-b8973cb62deb",
       "subzone": "willowbrook_wilds",
-      "x": 1080,
-      "y": 545
+      "x": 1549,
+      "y": 1923
     },
     {
       "active": true,
@@ -19538,9 +19561,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:3",
+      "cell": "3:2",
       "charges": 4,
-      "cluster_id": "node:herbs:willowbrook_wilds:00",
+      "cluster_id": "node:herbs:willowbrook_wilds:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -19555,13 +19578,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "eca7feb1-f3fb-5040-b6a9-b01f0b87908f",
       "subzone": "willowbrook_wilds",
-      "x": 2421,
-      "y": 1650
+      "x": 2256,
+      "y": 1362
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "4:4",
+      "cell": "3:4",
       "cluster_id": "monster:wolf:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -19591,8 +19614,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "ecc16cc4-4d3c-589a-a816-b705a139ff68",
       "subzone": "willowbrook_wilds",
-      "x": 3082,
-      "y": 2313
+      "x": 2572,
+      "y": 2116
     },
     {
       "active": true,
@@ -19810,8 +19833,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:1",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "cell": "1:1",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -19840,8 +19863,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "ee990611-b5a6-5675-84fa-6476de5688cb",
       "subzone": "grand_haven_outskirts",
-      "x": 687,
-      "y": 806
+      "x": 913,
+      "y": 524
     },
     {
       "active": true,
@@ -19954,7 +19977,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "2:2",
+      "cell": "3:4",
       "charges": 4,
       "cluster_id": "node:herbs:willowbrook_wilds:00",
       "collision_offset_y": 2,
@@ -19971,8 +19994,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f0db8df2-3df3-5b6b-b41b-5ca8d2c113f0",
       "subzone": "willowbrook_wilds",
-      "x": 1740,
-      "y": 1058
+      "x": 2371,
+      "y": 2186
     },
     {
       "active": true,
@@ -20013,7 +20036,7 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:5",
+      "cell": "3:4",
       "cluster_id": "monster:wolf:willowbrook_wilds:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -20043,8 +20066,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f158eb3b-2bcb-5b4a-88ef-4917f983e423",
       "subzone": "willowbrook_wilds",
-      "x": 2540,
-      "y": 2662
+      "x": 2465,
+      "y": 2192
     },
     {
       "active": true,
@@ -20131,7 +20154,7 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "4:3",
+      "cell": "2:1",
       "charges": 4,
       "cluster_id": "node:mithril:sunscorch_reaches:01",
       "collision_offset_y": 2,
@@ -20148,8 +20171,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f26ca58a-6726-5fe6-8ca8-f0546326dde4",
       "subzone": "sunscorch_reaches",
-      "x": 3397,
-      "y": 1568
+      "x": 1920,
+      "y": 608
     },
     {
       "active": true,
@@ -20183,9 +20206,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "1:1",
+      "cell": "3:4",
       "charges": 4,
-      "cluster_id": "node:iron:willowbrook_wilds:00",
+      "cluster_id": "node:iron:willowbrook_wilds:03",
       "collision_offset_y": 2,
       "collision_radius": 14,
       "entity_type": "node",
@@ -20200,14 +20223,14 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f2ff4092-3e27-5804-be59-3fe640531fd3",
       "subzone": "willowbrook_wilds",
-      "x": 1340,
-      "y": 631
+      "x": 2338,
+      "y": 2092
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "2:5",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cell": "3:5",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -20236,13 +20259,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f3181336-ae86-5a93-83b6-861226557a72",
       "subzone": "grand_haven_outskirts",
-      "x": 1833,
-      "y": 2883
+      "x": 2167,
+      "y": 2850
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:2",
+      "cell": "0:3",
       "cluster_id": "monster:disgruntled_ram:grand_haven_outskirts:02",
       "entity_type": "monster",
       "expected_loot": [
@@ -20272,8 +20295,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f36ac8cc-c808-5a40-bad2-a8beacc01539",
       "subzone": "grand_haven_outskirts",
-      "x": 100,
-      "y": 1359
+      "x": 316,
+      "y": 1658
     },
     {
       "active": true,
@@ -20324,8 +20347,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "1:4",
-      "cluster_id": "monster:chicken:grand_haven_outskirts:01",
+      "cell": "1:3",
+      "cluster_id": "monster:chicken:grand_haven_outskirts:03",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -20347,8 +20370,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f42b4864-7b5d-5ce3-a673-f52ede012f8e",
       "subzone": "grand_haven_outskirts",
-      "x": 1387,
-      "y": 2143
+      "x": 1091,
+      "y": 1613
     },
     {
       "active": true,
@@ -20406,8 +20429,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f4dfdd05-02c1-557c-bf4e-8ca17f7ac921",
       "subzone": "willowbrook_wilds",
-      "x": 2831,
-      "y": 2051
+      "x": 2860,
+      "y": 2410
     },
     {
       "active": true,
@@ -20471,9 +20494,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "2:5",
+      "cell": "0:1",
       "charges": 4,
-      "cluster_id": "node:berries:grand_haven_outskirts:01",
+      "cluster_id": "node:berries:grand_haven_outskirts:00",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -20488,13 +20511,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f606de9a-2ba3-5f78-9ec7-47c0b6b09a79",
       "subzone": "grand_haven_outskirts",
-      "x": 1829,
-      "y": 2757
+      "x": 194,
+      "y": 699
     },
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:3",
+      "cell": "0:2",
       "charges": 4,
       "cluster_id": "node:oak:grand_haven_outskirts:00",
       "collision_offset_y": 8,
@@ -20511,8 +20534,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f68f062d-a8ae-536d-8365-7cb7bf2df649",
       "subzone": "grand_haven_outskirts",
-      "x": 659,
-      "y": 1732
+      "x": 650,
+      "y": 1320
     },
     {
       "active": true,
@@ -20730,9 +20753,9 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:0",
+      "cell": "0:3",
       "charges": 4,
-      "cluster_id": "node:berries:grand_haven_outskirts:00",
+      "cluster_id": "node:berries:grand_haven_outskirts:06",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -20747,13 +20770,13 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f8a11d7c-e099-5e39-827b-534aca5e9b7f",
       "subzone": "grand_haven_outskirts",
-      "x": 366,
-      "y": 315
+      "x": 450,
+      "y": 1597
     },
     {
       "active": true,
       "biome": "forest",
-      "cell": "4:5",
+      "cell": "2:2",
       "charges": 4,
       "cluster_id": "node:herbs:willowbrook_wilds:01",
       "collision_offset_y": 2,
@@ -20770,8 +20793,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "f8b79749-bb28-5a1e-a9a6-c334a77dd1f5",
       "subzone": "willowbrook_wilds",
-      "x": 2879,
-      "y": 2760
+      "x": 1862,
+      "y": 1006
     },
     {
       "active": true,
@@ -20871,7 +20894,7 @@
     {
       "active": true,
       "biome": "desert",
-      "cell": "5:1",
+      "cell": "4:0",
       "cluster_id": "monster:dust_jackal:sunscorch_reaches:00",
       "entity_type": "monster",
       "expected_loot": [
@@ -20901,8 +20924,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "fa74edab-1378-5534-aee6-1d5b088c17d3",
       "subzone": "sunscorch_reaches",
-      "x": 3650,
-      "y": 552
+      "x": 3013,
+      "y": 333
     },
     {
       "active": true,
@@ -21061,8 +21084,8 @@
     {
       "active": true,
       "biome": "fields",
-      "cell": "0:1",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
+      "cell": "1:0",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -21091,8 +21114,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "fdb95184-8ea6-59d6-afd6-0052e0a98df7",
       "subzone": "grand_haven_outskirts",
-      "x": 445,
-      "y": 637
+      "x": 768,
+      "y": 104
     },
     {
       "active": true,
@@ -21157,7 +21180,7 @@
       "active": true,
       "biome": "fields",
       "cell": "1:6",
-      "cluster_id": "monster:goblin:grand_haven_outskirts:00",
+      "cluster_id": "monster:goblin:grand_haven_outskirts:01",
       "entity_type": "monster",
       "expected_loot": [
         {
@@ -21192,9 +21215,9 @@
     {
       "active": true,
       "biome": "forest",
-      "cell": "3:2",
+      "cell": "2:2",
       "charges": 4,
-      "cluster_id": "node:herbs:willowbrook_wilds:00",
+      "cluster_id": "node:herbs:willowbrook_wilds:01",
       "collision_offset_y": 2,
       "collision_radius": 11,
       "entity_type": "node",
@@ -21209,8 +21232,8 @@
       "selection_mode": "carry_forward",
       "spawn_id": "fee00477-56b2-52c1-9225-8a36df06b3c3",
       "subzone": "willowbrook_wilds",
-      "x": 2355,
-      "y": 1482
+      "x": 2081,
+      "y": 1161
     },
     {
       "active": true,
