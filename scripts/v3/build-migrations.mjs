@@ -164,7 +164,7 @@ const stageContent = [
   "BEGIN",
   `  FOREACH target IN ARRAY ARRAY[${CONTENT_TABLES.map(sqlText).join(", ")}] LOOP`,
   "    SELECT string_agg(quote_ident(attname), ', ' ORDER BY attnum),",
-  `           string_agg(CASE WHEN attname = 'content_version' THEN ${sqlText(VERSION)}`,
+  `           string_agg(CASE WHEN attname = 'content_version' THEN ${sqlText(sqlText(VERSION))}`,
   "                           ELSE quote_ident(attname) END, ', ' ORDER BY attnum)",
   "      INTO column_list, projection",
   "    FROM pg_attribute",

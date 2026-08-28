@@ -43,7 +43,7 @@ DECLARE
 BEGIN
   FOREACH target IN ARRAY ARRAY['game_content_tiers', 'game_content_items', 'game_content_recipes', 'game_content_recipe_inputs', 'game_content_nodes', 'game_content_monsters', 'game_content_monster_loot', 'game_content_fish', 'game_content_fishing_spots', 'game_content_quests', 'game_content_bosses', 'game_content_migration_rules', 'game_content_progression_levels'] LOOP
     SELECT string_agg(quote_ident(attname), ', ' ORDER BY attnum),
-           string_agg(CASE WHEN attname = 'content_version' THEN 'v3'
+           string_agg(CASE WHEN attname = 'content_version' THEN '''v3'''
                            ELSE quote_ident(attname) END, ', ' ORDER BY attnum)
       INTO column_list, projection
     FROM pg_attribute
