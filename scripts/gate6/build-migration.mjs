@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const foundationPath = resolve(root, "supabase/gate6/runtime-foundation.sql");
 const actionsPath = resolve(root, "supabase/gate6/runtime-actions.sql");
-const manifestPath = resolve(root, "supabase/generated/content-manifest.sql");
+const manifestPath = resolve(root, "artifacts/v2/supabase/generated/content-manifest.sql");
 const progressionPath = resolve(root, "docs/overhaul/gate-3/progression.proposed.csv");
 const outputPath = resolve(root, "supabase/migrations/20260824090000_gate6_inactive_server_content.sql");
 const checkOnly = process.argv.includes("--check");

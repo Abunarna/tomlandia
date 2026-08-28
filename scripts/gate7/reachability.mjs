@@ -10,13 +10,17 @@ import {
   NPCS,
   WORLD_H,
   WORLD_W,
-} from "../../content/v2/frozen/data.ts";
+} from "../world-source/data.mjs";
 import { terrainBlockedAt } from "./terrain-collision.mjs";
 
+// Release under test: v2 (the live release) by default, v3 for the re-cut.
+const RELEASE = process.env["TOMLANDIA_RELEASE"] ?? "v2";
 const PATHS = Object.freeze({
-  content: "content/v2/manifest.authoring.json",
-  world: "content/v2/world-spawn-manifest.json",
-  output: "docs/overhaul/gate-7/reachability-report.json",
+  content: `content/${RELEASE}/manifest.authoring.json`,
+  world: `content/${RELEASE}/world-spawn-manifest.json`,
+  output: RELEASE === "v2"
+    ? "docs/overhaul/gate-7/reachability-report.json"
+    : `docs/overhaul/${RELEASE}/reachability-report.json`,
 });
 const checkOnly = process.argv.includes("--check");
 const BAG_CAPACITY = 20;

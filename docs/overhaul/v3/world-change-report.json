@@ -1,0 +1,89 @@
+{
+  "content_manifest_hash": "f8bc150f0edd4abfdec405dd7f58007d3e9da699100f2ec54cf2ecbd9fa03a0a",
+  "content_version": "v3",
+  "counts": {
+    "clusters": 152,
+    "monsters": 361,
+    "nodes": 369
+  },
+  "generated_from": {
+    "content": "content/v2/manifest.authoring.json",
+    "frozen_source": "content/v3/frozen/data.ts",
+    "world": "content/v2/world-spawn-manifest.json"
+  },
+  "relocated_rows": 4,
+  "relocations": [
+    {
+      "biome": "forest",
+      "entity_type": "monster",
+      "from": {
+        "x": 2282,
+        "y": 2382
+      },
+      "kind": "wolf",
+      "moved_px": 32,
+      "ordinal": 13,
+      "reason": "blocked_in_v3_world",
+      "subzone": "willowbrook_wilds",
+      "to": {
+        "x": 2314,
+        "y": 2382
+      }
+    },
+    {
+      "biome": "forest",
+      "entity_type": "monster",
+      "from": {
+        "x": 2184,
+        "y": 2371
+      },
+      "kind": "wolf",
+      "moved_px": 40,
+      "ordinal": 9,
+      "reason": "blocked_in_v3_world",
+      "subzone": "willowbrook_wilds",
+      "to": {
+        "x": 2198,
+        "y": 2409
+      }
+    },
+    {
+      "biome": "forest",
+      "entity_type": "node",
+      "from": {
+        "x": 2408,
+        "y": 1780
+      },
+      "kind": "maple",
+      "moved_px": 40,
+      "ordinal": 5,
+      "reason": "blocked_in_v3_world",
+      "subzone": "willowbrook_wilds",
+      "to": {
+        "x": 2448,
+        "y": 1780
+      }
+    },
+    {
+      "biome": "forest",
+      "entity_type": "node",
+      "from": {
+        "x": 1848,
+        "y": 2360
+      },
+      "kind": "willow",
+      "moved_px": 48,
+      "ordinal": 7,
+      "reason": "blocked_in_v3_world",
+      "subzone": "willowbrook_wilds",
+      "to": {
+        "x": 1867,
+        "y": 2404
+      }
+    }
+  ],
+  "spawn_hash": "38d2615e5ce144f70ffe8bf791603afae42b16b0c87fae1da0a1a886d7a8acba",
+  "spawn_identities_preserved": true,
+  "spawn_set_version": "v3",
+  "unchanged_gameplay_content": true
+}

@@ -24,11 +24,11 @@
     "gate3:check": "node scripts/gate3/check.mjs && node --test tests/balance/gate3-model.test.mjs",
     "test:gate3": "bun run test && bun run typecheck && bun run gate3:check",
     "content:generate": "node scripts/content/generate.mjs",
-    "content:check": "node scripts/content/check.mjs && node scripts/content/generate.mjs --check",
+    "content:check": "node scripts/content/check.mjs --input content/v2/manifest.authoring.json --artifact-root artifacts/v2 && node scripts/content/generate.mjs --input content/v2/manifest.authoring.json --out-root artifacts/v2 --check && node scripts/content/check.mjs --input content/v3/manifest.authoring.json --artifact-root . && node scripts/content/generate.mjs --input content/v3/manifest.authoring.json --check",
     "test:content": "node --test tests/content/manifest-contract.test.mjs",
     "test:db:gate4": "supabase test db supabase/tests/gate4_content_contract.sql",
     "test:gate4": "bun run test && bun run typecheck && bun run gate3:check && bun run content:check && bun run test:content",
-    "gate5:build": "node scripts/gate5/snapshot-live.mjs && node scripts/gate5/normalize-sprites.mjs && node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/snapshot-live-spawns.mjs && node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/build-new-spawns.mjs && node scripts/gate5/build-manifest.mjs && node scripts/content/generate.mjs",
+    "gate5:build": "node scripts/gate5/snapshot-live.mjs && node scripts/gate5/normalize-sprites.mjs && node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/snapshot-live-spawns.mjs && node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate5/build-new-spawns.mjs && node scripts/gate5/build-manifest.mjs && node scripts/content/generate.mjs --out-root artifacts/v2",
     "gate5:check": "node scripts/gate5/check.mjs",
     "test:gate5": "bun run test && bun run typecheck && bun run gate3:check && bun run gate5:check",
     "gate6:build": "node scripts/gate6/build-migration.mjs",
@@ -42,7 +42,9 @@
     "gate8:check": "node scripts/gate8/check.mjs",
     "test:gate8": "bun run test:gate7 && bun run gate8:check",
     "identity:check": "node scripts/identity/check.mjs",
-    "reconcile:check": "bun run identity:check && bun run content:check && bun run test:content && bun run typecheck && bun run test && bun run gate3:check && bun run gate5:check && bun run gate6:check && bun run gate7:check && bun run gate8:check"
+    "reconcile:check": "bun run identity:check && bun run content:check && bun run test:content && bun run typecheck && bun run test && bun run gate3:check && bun run gate5:check && bun run gate6:check && bun run gate7:check && bun run gate8:check && bun run v3:check",
+    "v3:build": "TOMLANDIA_WORLD_SOURCE=../../content/v3/frozen node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/v3/build.mjs && TOMLANDIA_RELEASE=v3 TOMLANDIA_WORLD_SOURCE=../../content/v3/frozen node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/reachability.mjs && node scripts/content/generate.mjs --input content/v3/manifest.authoring.json && node scripts/v3/build-migrations.mjs",
+    "v3:check": "TOMLANDIA_WORLD_SOURCE=../../content/v3/frozen node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/v3/build.mjs --check && TOMLANDIA_RELEASE=v3 TOMLANDIA_WORLD_SOURCE=../../content/v3/frozen node --no-warnings --experimental-strip-types --loader ./scripts/gate5/ts-loader.mjs scripts/gate7/reachability.mjs --check && node scripts/v3/build-migrations.mjs --check && node scripts/v3/check.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
