@@ -14,7 +14,7 @@ const checks = [
   ["new spawn placements", [...loader, "scripts/gate5/build-new-spawns.mjs", "--check"]],
   ["canonical manifest", ["scripts/gate5/build-manifest.mjs", "--check"]],
   ["generated content contract", ["scripts/content/check.mjs"]],
-  ["generated artifact drift", ["scripts/content/generate.mjs", "--check"]],
+  ["generated artifact drift", ["scripts/content/generate.mjs", "--input", "content/v2/manifest.authoring.json", "--out-root", "artifacts/v2", "--check"]],
   ["manifest validation tests", ["--test", "tests/content/manifest-contract.test.mjs"]],
   ["complete-content tests", ["--test", "tests/content/gate5-complete-content.test.mjs"]],
   ["new spawn geometry", [...loader, "scripts/gate5/check-world-spawns.mjs"]],
