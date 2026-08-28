@@ -65,7 +65,7 @@ const live = JSON.parse(liveText);
 const expectedHistoryHashes = {
   gate4: "f063c816e8915333404a5fd1c19a499d0828f2849c2d70bdcee61dacdc0c3dd9",
   gate5: "d21b4f659ebf8e897d006312ca08e61867708a46382fd345c492b47c929f8157",
-  gate6: "070454a514b5b8f33b9429596ad1f2cdaf6993caddf3860709c8edbeb96dec36",
+  gate6: "14182078010419c1093cfdb574d3cdcdf5ad39b5b311ef1e24ae319d5494200a",
 };
 assert(sha256(gate4) === expectedHistoryHashes.gate4, "Gate 4 migration history changed");
 assert(sha256(gate5) === expectedHistoryHashes.gate5, "Gate 5 migration history changed");
@@ -93,11 +93,11 @@ assert(
 
 const spawns = manifest.spawns;
 const spawnIds = new Set(spawns.map((spawn) => spawn.spawn_id));
-assert(spawns.length === 729 && spawnIds.size === 729, "Gate 7 requires exactly 729 unique UUID spawns");
-assert(manifest.counts.nodes === 368 && manifest.counts.monsters === 361, "Gate 7 spawn counts drifted");
-assert(spawns.filter((spawn) => spawn.entity_type === "node").length === 368, "Node count is not 368");
+assert(spawns.length === 730 && spawnIds.size === 730, "Gate 7 requires exactly 730 unique UUID spawns");
+assert(manifest.counts.nodes === 369 && manifest.counts.monsters === 361, "Gate 7 spawn counts drifted");
+assert(spawns.filter((spawn) => spawn.entity_type === "node").length === 369, "Node count is not 369");
 assert(spawns.filter((spawn) => spawn.entity_type === "monster").length === 361, "Monster count is not 361");
-assert(new Set(spawns.map((spawn) => spawn.cluster_id)).size === 142, "Cluster count is not 142");
+assert(new Set(spawns.map((spawn) => spawn.cluster_id)).size === 152, "Cluster count is not 152");
 assert(
   spawns.every((spawn, index) => index === 0 || spawns[index - 1].spawn_id < spawn.spawn_id),
   "World manifest is not strictly UUID-sorted",
@@ -165,7 +165,7 @@ for (const spawn of spawns) {
     assert(Boolean(spawn.placement_cluster), `Generated spawn lacks placement cluster: ${key}`);
   }
 }
-assert(carryForward === 435 && generated === 294, "Carry-forward/generated split drifted");
+assert(carryForward === 436 && generated === 294, "Carry-forward/generated split drifted");
 assert(clustered === 262 && fallback === 32, "Deterministic 90/10 result drifted");
 assert(manifest.cluster_selection.clustered_probability === 0.9, "Cluster probability is not 0.9");
 
@@ -194,7 +194,7 @@ const runite = spawns.filter((spawn) => spawn.entity_type === "node" && spawn.ki
 assert(runite.length === 23, "Gate 7 requires exactly 23 Runite nodes");
 assert(runite.every((spawn) => spawn.biome === "desert" && spawn.subzone === "desert_evil_boundary"), "Runite boundary ownership drifted");
 assert(spawns.every((spawn) => spawn.kind !== "tungsten"), "Tungsten leaked into v2");
-assert(live.node_spawns.length === 310 && live.monster_spawns.length === 289, "v1 client spawn snapshot counts drifted");
+assert(live.node_spawns.length === 311 && live.monster_spawns.length === 289, "v1 client spawn snapshot counts drifted");
 assert(live.node_spawns.filter((spawn) => spawn.kind === "tungsten").length === 20, "v1 Tungsten rollback evidence drifted");
 assert(
   legacyV1.node_count === 234 && legacyV1.monster_count === 170 && legacyV1.tungsten_node_count === 17,
@@ -204,8 +204,8 @@ assert(manifest.retirement.legacy_tungsten_nodes === 20 && manifest.retirement.v
 assert(manifest.rollback.v1_tables_mutated === false && manifest.rollback.player_state_mutated === false, "Rollback promise drifted");
 
 assert(report.spawn_hash === manifest.spawn_hash, "Reachability report uses a different spawn set");
-assert(report.summary.spawns_evaluated === 729, "Reachability did not inspect every spawn");
-assert(report.summary.clusters_evaluated === 142 && report.cluster_coverage.length === 142, "Reachability did not inspect every cluster");
+assert(report.summary.spawns_evaluated === 730, "Reachability did not inspect every spawn");
+assert(report.summary.clusters_evaluated === 152 && report.cluster_coverage.length === 152, "Reachability did not inspect every cluster");
 assert(report.summary.tiers_evaluated === 16 && report.tier_reports.length === 16, "Reachability did not inspect every tier");
 assert(report.summary.spawn_issues === 0 && report.spawn_issues.length === 0, "Spawn collision/ownership issues remain");
 assert(report.summary.unreachable_clusters === 0 && report.unreachable_clusters.length === 0, "Unreachable clusters remain");

@@ -40,7 +40,9 @@
     "test:db:gate7": "supabase test db supabase/tests/gate7_versioned_world.sql",
     "test:gate7": "bun run test:gate6 && bun run gate7:check",
     "gate8:check": "node scripts/gate8/check.mjs",
-    "test:gate8": "bun run test:gate7 && bun run gate8:check"
+    "test:gate8": "bun run test:gate7 && bun run gate8:check",
+    "identity:check": "node scripts/identity/check.mjs",
+    "reconcile:check": "bun run identity:check && bun run content:check && bun run test:content && bun run typecheck && bun run test && bun run gate3:check && bun run gate5:check && bun run gate6:check && bun run gate7:check && bun run gate8:check"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

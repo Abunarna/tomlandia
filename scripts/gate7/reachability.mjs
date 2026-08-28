@@ -10,7 +10,7 @@ import {
   NPCS,
   WORLD_H,
   WORLD_W,
-} from "../../src/game/data.ts";
+} from "../../content/v2/frozen/data.ts";
 import { terrainBlockedAt } from "./terrain-collision.mjs";
 
 const PATHS = Object.freeze({

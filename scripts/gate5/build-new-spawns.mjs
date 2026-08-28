@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 
-import { biomeAt, blockedAt, WORLD_H, WORLD_W } from "../../src/game/data.ts";
+import { biomeAt, blockedAt, WORLD_H, WORLD_W } from "../../content/v2/frozen/data.ts";
 import { NEW_MONSTER_SPAWN_SPECS, NEW_NODE_SPAWN_SPECS } from "./spawn-spec.mjs";
 
 const OUTPUT = "content/v2/new-spawn-placements.json";

@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
-const SOURCE = "src/game/data.ts";
+const SOURCE = "content/v2/frozen/data.ts";
 const OUTPUT = "docs/overhaul/gate-5/live-v1-snapshot.json";
 
 function between(source, start, end) {

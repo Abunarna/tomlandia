@@ -732,15 +732,8 @@
       "kind": "mithril_stalker",
       "biome": "forest",
       "subzone": "forest_depths",
-      "x": 2132,
-      "y": 1700
-    },
-    {
-      "kind": "mithril_stalker",
-      "biome": "forest",
-      "subzone": "forest_depths",
-      "x": 2116,
-      "y": 1728
+      "x": 2128,
+      "y": 1716
     },
     {
       "kind": "mithril_stalker",
@@ -753,15 +746,22 @@
       "kind": "mithril_stalker",
       "biome": "forest",
       "subzone": "forest_depths",
-      "x": 2068,
-      "y": 1700
+      "x": 2069,
+      "y": 1692
     },
     {
       "kind": "mithril_stalker",
       "biome": "forest",
       "subzone": "forest_depths",
-      "x": 2084,
-      "y": 1672
+      "x": 2092,
+      "y": 1669
+    },
+    {
+      "kind": "mithril_stalker",
+      "biome": "forest",
+      "subzone": "forest_depths",
+      "x": 2123,
+      "y": 1677
     },
     {
       "kind": "desert_raider",
