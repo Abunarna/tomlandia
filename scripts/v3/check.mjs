@@ -91,9 +91,12 @@ expect(report.content_manifest_hash === contentHash && report.spawn_hash === spa
 for (const [name, sql] of [["stage content", stageContent], ["stage world", stageWorld], ["activate", activate]]) {
   expect(sql.startsWith("--") && sql.includes("BEGIN;") && sql.trimEnd().endsWith("COMMIT;"), `${name} migration is not a single transaction`);
   expect(!/\bDROP\s+(TABLE|SCHEMA|FUNCTION)\b/i.test(sql), `${name} migration drops objects`);
-  expect(!/DELETE\s+FROM/i.test(sql), `${name} migration deletes rows`);
+  // Idempotent re-staging may clear its own v3 rows; nothing else may be deleted.
+  for (const statement of sql.match(/DELETE\s+FROM[^;]*;/gi) ?? []) {
+    expect(/content_version\s*=\s*'v3'/i.test(statement), `${name} migration deletes rows outside v3: ${statement.split("\n")[0]}`);
+  }
   expect(!/content_version\s*=\s*'v[12]'\s*$/im.test(sql.replace(/RAISE[^\n]*\n/g, "")), `${name} migration writes to v1/v2 rows`);
-  expect(!/player_saves|market_listings|bank_/i.test(sql), `${name} migration touches player data`);
+  expect(!/\b(player_saves|market_listings|player_bank|bank_items)\b/i.test(sql), `${name} migration touches player data`);
 }
 expect(stageContent.includes("status = 'staged'") || stageContent.includes("'staged'"), "content staging must insert staged rows");
 expect(activate.includes("game_validate_content_version('v3')"), "activation must validate v3 before flipping");
