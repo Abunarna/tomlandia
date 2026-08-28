@@ -46,6 +46,11 @@ SET active_content_version = 'v3',
     migration_run_id = 'v3-consolidation-20260828'
 WHERE singleton;
 
+UPDATE public.game_release_control
+SET minimum_client_content_version = 'v3',
+    updated_at = now()
+WHERE singleton;
+
 DO $v3_activate_exit$
 BEGIN
   IF (SELECT active_content_version FROM public.game_content_control WHERE singleton) <> 'v3' THEN

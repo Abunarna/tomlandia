@@ -87,16 +87,17 @@ const md5 = (value) => createHash("md5").update(value).digest("hex");
 
 // Digests mirror `md5(string_agg(..., ',' ORDER BY spawn_id))` in SQL.
 const bySpawnId = [...world.spawns].sort((left, right) => (left.spawn_id < right.spawn_id ? -1 : 1));
+const num = (value) => String(Number(value));
 const spawnDigest = md5(
-  bySpawnId.map((s) => `${s.spawn_id}:${s.entity_type}:${s.kind}:${s.ordinal}:${s.x}:${s.y}:${s.biome}:${s.subzone}`).join(","),
+  bySpawnId.map((s) => `${s.spawn_id}:${s.entity_type}:${s.kind}:${s.ordinal}:${num(s.x)}:${num(s.y)}:${s.biome}:${s.subzone}`).join(","),
 );
 const nodeDigest = md5(
   bySpawnId.filter((s) => s.entity_type === "node")
-    .map((s) => `${s.spawn_id}:${s.kind}:${s.cell}:${s.x}:${s.y}:${s.max_charges}:${s.gather_s}:${s.respawn_s}`).join(","),
+    .map((s) => `${s.spawn_id}:${s.kind}:${s.cell}:${num(s.x)}:${num(s.y)}:${s.max_charges}:${num(s.gather_s)}:${s.respawn_s}`).join(","),
 );
 const monsterDigest = md5(
   bySpawnId.filter((s) => s.entity_type === "monster")
-    .map((s) => `${s.spawn_id}:${s.kind}:${s.cell}:${s.x}:${s.y}:${s.max_hp}:${s.respawn_s}`).join(","),
+    .map((s) => `${s.spawn_id}:${s.kind}:${s.cell}:${num(s.x)}:${num(s.y)}:${s.max_hp}:${s.respawn_s}`).join(","),
 );
 
 const v2ById = new Map(v2World.spawns.map((spawn) => [`${spawn.entity_type}:${spawn.kind}:${spawn.ordinal}`, spawn]));
@@ -142,13 +143,16 @@ const stageContent = [
   "",
   "-- The version row: same player notice and content as v2, new identity/hash.",
   "INSERT INTO public.game_content_versions",
-  "  (content_version, spawn_set_version, status, manifest_hash, player_notice)",
-  `SELECT ${sqlText(VERSION)}, ${sqlText(VERSION)}, 'staged', ${sqlText(contentHash)}, player_notice`,
+  "  (content_version, spawn_set_version, uuid_namespace, status, manifest_hash, player_notice, starter_loadout, mechanics)",
+  `SELECT ${sqlText(VERSION)}, ${sqlText(VERSION)}, uuid_namespace, 'staged', ${sqlText(contentHash)}, player_notice, starter_loadout, mechanics`,
   `FROM public.game_content_versions WHERE content_version = ${sqlText(PREVIOUS)}`,
   "ON CONFLICT (content_version) DO UPDATE SET",
   "  spawn_set_version = EXCLUDED.spawn_set_version,",
+  "  uuid_namespace = EXCLUDED.uuid_namespace,",
   "  manifest_hash = EXCLUDED.manifest_hash,",
-  "  player_notice = EXCLUDED.player_notice;",
+  "  player_notice = EXCLUDED.player_notice,",
+  "  starter_loadout = EXCLUDED.starter_loadout,",
+  "  mechanics = EXCLUDED.mechanics;",
   "",
   "DO $v3_copy_content$",
   "DECLARE",
@@ -274,9 +278,9 @@ const stageWorld = [
   "-- Spawns the current world blocks, moved to their artifact positions.",
   ...relocationUpdates,
   "INSERT INTO public.game_world_nodes",
-  "  (spawn_id, content_version, spawn_set_version, kind, cell, biome, subzone, x, y,",
+  "  (spawn_id, content_version, spawn_set_version, entity_type, kind, cell, biome, subzone, x, y,",
   "   charges, max_charges, gather_s, respawn_s)",
-  `SELECT spawn.spawn_id, ${sqlText(VERSION)}, ${sqlText(VERSION)}, spawn.kind, previous_world.cell, spawn.biome, spawn.subzone,`,
+  `SELECT spawn.spawn_id, ${sqlText(VERSION)}, ${sqlText(VERSION)}, 'node', spawn.kind, previous_world.cell, spawn.biome, spawn.subzone,`,
   "       spawn.x, spawn.y, definition.max_charges, definition.max_charges, definition.gather_s, definition.respawn_s",
   "FROM public.game_content_spawns AS spawn",
   `JOIN public.game_content_nodes AS definition ON definition.content_version = ${sqlText(VERSION)} AND definition.kind = spawn.kind`,
@@ -286,8 +290,8 @@ const stageWorld = [
   `WHERE spawn.content_version = ${sqlText(VERSION)} AND spawn.entity_type = 'node';`,
   "",
   "INSERT INTO public.game_world_monsters",
-  "  (spawn_id, content_version, spawn_set_version, kind, cell, biome, subzone, x, y, hp, max_hp, respawn_s)",
-  `SELECT spawn.spawn_id, ${sqlText(VERSION)}, ${sqlText(VERSION)}, spawn.kind, previous_world.cell, spawn.biome, spawn.subzone,`,
+  "  (spawn_id, content_version, spawn_set_version, entity_type, kind, cell, biome, subzone, x, y, hp, max_hp, respawn_s)",
+  `SELECT spawn.spawn_id, ${sqlText(VERSION)}, ${sqlText(VERSION)}, 'monster', spawn.kind, previous_world.cell, spawn.biome, spawn.subzone,`,
   "       spawn.x, spawn.y, definition.hp, definition.hp, definition.respawn_s",
   "FROM public.game_content_spawns AS spawn",
   `JOIN public.game_content_monsters AS definition ON definition.content_version = ${sqlText(VERSION)} AND definition.kind = spawn.kind`,
@@ -316,24 +320,24 @@ const stageWorld = [
   "  END IF;",
   "",
   "  SELECT md5(string_agg(",
-  "           spawn_id::text || ':' || entity_type || ':' || kind || ':' || ordinal || ':' || x || ':' || y",
-  "             || ':' || biome || ':' || subzone, ',' ORDER BY spawn_id::text))",
+  "           spawn_id::text || ':' || entity_type || ':' || kind || ':' || ordinal || ':' || x::float8::text",
+  "             || ':' || y::float8::text || ':' || biome || ':' || subzone, ',' ORDER BY spawn_id::text))",
   `    INTO digest FROM public.game_content_spawns WHERE content_version = ${sqlText(VERSION)};`,
   `  IF digest <> ${sqlText(spawnDigest)} THEN`,
   "    RAISE EXCEPTION 'V3 spawn rows do not match the released artifact (%)', digest;",
   "  END IF;",
   "",
   "  SELECT md5(string_agg(",
-  "           spawn_id::text || ':' || kind || ':' || cell || ':' || x || ':' || y || ':' || max_charges",
-  "             || ':' || gather_s || ':' || respawn_s, ',' ORDER BY spawn_id::text))",
+  "           spawn_id::text || ':' || kind || ':' || cell || ':' || x::float8::text || ':' || y::float8::text",
+  "             || ':' || max_charges || ':' || gather_s::float8::text || ':' || respawn_s, ',' ORDER BY spawn_id::text))",
   `    INTO digest FROM public.game_world_nodes WHERE content_version = ${sqlText(VERSION)};`,
   `  IF digest <> ${sqlText(nodeDigest)} THEN`,
   "    RAISE EXCEPTION 'V3 node rows do not match the released artifact (%)', digest;",
   "  END IF;",
   "",
   "  SELECT md5(string_agg(",
-  "           spawn_id::text || ':' || kind || ':' || cell || ':' || x || ':' || y || ':' || max_hp",
-  "             || ':' || respawn_s, ',' ORDER BY spawn_id::text))",
+  "           spawn_id::text || ':' || kind || ':' || cell || ':' || x::float8::text || ':' || y::float8::text",
+  "             || ':' || max_hp || ':' || respawn_s, ',' ORDER BY spawn_id::text))",
   `    INTO digest FROM public.game_world_monsters WHERE content_version = ${sqlText(VERSION)};`,
   `  IF digest <> ${sqlText(monsterDigest)} THEN`,
   "    RAISE EXCEPTION 'V3 monster rows do not match the released artifact (%)', digest;",
