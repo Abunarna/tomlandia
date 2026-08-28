@@ -1,7 +1,9 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
-const SOURCE = "content/v2/frozen/data.ts";
+import { WORLD_SOURCE_FILE } from "../world-source/path.mjs";
+
+const SOURCE = WORLD_SOURCE_FILE;
 const OUTPUT = "docs/overhaul/gate-5/live-v1-snapshot.json";
 
 function between(source, start, end) {

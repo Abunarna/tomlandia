@@ -23,7 +23,7 @@ import {
   subscriptionCellAt,
   winterBandForLevel,
 } from "./world-model.mjs";
-import { WORLD_H, WORLD_W } from "../../content/v2/frozen/data.ts";
+import { WORLD_H, WORLD_W } from "../world-source/data.mjs";
 
 const PATHS = Object.freeze({
   content: "content/v2/manifest.authoring.json",

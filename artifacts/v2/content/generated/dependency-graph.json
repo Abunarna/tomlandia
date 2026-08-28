@@ -1,5 +1,5 @@
 {
-  "content_version": "v3",
+  "content_version": "v2",
   "edges": [
     {
       "from": "fish_rule:deepwater_eel",
@@ -2257,7 +2257,7 @@
       "to": "item:shadowweave"
     }
   ],
-  "manifest_hash": "f8bc150f0edd4abfdec405dd7f58007d3e9da699100f2ec54cf2ecbd9fa03a0a",
+  "manifest_hash": "8b2b3877e7ae3e7f5202ddfbf703c9f29ccd663d36baf38e5ed4c56352f76ee9",
   "nodes": [
     {
       "active": true,

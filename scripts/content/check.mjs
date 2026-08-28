@@ -7,7 +7,18 @@ import { generateOutputs, generateRuntimeOutputs, OUTPUT_PATHS } from "./model.m
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const readJson = async (relativePath) => JSON.parse(await readFile(path.join(root, relativePath), "utf8"));
 
-const manifest = await readJson("content/v2/manifest.authoring.json");
+// Which release to verify, and where its generated artifacts live. The active
+// client build (v3) writes into the repo root; earlier releases keep their
+// generated artifacts under artifacts/<version> so both stay verifiable.
+const argv = process.argv.slice(2);
+const argValue = (name, fallback) => {
+  const index = argv.indexOf(name);
+  return index >= 0 ? argv[index + 1] : fallback;
+};
+const inputPath = argValue("--input", "content/v2/manifest.authoring.json");
+const artifactRoot = argValue("--artifact-root", "artifacts/v2");
+
+const manifest = await readJson(inputPath);
 const registry = await readJson("docs/overhaul/gate-0/id-registry.json");
 const schema = await readJson("content/schema/manifest.schema.json");
 
@@ -30,7 +41,7 @@ if (manifest.lifecycle === "draft") {
 
 const generated = generateOutputs(manifest, registry);
 for (const [relativePath, expected] of Object.entries(generated.files)) {
-  const actual = await readFile(path.join(root, relativePath), "utf8");
+  const actual = await readFile(path.join(root, artifactRoot, relativePath), "utf8");
   if (actual !== expected) throw new Error(`Generated output drift: ${relativePath}`);
   if (!actual.includes(generated.hash)) throw new Error(`Generated output omits manifest hash: ${relativePath}`);
 }
@@ -111,4 +122,4 @@ if (/^INSERT INTO public\.game_content_control/gm.test(gate5Migration)) {
   throw new Error("Gate 5 schema migration must not create an active control row");
 }
 
-console.log(`Canonical content contract verified (${manifest.lifecycle}, ${generated.hash})`);
+console.log(`Canonical content contract verified: ${manifest.content_version} (${manifest.lifecycle}, ${generated.hash})`);

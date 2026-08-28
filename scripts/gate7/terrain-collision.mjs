@@ -2,7 +2,7 @@ import {
   NODE_DEFS,
   NODE_SPAWNS,
   blockedAt,
-} from "../../content/v2/frozen/data.ts";
+} from "../world-source/data.mjs";
 
 // The live collision helper includes v1 resource discs. Gate 7 replaces that
 // spawn set, so generation first subtracts those known discs and reachability

@@ -1,9 +1,11 @@
 import { CONTENT_VERSION } from "@/generated/content-manifest";
+import { WORLD_SPAWN_HASH } from "@/generated/world-manifest";
 
-// Locked Gate 7 world-spawn snapshot hash for the V2 renderer. This is distinct
-// from the content-manifest hash: the runtime RPC intentionally reports the
-// spawn-set hash so the client can reject a mismatched world layout.
-const V2_WORLD_SPAWN_HASH = "24130e8725da5f6e339d5037a40e81f5bcc1052a47fc29b056b36b8d8b2d31fa";
+// Locked world-spawn snapshot hash for this client build. This is distinct from
+// the content-manifest hash: the runtime RPC intentionally reports the
+// spawn-set hash so the client can reject a mismatched world layout. It is
+// generated alongside the release artifacts, never hand-edited.
+const V2_WORLD_SPAWN_HASH = WORLD_SPAWN_HASH;
 
 export type WorldRuntimeMode = "legacy_v1" | "uuid_v2" | "maintenance";
 

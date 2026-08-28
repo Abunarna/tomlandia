@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 
-import { biomeAt, blockedAt, WORLD_H, WORLD_W } from "../../content/v2/frozen/data.ts";
+import { biomeAt, blockedAt, WORLD_H, WORLD_W } from "../world-source/data.mjs";
 
 const manifest = JSON.parse(await readFile("content/v2/manifest.authoring.json", "utf8"));
 const registry = JSON.parse(await readFile("docs/overhaul/gate-0/id-registry.json", "utf8"));
