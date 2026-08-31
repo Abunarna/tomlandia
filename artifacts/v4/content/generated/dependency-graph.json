@@ -1,0 +1,4379 @@
+{
+  "content_version": "v4",
+  "edges": [
+    {
+      "from": "fish_rule:deepwater_eel",
+      "relation": "yields",
+      "to": "item:deepwater_eel"
+    },
+    {
+      "from": "fish_rule:golden_koi",
+      "relation": "yields",
+      "to": "item:golden_koi"
+    },
+    {
+      "from": "fish_rule:river_minnow",
+      "relation": "yields",
+      "to": "item:river_minnow"
+    },
+    {
+      "from": "fish_rule:silver_trout",
+      "relation": "yields",
+      "to": "item:silver_trout"
+    },
+    {
+      "from": "fish_rule:starlight_salmon",
+      "relation": "yields",
+      "to": "item:starlight_salmon"
+    },
+    {
+      "from": "fishing_spot:evil_6",
+      "relation": "contains",
+      "to": "item:deepwater_eel"
+    },
+    {
+      "from": "fishing_spot:evil_6",
+      "relation": "contains",
+      "to": "item:golden_koi"
+    },
+    {
+      "from": "fishing_spot:evil_6",
+      "relation": "contains",
+      "to": "item:river_minnow"
+    },
+    {
+      "from": "fishing_spot:evil_6",
+      "relation": "contains",
+      "to": "item:silver_trout"
+    },
+    {
+      "from": "fishing_spot:evil_6",
+      "relation": "contains",
+      "to": "item:starlight_salmon"
+    },
+    {
+      "from": "fishing_spot:fields_1",
+      "relation": "contains",
+      "to": "item:deepwater_eel"
+    },
+    {
+      "from": "fishing_spot:fields_1",
+      "relation": "contains",
+      "to": "item:golden_koi"
+    },
+    {
+      "from": "fishing_spot:fields_1",
+      "relation": "contains",
+      "to": "item:river_minnow"
+    },
+    {
+      "from": "fishing_spot:fields_1",
+      "relation": "contains",
+      "to": "item:silver_trout"
+    },
+    {
+      "from": "fishing_spot:fields_1",
+      "relation": "contains",
+      "to": "item:starlight_salmon"
+    },
+    {
+      "from": "fishing_spot:fields_2",
+      "relation": "contains",
+      "to": "item:deepwater_eel"
+    },
+    {
+      "from": "fishing_spot:fields_2",
+      "relation": "contains",
+      "to": "item:golden_koi"
+    },
+    {
+      "from": "fishing_spot:fields_2",
+      "relation": "contains",
+      "to": "item:river_minnow"
+    },
+    {
+      "from": "fishing_spot:fields_2",
+      "relation": "contains",
+      "to": "item:silver_trout"
+    },
+    {
+      "from": "fishing_spot:fields_2",
+      "relation": "contains",
+      "to": "item:starlight_salmon"
+    },
+    {
+      "from": "fishing_spot:forest_3",
+      "relation": "contains",
+      "to": "item:deepwater_eel"
+    },
+    {
+      "from": "fishing_spot:forest_3",
+      "relation": "contains",
+      "to": "item:golden_koi"
+    },
+    {
+      "from": "fishing_spot:forest_3",
+      "relation": "contains",
+      "to": "item:river_minnow"
+    },
+    {
+      "from": "fishing_spot:forest_3",
+      "relation": "contains",
+      "to": "item:silver_trout"
+    },
+    {
+      "from": "fishing_spot:forest_3",
+      "relation": "contains",
+      "to": "item:starlight_salmon"
+    },
+    {
+      "from": "fishing_spot:forest_4",
+      "relation": "contains",
+      "to": "item:deepwater_eel"
+    },
+    {
+      "from": "fishing_spot:forest_4",
+      "relation": "contains",
+      "to": "item:golden_koi"
+    },
+    {
+      "from": "fishing_spot:forest_4",
+      "relation": "contains",
+      "to": "item:river_minnow"
+    },
+    {
+      "from": "fishing_spot:forest_4",
+      "relation": "contains",
+      "to": "item:silver_trout"
+    },
+    {
+      "from": "fishing_spot:forest_4",
+      "relation": "contains",
+      "to": "item:starlight_salmon"
+    },
+    {
+      "from": "fishing_spot:winter_5",
+      "relation": "contains",
+      "to": "item:deepwater_eel"
+    },
+    {
+      "from": "fishing_spot:winter_5",
+      "relation": "contains",
+      "to": "item:golden_koi"
+    },
+    {
+      "from": "fishing_spot:winter_5",
+      "relation": "contains",
+      "to": "item:river_minnow"
+    },
+    {
+      "from": "fishing_spot:winter_5",
+      "relation": "contains",
+      "to": "item:silver_trout"
+    },
+    {
+      "from": "fishing_spot:winter_5",
+      "relation": "contains",
+      "to": "item:starlight_salmon"
+    },
+    {
+      "from": "item:ancient_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_ancient_heavy_armor"
+    },
+    {
+      "from": "item:ancient_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_ancient_greatblade"
+    },
+    {
+      "from": "item:ancient_ore",
+      "relation": "input_to",
+      "to": "recipe:smelt_ancient_bar"
+    },
+    {
+      "from": "item:ascendant_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_ascendant_heavy_armor"
+    },
+    {
+      "from": "item:ascendant_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_ascendant_blade"
+    },
+    {
+      "from": "item:ascendant_core",
+      "relation": "input_to",
+      "to": "recipe:alchemy_ascendant_damage_potion"
+    },
+    {
+      "from": "item:ascendant_core",
+      "relation": "input_to",
+      "to": "recipe:armor_ascendant_heavy_armor"
+    },
+    {
+      "from": "item:ascendant_core",
+      "relation": "input_to",
+      "to": "recipe:armor_ascendant_light_armor"
+    },
+    {
+      "from": "item:ascendant_core",
+      "relation": "input_to",
+      "to": "recipe:forge_ascendant_blade"
+    },
+    {
+      "from": "item:ascendant_ore",
+      "relation": "input_to",
+      "to": "recipe:smelt_ascendant_bar"
+    },
+    {
+      "from": "item:ascendant_weave",
+      "relation": "input_to",
+      "to": "recipe:armor_ancient_light_armor"
+    },
+    {
+      "from": "item:ascendant_weave",
+      "relation": "input_to",
+      "to": "recipe:armor_ascendant_light_armor"
+    },
+    {
+      "from": "item:ascendant_weave",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmforged_light_armor"
+    },
+    {
+      "from": "item:boar_tusk",
+      "relation": "input_to",
+      "to": "recipe:armor_copper_heavy_armor"
+    },
+    {
+      "from": "item:boar_tusk",
+      "relation": "input_to",
+      "to": "recipe:armor_copper_light_armor"
+    },
+    {
+      "from": "item:boar_tusk",
+      "relation": "input_to",
+      "to": "recipe:forge_steel_sword"
+    },
+    {
+      "from": "item:bronze_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_bronze_heavy_armor"
+    },
+    {
+      "from": "item:bronze_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_bronze_sword"
+    },
+    {
+      "from": "item:brute_fang",
+      "relation": "input_to",
+      "to": "recipe:alchemy_bronze_damage_potion"
+    },
+    {
+      "from": "item:brute_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_bronze_heavy_armor"
+    },
+    {
+      "from": "item:brute_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_bronze_light_armor"
+    },
+    {
+      "from": "item:brute_fang",
+      "relation": "input_to",
+      "to": "recipe:forge_bronze_sword"
+    },
+    {
+      "from": "item:coal",
+      "relation": "input_to",
+      "to": "recipe:smelt_steel_bar"
+    },
+    {
+      "from": "item:copper_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_copper_heavy_armor"
+    },
+    {
+      "from": "item:copper_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_copper_sword"
+    },
+    {
+      "from": "item:copper_ore",
+      "relation": "input_to",
+      "to": "recipe:smelt_bronze_bar"
+    },
+    {
+      "from": "item:copper_ore",
+      "relation": "input_to",
+      "to": "recipe:smelt_copper_bar"
+    },
+    {
+      "from": "item:cursed_bark",
+      "relation": "input_to",
+      "to": "recipe:forge_frost_greatblade"
+    },
+    {
+      "from": "item:cursed_bark",
+      "relation": "input_to",
+      "to": "recipe:forge_shadow_blade"
+    },
+    {
+      "from": "item:cursed_bark",
+      "relation": "input_to",
+      "to": "recipe:forge_wyrmsteel_blade"
+    },
+    {
+      "from": "item:cursed_rune",
+      "relation": "input_to",
+      "to": "recipe:armor_shadowsteel_heavy_armor"
+    },
+    {
+      "from": "item:cursed_rune",
+      "relation": "input_to",
+      "to": "recipe:armor_shadowsteel_light_armor"
+    },
+    {
+      "from": "item:cursed_rune",
+      "relation": "input_to",
+      "to": "recipe:forge_shadow_blade"
+    },
+    {
+      "from": "item:cursed_shard",
+      "relation": "input_to",
+      "to": "recipe:smelt_shadowsteel_bar"
+    },
+    {
+      "from": "item:deepwater_eel",
+      "relation": "input_to",
+      "to": "recipe:cook_frost_tonic"
+    },
+    {
+      "from": "item:deepwater_eel",
+      "relation": "input_to",
+      "to": "recipe:cook_shadow_stew"
+    },
+    {
+      "from": "item:deepwater_eel",
+      "relation": "input_to",
+      "to": "recipe:cook_sunspiced_eel"
+    },
+    {
+      "from": "item:desert_bloom",
+      "relation": "input_to",
+      "to": "recipe:alchemy_runite_damage_potion"
+    },
+    {
+      "from": "item:desert_bloom",
+      "relation": "input_to",
+      "to": "recipe:alchemy_sunsteel_damage_potion"
+    },
+    {
+      "from": "item:desert_bloom",
+      "relation": "input_to",
+      "to": "recipe:cook_sunspiced_eel"
+    },
+    {
+      "from": "item:desert_bloom",
+      "relation": "input_to",
+      "to": "recipe:weave_mystic_cloth"
+    },
+    {
+      "from": "item:devourer_mandible",
+      "relation": "input_to",
+      "to": "recipe:armor_runite_heavy_armor"
+    },
+    {
+      "from": "item:devourer_mandible",
+      "relation": "input_to",
+      "to": "recipe:armor_runite_light_armor"
+    },
+    {
+      "from": "item:feather",
+      "relation": "input_to",
+      "to": "recipe:alchemy_shadow_venom"
+    },
+    {
+      "from": "item:feather",
+      "relation": "input_to",
+      "to": "recipe:cook_berry_pie"
+    },
+    {
+      "from": "item:flax",
+      "relation": "input_to",
+      "to": "recipe:weave_linen_cloth"
+    },
+    {
+      "from": "item:forest_herbs",
+      "relation": "input_to",
+      "to": "recipe:alchemy_steel_damage_potion"
+    },
+    {
+      "from": "item:forest_herbs",
+      "relation": "input_to",
+      "to": "recipe:cook_fishermans_stew"
+    },
+    {
+      "from": "item:forest_herbs",
+      "relation": "input_to",
+      "to": "recipe:cook_golden_koi_feast"
+    },
+    {
+      "from": "item:forest_herbs",
+      "relation": "input_to",
+      "to": "recipe:cook_runic_fish_stew"
+    },
+    {
+      "from": "item:forest_herbs",
+      "relation": "input_to",
+      "to": "recipe:weave_herb_weave"
+    },
+    {
+      "from": "item:frost_crystal",
+      "relation": "input_to",
+      "to": "recipe:alchemy_froststeel_damage_potion"
+    },
+    {
+      "from": "item:frost_crystal",
+      "relation": "input_to",
+      "to": "recipe:smelt_froststeel_bar"
+    },
+    {
+      "from": "item:frost_giant_heart",
+      "relation": "input_to",
+      "to": "recipe:alchemy_starsteel_damage_potion"
+    },
+    {
+      "from": "item:frost_giant_heart",
+      "relation": "input_to",
+      "to": "recipe:armor_glacial_heavy_armor"
+    },
+    {
+      "from": "item:frost_giant_heart",
+      "relation": "input_to",
+      "to": "recipe:armor_glacial_light_armor"
+    },
+    {
+      "from": "item:frost_giant_heart",
+      "relation": "input_to",
+      "to": "recipe:forge_starsteel_blade"
+    },
+    {
+      "from": "item:frost_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_glacial_heavy_armor"
+    },
+    {
+      "from": "item:frost_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_glacial_light_armor"
+    },
+    {
+      "from": "item:frost_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_starsteel_heavy_armor"
+    },
+    {
+      "from": "item:frost_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_starsteel_light_armor"
+    },
+    {
+      "from": "item:frost_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_voidsteel_heavy_armor"
+    },
+    {
+      "from": "item:frost_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_voidsteel_light_armor"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:alchemy_ancient_damage_potion"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:alchemy_ascendant_damage_potion"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:alchemy_starsteel_damage_potion"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:alchemy_voidsteel_damage_potion"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:alchemy_wyrmforged_damage_potion"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:cook_ancient_feast"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:cook_ascendant_feast"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:cook_starsteel_feast"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:cook_void_feast"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:cook_wyrmforged_feast"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:weave_ascendant_weave"
+    },
+    {
+      "from": "item:frost_lichen",
+      "relation": "input_to",
+      "to": "recipe:weave_frostweave"
+    },
+    {
+      "from": "item:frost_pelt",
+      "relation": "input_to",
+      "to": "recipe:alchemy_frostfire_brew"
+    },
+    {
+      "from": "item:frost_pelt",
+      "relation": "input_to",
+      "to": "recipe:cook_phoenix_fillet"
+    },
+    {
+      "from": "item:frost_pelt",
+      "relation": "input_to",
+      "to": "recipe:skin_frost_leather"
+    },
+    {
+      "from": "item:frostpine_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_ancient_greatblade"
+    },
+    {
+      "from": "item:frostpine_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_ascendant_blade"
+    },
+    {
+      "from": "item:frostpine_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_glacial_greatblade"
+    },
+    {
+      "from": "item:frostpine_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_starsteel_blade"
+    },
+    {
+      "from": "item:frostpine_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_voidsteel_greatblade"
+    },
+    {
+      "from": "item:frostpine_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_wyrmforged_blade"
+    },
+    {
+      "from": "item:froststeel_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_froststeel_heavy_armor"
+    },
+    {
+      "from": "item:froststeel_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_frost_greatblade"
+    },
+    {
+      "from": "item:froststeel_bar",
+      "relation": "input_to",
+      "to": "recipe:smelt_wyrmsteel_bar"
+    },
+    {
+      "from": "item:frostweave",
+      "relation": "input_to",
+      "to": "recipe:armor_glacial_light_armor"
+    },
+    {
+      "from": "item:frostweave",
+      "relation": "input_to",
+      "to": "recipe:armor_starsteel_light_armor"
+    },
+    {
+      "from": "item:frostweave",
+      "relation": "input_to",
+      "to": "recipe:armor_voidsteel_light_armor"
+    },
+    {
+      "from": "item:frostweave",
+      "relation": "input_to",
+      "to": "recipe:weave_ascendant_weave"
+    },
+    {
+      "from": "item:ghoul_essence",
+      "relation": "input_to",
+      "to": "recipe:alchemy_runite_damage_potion"
+    },
+    {
+      "from": "item:ghoul_essence",
+      "relation": "input_to",
+      "to": "recipe:forge_runite_greatsword"
+    },
+    {
+      "from": "item:glacial_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_glacial_heavy_armor"
+    },
+    {
+      "from": "item:glacial_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_glacial_greatblade"
+    },
+    {
+      "from": "item:glacial_core",
+      "relation": "input_to",
+      "to": "recipe:armor_starsteel_heavy_armor"
+    },
+    {
+      "from": "item:glacial_core",
+      "relation": "input_to",
+      "to": "recipe:armor_starsteel_light_armor"
+    },
+    {
+      "from": "item:glacial_ore",
+      "relation": "input_to",
+      "to": "recipe:smelt_glacial_bar"
+    },
+    {
+      "from": "item:gloomcap",
+      "relation": "input_to",
+      "to": "recipe:alchemy_wyrmsteel_damage_potion"
+    },
+    {
+      "from": "item:gloomcap",
+      "relation": "input_to",
+      "to": "recipe:cook_shadow_stew"
+    },
+    {
+      "from": "item:gloomcap",
+      "relation": "input_to",
+      "to": "recipe:cook_wyrm_feast"
+    },
+    {
+      "from": "item:gloomcap",
+      "relation": "input_to",
+      "to": "recipe:weave_shadowweave"
+    },
+    {
+      "from": "item:goblin_charm",
+      "relation": "input_to",
+      "to": "recipe:alchemy_frostfire_brew"
+    },
+    {
+      "from": "item:goblin_charm",
+      "relation": "input_to",
+      "to": "recipe:alchemy_goblins_fury_tonic"
+    },
+    {
+      "from": "item:goblin_charm",
+      "relation": "input_to",
+      "to": "recipe:cook_hearty_stew"
+    },
+    {
+      "from": "item:golden_koi",
+      "relation": "input_to",
+      "to": "recipe:cook_golden_koi_feast"
+    },
+    {
+      "from": "item:golden_koi",
+      "relation": "input_to",
+      "to": "recipe:cook_hearty_stew"
+    },
+    {
+      "from": "item:golden_koi",
+      "relation": "input_to",
+      "to": "recipe:cook_runic_fish_stew"
+    },
+    {
+      "from": "item:herb_weave",
+      "relation": "input_to",
+      "to": "recipe:armor_iron_light_armor"
+    },
+    {
+      "from": "item:herb_weave",
+      "relation": "input_to",
+      "to": "recipe:armor_mithril_light_armor"
+    },
+    {
+      "from": "item:herb_weave",
+      "relation": "input_to",
+      "to": "recipe:armor_steel_light_armor"
+    },
+    {
+      "from": "item:herb_weave",
+      "relation": "input_to",
+      "to": "recipe:weave_mystic_cloth"
+    },
+    {
+      "from": "item:iron_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_iron_heavy_armor"
+    },
+    {
+      "from": "item:iron_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_iron_sword"
+    },
+    {
+      "from": "item:iron_bar",
+      "relation": "input_to",
+      "to": "recipe:smelt_steel_bar"
+    },
+    {
+      "from": "item:iron_ore",
+      "relation": "input_to",
+      "to": "recipe:smelt_iron_bar"
+    },
+    {
+      "from": "item:ironback_tusk",
+      "relation": "input_to",
+      "to": "recipe:alchemy_steel_damage_potion"
+    },
+    {
+      "from": "item:ironback_tusk",
+      "relation": "input_to",
+      "to": "recipe:armor_iron_heavy_armor"
+    },
+    {
+      "from": "item:ironback_tusk",
+      "relation": "input_to",
+      "to": "recipe:armor_iron_light_armor"
+    },
+    {
+      "from": "item:ironback_tusk",
+      "relation": "input_to",
+      "to": "recipe:forge_iron_sword"
+    },
+    {
+      "from": "item:jackal_fang",
+      "relation": "input_to",
+      "to": "recipe:forge_mithril_blade"
+    },
+    {
+      "from": "item:light_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_bronze_heavy_armor"
+    },
+    {
+      "from": "item:light_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_bronze_light_armor"
+    },
+    {
+      "from": "item:light_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_copper_heavy_armor"
+    },
+    {
+      "from": "item:light_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_copper_light_armor"
+    },
+    {
+      "from": "item:linen_cloth",
+      "relation": "input_to",
+      "to": "recipe:armor_bronze_light_armor"
+    },
+    {
+      "from": "item:linen_cloth",
+      "relation": "input_to",
+      "to": "recipe:armor_copper_light_armor"
+    },
+    {
+      "from": "item:linen_cloth",
+      "relation": "input_to",
+      "to": "recipe:weave_herb_weave"
+    },
+    {
+      "from": "item:maple_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_steel_sword"
+    },
+    {
+      "from": "item:meadow_berries",
+      "relation": "input_to",
+      "to": "recipe:alchemy_bronze_damage_potion"
+    },
+    {
+      "from": "item:meadow_berries",
+      "relation": "input_to",
+      "to": "recipe:weave_linen_cloth"
+    },
+    {
+      "from": "item:mithril_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_mithril_heavy_armor"
+    },
+    {
+      "from": "item:mithril_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_mithril_blade"
+    },
+    {
+      "from": "item:mithril_bar",
+      "relation": "input_to",
+      "to": "recipe:smelt_sunsteel_bar"
+    },
+    {
+      "from": "item:mithril_ore",
+      "relation": "input_to",
+      "to": "recipe:smelt_mithril_bar"
+    },
+    {
+      "from": "item:mystic_cloth",
+      "relation": "input_to",
+      "to": "recipe:armor_runite_light_armor"
+    },
+    {
+      "from": "item:mystic_cloth",
+      "relation": "input_to",
+      "to": "recipe:armor_sunsteel_light_armor"
+    },
+    {
+      "from": "item:mystic_cloth",
+      "relation": "input_to",
+      "to": "recipe:weave_shadowweave"
+    },
+    {
+      "from": "item:oak_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_bronze_sword"
+    },
+    {
+      "from": "item:palm_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_mithril_blade"
+    },
+    {
+      "from": "item:palm_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_runite_greatsword"
+    },
+    {
+      "from": "item:palm_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_sunsteel_blade"
+    },
+    {
+      "from": "item:raider_fang",
+      "relation": "input_to",
+      "to": "recipe:alchemy_sunsteel_damage_potion"
+    },
+    {
+      "from": "item:raider_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_sunsteel_heavy_armor"
+    },
+    {
+      "from": "item:raider_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_sunsteel_light_armor"
+    },
+    {
+      "from": "item:raider_fang",
+      "relation": "input_to",
+      "to": "recipe:forge_sunsteel_blade"
+    },
+    {
+      "from": "item:raw_hide",
+      "relation": "input_to",
+      "to": "recipe:alchemy_minor_venom_draught"
+    },
+    {
+      "from": "item:raw_hide",
+      "relation": "input_to",
+      "to": "recipe:skin_light_leather"
+    },
+    {
+      "from": "item:reaper_bone",
+      "relation": "input_to",
+      "to": "recipe:armor_steel_heavy_armor"
+    },
+    {
+      "from": "item:reaper_bone",
+      "relation": "input_to",
+      "to": "recipe:armor_steel_light_armor"
+    },
+    {
+      "from": "item:revenant_essence",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmsteel_heavy_armor"
+    },
+    {
+      "from": "item:revenant_essence",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmsteel_light_armor"
+    },
+    {
+      "from": "item:revenant_essence",
+      "relation": "input_to",
+      "to": "recipe:forge_glacial_greatblade"
+    },
+    {
+      "from": "item:river_minnow",
+      "relation": "input_to",
+      "to": "recipe:cook_honey_bun"
+    },
+    {
+      "from": "item:runite_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_runite_heavy_armor"
+    },
+    {
+      "from": "item:runite_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_runite_greatsword"
+    },
+    {
+      "from": "item:runite_bar",
+      "relation": "input_to",
+      "to": "recipe:smelt_shadowsteel_bar"
+    },
+    {
+      "from": "item:runite_ore",
+      "relation": "input_to",
+      "to": "recipe:smelt_runite_bar"
+    },
+    {
+      "from": "item:sandstone",
+      "relation": "input_to",
+      "to": "recipe:smelt_mithril_bar"
+    },
+    {
+      "from": "item:scale_hide",
+      "relation": "input_to",
+      "to": "recipe:alchemy_serpents_bite_elixir"
+    },
+    {
+      "from": "item:scale_hide",
+      "relation": "input_to",
+      "to": "recipe:skin_scaled_leather"
+    },
+    {
+      "from": "item:scale_hide",
+      "relation": "input_to",
+      "to": "recipe:skin_shadow_leather"
+    },
+    {
+      "from": "item:scaled_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_mithril_heavy_armor"
+    },
+    {
+      "from": "item:scaled_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_mithril_light_armor"
+    },
+    {
+      "from": "item:scaled_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_runite_heavy_armor"
+    },
+    {
+      "from": "item:scaled_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_runite_light_armor"
+    },
+    {
+      "from": "item:scaled_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_sunsteel_heavy_armor"
+    },
+    {
+      "from": "item:scaled_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_sunsteel_light_armor"
+    },
+    {
+      "from": "item:shadow_claw",
+      "relation": "input_to",
+      "to": "recipe:armor_mithril_heavy_armor"
+    },
+    {
+      "from": "item:shadow_claw",
+      "relation": "input_to",
+      "to": "recipe:armor_mithril_light_armor"
+    },
+    {
+      "from": "item:shadow_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_froststeel_heavy_armor"
+    },
+    {
+      "from": "item:shadow_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_froststeel_light_armor"
+    },
+    {
+      "from": "item:shadow_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_shadowsteel_heavy_armor"
+    },
+    {
+      "from": "item:shadow_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_shadowsteel_light_armor"
+    },
+    {
+      "from": "item:shadow_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmsteel_heavy_armor"
+    },
+    {
+      "from": "item:shadow_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmsteel_light_armor"
+    },
+    {
+      "from": "item:shadow_pelt",
+      "relation": "input_to",
+      "to": "recipe:alchemy_shadow_venom"
+    },
+    {
+      "from": "item:shadow_pelt",
+      "relation": "input_to",
+      "to": "recipe:skin_shadow_leather"
+    },
+    {
+      "from": "item:shadowsteel_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_shadowsteel_heavy_armor"
+    },
+    {
+      "from": "item:shadowsteel_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_shadow_blade"
+    },
+    {
+      "from": "item:shadowsteel_bar",
+      "relation": "input_to",
+      "to": "recipe:smelt_froststeel_bar"
+    },
+    {
+      "from": "item:shadowweave",
+      "relation": "input_to",
+      "to": "recipe:armor_froststeel_light_armor"
+    },
+    {
+      "from": "item:shadowweave",
+      "relation": "input_to",
+      "to": "recipe:armor_shadowsteel_light_armor"
+    },
+    {
+      "from": "item:shadowweave",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmsteel_light_armor"
+    },
+    {
+      "from": "item:shadowweave",
+      "relation": "input_to",
+      "to": "recipe:weave_frostweave"
+    },
+    {
+      "from": "item:silver_trout",
+      "relation": "input_to",
+      "to": "recipe:cook_berry_pie"
+    },
+    {
+      "from": "item:silver_trout",
+      "relation": "input_to",
+      "to": "recipe:cook_fishermans_stew"
+    },
+    {
+      "from": "item:starlight_salmon",
+      "relation": "input_to",
+      "to": "recipe:cook_ancient_feast"
+    },
+    {
+      "from": "item:starlight_salmon",
+      "relation": "input_to",
+      "to": "recipe:cook_ascendant_feast"
+    },
+    {
+      "from": "item:starlight_salmon",
+      "relation": "input_to",
+      "to": "recipe:cook_phoenix_fillet"
+    },
+    {
+      "from": "item:starlight_salmon",
+      "relation": "input_to",
+      "to": "recipe:cook_starsteel_feast"
+    },
+    {
+      "from": "item:starlight_salmon",
+      "relation": "input_to",
+      "to": "recipe:cook_void_feast"
+    },
+    {
+      "from": "item:starlight_salmon",
+      "relation": "input_to",
+      "to": "recipe:cook_wyrm_feast"
+    },
+    {
+      "from": "item:starlight_salmon",
+      "relation": "input_to",
+      "to": "recipe:cook_wyrmforged_feast"
+    },
+    {
+      "from": "item:starsteel_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_starsteel_heavy_armor"
+    },
+    {
+      "from": "item:starsteel_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_starsteel_blade"
+    },
+    {
+      "from": "item:starsteel_ore",
+      "relation": "input_to",
+      "to": "recipe:smelt_starsteel_bar"
+    },
+    {
+      "from": "item:steel_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_steel_heavy_armor"
+    },
+    {
+      "from": "item:steel_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_steel_sword"
+    },
+    {
+      "from": "item:sunsteel_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_sunsteel_heavy_armor"
+    },
+    {
+      "from": "item:sunsteel_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_sunsteel_blade"
+    },
+    {
+      "from": "item:sunstone",
+      "relation": "input_to",
+      "to": "recipe:smelt_sunsteel_bar"
+    },
+    {
+      "from": "item:thick_hide",
+      "relation": "input_to",
+      "to": "recipe:alchemy_goblins_fury_tonic"
+    },
+    {
+      "from": "item:thick_hide",
+      "relation": "input_to",
+      "to": "recipe:skin_thick_leather"
+    },
+    {
+      "from": "item:thick_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_iron_heavy_armor"
+    },
+    {
+      "from": "item:thick_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_iron_light_armor"
+    },
+    {
+      "from": "item:thick_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_steel_heavy_armor"
+    },
+    {
+      "from": "item:thick_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_steel_light_armor"
+    },
+    {
+      "from": "item:thick_leather",
+      "relation": "input_to",
+      "to": "recipe:cook_frost_tonic"
+    },
+    {
+      "from": "item:troll_fang",
+      "relation": "input_to",
+      "to": "recipe:alchemy_froststeel_damage_potion"
+    },
+    {
+      "from": "item:troll_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_froststeel_heavy_armor"
+    },
+    {
+      "from": "item:troll_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_froststeel_light_armor"
+    },
+    {
+      "from": "item:troll_fang",
+      "relation": "input_to",
+      "to": "recipe:forge_frost_greatblade"
+    },
+    {
+      "from": "item:void_essence",
+      "relation": "input_to",
+      "to": "recipe:alchemy_ancient_damage_potion"
+    },
+    {
+      "from": "item:void_essence",
+      "relation": "input_to",
+      "to": "recipe:alchemy_wyrmforged_damage_potion"
+    },
+    {
+      "from": "item:void_essence",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmforged_heavy_armor"
+    },
+    {
+      "from": "item:void_essence",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmforged_light_armor"
+    },
+    {
+      "from": "item:void_essence",
+      "relation": "input_to",
+      "to": "recipe:forge_ancient_greatblade"
+    },
+    {
+      "from": "item:void_essence",
+      "relation": "input_to",
+      "to": "recipe:forge_wyrmforged_blade"
+    },
+    {
+      "from": "item:voidsteel_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_voidsteel_heavy_armor"
+    },
+    {
+      "from": "item:voidsteel_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_voidsteel_greatblade"
+    },
+    {
+      "from": "item:voidsteel_ore",
+      "relation": "input_to",
+      "to": "recipe:smelt_voidsteel_bar"
+    },
+    {
+      "from": "item:willow_logs",
+      "relation": "input_to",
+      "to": "recipe:forge_iron_sword"
+    },
+    {
+      "from": "item:wraith_ice_core",
+      "relation": "input_to",
+      "to": "recipe:alchemy_wyrmsteel_damage_potion"
+    },
+    {
+      "from": "item:wraith_ice_core",
+      "relation": "input_to",
+      "to": "recipe:forge_wyrmsteel_blade"
+    },
+    {
+      "from": "item:wraith_ice_core",
+      "relation": "input_to",
+      "to": "recipe:smelt_wyrmsteel_bar"
+    },
+    {
+      "from": "item:wyrm_hide",
+      "relation": "input_to",
+      "to": "recipe:skin_wyrm_leather"
+    },
+    {
+      "from": "item:wyrm_knight_fang",
+      "relation": "input_to",
+      "to": "recipe:alchemy_voidsteel_damage_potion"
+    },
+    {
+      "from": "item:wyrm_knight_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_voidsteel_heavy_armor"
+    },
+    {
+      "from": "item:wyrm_knight_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_voidsteel_light_armor"
+    },
+    {
+      "from": "item:wyrm_knight_fang",
+      "relation": "input_to",
+      "to": "recipe:forge_voidsteel_greatblade"
+    },
+    {
+      "from": "item:wyrm_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_ancient_heavy_armor"
+    },
+    {
+      "from": "item:wyrm_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_ancient_light_armor"
+    },
+    {
+      "from": "item:wyrm_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_ascendant_heavy_armor"
+    },
+    {
+      "from": "item:wyrm_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_ascendant_light_armor"
+    },
+    {
+      "from": "item:wyrm_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmforged_heavy_armor"
+    },
+    {
+      "from": "item:wyrm_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmforged_light_armor"
+    },
+    {
+      "from": "item:wyrm_scale",
+      "relation": "input_to",
+      "to": "recipe:armor_ancient_heavy_armor"
+    },
+    {
+      "from": "item:wyrm_scale",
+      "relation": "input_to",
+      "to": "recipe:armor_ancient_light_armor"
+    },
+    {
+      "from": "item:wyrm_scale",
+      "relation": "input_to",
+      "to": "recipe:forge_ascendant_blade"
+    },
+    {
+      "from": "item:wyrmforged_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmforged_heavy_armor"
+    },
+    {
+      "from": "item:wyrmforged_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_wyrmforged_blade"
+    },
+    {
+      "from": "item:wyrmforged_ore",
+      "relation": "input_to",
+      "to": "recipe:smelt_wyrmforged_bar"
+    },
+    {
+      "from": "item:wyrmsteel_bar",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmsteel_heavy_armor"
+    },
+    {
+      "from": "item:wyrmsteel_bar",
+      "relation": "input_to",
+      "to": "recipe:forge_wyrmsteel_blade"
+    },
+    {
+      "from": "legacy_item:cloth_tunic",
+      "relation": "replace_or_compensate",
+      "to": "item:copper_light_armor"
+    },
+    {
+      "from": "legacy_item:frostguard_plate",
+      "relation": "replace_or_compensate",
+      "to": "item:starsteel_heavy_armor"
+    },
+    {
+      "from": "legacy_item:iron_mail",
+      "relation": "replace_or_compensate",
+      "to": "item:steel_heavy_armor"
+    },
+    {
+      "from": "legacy_item:leather_vest",
+      "relation": "replace_or_compensate",
+      "to": "item:bronze_light_armor"
+    },
+    {
+      "from": "legacy_item:linen_robe",
+      "relation": "replace_or_compensate",
+      "to": "item:iron_light_armor"
+    },
+    {
+      "from": "legacy_item:mithril_plate",
+      "relation": "replace_or_compensate",
+      "to": "item:sunsteel_heavy_armor"
+    },
+    {
+      "from": "legacy_item:mystic_robe",
+      "relation": "replace_or_compensate",
+      "to": "item:shadowsteel_light_armor"
+    },
+    {
+      "from": "legacy_item:runite_plate",
+      "relation": "replace_or_compensate",
+      "to": "item:froststeel_heavy_armor"
+    },
+    {
+      "from": "legacy_item:wooden_club",
+      "relation": "replace_or_compensate",
+      "to": "item:copper_sword"
+    },
+    {
+      "from": "legacy_item:wyrmscale_plate",
+      "relation": "replace_or_compensate",
+      "to": "item:voidsteel_heavy_armor"
+    },
+    {
+      "from": "monster:ancient_frost_wyrm",
+      "relation": "drop",
+      "to": "item:wyrm_scale"
+    },
+    {
+      "from": "monster:ancient_frost_wyrm",
+      "relation": "hide",
+      "to": "item:frost_pelt"
+    },
+    {
+      "from": "monster:ascendant_wyrm",
+      "relation": "drop",
+      "to": "item:ascendant_core"
+    },
+    {
+      "from": "monster:bandit",
+      "relation": "drop",
+      "to": "item:desert_bloom"
+    },
+    {
+      "from": "monster:bandit",
+      "relation": "hide",
+      "to": "item:scale_hide"
+    },
+    {
+      "from": "monster:bear",
+      "relation": "drop",
+      "to": "item:thick_hide"
+    },
+    {
+      "from": "monster:bear",
+      "relation": "hide",
+      "to": "item:thick_hide"
+    },
+    {
+      "from": "monster:bone_reaper",
+      "relation": "drop",
+      "to": "item:reaper_bone"
+    },
+    {
+      "from": "monster:bone_reaper",
+      "relation": "hide",
+      "to": "item:shadow_pelt"
+    },
+    {
+      "from": "monster:chicken",
+      "relation": "drop",
+      "to": "item:feather"
+    },
+    {
+      "from": "monster:cursed_knight",
+      "relation": "drop",
+      "to": "item:cursed_rune"
+    },
+    {
+      "from": "monster:cursed_knight",
+      "relation": "hide",
+      "to": "item:shadow_pelt"
+    },
+    {
+      "from": "monster:desert_raider",
+      "relation": "drop",
+      "to": "item:raider_fang"
+    },
+    {
+      "from": "monster:desert_raider",
+      "relation": "hide",
+      "to": "item:scale_hide"
+    },
+    {
+      "from": "monster:disgruntled_ram",
+      "relation": "drop",
+      "to": "item:ram_horn"
+    },
+    {
+      "from": "monster:disgruntled_ram",
+      "relation": "hide",
+      "to": "item:raw_hide"
+    },
+    {
+      "from": "monster:dune_devourer",
+      "relation": "drop",
+      "to": "item:devourer_mandible"
+    },
+    {
+      "from": "monster:dune_devourer",
+      "relation": "drop",
+      "to": "item:scale_hide"
+    },
+    {
+      "from": "monster:dune_devourer",
+      "relation": "hide",
+      "to": "item:scale_hide"
+    },
+    {
+      "from": "monster:dust_jackal",
+      "relation": "drop",
+      "to": "item:jackal_fang"
+    },
+    {
+      "from": "monster:dust_jackal",
+      "relation": "hide",
+      "to": "item:thick_hide"
+    },
+    {
+      "from": "monster:forest_boar",
+      "relation": "drop",
+      "to": "item:boar_tusk"
+    },
+    {
+      "from": "monster:forest_boar",
+      "relation": "hide",
+      "to": "item:raw_hide"
+    },
+    {
+      "from": "monster:forest_lynx",
+      "relation": "drop",
+      "to": "item:lynx_claw"
+    },
+    {
+      "from": "monster:forest_lynx",
+      "relation": "hide",
+      "to": "item:thick_hide"
+    },
+    {
+      "from": "monster:frost_giant",
+      "relation": "drop",
+      "to": "item:frost_giant_heart"
+    },
+    {
+      "from": "monster:frost_giant",
+      "relation": "hide",
+      "to": "item:frost_pelt"
+    },
+    {
+      "from": "monster:frost_revenant",
+      "relation": "drop",
+      "to": "item:revenant_essence"
+    },
+    {
+      "from": "monster:frost_revenant",
+      "relation": "hide",
+      "to": "item:frost_pelt"
+    },
+    {
+      "from": "monster:frost_troll",
+      "relation": "drop",
+      "to": "item:troll_fang"
+    },
+    {
+      "from": "monster:frost_troll",
+      "relation": "hide",
+      "to": "item:frost_pelt"
+    },
+    {
+      "from": "monster:frost_wolf",
+      "relation": "drop",
+      "to": "item:frost_fang"
+    },
+    {
+      "from": "monster:frost_wolf",
+      "relation": "hide",
+      "to": "item:frost_pelt"
+    },
+    {
+      "from": "monster:glacial_guardian",
+      "relation": "drop",
+      "to": "item:frost_crystal"
+    },
+    {
+      "from": "monster:glacial_guardian",
+      "relation": "drop",
+      "to": "item:glacial_core"
+    },
+    {
+      "from": "monster:glacial_guardian",
+      "relation": "hide",
+      "to": "item:frost_pelt"
+    },
+    {
+      "from": "monster:goblin_brute",
+      "relation": "drop",
+      "to": "item:brute_fang"
+    },
+    {
+      "from": "monster:goblin_brute",
+      "relation": "hide",
+      "to": "item:raw_hide"
+    },
+    {
+      "from": "monster:goblin",
+      "relation": "drop",
+      "to": "item:goblin_charm"
+    },
+    {
+      "from": "monster:goblin",
+      "relation": "hide",
+      "to": "item:raw_hide"
+    },
+    {
+      "from": "monster:ice_wraith",
+      "relation": "drop",
+      "to": "item:wraith_ice_core"
+    },
+    {
+      "from": "monster:ice_wraith",
+      "relation": "hide",
+      "to": "item:frost_pelt"
+    },
+    {
+      "from": "monster:ironback_boar",
+      "relation": "drop",
+      "to": "item:ironback_tusk"
+    },
+    {
+      "from": "monster:ironback_boar",
+      "relation": "hide",
+      "to": "item:thick_hide"
+    },
+    {
+      "from": "monster:mithril_stalker",
+      "relation": "drop",
+      "to": "item:scale_hide"
+    },
+    {
+      "from": "monster:mithril_stalker",
+      "relation": "hide",
+      "to": "item:scale_hide"
+    },
+    {
+      "from": "monster:scorpion_stalker",
+      "relation": "drop",
+      "to": "item:scorpion_stinger"
+    },
+    {
+      "from": "monster:scorpion_stalker",
+      "relation": "hide",
+      "to": "item:scale_hide"
+    },
+    {
+      "from": "monster:serpent",
+      "relation": "drop",
+      "to": "item:scale_hide"
+    },
+    {
+      "from": "monster:serpent",
+      "relation": "hide",
+      "to": "item:scale_hide"
+    },
+    {
+      "from": "monster:shadow_beast",
+      "relation": "drop",
+      "to": "item:shadow_claw"
+    },
+    {
+      "from": "monster:shadow_beast",
+      "relation": "drop",
+      "to": "item:shadow_pelt"
+    },
+    {
+      "from": "monster:shadow_beast",
+      "relation": "hide",
+      "to": "item:shadow_pelt"
+    },
+    {
+      "from": "monster:void_wraith",
+      "relation": "drop",
+      "to": "item:void_essence"
+    },
+    {
+      "from": "monster:void_wraith",
+      "relation": "hide",
+      "to": "item:frost_pelt"
+    },
+    {
+      "from": "monster:withered_ghoul",
+      "relation": "drop",
+      "to": "item:ghoul_essence"
+    },
+    {
+      "from": "monster:withered_ghoul",
+      "relation": "hide",
+      "to": "item:shadow_pelt"
+    },
+    {
+      "from": "monster:wolf",
+      "relation": "drop",
+      "to": "item:raw_hide"
+    },
+    {
+      "from": "monster:wolf",
+      "relation": "hide",
+      "to": "item:raw_hide"
+    },
+    {
+      "from": "monster:wraith",
+      "relation": "drop",
+      "to": "item:gloomcap"
+    },
+    {
+      "from": "monster:wraith",
+      "relation": "hide",
+      "to": "item:shadow_pelt"
+    },
+    {
+      "from": "monster:wyrm_knight",
+      "relation": "drop",
+      "to": "item:wyrm_knight_fang"
+    },
+    {
+      "from": "monster:wyrm_knight",
+      "relation": "hide",
+      "to": "item:wyrm_hide"
+    },
+    {
+      "from": "monster:yeti",
+      "relation": "drop",
+      "to": "item:frost_pelt"
+    },
+    {
+      "from": "monster:yeti",
+      "relation": "hide",
+      "to": "item:frost_pelt"
+    },
+    {
+      "from": "node:ancient_vein",
+      "relation": "yields",
+      "to": "item:ancient_ore"
+    },
+    {
+      "from": "node:ascendant_vein",
+      "relation": "yields",
+      "to": "item:ascendant_ore"
+    },
+    {
+      "from": "node:berries",
+      "relation": "yields",
+      "to": "item:meadow_berries"
+    },
+    {
+      "from": "node:bloom",
+      "relation": "yields",
+      "to": "item:desert_bloom"
+    },
+    {
+      "from": "node:coal_seam",
+      "relation": "yields",
+      "to": "item:coal"
+    },
+    {
+      "from": "node:copper",
+      "relation": "yields",
+      "to": "item:copper_ore"
+    },
+    {
+      "from": "node:cursed_rock",
+      "relation": "yields",
+      "to": "item:cursed_shard"
+    },
+    {
+      "from": "node:cursed_tree",
+      "relation": "yields",
+      "to": "item:cursed_bark"
+    },
+    {
+      "from": "node:flax",
+      "relation": "yields",
+      "to": "item:flax"
+    },
+    {
+      "from": "node:frost_crystal_vein",
+      "relation": "yields",
+      "to": "item:frost_crystal"
+    },
+    {
+      "from": "node:frostpine",
+      "relation": "yields",
+      "to": "item:frostpine_logs"
+    },
+    {
+      "from": "node:glacial_vein",
+      "relation": "yields",
+      "to": "item:glacial_ore"
+    },
+    {
+      "from": "node:gloomcap",
+      "relation": "yields",
+      "to": "item:gloomcap"
+    },
+    {
+      "from": "node:herbs",
+      "relation": "yields",
+      "to": "item:forest_herbs"
+    },
+    {
+      "from": "node:iron",
+      "relation": "yields",
+      "to": "item:iron_ore"
+    },
+    {
+      "from": "node:lichen",
+      "relation": "yields",
+      "to": "item:frost_lichen"
+    },
+    {
+      "from": "node:maple",
+      "relation": "yields",
+      "to": "item:maple_logs"
+    },
+    {
+      "from": "node:mithril",
+      "relation": "yields",
+      "to": "item:mithril_ore"
+    },
+    {
+      "from": "node:oak",
+      "relation": "yields",
+      "to": "item:oak_logs"
+    },
+    {
+      "from": "node:palm",
+      "relation": "yields",
+      "to": "item:palm_logs"
+    },
+    {
+      "from": "node:runite",
+      "relation": "yields",
+      "to": "item:runite_ore"
+    },
+    {
+      "from": "node:sandstone",
+      "relation": "yields",
+      "to": "item:sandstone"
+    },
+    {
+      "from": "node:starsteel_vein",
+      "relation": "yields",
+      "to": "item:starsteel_ore"
+    },
+    {
+      "from": "node:sunstone_vein",
+      "relation": "yields",
+      "to": "item:sunstone"
+    },
+    {
+      "from": "node:voidsteel_vein",
+      "relation": "yields",
+      "to": "item:voidsteel_ore"
+    },
+    {
+      "from": "node:willow",
+      "relation": "yields",
+      "to": "item:willow_logs"
+    },
+    {
+      "from": "node:wyrmforged_vein",
+      "relation": "yields",
+      "to": "item:wyrmforged_ore"
+    },
+    {
+      "from": "quest:copper_run",
+      "relation": "targets",
+      "to": "item:copper_ore"
+    },
+    {
+      "from": "quest:dune_patrol",
+      "relation": "targets",
+      "to": "monster:bandit"
+    },
+    {
+      "from": "quest:feather_duster",
+      "relation": "targets",
+      "to": "monster:chicken"
+    },
+    {
+      "from": "quest:flax_bundle",
+      "relation": "targets",
+      "to": "item:flax"
+    },
+    {
+      "from": "quest:gloom_harvest",
+      "relation": "targets",
+      "to": "item:gloomcap"
+    },
+    {
+      "from": "quest:goblin_trouble",
+      "relation": "rewards",
+      "to": "item:copper_bar"
+    },
+    {
+      "from": "quest:goblin_trouble",
+      "relation": "targets",
+      "to": "monster:goblin"
+    },
+    {
+      "from": "quest:log_delivery",
+      "relation": "targets",
+      "to": "item:oak_logs"
+    },
+    {
+      "from": "quest:wolf_watch",
+      "relation": "rewards",
+      "to": "item:bronze_sword"
+    },
+    {
+      "from": "quest:wolf_watch",
+      "relation": "targets",
+      "to": "monster:wolf"
+    },
+    {
+      "from": "recipe:alchemy_ancient_damage_potion",
+      "relation": "produces",
+      "to": "item:ancient_damage_potion"
+    },
+    {
+      "from": "recipe:alchemy_ascendant_damage_potion",
+      "relation": "produces",
+      "to": "item:ascendant_damage_potion"
+    },
+    {
+      "from": "recipe:alchemy_bronze_damage_potion",
+      "relation": "produces",
+      "to": "item:bronze_damage_potion"
+    },
+    {
+      "from": "recipe:alchemy_frostfire_brew",
+      "relation": "produces",
+      "to": "item:frostfire_brew"
+    },
+    {
+      "from": "recipe:alchemy_froststeel_damage_potion",
+      "relation": "produces",
+      "to": "item:froststeel_damage_potion"
+    },
+    {
+      "from": "recipe:alchemy_goblins_fury_tonic",
+      "relation": "produces",
+      "to": "item:goblins_fury_tonic"
+    },
+    {
+      "from": "recipe:alchemy_minor_venom_draught",
+      "relation": "produces",
+      "to": "item:minor_venom_draught"
+    },
+    {
+      "from": "recipe:alchemy_runite_damage_potion",
+      "relation": "produces",
+      "to": "item:runite_damage_potion"
+    },
+    {
+      "from": "recipe:alchemy_serpents_bite_elixir",
+      "relation": "produces",
+      "to": "item:serpents_bite_elixir"
+    },
+    {
+      "from": "recipe:alchemy_shadow_venom",
+      "relation": "produces",
+      "to": "item:shadow_venom"
+    },
+    {
+      "from": "recipe:alchemy_starsteel_damage_potion",
+      "relation": "produces",
+      "to": "item:starsteel_damage_potion"
+    },
+    {
+      "from": "recipe:alchemy_steel_damage_potion",
+      "relation": "produces",
+      "to": "item:steel_damage_potion"
+    },
+    {
+      "from": "recipe:alchemy_sunsteel_damage_potion",
+      "relation": "produces",
+      "to": "item:sunsteel_damage_potion"
+    },
+    {
+      "from": "recipe:alchemy_voidsteel_damage_potion",
+      "relation": "produces",
+      "to": "item:voidsteel_damage_potion"
+    },
+    {
+      "from": "recipe:alchemy_wyrmforged_damage_potion",
+      "relation": "produces",
+      "to": "item:wyrmforged_damage_potion"
+    },
+    {
+      "from": "recipe:alchemy_wyrmsteel_damage_potion",
+      "relation": "produces",
+      "to": "item:wyrmsteel_damage_potion"
+    },
+    {
+      "from": "recipe:armor_ancient_heavy_armor",
+      "relation": "produces",
+      "to": "item:ancient_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_ancient_light_armor",
+      "relation": "produces",
+      "to": "item:ancient_light_armor"
+    },
+    {
+      "from": "recipe:armor_ascendant_heavy_armor",
+      "relation": "produces",
+      "to": "item:ascendant_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_ascendant_light_armor",
+      "relation": "produces",
+      "to": "item:ascendant_light_armor"
+    },
+    {
+      "from": "recipe:armor_bronze_heavy_armor",
+      "relation": "produces",
+      "to": "item:bronze_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_bronze_light_armor",
+      "relation": "produces",
+      "to": "item:bronze_light_armor"
+    },
+    {
+      "from": "recipe:armor_copper_heavy_armor",
+      "relation": "produces",
+      "to": "item:copper_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_copper_light_armor",
+      "relation": "produces",
+      "to": "item:copper_light_armor"
+    },
+    {
+      "from": "recipe:armor_froststeel_heavy_armor",
+      "relation": "produces",
+      "to": "item:froststeel_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_froststeel_light_armor",
+      "relation": "produces",
+      "to": "item:froststeel_light_armor"
+    },
+    {
+      "from": "recipe:armor_glacial_heavy_armor",
+      "relation": "produces",
+      "to": "item:glacial_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_glacial_light_armor",
+      "relation": "produces",
+      "to": "item:glacial_light_armor"
+    },
+    {
+      "from": "recipe:armor_iron_heavy_armor",
+      "relation": "produces",
+      "to": "item:iron_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_iron_light_armor",
+      "relation": "produces",
+      "to": "item:iron_light_armor"
+    },
+    {
+      "from": "recipe:armor_mithril_heavy_armor",
+      "relation": "produces",
+      "to": "item:mithril_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_mithril_light_armor",
+      "relation": "produces",
+      "to": "item:mithril_light_armor"
+    },
+    {
+      "from": "recipe:armor_runite_heavy_armor",
+      "relation": "produces",
+      "to": "item:runite_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_runite_light_armor",
+      "relation": "produces",
+      "to": "item:runite_light_armor"
+    },
+    {
+      "from": "recipe:armor_shadowsteel_heavy_armor",
+      "relation": "produces",
+      "to": "item:shadowsteel_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_shadowsteel_light_armor",
+      "relation": "produces",
+      "to": "item:shadowsteel_light_armor"
+    },
+    {
+      "from": "recipe:armor_starsteel_heavy_armor",
+      "relation": "produces",
+      "to": "item:starsteel_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_starsteel_light_armor",
+      "relation": "produces",
+      "to": "item:starsteel_light_armor"
+    },
+    {
+      "from": "recipe:armor_steel_heavy_armor",
+      "relation": "produces",
+      "to": "item:steel_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_steel_light_armor",
+      "relation": "produces",
+      "to": "item:steel_light_armor"
+    },
+    {
+      "from": "recipe:armor_sunsteel_heavy_armor",
+      "relation": "produces",
+      "to": "item:sunsteel_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_sunsteel_light_armor",
+      "relation": "produces",
+      "to": "item:sunsteel_light_armor"
+    },
+    {
+      "from": "recipe:armor_voidsteel_heavy_armor",
+      "relation": "produces",
+      "to": "item:voidsteel_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_voidsteel_light_armor",
+      "relation": "produces",
+      "to": "item:voidsteel_light_armor"
+    },
+    {
+      "from": "recipe:armor_wyrmforged_heavy_armor",
+      "relation": "produces",
+      "to": "item:wyrmforged_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_wyrmforged_light_armor",
+      "relation": "produces",
+      "to": "item:wyrmforged_light_armor"
+    },
+    {
+      "from": "recipe:armor_wyrmsteel_heavy_armor",
+      "relation": "produces",
+      "to": "item:wyrmsteel_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_wyrmsteel_light_armor",
+      "relation": "produces",
+      "to": "item:wyrmsteel_light_armor"
+    },
+    {
+      "from": "recipe:cook_ancient_feast",
+      "relation": "produces",
+      "to": "item:ancient_feast"
+    },
+    {
+      "from": "recipe:cook_ascendant_feast",
+      "relation": "produces",
+      "to": "item:ascendant_feast"
+    },
+    {
+      "from": "recipe:cook_berry_pie",
+      "relation": "produces",
+      "to": "item:berry_pie"
+    },
+    {
+      "from": "recipe:cook_fishermans_stew",
+      "relation": "produces",
+      "to": "item:fishermans_stew"
+    },
+    {
+      "from": "recipe:cook_frost_tonic",
+      "relation": "produces",
+      "to": "item:frost_tonic"
+    },
+    {
+      "from": "recipe:cook_golden_koi_feast",
+      "relation": "produces",
+      "to": "item:golden_koi_feast"
+    },
+    {
+      "from": "recipe:cook_hearty_stew",
+      "relation": "produces",
+      "to": "item:hearty_stew"
+    },
+    {
+      "from": "recipe:cook_honey_bun",
+      "relation": "produces",
+      "to": "item:honey_bun"
+    },
+    {
+      "from": "recipe:cook_phoenix_fillet",
+      "relation": "produces",
+      "to": "item:phoenix_fillet"
+    },
+    {
+      "from": "recipe:cook_runic_fish_stew",
+      "relation": "produces",
+      "to": "item:runic_fish_stew"
+    },
+    {
+      "from": "recipe:cook_shadow_stew",
+      "relation": "produces",
+      "to": "item:shadow_stew"
+    },
+    {
+      "from": "recipe:cook_starsteel_feast",
+      "relation": "produces",
+      "to": "item:starsteel_feast"
+    },
+    {
+      "from": "recipe:cook_sunspiced_eel",
+      "relation": "produces",
+      "to": "item:sunspiced_eel"
+    },
+    {
+      "from": "recipe:cook_void_feast",
+      "relation": "produces",
+      "to": "item:void_feast"
+    },
+    {
+      "from": "recipe:cook_wyrm_feast",
+      "relation": "produces",
+      "to": "item:wyrm_feast"
+    },
+    {
+      "from": "recipe:cook_wyrmforged_feast",
+      "relation": "produces",
+      "to": "item:wyrmforged_feast"
+    },
+    {
+      "from": "recipe:forge_ancient_greatblade",
+      "relation": "produces",
+      "to": "item:ancient_greatblade"
+    },
+    {
+      "from": "recipe:forge_ascendant_blade",
+      "relation": "produces",
+      "to": "item:ascendant_blade"
+    },
+    {
+      "from": "recipe:forge_bronze_sword",
+      "relation": "produces",
+      "to": "item:bronze_sword"
+    },
+    {
+      "from": "recipe:forge_copper_sword",
+      "relation": "produces",
+      "to": "item:copper_sword"
+    },
+    {
+      "from": "recipe:forge_frost_greatblade",
+      "relation": "produces",
+      "to": "item:frost_greatblade"
+    },
+    {
+      "from": "recipe:forge_glacial_greatblade",
+      "relation": "produces",
+      "to": "item:glacial_greatblade"
+    },
+    {
+      "from": "recipe:forge_iron_sword",
+      "relation": "produces",
+      "to": "item:iron_sword"
+    },
+    {
+      "from": "recipe:forge_mithril_blade",
+      "relation": "produces",
+      "to": "item:mithril_blade"
+    },
+    {
+      "from": "recipe:forge_runite_greatsword",
+      "relation": "produces",
+      "to": "item:runite_greatsword"
+    },
+    {
+      "from": "recipe:forge_shadow_blade",
+      "relation": "produces",
+      "to": "item:shadow_blade"
+    },
+    {
+      "from": "recipe:forge_starsteel_blade",
+      "relation": "produces",
+      "to": "item:starsteel_blade"
+    },
+    {
+      "from": "recipe:forge_steel_sword",
+      "relation": "produces",
+      "to": "item:steel_sword"
+    },
+    {
+      "from": "recipe:forge_sunsteel_blade",
+      "relation": "produces",
+      "to": "item:sunsteel_blade"
+    },
+    {
+      "from": "recipe:forge_voidsteel_greatblade",
+      "relation": "produces",
+      "to": "item:voidsteel_greatblade"
+    },
+    {
+      "from": "recipe:forge_wyrmforged_blade",
+      "relation": "produces",
+      "to": "item:wyrmforged_blade"
+    },
+    {
+      "from": "recipe:forge_wyrmsteel_blade",
+      "relation": "produces",
+      "to": "item:wyrmsteel_blade"
+    },
+    {
+      "from": "recipe:skin_frost_leather",
+      "relation": "produces",
+      "to": "item:frost_leather"
+    },
+    {
+      "from": "recipe:skin_light_leather",
+      "relation": "produces",
+      "to": "item:light_leather"
+    },
+    {
+      "from": "recipe:skin_scaled_leather",
+      "relation": "produces",
+      "to": "item:scaled_leather"
+    },
+    {
+      "from": "recipe:skin_shadow_leather",
+      "relation": "produces",
+      "to": "item:shadow_leather"
+    },
+    {
+      "from": "recipe:skin_thick_leather",
+      "relation": "produces",
+      "to": "item:thick_leather"
+    },
+    {
+      "from": "recipe:skin_wyrm_leather",
+      "relation": "produces",
+      "to": "item:wyrm_leather"
+    },
+    {
+      "from": "recipe:smelt_ancient_bar",
+      "relation": "produces",
+      "to": "item:ancient_bar"
+    },
+    {
+      "from": "recipe:smelt_ascendant_bar",
+      "relation": "produces",
+      "to": "item:ascendant_bar"
+    },
+    {
+      "from": "recipe:smelt_bronze_bar",
+      "relation": "produces",
+      "to": "item:bronze_bar"
+    },
+    {
+      "from": "recipe:smelt_copper_bar",
+      "relation": "produces",
+      "to": "item:copper_bar"
+    },
+    {
+      "from": "recipe:smelt_froststeel_bar",
+      "relation": "produces",
+      "to": "item:froststeel_bar"
+    },
+    {
+      "from": "recipe:smelt_glacial_bar",
+      "relation": "produces",
+      "to": "item:glacial_bar"
+    },
+    {
+      "from": "recipe:smelt_iron_bar",
+      "relation": "produces",
+      "to": "item:iron_bar"
+    },
+    {
+      "from": "recipe:smelt_mithril_bar",
+      "relation": "produces",
+      "to": "item:mithril_bar"
+    },
+    {
+      "from": "recipe:smelt_runite_bar",
+      "relation": "produces",
+      "to": "item:runite_bar"
+    },
+    {
+      "from": "recipe:smelt_shadowsteel_bar",
+      "relation": "produces",
+      "to": "item:shadowsteel_bar"
+    },
+    {
+      "from": "recipe:smelt_starsteel_bar",
+      "relation": "produces",
+      "to": "item:starsteel_bar"
+    },
+    {
+      "from": "recipe:smelt_steel_bar",
+      "relation": "produces",
+      "to": "item:steel_bar"
+    },
+    {
+      "from": "recipe:smelt_sunsteel_bar",
+      "relation": "produces",
+      "to": "item:sunsteel_bar"
+    },
+    {
+      "from": "recipe:smelt_voidsteel_bar",
+      "relation": "produces",
+      "to": "item:voidsteel_bar"
+    },
+    {
+      "from": "recipe:smelt_wyrmforged_bar",
+      "relation": "produces",
+      "to": "item:wyrmforged_bar"
+    },
+    {
+      "from": "recipe:smelt_wyrmsteel_bar",
+      "relation": "produces",
+      "to": "item:wyrmsteel_bar"
+    },
+    {
+      "from": "recipe:weave_ascendant_weave",
+      "relation": "produces",
+      "to": "item:ascendant_weave"
+    },
+    {
+      "from": "recipe:weave_frostweave",
+      "relation": "produces",
+      "to": "item:frostweave"
+    },
+    {
+      "from": "recipe:weave_herb_weave",
+      "relation": "produces",
+      "to": "item:herb_weave"
+    },
+    {
+      "from": "recipe:weave_linen_cloth",
+      "relation": "produces",
+      "to": "item:linen_cloth"
+    },
+    {
+      "from": "recipe:weave_mystic_cloth",
+      "relation": "produces",
+      "to": "item:mystic_cloth"
+    },
+    {
+      "from": "recipe:weave_shadowweave",
+      "relation": "produces",
+      "to": "item:shadowweave"
+    }
+  ],
+  "manifest_hash": "9608c4031c2bed1b9335802b2328e8b90d7866b5d23110c7d3157fa2f50ebf41",
+  "nodes": [
+    {
+      "active": true,
+      "id": "boss:desolatus",
+      "type": "boss"
+    },
+    {
+      "active": true,
+      "id": "fishing_spot:evil_6",
+      "type": "fishing_spot"
+    },
+    {
+      "active": true,
+      "id": "fishing_spot:fields_1",
+      "type": "fishing_spot"
+    },
+    {
+      "active": true,
+      "id": "fishing_spot:fields_2",
+      "type": "fishing_spot"
+    },
+    {
+      "active": true,
+      "id": "fishing_spot:forest_3",
+      "type": "fishing_spot"
+    },
+    {
+      "active": true,
+      "id": "fishing_spot:forest_4",
+      "type": "fishing_spot"
+    },
+    {
+      "active": true,
+      "id": "fishing_spot:winter_5",
+      "type": "fishing_spot"
+    },
+    {
+      "active": true,
+      "id": "item:ancient_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ancient_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ancient_feast",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ancient_greatblade",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ancient_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ancient_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ancient_ore",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ascendant_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ascendant_blade",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ascendant_core",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ascendant_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ascendant_feast",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ascendant_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ascendant_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ascendant_ore",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ascendant_weave",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:berry_pie",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:boar_tusk",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:bronze_bar",
+      "type": "item"
+    },
+    {
+      "active": false,
+      "id": "item:bronze_dagger",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:bronze_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:bronze_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:bronze_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:bronze_sword",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:brute_fang",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:coal",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:copper_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:copper_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:copper_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:copper_ore",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:copper_sword",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:cursed_bark",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:cursed_rune",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:cursed_shard",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:deepwater_eel",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:desert_bloom",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:devourer_mandible",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:feather",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:fishermans_stew",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:flax",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:forest_herbs",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:frost_crystal",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:frost_fang",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:frost_giant_heart",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:frost_greatblade",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:frost_leather",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:frost_lichen",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:frost_pelt",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:frost_tonic",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:frostfire_brew",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:frostpine_logs",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:froststeel_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:froststeel_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:froststeel_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:froststeel_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:frostweave",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ghoul_essence",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:glacial_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:glacial_core",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:glacial_greatblade",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:glacial_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:glacial_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:glacial_ore",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:gloomcap",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:goblin_charm",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:goblins_fury_tonic",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:golden_koi",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:golden_koi_feast",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:hearty_stew",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:herb_weave",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:honey_bun",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:iron_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:iron_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:iron_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:iron_ore",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:iron_sword",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ironback_tusk",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:jackal_fang",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:light_leather",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:linen_cloth",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:lynx_claw",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:maple_logs",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:meadow_berries",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:minor_venom_draught",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:mithril_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:mithril_blade",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:mithril_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:mithril_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:mithril_ore",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:mystic_cloth",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:oak_logs",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:palm_logs",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:phoenix_fillet",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:raider_fang",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:ram_horn",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:raw_hide",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:reaper_bone",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:revenant_essence",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:river_minnow",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:runic_fish_stew",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:runite_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:runite_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:runite_greatsword",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:runite_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:runite_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:runite_ore",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:sandstone",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:scale_hide",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:scaled_leather",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:scorpion_stinger",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:serpents_bite_elixir",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:shadow_blade",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:shadow_claw",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:shadow_leather",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:shadow_pelt",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:shadow_stew",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:shadow_venom",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:shadowsteel_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:shadowsteel_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:shadowsteel_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:shadowweave",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:silver_trout",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:starlight_salmon",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:starsteel_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:starsteel_blade",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:starsteel_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:starsteel_feast",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:starsteel_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:starsteel_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:starsteel_ore",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:steel_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:steel_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:steel_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:steel_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:steel_sword",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:sunspiced_eel",
+      "type": "item"
+    },
+    {
+      "active": false,
+      "id": "item:sunspire_wand",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:sunsteel_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:sunsteel_blade",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:sunsteel_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:sunsteel_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:sunsteel_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:sunstone",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:thick_hide",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:thick_leather",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:troll_fang",
+      "type": "item"
+    },
+    {
+      "active": false,
+      "id": "item:tungsten_bar",
+      "type": "item"
+    },
+    {
+      "active": false,
+      "id": "item:tungsten_maul",
+      "type": "item"
+    },
+    {
+      "active": false,
+      "id": "item:tungsten_ore",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:void_essence",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:void_feast",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:voidsteel_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:voidsteel_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:voidsteel_greatblade",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:voidsteel_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:voidsteel_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:voidsteel_ore",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:willow_logs",
+      "type": "item"
+    },
+    {
+      "active": false,
+      "id": "item:wooden_club",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wraith_ice_core",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrm_feast",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrm_hide",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrm_knight_fang",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrm_leather",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrm_scale",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmforged_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmforged_blade",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmforged_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmforged_feast",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmforged_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmforged_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmforged_ore",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmsteel_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmsteel_blade",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmsteel_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmsteel_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:wyrmsteel_light_armor",
+      "type": "item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:bronze_dagger",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:cloth_tunic",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:frostguard_plate",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:iron_mail",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:leather_vest",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:linen_robe",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:mithril_plate",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:mystic_robe",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:runite_plate",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:sunspire_wand",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:tungsten_bar",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:tungsten_maul",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:tungsten_ore",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:wooden_club",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:wyrmscale_plate",
+      "type": "legacy_item"
+    },
+    {
+      "active": true,
+      "id": "monster:ancient_frost_wyrm",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:ascendant_wyrm",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:bandit",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:bear",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:bone_reaper",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:chicken",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:cursed_knight",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:desert_raider",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:disgruntled_ram",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:dune_devourer",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:dust_jackal",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:forest_boar",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:forest_lynx",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:frost_giant",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:frost_revenant",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:frost_troll",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:frost_wolf",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:glacial_guardian",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:goblin",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:goblin_brute",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:ice_wraith",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:ironback_boar",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:mithril_stalker",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:scorpion_stalker",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:serpent",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:shadow_beast",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:void_wraith",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:withered_ghoul",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:wolf",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:wraith",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:wyrm_knight",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "monster:yeti",
+      "type": "monster"
+    },
+    {
+      "active": true,
+      "id": "node:ancient_vein",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:ascendant_vein",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:berries",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:bloom",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:coal_seam",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:copper",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:cursed_rock",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:cursed_tree",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:flax",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:frost_crystal_vein",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:frostpine",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:glacial_vein",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:gloomcap",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:herbs",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:iron",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:lichen",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:maple",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:mithril",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:oak",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:palm",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:runite",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:sandstone",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:starsteel_vein",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:sunstone_vein",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:voidsteel_vein",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:willow",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "node:wyrmforged_vein",
+      "type": "node"
+    },
+    {
+      "active": true,
+      "id": "quest:copper_run",
+      "type": "quest"
+    },
+    {
+      "active": true,
+      "id": "quest:dune_patrol",
+      "type": "quest"
+    },
+    {
+      "active": true,
+      "id": "quest:feather_duster",
+      "type": "quest"
+    },
+    {
+      "active": true,
+      "id": "quest:flax_bundle",
+      "type": "quest"
+    },
+    {
+      "active": true,
+      "id": "quest:gloom_harvest",
+      "type": "quest"
+    },
+    {
+      "active": true,
+      "id": "quest:goblin_trouble",
+      "type": "quest"
+    },
+    {
+      "active": true,
+      "id": "quest:log_delivery",
+      "type": "quest"
+    },
+    {
+      "active": true,
+      "id": "quest:wolf_watch",
+      "type": "quest"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_ancient_damage_potion",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_ascendant_damage_potion",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_bronze_damage_potion",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_frostfire_brew",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_froststeel_damage_potion",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_goblins_fury_tonic",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_minor_venom_draught",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_runite_damage_potion",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_serpents_bite_elixir",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_shadow_venom",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_starsteel_damage_potion",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_steel_damage_potion",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_sunsteel_damage_potion",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_voidsteel_damage_potion",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_wyrmforged_damage_potion",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:alchemy_wyrmsteel_damage_potion",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_ancient_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_ancient_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_ascendant_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_ascendant_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_bronze_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_bronze_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_copper_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_copper_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_froststeel_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_froststeel_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_glacial_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_glacial_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_iron_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_iron_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_mithril_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_mithril_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_runite_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_runite_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_shadowsteel_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_shadowsteel_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_starsteel_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_starsteel_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_steel_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_steel_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_sunsteel_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_sunsteel_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_voidsteel_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_voidsteel_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_wyrmforged_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_wyrmforged_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_wyrmsteel_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_wyrmsteel_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_ancient_feast",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_ascendant_feast",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_berry_pie",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_fishermans_stew",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_frost_tonic",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_golden_koi_feast",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_hearty_stew",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_honey_bun",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_phoenix_fillet",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_runic_fish_stew",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_shadow_stew",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_starsteel_feast",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_sunspiced_eel",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_void_feast",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_wyrm_feast",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:cook_wyrmforged_feast",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_ancient_greatblade",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_ascendant_blade",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_bronze_sword",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_copper_sword",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_frost_greatblade",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_glacial_greatblade",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_iron_sword",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_mithril_blade",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_runite_greatsword",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_shadow_blade",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_starsteel_blade",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_steel_sword",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_sunsteel_blade",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_voidsteel_greatblade",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_wyrmforged_blade",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:forge_wyrmsteel_blade",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:skin_frost_leather",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:skin_light_leather",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:skin_scaled_leather",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:skin_shadow_leather",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:skin_thick_leather",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:skin_wyrm_leather",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_ancient_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_ascendant_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_bronze_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_copper_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_froststeel_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_glacial_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_iron_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_mithril_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_runite_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_shadowsteel_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_starsteel_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_steel_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_sunsteel_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_voidsteel_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_wyrmforged_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:smelt_wyrmsteel_bar",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:weave_ascendant_weave",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:weave_frostweave",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:weave_herb_weave",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:weave_linen_cloth",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:weave_mystic_cloth",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:weave_shadowweave",
+      "type": "recipe"
+    }
+  ],
+  "runnable": true
+}

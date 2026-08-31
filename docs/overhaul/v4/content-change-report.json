@@ -1,0 +1,69 @@
+{
+  "armour": {
+    "heavy": 16,
+    "light": 16,
+    "replacements": {
+      "cloth_tunic": "copper_light_armor",
+      "frostguard_plate": "starsteel_heavy_armor",
+      "iron_mail": "steel_heavy_armor",
+      "leather_vest": "bronze_light_armor",
+      "linen_robe": "iron_light_armor",
+      "mithril_plate": "sunsteel_heavy_armor",
+      "mystic_robe": "shadowsteel_light_armor",
+      "runite_plate": "froststeel_heavy_armor",
+      "wyrmscale_plate": "voidsteel_heavy_armor"
+    },
+    "retired": [
+      "cloth_tunic",
+      "frostguard_plate",
+      "iron_mail",
+      "leather_vest",
+      "linen_robe",
+      "mithril_plate",
+      "mystic_robe",
+      "runite_plate",
+      "wyrmscale_plate"
+    ],
+    "tiers": 16,
+    "total": 32
+  },
+  "content_manifest_hash": "9608c4031c2bed1b9335802b2328e8b90d7866b5d23110c7d3157fa2f50ebf41",
+  "content_version": "v4",
+  "counts": {
+    "clusters": 152,
+    "monsters": 361,
+    "nodes": 369
+  },
+  "generated_from": {
+    "content": "content/v3/manifest.authoring.json",
+    "world": "content/v3/world-spawn-manifest.json"
+  },
+  "items": {
+    "total": 177,
+    "v3_total": 174
+  },
+  "new_trophies": [
+    {
+      "id": "shadow_claw",
+      "monster": "shadow_beast",
+      "tier_index": 5
+    },
+    {
+      "id": "devourer_mandible",
+      "monster": "dune_devourer",
+      "tier_index": 7
+    },
+    {
+      "id": "glacial_core",
+      "monster": "glacial_guardian",
+      "tier_index": 12
+    }
+  ],
+  "recipes": {
+    "armour": 32,
+    "total": 108
+  },
+  "spawn_hash": "67b857de15eb32a8305595f5320fd2b6009e7d6de8bc40c2d53c790a898610cb",
+  "spawn_set_version": "v4",
+  "world_unchanged": true
+}
