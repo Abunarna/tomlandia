@@ -1,9 +1,13 @@
 {
-  "trials": 2500,
-  "targets": {
-    "heavy_kills_survived": 5,
-    "light_kills_survived": 1.6,
-    "light_xp_advantage": 1.25
+  "source": "content/v4/manifest.authoring.json",
+  "trials": 3000,
+  "formulas": {
+    "attack": "round(3+combat_level+weapon_attack+armour_attack+buff)",
+    "defense": "round(floor(level/2)+armour_defense)",
+    "hit": "max(1,floor(attack*(0.6+rand*0.6)-monster.defense*0.4))",
+    "taken": "max(0,floor(monster.attack*(0.5+rand*0.7)-defense*0.5))",
+    "swing": "max(0.5,1-armour_speed)-0.15",
+    "max_hp": "30+(level-1)*6"
   },
   "rows": [
     {
@@ -12,21 +16,17 @@
       "monster": "bear",
       "weapon": "copper_sword",
       "heavy": {
-        "defense": 42.5,
-        "attack": 1,
-        "speed": 0,
+        "id": "copper_heavy_armor",
         "attack_stat": 11,
         "defense_stat": 43,
         "swing_s": 0.85,
         "kill_s": 21.1,
-        "hp_lost": 3.5,
-        "kills_survived": 8.46,
+        "hp_lost": 3.6,
+        "kills_survived": 8.43,
         "xp_per_min": 598
       },
       "light": {
-        "defense": 37.5,
-        "attack": 1,
-        "speed": 0.04,
+        "id": "copper_light_armor",
         "attack_stat": 11,
         "defense_stat": 38,
         "swing_s": 0.81,
@@ -34,7 +34,8 @@
         "hp_lost": 17.9,
         "kills_survived": 1.68,
         "xp_per_min": 627
-      }
+      },
+      "light_xp_advantage_pct": 4.8
     },
     {
       "tier": 2,
@@ -42,21 +43,17 @@
       "monster": "bandit",
       "weapon": "bronze_sword",
       "heavy": {
-        "defense": 82.5,
-        "attack": 2,
-        "speed": 0,
+        "id": "bronze_heavy_armor",
         "attack_stat": 26,
         "defense_stat": 88,
         "swing_s": 0.85,
         "kill_s": 19.9,
         "hp_lost": 13.9,
-        "kills_survived": 6.04,
+        "kills_survived": 6.05,
         "xp_per_min": 1571
       },
       "light": {
-        "defense": 71.5,
-        "attack": 3,
-        "speed": 0.07,
+        "id": "bronze_light_armor",
         "attack_stat": 27,
         "defense_stat": 77,
         "swing_s": 0.78,
@@ -64,7 +61,8 @@
         "hp_lost": 48.7,
         "kills_survived": 1.72,
         "xp_per_min": 1819
-      }
+      },
+      "light_xp_advantage_pct": 15.8
     },
     {
       "tier": 3,
@@ -72,29 +70,26 @@
       "monster": "withered_ghoul",
       "weapon": "iron_sword",
       "heavy": {
-        "defense": 93.5,
-        "attack": 3,
-        "speed": 0,
+        "id": "iron_heavy_armor",
         "attack_stat": 47,
         "defense_stat": 104,
         "swing_s": 0.85,
         "kill_s": 12.7,
-        "hp_lost": 25,
-        "kills_survived": 5.77,
+        "hp_lost": 24.9,
+        "kills_survived": 5.78,
         "xp_per_min": 3370
       },
       "light": {
-        "defense": 72.5,
-        "attack": 6,
-        "speed": 0.1,
+        "id": "iron_light_armor",
         "attack_stat": 50,
         "defense_stat": 83,
         "swing_s": 0.75,
         "kill_s": 10.4,
         "hp_lost": 86.6,
         "kills_survived": 1.66,
-        "xp_per_min": 4138
-      }
+        "xp_per_min": 4137
+      },
+      "light_xp_advantage_pct": 22.8
     },
     {
       "tier": 4,
@@ -102,21 +97,17 @@
       "monster": "bone_reaper",
       "weapon": "steel_sword",
       "heavy": {
-        "defense": 134.5,
-        "attack": 5,
-        "speed": 0,
+        "id": "steel_heavy_armor",
         "attack_stat": 70,
         "defense_stat": 150,
         "swing_s": 0.85,
         "kill_s": 13.4,
         "hp_lost": 36.5,
         "kills_survived": 5.59,
-        "xp_per_min": 5072
+        "xp_per_min": 5071
       },
       "light": {
-        "defense": 105.6,
-        "attack": 8,
-        "speed": 0.13,
+        "id": "steel_light_armor",
         "attack_stat": 73,
         "defense_stat": 121,
         "swing_s": 0.72,
@@ -124,7 +115,8 @@
         "hp_lost": 127.2,
         "kills_survived": 1.6,
         "xp_per_min": 6329
-      }
+      },
+      "light_xp_advantage_pct": 24.8
     },
     {
       "tier": 5,
@@ -132,29 +124,26 @@
       "monster": "shadow_beast",
       "weapon": "mithril_blade",
       "heavy": {
-        "defense": 139.5,
-        "attack": 9,
-        "speed": 0,
+        "id": "mithril_heavy_armor",
         "attack_stat": 92,
         "defense_stat": 160,
         "swing_s": 0.85,
         "kill_s": 11.2,
         "hp_lost": 46.2,
         "kills_survived": 5.71,
-        "xp_per_min": 6978
+        "xp_per_min": 6980
       },
       "light": {
-        "defense": 106.6,
-        "attack": 10,
-        "speed": 0.16,
+        "id": "mithril_light_armor",
         "attack_stat": 93,
         "defense_stat": 127,
         "swing_s": 0.69,
         "kill_s": 8.9,
-        "hp_lost": 148.6,
+        "hp_lost": 148.4,
         "kills_survived": 1.78,
-        "xp_per_min": 8725
-      }
+        "xp_per_min": 8729
+      },
+      "light_xp_advantage_pct": 25.1
     },
     {
       "tier": 6,
@@ -162,29 +151,26 @@
       "monster": "frost_wolf",
       "weapon": "sunsteel_blade",
       "heavy": {
-        "defense": 179.5,
-        "attack": 15,
-        "speed": 0,
+        "id": "sunsteel_heavy_armor",
         "attack_stat": 112,
         "defense_stat": 205,
         "swing_s": 0.85,
         "kill_s": 12.3,
-        "hp_lost": 52.3,
-        "kills_survived": 6.2,
-        "xp_per_min": 8601
+        "hp_lost": 52.4,
+        "kills_survived": 6.19,
+        "xp_per_min": 8599
       },
       "light": {
-        "defense": 136.5,
-        "attack": 12,
-        "speed": 0.19,
+        "id": "sunsteel_light_armor",
         "attack_stat": 109,
         "defense_stat": 162,
         "swing_s": 0.66,
         "kill_s": 9.9,
         "hp_lost": 200.9,
         "kills_survived": 1.61,
-        "xp_per_min": 10737
-      }
+        "xp_per_min": 10740
+      },
+      "light_xp_advantage_pct": 24.9
     },
     {
       "tier": 7,
@@ -192,9 +178,7 @@
       "monster": "dune_devourer",
       "weapon": "runite_greatsword",
       "heavy": {
-        "defense": 180.5,
-        "attack": 23,
-        "speed": 0,
+        "id": "runite_heavy_armor",
         "attack_stat": 137,
         "defense_stat": 211,
         "swing_s": 0.85,
@@ -204,17 +188,16 @@
         "xp_per_min": 10844
       },
       "light": {
-        "defense": 137.5,
-        "attack": 14,
-        "speed": 0.22,
+        "id": "runite_light_armor",
         "attack_stat": 128,
         "defense_stat": 168,
         "swing_s": 0.63,
         "kill_s": 8.5,
-        "hp_lost": 206.2,
+        "hp_lost": 206.3,
         "kills_survived": 1.86,
-        "xp_per_min": 13509
-      }
+        "xp_per_min": 13506
+      },
+      "light_xp_advantage_pct": 24.5
     },
     {
       "tier": 8,
@@ -222,29 +205,26 @@
       "monster": "yeti",
       "weapon": "shadow_blade",
       "heavy": {
-        "defense": 214.5,
-        "attack": 31,
-        "speed": 0,
+        "id": "shadowsteel_heavy_armor",
         "attack_stat": 161,
         "defense_stat": 250,
         "swing_s": 0.85,
-        "kill_s": 11.1,
-        "hp_lost": 67.3,
+        "kill_s": 11.2,
+        "hp_lost": 67.2,
         "kills_survived": 6.6,
-        "xp_per_min": 12919
+        "xp_per_min": 12914
       },
       "light": {
-        "defense": 158.5,
-        "attack": 15,
-        "speed": 0.25,
+        "id": "shadowsteel_light_armor",
         "attack_stat": 145,
         "defense_stat": 194,
         "swing_s": 0.6,
         "kill_s": 8.9,
-        "hp_lost": 278.1,
-        "kills_survived": 1.6,
-        "xp_per_min": 16169
-      }
+        "hp_lost": 278.4,
+        "kills_survived": 1.59,
+        "xp_per_min": 16166
+      },
+      "light_xp_advantage_pct": 25.2
     },
     {
       "tier": 9,
@@ -252,29 +232,26 @@
       "monster": "ice_wraith",
       "weapon": "frost_greatblade",
       "heavy": {
-        "defense": 242.5,
-        "attack": 35,
-        "speed": 0,
+        "id": "froststeel_heavy_armor",
         "attack_stat": 181,
         "defense_stat": 283,
         "swing_s": 0.85,
         "kill_s": 12,
-        "hp_lost": 76.3,
-        "kills_survived": 6.61,
-        "xp_per_min": 14299
+        "hp_lost": 76.2,
+        "kills_survived": 6.62,
+        "xp_per_min": 14298
       },
       "light": {
-        "defense": 182.5,
-        "attack": 17,
-        "speed": 0.25,
+        "id": "froststeel_light_armor",
         "attack_stat": 163,
         "defense_stat": 223,
         "swing_s": 0.6,
         "kill_s": 9.6,
-        "hp_lost": 312.1,
+        "hp_lost": 311.4,
         "kills_survived": 1.62,
-        "xp_per_min": 17854
-      }
+        "xp_per_min": 17851
+      },
+      "light_xp_advantage_pct": 24.8
     },
     {
       "tier": 10,
@@ -282,29 +259,26 @@
       "monster": "frost_revenant",
       "weapon": "wyrmsteel_blade",
       "heavy": {
-        "defense": 243.5,
-        "attack": 38,
-        "speed": 0,
+        "id": "wyrmsteel_heavy_armor",
         "attack_stat": 201,
         "defense_stat": 289,
         "swing_s": 0.85,
         "kill_s": 10.9,
-        "hp_lost": 66,
-        "kills_survived": 8.55,
-        "xp_per_min": 16047
+        "hp_lost": 66.1,
+        "kills_survived": 8.53,
+        "xp_per_min": 16050
       },
       "light": {
-        "defense": 183.5,
-        "attack": 18,
-        "speed": 0.25,
+        "id": "wyrmsteel_light_armor",
         "attack_stat": 181,
         "defense_stat": 229,
         "swing_s": 0.6,
         "kill_s": 8.7,
-        "hp_lost": 273.1,
-        "kills_survived": 2.07,
-        "xp_per_min": 20116
-      }
+        "hp_lost": 273.5,
+        "kills_survived": 2.06,
+        "xp_per_min": 20124
+      },
+      "light_xp_advantage_pct": 25.4
     },
     {
       "tier": 11,
@@ -312,29 +286,26 @@
       "monster": "frost_giant",
       "weapon": "glacial_greatblade",
       "heavy": {
-        "defense": 264.5,
-        "attack": 40,
-        "speed": 0,
+        "id": "glacial_heavy_armor",
         "attack_stat": 220,
         "defense_stat": 315,
         "swing_s": 0.85,
         "kill_s": 11.8,
-        "hp_lost": 96.7,
-        "kills_survived": 6.45,
-        "xp_per_min": 17238
+        "hp_lost": 96.5,
+        "kills_survived": 6.47,
+        "xp_per_min": 17250
       },
       "light": {
-        "defense": 193.5,
-        "attack": 18,
-        "speed": 0.25,
+        "id": "glacial_light_armor",
         "attack_stat": 198,
         "defense_stat": 244,
         "swing_s": 0.6,
         "kill_s": 9.4,
-        "hp_lost": 385.8,
-        "kills_survived": 1.62,
+        "hp_lost": 386.4,
+        "kills_survived": 1.61,
         "xp_per_min": 21636
-      }
+      },
+      "light_xp_advantage_pct": 25.4
     },
     {
       "tier": 12,
@@ -342,29 +313,26 @@
       "monster": "glacial_guardian",
       "weapon": "starsteel_blade",
       "heavy": {
-        "defense": 265.5,
-        "attack": 46,
-        "speed": 0,
+        "id": "starsteel_heavy_armor",
         "attack_stat": 244,
         "defense_stat": 321,
         "swing_s": 0.85,
         "kill_s": 11,
-        "hp_lost": 100.7,
+        "hp_lost": 100.6,
         "kills_survived": 6.8,
-        "xp_per_min": 19353
+        "xp_per_min": 19349
       },
       "light": {
-        "defense": 194.5,
-        "attack": 20,
-        "speed": 0.25,
+        "id": "starsteel_light_armor",
         "attack_stat": 218,
         "defense_stat": 250,
         "swing_s": 0.6,
         "kill_s": 8.8,
-        "hp_lost": 378.1,
+        "hp_lost": 378.7,
         "kills_survived": 1.81,
-        "xp_per_min": 24164
-      }
+        "xp_per_min": 24157
+      },
+      "light_xp_advantage_pct": 24.8
     },
     {
       "tier": 13,
@@ -372,29 +340,26 @@
       "monster": "wyrm_knight",
       "weapon": "voidsteel_greatblade",
       "heavy": {
-        "defense": 274.5,
-        "attack": 49,
-        "speed": 0,
+        "id": "voidsteel_heavy_armor",
         "attack_stat": 266,
         "defense_stat": 335,
         "swing_s": 0.85,
         "kill_s": 10.8,
-        "hp_lost": 116.8,
-        "kills_survived": 6.37,
-        "xp_per_min": 21264
+        "hp_lost": 117.1,
+        "kills_survived": 6.36,
+        "xp_per_min": 21271
       },
       "light": {
-        "defense": 195.5,
-        "attack": 21,
-        "speed": 0.25,
+        "id": "voidsteel_light_armor",
         "attack_stat": 238,
         "defense_stat": 256,
         "swing_s": 0.6,
         "kill_s": 8.7,
-        "hp_lost": 437.5,
+        "hp_lost": 436.7,
         "kills_survived": 1.7,
-        "xp_per_min": 26591
-      }
+        "xp_per_min": 26605
+      },
+      "light_xp_advantage_pct": 25.1
     },
     {
       "tier": 14,
@@ -402,29 +367,26 @@
       "monster": "void_wraith",
       "weapon": "wyrmforged_blade",
       "heavy": {
-        "defense": 288.5,
-        "attack": 54,
-        "speed": 0,
+        "id": "wyrmforged_heavy_armor",
         "attack_stat": 291,
         "defense_stat": 354,
         "swing_s": 0.85,
         "kill_s": 10.7,
-        "hp_lost": 125.8,
-        "kills_survived": 6.39,
-        "xp_per_min": 23478
+        "hp_lost": 126.1,
+        "kills_survived": 6.38,
+        "xp_per_min": 23471
       },
       "light": {
-        "defense": 197.3,
-        "attack": 23,
-        "speed": 0.25,
+        "id": "wyrmforged_light_armor",
         "attack_stat": 260,
         "defense_stat": 262,
         "swing_s": 0.6,
         "kill_s": 8.6,
-        "hp_lost": 507,
+        "hp_lost": 506.7,
         "kills_survived": 1.59,
-        "xp_per_min": 29277
-      }
+        "xp_per_min": 29268
+      },
+      "light_xp_advantage_pct": 24.7
     },
     {
       "tier": 15,
@@ -432,29 +394,26 @@
       "monster": "ancient_frost_wyrm",
       "weapon": "ancient_greatblade",
       "heavy": {
-        "defense": 322.4,
-        "attack": 58,
-        "speed": 0,
+        "id": "ancient_heavy_armor",
         "attack_stat": 316,
         "defense_stat": 392,
         "swing_s": 0.85,
         "kill_s": 11.1,
-        "hp_lost": 138,
-        "kills_survived": 6.26,
-        "xp_per_min": 25616
+        "hp_lost": 137.9,
+        "kills_survived": 6.27,
+        "xp_per_min": 25618
       },
       "light": {
-        "defense": 225.5,
-        "attack": 24,
-        "speed": 0.25,
+        "id": "ancient_light_armor",
         "attack_stat": 282,
         "defense_stat": 296,
         "swing_s": 0.6,
         "kill_s": 8.9,
-        "hp_lost": 541.2,
+        "hp_lost": 541.1,
         "kills_survived": 1.6,
-        "xp_per_min": 31926
-      }
+        "xp_per_min": 31923
+      },
+      "light_xp_advantage_pct": 24.6
     },
     {
       "tier": 16,
@@ -462,29 +421,26 @@
       "monster": "ascendant_wyrm",
       "weapon": "ascendant_blade",
       "heavy": {
-        "defense": 323.4,
-        "attack": 60,
-        "speed": 0,
+        "id": "ascendant_heavy_armor",
         "attack_stat": 340,
         "defense_stat": 398,
         "swing_s": 0.85,
         "kill_s": 10.6,
-        "hp_lost": 142.6,
-        "kills_survived": 6.48,
-        "xp_per_min": 27736
+        "hp_lost": 143,
+        "kills_survived": 6.46,
+        "xp_per_min": 27739
       },
       "light": {
-        "defense": 226.5,
-        "attack": 25,
-        "speed": 0.25,
+        "id": "ascendant_light_armor",
         "attack_stat": 305,
         "defense_stat": 302,
         "swing_s": 0.6,
         "kill_s": 8.5,
-        "hp_lost": 532.2,
+        "hp_lost": 531.6,
         "kills_survived": 1.74,
-        "xp_per_min": 34691
-      }
+        "xp_per_min": 34688
+      },
+      "light_xp_advantage_pct": 25.1
     }
   ]
 }
