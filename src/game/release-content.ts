@@ -40,7 +40,7 @@ function toItemDef(entry: ReleaseItem): ItemDef {
     color: entry.colour,
     kind: entry.kind as ItemDef["kind"],
     family: iconFamily(entry.family),
-    rarity: RARITY.has(entry.rarity) ? (entry.rarity as ItemDef["rarity"]) : "common",
+    rarity: (RARITY.has(entry.rarity) ? entry.rarity : "common") as NonNullable<ItemDef["rarity"]>,
     level: entry.level_requirement,
     untradable: !entry.tradable,
     attack: entry.stats.attack,
@@ -104,8 +104,9 @@ export function ensureReleaseContent() {
       );
       if (!found) return null;
       const recipe = byOutput.get(found.id as ItemId);
-      if (!recipe) return null;
-      return { item: ITEMS[found.id as ItemId], recipe };
+      const def = ITEMS[found.id as ItemId];
+      if (!recipe || !def) return null;
+      return { item: def, recipe };
     };
     return {
       tier: tier.tier_index,
