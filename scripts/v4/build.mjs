@@ -256,32 +256,38 @@ function remapDeep(value) {
 const starterLoadout = remapDeep(src.starter_loadout);
 
 // ---------------------------------------------------------------------------
-// Migration ledger: retired ids are compensated at captured cutover value.
+// Migration ledger: every retired id has a canonical same-tier, same-family
+// successor, so equipped copies are swapped in place with their upgrade level
+// intact and loose copies pay captured cutover value once.
 // ---------------------------------------------------------------------------
 const migrationRules = [
   ...src.migration_rules.filter((rule) => !Object.hasOwn(RETIRED_ARMOUR, rule.from_id)),
   ...retiredIds.map((from) => ({
-    action: "compensate",
+    action: "replace_or_compensate",
     captured_value_required: true,
+    equipped_action: "replace_preserve_plus",
     from_id: from,
-    notice_key: `${from}_captured_value_compensation`,
+    notice_key: `${from}_equipped_replace_unequipped_compensate`,
+    to_id: RETIRED_ARMOUR[from],
+    unequipped_action: "compensate_captured_value",
   })),
 ].sort((left, right) => left.from_id.localeCompare(right.from_id));
 
 const playerNotice = {
   title: "Tomlandia armour overhaul",
   summary:
-    "All 32 armour sets are now craftable on one readable ingredient matrix; nine off-theme sets are retired at captured cutover value.",
+    "All 32 armour sets are now craftable on one readable ingredient matrix; nine off-theme sets become their tier-named successors.",
   details: [
     "Every tier from level 1 to level 150 now offers a matching Heavy and Light armour set named after its tier.",
     "Heavy armour trades swing speed for survivability: it now absorbs several times more damage but earns about 25% less experience per minute than Light armour.",
     "Heavy armour now carries an attack value, so upgrade levels finally improve it.",
     "Heavy armour is crafted from four bars, two leather and one tier trophy; Light armour from three cloth, one leather and one tier trophy.",
     "Shadow Beasts, Dune Devourers and Glacial Guardians now drop a tier trophy so their bands have a real craft gate.",
-    "Cloth Tunic, Leather Vest, Linen Robe, Iron Mail, Mithril Plate, Mystic Robe, Runite Plate, Frostguard Plate and Wyrmscale Plate are retired and pay captured cutover unit value multiplied by owned quantity exactly once.",
+    "Cloth Tunic, Leather Vest, Linen Robe, Iron Mail, Mithril Plate, Mystic Robe, Runite Plate, Frostguard Plate and Wyrmscale Plate are retired: an equipped copy becomes its tier-named successor at the same upgrade level, and any loose copy pays captured cutover unit value once.",
     "Market listings for retired definitions are cancelled and returned before activation.",
   ],
 };
+
 
 // ---------------------------------------------------------------------------
 // Assemble, hash and emit.
