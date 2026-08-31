@@ -71,7 +71,7 @@ for (const set of armour) {
   if (!recipes.some((recipe) => recipe.out === set.id)) throw new Error(`Armour ${set.id} has no recipe`);
 }
 
-const tiers = runtime.tiers
+const tiers = manifest.tiers
   .map(({ tier_index, level_requirement, theme }) => ({ tier_index, level_requirement, theme }))
   .sort((left, right) => left.tier_index - right.tier_index);
 
