@@ -1402,9 +1402,54 @@
       "to": "recipe:forge_wyrmsteel_blade"
     },
     {
+      "from": "legacy_item:cloth_tunic",
+      "relation": "replace_or_compensate",
+      "to": "item:copper_light_armor"
+    },
+    {
+      "from": "legacy_item:frostguard_plate",
+      "relation": "replace_or_compensate",
+      "to": "item:starsteel_heavy_armor"
+    },
+    {
+      "from": "legacy_item:iron_mail",
+      "relation": "replace_or_compensate",
+      "to": "item:steel_heavy_armor"
+    },
+    {
+      "from": "legacy_item:leather_vest",
+      "relation": "replace_or_compensate",
+      "to": "item:bronze_light_armor"
+    },
+    {
+      "from": "legacy_item:linen_robe",
+      "relation": "replace_or_compensate",
+      "to": "item:iron_light_armor"
+    },
+    {
+      "from": "legacy_item:mithril_plate",
+      "relation": "replace_or_compensate",
+      "to": "item:sunsteel_heavy_armor"
+    },
+    {
+      "from": "legacy_item:mystic_robe",
+      "relation": "replace_or_compensate",
+      "to": "item:shadowsteel_light_armor"
+    },
+    {
+      "from": "legacy_item:runite_plate",
+      "relation": "replace_or_compensate",
+      "to": "item:froststeel_heavy_armor"
+    },
+    {
       "from": "legacy_item:wooden_club",
       "relation": "replace_or_compensate",
       "to": "item:copper_sword"
+    },
+    {
+      "from": "legacy_item:wyrmscale_plate",
+      "relation": "replace_or_compensate",
+      "to": "item:voidsteel_heavy_armor"
     },
     {
       "from": "monster:ancient_frost_wyrm",
@@ -2457,7 +2502,7 @@
       "to": "item:shadowweave"
     }
   ],
-  "manifest_hash": "6cdc6a93d00b39646a185c64fded6811d24556946d71a58f2cb48f71d9d39121",
+  "manifest_hash": "9608c4031c2bed1b9335802b2328e8b90d7866b5d23110c7d3157fa2f50ebf41",
   "nodes": [
     {
       "active": true,
