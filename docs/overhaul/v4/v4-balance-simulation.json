@@ -14,14 +14,14 @@
       "heavy": {
         "defense": 42.5,
         "attack": 1,
-        "speed": -0.15,
+        "speed": 0,
         "attack_stat": 11,
         "defense_stat": 43,
-        "swing_s": 1,
-        "kill_s": 24.8,
+        "swing_s": 0.85,
+        "kill_s": 21.1,
         "hp_lost": 3.5,
         "kills_survived": 8.46,
-        "xp_per_min": 508
+        "xp_per_min": 598
       },
       "light": {
         "defense": 37.5,
@@ -43,15 +43,15 @@
       "weapon": "bronze_sword",
       "heavy": {
         "defense": 82.5,
-        "attack": 3,
-        "speed": -0.15,
-        "attack_stat": 27,
+        "attack": 2,
+        "speed": 0,
+        "attack_stat": 26,
         "defense_stat": 88,
-        "swing_s": 1,
-        "kill_s": 22,
-        "hp_lost": 13.1,
-        "kills_survived": 6.43,
-        "xp_per_min": 1419
+        "swing_s": 0.85,
+        "kill_s": 19.9,
+        "hp_lost": 13.9,
+        "kills_survived": 6.04,
+        "xp_per_min": 1571
       },
       "light": {
         "defense": 71.5,
@@ -73,15 +73,15 @@
       "weapon": "iron_sword",
       "heavy": {
         "defense": 93.5,
-        "attack": 9,
-        "speed": -0.15,
-        "attack_stat": 53,
+        "attack": 3,
+        "speed": 0,
+        "attack_stat": 47,
         "defense_stat": 104,
-        "swing_s": 1,
-        "kill_s": 12.8,
-        "hp_lost": 21.3,
-        "kills_survived": 6.75,
-        "xp_per_min": 3339
+        "swing_s": 0.85,
+        "kill_s": 12.7,
+        "hp_lost": 25,
+        "kills_survived": 5.77,
+        "xp_per_min": 3370
       },
       "light": {
         "defense": 72.5,
@@ -91,9 +91,9 @@
         "defense_stat": 83,
         "swing_s": 0.75,
         "kill_s": 10.4,
-        "hp_lost": 86.7,
+        "hp_lost": 86.6,
         "kills_survived": 1.66,
-        "xp_per_min": 4136
+        "xp_per_min": 4138
       }
     },
     {
@@ -103,27 +103,27 @@
       "weapon": "steel_sword",
       "heavy": {
         "defense": 134.5,
-        "attack": 15,
-        "speed": -0.15,
-        "attack_stat": 80,
+        "attack": 5,
+        "speed": 0,
+        "attack_stat": 70,
         "defense_stat": 150,
-        "swing_s": 1,
-        "kill_s": 13.2,
-        "hp_lost": 30.7,
-        "kills_survived": 6.64,
-        "xp_per_min": 5114
+        "swing_s": 0.85,
+        "kill_s": 13.4,
+        "hp_lost": 36.5,
+        "kills_survived": 5.59,
+        "xp_per_min": 5072
       },
       "light": {
-        "defense": 105.7,
+        "defense": 105.6,
         "attack": 8,
         "speed": 0.13,
         "attack_stat": 73,
         "defense_stat": 121,
         "swing_s": 0.72,
         "kill_s": 10.7,
-        "hp_lost": 127.3,
+        "hp_lost": 127.2,
         "kills_survived": 1.6,
-        "xp_per_min": 6328
+        "xp_per_min": 6329
       }
     },
     {
@@ -133,27 +133,27 @@
       "weapon": "mithril_blade",
       "heavy": {
         "defense": 139.5,
-        "attack": 23,
-        "speed": -0.15,
-        "attack_stat": 106,
+        "attack": 9,
+        "speed": 0,
+        "attack_stat": 92,
         "defense_stat": 160,
-        "swing_s": 1,
-        "kill_s": 11.1,
-        "hp_lost": 39.1,
-        "kills_survived": 6.75,
-        "xp_per_min": 7035
+        "swing_s": 0.85,
+        "kill_s": 11.2,
+        "hp_lost": 46.2,
+        "kills_survived": 5.71,
+        "xp_per_min": 6978
       },
       "light": {
-        "defense": 106.7,
+        "defense": 106.6,
         "attack": 10,
         "speed": 0.16,
         "attack_stat": 93,
         "defense_stat": 127,
         "swing_s": 0.69,
         "kill_s": 8.9,
-        "hp_lost": 148.7,
+        "hp_lost": 148.6,
         "kills_survived": 1.78,
-        "xp_per_min": 8727
+        "xp_per_min": 8725
       }
     },
     {
@@ -163,15 +163,15 @@
       "weapon": "sunsteel_blade",
       "heavy": {
         "defense": 179.5,
-        "attack": 31,
-        "speed": -0.15,
-        "attack_stat": 128,
+        "attack": 15,
+        "speed": 0,
+        "attack_stat": 112,
         "defense_stat": 205,
-        "swing_s": 1,
+        "swing_s": 0.85,
         "kill_s": 12.3,
-        "hp_lost": 44.5,
-        "kills_survived": 7.28,
-        "xp_per_min": 8584
+        "hp_lost": 52.3,
+        "kills_survived": 6.2,
+        "xp_per_min": 8601
       },
       "light": {
         "defense": 136.5,
@@ -181,9 +181,9 @@
         "defense_stat": 162,
         "swing_s": 0.66,
         "kill_s": 9.9,
-        "hp_lost": 201.2,
+        "hp_lost": 200.9,
         "kills_survived": 1.61,
-        "xp_per_min": 10736
+        "xp_per_min": 10737
       }
     },
     {
@@ -193,15 +193,15 @@
       "weapon": "runite_greatsword",
       "heavy": {
         "defense": 180.5,
-        "attack": 44,
-        "speed": -0.15,
-        "attack_stat": 158,
+        "attack": 23,
+        "speed": 0,
+        "attack_stat": 137,
         "defense_stat": 211,
-        "swing_s": 1,
+        "swing_s": 0.85,
         "kill_s": 10.6,
-        "hp_lost": 50.7,
-        "kills_survived": 7.57,
-        "xp_per_min": 10872
+        "hp_lost": 59.8,
+        "kills_survived": 6.42,
+        "xp_per_min": 10844
       },
       "light": {
         "defense": 137.5,
@@ -211,9 +211,9 @@
         "defense_stat": 168,
         "swing_s": 0.63,
         "kill_s": 8.5,
-        "hp_lost": 206.3,
+        "hp_lost": 206.2,
         "kills_survived": 1.86,
-        "xp_per_min": 13508
+        "xp_per_min": 13509
       }
     },
     {
@@ -223,25 +223,25 @@
       "weapon": "shadow_blade",
       "heavy": {
         "defense": 214.5,
-        "attack": 56,
-        "speed": -0.15,
-        "attack_stat": 186,
+        "attack": 31,
+        "speed": 0,
+        "attack_stat": 161,
         "defense_stat": 250,
-        "swing_s": 1,
+        "swing_s": 0.85,
         "kill_s": 11.1,
-        "hp_lost": 57.1,
-        "kills_survived": 7.78,
-        "xp_per_min": 12938
+        "hp_lost": 67.3,
+        "kills_survived": 6.6,
+        "xp_per_min": 12919
       },
       "light": {
-        "defense": 159.2,
+        "defense": 158.5,
         "attack": 15,
         "speed": 0.25,
         "attack_stat": 145,
         "defense_stat": 194,
         "swing_s": 0.6,
         "kill_s": 8.9,
-        "hp_lost": 278,
+        "hp_lost": 278.1,
         "kills_survived": 1.6,
         "xp_per_min": 16169
       }
@@ -253,26 +253,26 @@
       "weapon": "frost_greatblade",
       "heavy": {
         "defense": 242.5,
-        "attack": 62,
-        "speed": -0.15,
-        "attack_stat": 208,
+        "attack": 35,
+        "speed": 0,
+        "attack_stat": 181,
         "defense_stat": 283,
-        "swing_s": 1,
-        "kill_s": 12.1,
-        "hp_lost": 65,
-        "kills_survived": 7.75,
-        "xp_per_min": 14220
+        "swing_s": 0.85,
+        "kill_s": 12,
+        "hp_lost": 76.3,
+        "kills_survived": 6.61,
+        "xp_per_min": 14299
       },
       "light": {
-        "defense": 181.6,
+        "defense": 182.5,
         "attack": 17,
         "speed": 0.25,
         "attack_stat": 163,
-        "defense_stat": 222,
+        "defense_stat": 223,
         "swing_s": 0.6,
         "kill_s": 9.6,
-        "hp_lost": 316.5,
-        "kills_survived": 1.59,
+        "hp_lost": 312.1,
+        "kills_survived": 1.62,
         "xp_per_min": 17854
       }
     },
@@ -283,27 +283,27 @@
       "weapon": "wyrmsteel_blade",
       "heavy": {
         "defense": 243.5,
-        "attack": 70,
-        "speed": -0.15,
-        "attack_stat": 233,
+        "attack": 38,
+        "speed": 0,
+        "attack_stat": 201,
         "defense_stat": 289,
-        "swing_s": 1,
+        "swing_s": 0.85,
         "kill_s": 10.9,
-        "hp_lost": 56,
-        "kills_survived": 10.06,
-        "xp_per_min": 16078
+        "hp_lost": 66,
+        "kills_survived": 8.55,
+        "xp_per_min": 16047
       },
       "light": {
-        "defense": 182.6,
+        "defense": 183.5,
         "attack": 18,
         "speed": 0.25,
         "attack_stat": 181,
-        "defense_stat": 228,
+        "defense_stat": 229,
         "swing_s": 0.6,
         "kill_s": 8.7,
-        "hp_lost": 277.8,
-        "kills_survived": 2.03,
-        "xp_per_min": 20109
+        "hp_lost": 273.1,
+        "kills_survived": 2.07,
+        "xp_per_min": 20116
       }
     },
     {
@@ -313,15 +313,15 @@
       "weapon": "glacial_greatblade",
       "heavy": {
         "defense": 264.5,
-        "attack": 74,
-        "speed": -0.15,
-        "attack_stat": 254,
+        "attack": 40,
+        "speed": 0,
+        "attack_stat": 220,
         "defense_stat": 315,
-        "swing_s": 1,
+        "swing_s": 0.85,
         "kill_s": 11.8,
-        "hp_lost": 82.2,
-        "kills_survived": 7.6,
-        "xp_per_min": 17265
+        "hp_lost": 96.7,
+        "kills_survived": 6.45,
+        "xp_per_min": 17238
       },
       "light": {
         "defense": 193.5,
@@ -331,9 +331,9 @@
         "defense_stat": 244,
         "swing_s": 0.6,
         "kill_s": 9.4,
-        "hp_lost": 386.1,
+        "hp_lost": 385.8,
         "kills_survived": 1.62,
-        "xp_per_min": 21638
+        "xp_per_min": 21636
       }
     },
     {
@@ -343,15 +343,15 @@
       "weapon": "starsteel_blade",
       "heavy": {
         "defense": 265.5,
-        "attack": 84,
-        "speed": -0.15,
-        "attack_stat": 282,
+        "attack": 46,
+        "speed": 0,
+        "attack_stat": 244,
         "defense_stat": 321,
-        "swing_s": 1,
+        "swing_s": 0.85,
         "kill_s": 11,
-        "hp_lost": 85.5,
-        "kills_survived": 8,
-        "xp_per_min": 19376
+        "hp_lost": 100.7,
+        "kills_survived": 6.8,
+        "xp_per_min": 19353
       },
       "light": {
         "defense": 194.5,
@@ -361,7 +361,7 @@
         "defense_stat": 250,
         "swing_s": 0.6,
         "kill_s": 8.8,
-        "hp_lost": 378.2,
+        "hp_lost": 378.1,
         "kills_survived": 1.81,
         "xp_per_min": 24164
       }
@@ -373,15 +373,15 @@
       "weapon": "voidsteel_greatblade",
       "heavy": {
         "defense": 274.5,
-        "attack": 91,
-        "speed": -0.15,
-        "attack_stat": 308,
+        "attack": 49,
+        "speed": 0,
+        "attack_stat": 266,
         "defense_stat": 335,
-        "swing_s": 1,
+        "swing_s": 0.85,
         "kill_s": 10.8,
-        "hp_lost": 99.4,
-        "kills_survived": 7.48,
-        "xp_per_min": 21293
+        "hp_lost": 116.8,
+        "kills_survived": 6.37,
+        "xp_per_min": 21264
       },
       "light": {
         "defense": 195.5,
@@ -391,9 +391,9 @@
         "defense_stat": 256,
         "swing_s": 0.6,
         "kill_s": 8.7,
-        "hp_lost": 437,
+        "hp_lost": 437.5,
         "kills_survived": 1.7,
-        "xp_per_min": 26597
+        "xp_per_min": 26591
       }
     },
     {
@@ -403,27 +403,27 @@
       "weapon": "wyrmforged_blade",
       "heavy": {
         "defense": 288.5,
-        "attack": 100,
-        "speed": -0.15,
-        "attack_stat": 337,
+        "attack": 54,
+        "speed": 0,
+        "attack_stat": 291,
         "defense_stat": 354,
-        "swing_s": 1,
+        "swing_s": 0.85,
         "kill_s": 10.7,
-        "hp_lost": 107.1,
-        "kills_survived": 7.51,
-        "xp_per_min": 23404
+        "hp_lost": 125.8,
+        "kills_survived": 6.39,
+        "xp_per_min": 23478
       },
       "light": {
-        "defense": 197.4,
+        "defense": 197.3,
         "attack": 23,
         "speed": 0.25,
         "attack_stat": 260,
         "defense_stat": 262,
         "swing_s": 0.6,
         "kill_s": 8.6,
-        "hp_lost": 506.4,
+        "hp_lost": 507,
         "kills_survived": 1.59,
-        "xp_per_min": 29276
+        "xp_per_min": 29277
       }
     },
     {
@@ -433,15 +433,15 @@
       "weapon": "ancient_greatblade",
       "heavy": {
         "defense": 322.4,
-        "attack": 108,
-        "speed": -0.15,
-        "attack_stat": 366,
+        "attack": 58,
+        "speed": 0,
+        "attack_stat": 316,
         "defense_stat": 392,
-        "swing_s": 1,
-        "kill_s": 11.2,
-        "hp_lost": 117.6,
-        "kills_survived": 7.35,
-        "xp_per_min": 25590
+        "swing_s": 0.85,
+        "kill_s": 11.1,
+        "hp_lost": 138,
+        "kills_survived": 6.26,
+        "xp_per_min": 25616
       },
       "light": {
         "defense": 225.5,
@@ -451,9 +451,9 @@
         "defense_stat": 296,
         "swing_s": 0.6,
         "kill_s": 8.9,
-        "hp_lost": 540.4,
+        "hp_lost": 541.2,
         "kills_survived": 1.6,
-        "xp_per_min": 31935
+        "xp_per_min": 31926
       }
     },
     {
@@ -463,15 +463,15 @@
       "weapon": "ascendant_blade",
       "heavy": {
         "defense": 323.4,
-        "attack": 116,
-        "speed": -0.15,
-        "attack_stat": 396,
+        "attack": 60,
+        "speed": 0,
+        "attack_stat": 340,
         "defense_stat": 398,
-        "swing_s": 1,
+        "swing_s": 0.85,
         "kill_s": 10.6,
-        "hp_lost": 121.7,
-        "kills_survived": 7.6,
-        "xp_per_min": 27741
+        "hp_lost": 142.6,
+        "kills_survived": 6.48,
+        "xp_per_min": 27736
       },
       "light": {
         "defense": 226.5,
@@ -481,9 +481,9 @@
         "defense_stat": 302,
         "swing_s": 0.6,
         "kill_s": 8.5,
-        "hp_lost": 531.7,
+        "hp_lost": 532.2,
         "kills_survived": 1.74,
-        "xp_per_min": 34684
+        "xp_per_min": 34691
       }
     }
   ]
