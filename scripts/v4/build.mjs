@@ -44,6 +44,7 @@ const PATHS = Object.freeze({
   report: "docs/overhaul/v4/content-change-report.json",
 });
 const checkOnly = process.argv.includes("--check");
+const promote = process.argv.includes("--promote");
 
 const [v3Content, v3World] = await Promise.all([
   readFile(PATHS.v3Content, "utf8").then(JSON.parse),
@@ -245,10 +246,14 @@ const quests = src.quests.map((quest) => ({
   target_id: remap(quest.target_id),
   reward_items: (quest.reward_items ?? []).map((reward) => ({ ...reward, item_id: remap(reward.item_id) })),
 }));
-const starterLoadout = JSON.parse(canonicalJson(src.starter_loadout).replaceAll(
-  /"([a-z0-9_]+)"/g,
-  (match, id) => `"${remap(id)}"`,
-));
+function remapDeep(value) {
+  if (Array.isArray(value)) return value.map(remapDeep);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, remapDeep(entry)]));
+  }
+  return typeof value === "string" ? remap(value) : value;
+}
+const starterLoadout = remapDeep(src.starter_loadout);
 
 // ---------------------------------------------------------------------------
 // Migration ledger: retired ids are compensated at captured cutover value.
@@ -365,8 +370,10 @@ export const WORLD_SPAWN_HASH = "${spawnHash}";
 export const WORLD_SPAWN_COUNTS = Object.freeze({ nodes: ${world.counts.nodes}, monsters: ${world.counts.monsters} });
 `;
 
+// The generated client pins stay on the active release until rollout; the V4
+// pin is written only when --promote is passed (see scripts/v4/promote.mjs).
 const outputs = [
-  ["src/generated/world-manifest.ts", clientWorld],
+  ...(promote ? [["src/generated/world-manifest.ts", clientWorld]] : []),
   [PATHS.content, contentRendered],
   [PATHS.world, worldRendered],
   [PATHS.report, reportRendered],
