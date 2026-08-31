@@ -310,8 +310,19 @@ const content = {
 const contentRendered = prettyCanonicalJson(content);
 const contentHash = manifestHash(JSON.parse(contentRendered));
 
+// spawn_id is a globally unique primary key, so a V4 spawn cannot reuse the V3
+// uuid: it is re-minted from the same identity under the v4 name prefix, the
+// way every previous release cut does. Position and identity stay unchanged.
+const v4Spawns = v3World.spawns
+  .map((spawn) => ({
+    ...spawn,
+    spawn_id: uuidV5(v3Content.uuid_namespace, `${V4_VERSION}:${spawn.entity_type}:${spawn.kind}:${spawn.ordinal}`),
+  }))
+  .sort((left, right) => left.spawn_id.localeCompare(right.spawn_id));
+
 const world = {
   ...v3World,
+  spawns: v4Spawns,
   content_version: V4_VERSION,
   spawn_set_version: V4_VERSION,
   source_content_manifest_hash: contentHash,
