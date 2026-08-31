@@ -3,7 +3,8 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(fileURLToPath(new URL("../..", import.meta.url)));
-const source = resolve(root, "content/v2/manifest.authoring.json");
+const inputArg = process.argv.indexOf("--input");
+const source = resolve(root, inputArg > -1 ? process.argv[inputArg + 1] : "content/v2/manifest.authoring.json");
 const output = resolve(root, "src/generated/content-catalog.ts");
 const checkOnly = process.argv.includes("--check");
 const manifest = JSON.parse(await readFile(source, "utf8"));

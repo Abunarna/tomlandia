@@ -11,7 +11,7 @@ const run = (args) => {
 };
 
 run(["scripts/gate8/build-creature-registry.mjs", "--check"]);
-run(["scripts/gate8/build-content-catalog.mjs", "--check"]);
+run(["scripts/gate8/build-content-catalog.mjs", "--input", "content/v4/manifest.authoring.json", "--check"]);
 run(["--test", "tests/content/gate8-content-display.test.mjs", "tests/content/gate8-creature-sprites.test.mjs", "tests/content/gate8-market-tiers.test.mjs", "tests/content/gate8-world-runtime.test.mjs"]);
 
 const [engine, runtime, world] = await Promise.all([

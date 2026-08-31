@@ -29,8 +29,8 @@ export const BOSS_MELEE_RADIUS = 34;
 
 /**
  * Stats, solved against the live formulas (see server RPC for the mirror):
- *  - defense 85  ≈ 2.2x frostguard_plate's 38.
- *  - attack 340  → vs a level-150 player in frostguard_plate (def 75+38=113):
+ *  - defense 85  ≈ 2.2x starsteel_heavy_armor's 38.
+ *  - attack 340  → vs a level-150 player in starsteel_heavy_armor (def 75+38=113):
  *    floor(340 * (0.5..1.2) - 56) = 114..352 of a 924 max HP pool, averaging
  *    ~233 ≈ 25% per hit.
  *  - hp 45000    ≈ 20x the Frost Giant's 2200 pool.

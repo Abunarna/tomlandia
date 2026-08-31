@@ -22,7 +22,7 @@ INSERT INTO public.game_world_spawn_sets
   (content_version, spawn_set_version, source_content_manifest_hash, spawn_hash, model_version,
    cluster_probability, world_width, world_height, movement_speed, path_cell_size,
    winter_geometry, reachability_summary)
-SELECT 'v4', 'v4', '9608c4031c2bed1b9335802b2328e8b90d7866b5d23110c7d3157fa2f50ebf41', '67b857de15eb32a8305595f5320fd2b6009e7d6de8bc40c2d53c790a898610cb', model_version,
+SELECT 'v4', 'v4', '26e80ffe38a76677a0cbb8b768c7d06c9786c10e4717885129ef89ebd63026aa', '67b857de15eb32a8305595f5320fd2b6009e7d6de8bc40c2d53c790a898610cb', model_version,
        cluster_probability, world_width, world_height, movement_speed, path_cell_size,
        winter_geometry, reachability_summary
 FROM public.game_world_spawn_sets
