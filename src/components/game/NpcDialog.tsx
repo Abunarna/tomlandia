@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { Coins, Check, X, Hammer, ArrowUpCircle, ChevronDown } from "lucide-react";
-import { MAX_PLUS, NPCS, QUESTS, RECIPES, SHOP_STOCK, item, type NpcRole } from "@/game/data";
-import type { HudSnapshot, InvSlot, ItemId } from "@/game/types";
+import { Coins, Check, X, Hammer, ArrowUpCircle, ChevronDown, Lock } from "lucide-react";
+import { MAX_PLUS, NPCS, QUESTS, RECIPES, SHOP_STOCK, item, type NpcRole, type Recipe } from "@/game/data";
+import { releaseArmourTiers } from "@/game/release-content";
+import type { HudSnapshot, InvSlot, ItemDef, ItemId } from "@/game/types";
 import { ItemIcon } from "./ItemIcon";
+
+
 
 
 export function NpcDialog({
