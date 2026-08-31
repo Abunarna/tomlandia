@@ -1,4 +1,5 @@
 import "./v2-runtime-content";
+import "./release-content";
 import { findWalkPath, type WalkPoint } from "./pathfinding";
 import {
   BARRIERS,
@@ -762,7 +763,7 @@ export class GameEngine {
     items: new Array(BANK_SIZE).fill(null),
   };
   weapon: EquipState | null = { id: "wooden_club", plus: 0 };
-  armor: EquipState | null = { id: "cloth_tunic", plus: 0 };
+  armor: EquipState | null = { id: "copper_light_armor", plus: 0 };
   food: ItemId | null = null;
   /** player-chosen auto-eat threshold (fraction of max HP) */
   autoEatAt = 0.5;
