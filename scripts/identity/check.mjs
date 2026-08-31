@@ -14,6 +14,9 @@ export const CANONICAL_IDENTITY = Object.freeze({
   lovableProjectId: "10d00f6b-da27-43c4-a205-c0b7841a64fc",
   supabaseProjectRef: "fhelsfnbvrmnxuynyoqu",
   productionUrl: "https://tomlandia.lovable.app",
+  contentRelease: "v3",
+  contentManifestHash: "f8bc150f0edd4abfdec405dd7f58007d3e9da699100f2ec54cf2ecbd9fa03a0a",
+  worldSpawnHash: "38d2615e5ce144f70ffe8bf791603afae42b16b0c87fae1da0a1a886d7a8acba",
 });
 
 async function read(relativePath) {
@@ -49,6 +52,31 @@ expect(
   `.env points at a non-canonical Supabase project ref: ${envRef}`,
 );
 
+// The canonical client must be pinned to the canonical content release.
+const contentManifest = (await read("src/generated/content-manifest.ts")) ?? "";
+const worldManifest = (await read("src/generated/world-manifest.ts")) ?? "";
+
+expect(
+  contentManifest.includes(`export const CONTENT_VERSION = "${CANONICAL_IDENTITY.contentRelease}"`),
+  `src/generated/content-manifest.ts is not pinned to contentRelease ${CANONICAL_IDENTITY.contentRelease}`,
+);
+expect(
+  contentManifest.includes(`export const SPAWN_SET_VERSION = "${CANONICAL_IDENTITY.contentRelease}"`),
+  `src/generated/content-manifest.ts spawn-set version is not ${CANONICAL_IDENTITY.contentRelease}`,
+);
+expect(
+  contentManifest.includes(CANONICAL_IDENTITY.contentManifestHash),
+  "src/generated/content-manifest.ts does not carry the canonical content-manifest hash",
+);
+expect(
+  worldManifest.includes(`export const SPAWN_SET_VERSION = "${CANONICAL_IDENTITY.contentRelease}"`),
+  `src/generated/world-manifest.ts is not pinned to contentRelease ${CANONICAL_IDENTITY.contentRelease}`,
+);
+expect(
+  worldManifest.includes(CANONICAL_IDENTITY.worldSpawnHash),
+  "src/generated/world-manifest.ts does not carry the canonical world-spawn hash",
+);
+
 if (failures.length) {
   console.error("Canonical identity check FAILED:");
   for (const failure of failures) console.error(`- ${failure}`);
@@ -61,5 +89,8 @@ console.log(
     `  Lovable project ID:  ${CANONICAL_IDENTITY.lovableProjectId}`,
     `  Supabase project ref: ${CANONICAL_IDENTITY.supabaseProjectRef}`,
     `  Production URL:       ${CANONICAL_IDENTITY.productionUrl}`,
+    `  Content release:      ${CANONICAL_IDENTITY.contentRelease}`,
+    `  Content manifest:     ${CANONICAL_IDENTITY.contentManifestHash}`,
+    `  World spawn hash:     ${CANONICAL_IDENTITY.worldSpawnHash}`,
   ].join("\n"),
 );
