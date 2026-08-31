@@ -241,6 +241,52 @@ export function NpcDialog({
         {craftStations.map((svc) => {
           const list = RECIPES.filter((r) => r.station === svc);
           const stationLvl = Math.max(...list.map((r) => hud.skills[r.skill].level), 0);
+
+          if (svc === "armor") {
+            return (
+              <Section key={svc} title={`${stationTitle[svc]} (Lv ${stationLvl})`}>
+                <p className="text-[10px] text-muted-foreground">
+                  Every tier offers a Heavy and a Light set. Heavy trades swing speed for survivability; Light swings
+                  faster for more experience per minute.
+                </p>
+                {armourTiers.map((row) => {
+                  const unlocked =
+                    (row.heavy ? hud.skills[row.heavy.recipe.skill].level >= row.heavy.recipe.req : false) ||
+                    (row.light ? hud.skills[row.light.recipe.skill].level >= row.light.recipe.req : false);
+                  return (
+                    <div key={row.tier} className="space-y-1.5">
+                      <div className="flex items-center gap-2 px-0.5">
+                        <span className={`text-[11px] font-bold ${unlocked ? "text-foreground" : "text-muted-foreground"}`}>
+                          T{row.tier} · {row.theme}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground">Lv {row.levelRequirement}</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-1.5">
+                        {[row.heavy, row.light].map((entry, side) =>
+                          entry ? (
+                            <ArmourCard
+                              key={entry.recipe.id}
+                              recipe={entry.recipe}
+                              def={entry.item}
+                              level={hud.skills[entry.recipe.skill].level}
+                              count={count}
+                              open={openRecipe === entry.recipe.id}
+                              onToggle={() => setOpenRecipe(openRecipe === entry.recipe.id ? null : entry.recipe.id)}
+                              onCraft={onCraft}
+                              onCraftAll={onCraftAll}
+                            />
+                          ) : (
+                            <div key={side} />
+                          ),
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </Section>
+            );
+          }
+
           return (
             <Section key={svc} title={`${stationTitle[svc]} (Lv ${stationLvl})`}>
               {list.map((r) => {
@@ -343,6 +389,7 @@ export function NpcDialog({
             </Section>
           );
         })}
+
 
         {services.includes("upgrade") && (
           <Section title="Upgrade gear">
