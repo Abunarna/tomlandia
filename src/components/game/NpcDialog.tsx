@@ -543,3 +543,105 @@ function ItemGrid({
     </div>
   );
 }
+
+/**
+ * Compact armour tile used by the Armourer's tier grid.
+ *
+ * Unlike the generic recipe row, a locked set stays visible: players need to
+ * see the whole ladder to plan, so an unmet level shows the gate rather than
+ * hiding the set.
+ */
+function ArmourCard({
+  recipe,
+  def,
+  level,
+  count,
+  open,
+  onToggle,
+  onCraft,
+  onCraftAll,
+}: {
+  recipe: Recipe;
+  def: ItemDef;
+  level: number;
+  count: (id: ItemId) => number;
+  open: boolean;
+  onToggle: () => void;
+  onCraft: (recipeId: string) => void;
+  onCraftAll: (recipeId: string) => void;
+}) {
+  const levelOk = level >= recipe.req;
+  const hasMats = recipe.inputs.every((i) => count(i.id) >= i.qty);
+  const ok = levelOk && hasMats;
+  return (
+    <div
+      className={`rounded-2xl border p-1.5 ${
+        levelOk ? "border-border/70 bg-muted/40" : "border-border/40 bg-muted/20 opacity-70"
+      }`}
+    >
+      <button
+        onClick={onToggle}
+        aria-expanded={open}
+        className="flex w-full min-w-0 items-center gap-1.5 text-left active:scale-[0.99]"
+      >
+        <span className="relative shrink-0">
+          <ItemIcon item={def} className="size-8" />
+          {!levelOk && (
+            <Lock className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-card p-[1px] text-muted-foreground" />
+          )}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[11px] font-bold text-foreground">{def.name}</span>
+          <span className="block truncate text-[9px] text-muted-foreground">
+            {def.defense ? `${def.defense} def` : "—"}
+            {def.attack ? ` · ${def.attack} atk` : ""}
+            {def.speed ? ` · ${Math.round(def.speed * 100)}% spd` : ""}
+          </span>
+        </span>
+        <ChevronDown
+          className={`size-3.5 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      <div className="mt-1.5 flex gap-1">
+        <button
+          disabled={!ok}
+          onClick={() => onCraft(recipe.id)}
+          className="flex flex-1 items-center justify-center gap-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+        >
+          <Hammer className="size-3" />
+          Make
+        </button>
+        <button
+          disabled={!ok}
+          onClick={() => onCraftAll(recipe.id)}
+          className="rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+        >
+          All
+        </button>
+      </div>
+
+      {open && (
+        <div className="mt-1.5 space-y-1 rounded-xl bg-card/70 p-2">
+          <p className="text-[10px] text-muted-foreground">
+            Lv {recipe.req} {recipe.skill} · {recipe.xp} xp · {recipe.time}s
+            {!levelOk && ` · needs Lv ${recipe.req}`}
+          </p>
+          {recipe.inputs.map((i) => {
+            const mat = item(i.id);
+            const have = count(i.id);
+            return (
+              <div key={i.id} className="flex items-center gap-1.5">
+                <ItemIcon item={mat} className="size-4" />
+                <span className="min-w-0 flex-1 truncate text-[10px] text-foreground">{mat.name}</span>
+                <span className={`text-[10px] font-bold ${have >= i.qty ? "text-primary" : "text-destructive"}`}>
+                  {have}/{i.qty}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
