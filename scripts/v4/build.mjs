@@ -19,7 +19,7 @@
  */
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 
-import { canonicalJson, manifestHash, prettyCanonicalJson } from "../content/model.mjs";
+import { canonicalJson, manifestHash, prettyCanonicalJson, uuidV5 } from "../content/model.mjs";
 import {
   ARMOUR_BALANCE,
   HEAVY_QTY,
