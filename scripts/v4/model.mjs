@@ -57,9 +57,14 @@ export const NEW_TROPHIES = Object.freeze([
 ]);
 
 /**
- * Off-theme V3 armour ids that V4 retires outright. Owners receive captured
- * cutover value through the existing compensation ledger; the replacement id
- * is the canonical tier-themed one.
+ * Off-theme V3 armour ids that V4 deletes outright.
+ *
+ * Owner decision (2026-08-31): these are superseded tester-era definitions.
+ * V4 deletes the definitions and every holding of them — no compensation, no
+ * conversion, no preserved plus levels. The mapping below is used only for
+ * *content authoring*: quests, starter loadouts and any other content
+ * reference are re-pointed at the canonical tier-themed id so V4 ships with no
+ * dangling references. It is NOT a player migration path.
  */
 export const RETIRED_ARMOUR = Object.freeze({
   cloth_tunic: "copper_light_armor",
@@ -109,3 +114,6 @@ export const THEME_TITLE = Object.freeze({
   froststeel: "Froststeel", wyrmsteel: "Wyrmsteel", glacial: "Glacial", starsteel: "Starsteel",
   voidsteel: "Voidsteel", wyrmforged: "Wyrmforged", ancient: "Ancient", ascendant: "Ascendant",
 });
+
+/** Explicit deletion allowlist: superseded tester-only ids V4 removes. */
+export const DELETED_ITEMS = Object.freeze(Object.keys(RETIRED_ARMOUR).sort());

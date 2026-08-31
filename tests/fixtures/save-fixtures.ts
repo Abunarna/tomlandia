@@ -13,7 +13,7 @@ export function baseSave(): StoredSaveContract {
     bank: { gold: 0, items: [] },
     skills: structuredClone(skills),
     weapon: { id: "wooden_club", plus: 0 },
-    armor: { id: "cloth_tunic", plus: 0 },
+    armor: { id: "copper_light_armor", plus: 0 },
     food: null,
     autoEatAt: 0.5,
     quest: null,
@@ -40,7 +40,7 @@ export const edgeSaveFixtures = {
     ...baseSave(),
     inv: [{ id: "steel_sword", qty: 1, plus: 31 }],
     weapon: { id: "mithril_blade", plus: 100 },
-    armor: "iron_mail",
+    armor: "steel_heavy_armor",
   },
   active_buff: {
     ...baseSave(),
@@ -87,7 +87,7 @@ export function generatedSaveCases(seed = 0x544f4d, count = 128) {
     };
     save.gold = Math.floor(random() * 1_000_000);
     save.weapon = { id: "steel_sword", plus: Math.floor(random() * 101) };
-    save.armor = { id: "iron_mail", plus: Math.floor(random() * 101) };
+    save.armor = { id: "steel_heavy_armor", plus: Math.floor(random() * 101) };
     if (random() < 0.5) {
       save.buff = {
         dmg: Math.floor(random() * 100),

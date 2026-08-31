@@ -19,7 +19,7 @@
  */
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 
-import { canonicalJson, manifestHash, prettyCanonicalJson } from "../content/model.mjs";
+import { canonicalJson, manifestHash, prettyCanonicalJson, uuidV5 } from "../content/model.mjs";
 import {
   ARMOUR_BALANCE,
   HEAVY_QTY,
@@ -256,35 +256,31 @@ function remapDeep(value) {
 const starterLoadout = remapDeep(src.starter_loadout);
 
 // ---------------------------------------------------------------------------
-// Migration ledger: every retired id has a canonical same-tier, same-family
-// successor, so equipped copies are swapped in place with their upgrade level
-// intact and loose copies pay captured cutover value once.
+// Migration ledger: every superseded tester-era id is deleted outright
+// ('stop'), with no replacement, compensation or preserved upgrade level.
 // ---------------------------------------------------------------------------
 const migrationRules = [
   ...src.migration_rules.filter((rule) => !Object.hasOwn(RETIRED_ARMOUR, rule.from_id)),
   ...retiredIds.map((from) => ({
-    action: "replace_or_compensate",
-    captured_value_required: true,
-    equipped_action: "replace_preserve_plus",
+    action: "stop",
+    captured_value_required: false,
     from_id: from,
-    notice_key: `${from}_equipped_replace_unequipped_compensate`,
-    to_id: RETIRED_ARMOUR[from],
-    unequipped_action: "compensate_captured_value",
+    notice_key: `${from}_removed`,
   })),
 ].sort((left, right) => left.from_id.localeCompare(right.from_id));
 
 const playerNotice = {
   title: "Tomlandia armour overhaul",
   summary:
-    "All 32 armour sets are now craftable on one readable ingredient matrix; nine off-theme sets become their tier-named successors.",
+    "All 32 armour sets are now craftable on one readable ingredient matrix; nine off-theme test-era sets are removed.",
   details: [
     "Every tier from level 1 to level 150 now offers a matching Heavy and Light armour set named after its tier.",
     "Heavy armour trades swing speed for survivability: it now absorbs several times more damage but earns about 25% less experience per minute than Light armour.",
     "Heavy armour now carries an attack value, so upgrade levels finally improve it.",
     "Heavy armour is crafted from four bars, two leather and one tier trophy; Light armour from three cloth, one leather and one tier trophy.",
     "Shadow Beasts, Dune Devourers and Glacial Guardians now drop a tier trophy so their bands have a real craft gate.",
-    "Cloth Tunic, Leather Vest, Linen Robe, Iron Mail, Mithril Plate, Mystic Robe, Runite Plate, Frostguard Plate and Wyrmscale Plate are retired: an equipped copy becomes its tier-named successor at the same upgrade level, and any loose copy pays captured cutover unit value once.",
-    "Market listings for retired definitions are cancelled and returned before activation.",
+    "Cloth Tunic, Leather Vest, Linen Robe, Iron Mail, Mithril Plate, Mystic Robe, Runite Plate, Frostguard Plate and Wyrmscale Plate were test-era definitions and are deleted outright, along with any remaining copies of them.",
+    "Market listings and price history for the deleted definitions are removed at activation.",
   ],
 };
 
@@ -314,8 +310,19 @@ const content = {
 const contentRendered = prettyCanonicalJson(content);
 const contentHash = manifestHash(JSON.parse(contentRendered));
 
+// spawn_id is a globally unique primary key, so a V4 spawn cannot reuse the V3
+// uuid: it is re-minted from the same identity under the v4 name prefix, the
+// way every previous release cut does. Position and identity stay unchanged.
+const v4Spawns = v3World.spawns
+  .map((spawn) => ({
+    ...spawn,
+    spawn_id: uuidV5(v3Content.uuid_namespace, `${V4_VERSION}:${spawn.entity_type}:${spawn.kind}:${spawn.ordinal}`),
+  }))
+  .sort((left, right) => left.spawn_id.localeCompare(right.spawn_id));
+
 const world = {
   ...v3World,
+  spawns: v4Spawns,
   content_version: V4_VERSION,
   spawn_set_version: V4_VERSION,
   source_content_manifest_hash: contentHash,

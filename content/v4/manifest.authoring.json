@@ -4450,76 +4450,52 @@
         "notice_key": "bronze_dagger_captured_value_compensation"
       },
       {
-        "action": "replace_or_compensate",
-        "captured_value_required": true,
-        "equipped_action": "replace_preserve_plus",
+        "action": "stop",
+        "captured_value_required": false,
         "from_id": "cloth_tunic",
-        "notice_key": "cloth_tunic_equipped_replace_unequipped_compensate",
-        "to_id": "copper_light_armor",
-        "unequipped_action": "compensate_captured_value"
+        "notice_key": "cloth_tunic_removed"
       },
       {
-        "action": "replace_or_compensate",
-        "captured_value_required": true,
-        "equipped_action": "replace_preserve_plus",
+        "action": "stop",
+        "captured_value_required": false,
         "from_id": "frostguard_plate",
-        "notice_key": "frostguard_plate_equipped_replace_unequipped_compensate",
-        "to_id": "starsteel_heavy_armor",
-        "unequipped_action": "compensate_captured_value"
+        "notice_key": "frostguard_plate_removed"
       },
       {
-        "action": "replace_or_compensate",
-        "captured_value_required": true,
-        "equipped_action": "replace_preserve_plus",
+        "action": "stop",
+        "captured_value_required": false,
         "from_id": "iron_mail",
-        "notice_key": "iron_mail_equipped_replace_unequipped_compensate",
-        "to_id": "steel_heavy_armor",
-        "unequipped_action": "compensate_captured_value"
+        "notice_key": "iron_mail_removed"
       },
       {
-        "action": "replace_or_compensate",
-        "captured_value_required": true,
-        "equipped_action": "replace_preserve_plus",
+        "action": "stop",
+        "captured_value_required": false,
         "from_id": "leather_vest",
-        "notice_key": "leather_vest_equipped_replace_unequipped_compensate",
-        "to_id": "bronze_light_armor",
-        "unequipped_action": "compensate_captured_value"
+        "notice_key": "leather_vest_removed"
       },
       {
-        "action": "replace_or_compensate",
-        "captured_value_required": true,
-        "equipped_action": "replace_preserve_plus",
+        "action": "stop",
+        "captured_value_required": false,
         "from_id": "linen_robe",
-        "notice_key": "linen_robe_equipped_replace_unequipped_compensate",
-        "to_id": "iron_light_armor",
-        "unequipped_action": "compensate_captured_value"
+        "notice_key": "linen_robe_removed"
       },
       {
-        "action": "replace_or_compensate",
-        "captured_value_required": true,
-        "equipped_action": "replace_preserve_plus",
+        "action": "stop",
+        "captured_value_required": false,
         "from_id": "mithril_plate",
-        "notice_key": "mithril_plate_equipped_replace_unequipped_compensate",
-        "to_id": "sunsteel_heavy_armor",
-        "unequipped_action": "compensate_captured_value"
+        "notice_key": "mithril_plate_removed"
       },
       {
-        "action": "replace_or_compensate",
-        "captured_value_required": true,
-        "equipped_action": "replace_preserve_plus",
+        "action": "stop",
+        "captured_value_required": false,
         "from_id": "mystic_robe",
-        "notice_key": "mystic_robe_equipped_replace_unequipped_compensate",
-        "to_id": "shadowsteel_light_armor",
-        "unequipped_action": "compensate_captured_value"
+        "notice_key": "mystic_robe_removed"
       },
       {
-        "action": "replace_or_compensate",
-        "captured_value_required": true,
-        "equipped_action": "replace_preserve_plus",
+        "action": "stop",
+        "captured_value_required": false,
         "from_id": "runite_plate",
-        "notice_key": "runite_plate_equipped_replace_unequipped_compensate",
-        "to_id": "froststeel_heavy_armor",
-        "unequipped_action": "compensate_captured_value"
+        "notice_key": "runite_plate_removed"
       },
       {
         "action": "compensate",
@@ -4555,13 +4531,10 @@
         "unequipped_action": "compensate_captured_value"
       },
       {
-        "action": "replace_or_compensate",
-        "captured_value_required": true,
-        "equipped_action": "replace_preserve_plus",
+        "action": "stop",
+        "captured_value_required": false,
         "from_id": "wyrmscale_plate",
-        "notice_key": "wyrmscale_plate_equipped_replace_unequipped_compensate",
-        "to_id": "voidsteel_heavy_armor",
-        "unequipped_action": "compensate_captured_value"
+        "notice_key": "wyrmscale_plate_removed"
       }
     ],
     "monster_spawns": [
@@ -13819,10 +13792,10 @@
         "Heavy armour now carries an attack value, so upgrade levels finally improve it.",
         "Heavy armour is crafted from four bars, two leather and one tier trophy; Light armour from three cloth, one leather and one tier trophy.",
         "Shadow Beasts, Dune Devourers and Glacial Guardians now drop a tier trophy so their bands have a real craft gate.",
-        "Cloth Tunic, Leather Vest, Linen Robe, Iron Mail, Mithril Plate, Mystic Robe, Runite Plate, Frostguard Plate and Wyrmscale Plate are retired: an equipped copy becomes its tier-named successor at the same upgrade level, and any loose copy pays captured cutover unit value once.",
-        "Market listings for retired definitions are cancelled and returned before activation."
+        "Cloth Tunic, Leather Vest, Linen Robe, Iron Mail, Mithril Plate, Mystic Robe, Runite Plate, Frostguard Plate and Wyrmscale Plate were test-era definitions and are deleted outright, along with any remaining copies of them.",
+        "Market listings and price history for the deleted definitions are removed at activation."
       ],
-      "summary": "All 32 armour sets are now craftable on one readable ingredient matrix; nine off-theme sets become their tier-named successors.",
+      "summary": "All 32 armour sets are now craftable on one readable ingredient matrix; nine off-theme test-era sets are removed.",
       "title": "Tomlandia armour overhaul"
     },
     "quests": [
