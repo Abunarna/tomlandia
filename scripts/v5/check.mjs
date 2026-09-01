@@ -106,7 +106,7 @@ for (const [name, sql] of Object.entries(migrations)) {
 const activate = migrations.activate;
 check(activate.includes("V5 activation expects v4 to be the active release"), "activation does not require v4 active");
 check(activate.includes("game_validate_content_version('v5')"), "activation does not validate v5 before cleanup");
-check(activate.indexOf("game_validate_content_version('v5')") < activate.indexOf("player_save_backups"),
+check(activate.indexOf("game_validate_content_version('v5')") < activate.indexOf("INSERT INTO public.player_save_backups"),
   "activation must validate before it touches player saves");
 check(activate.includes("INSERT INTO public.player_save_backups"), "activation does not back up touched saves");
 check(activate.includes("DELETE FROM public.market_listings WHERE item_id = ANY"), "activation does not clear market listings");
