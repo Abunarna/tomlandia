@@ -70,7 +70,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "ancient_greatblade",
-    "name": "Ancient Greatblade",
+    "name": "Ancient Sword",
     "value": 3005,
     "kind": "weapon",
     "family": "weapon",
@@ -183,7 +183,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "ascendant_blade",
-    "name": "Ascendant Blade",
+    "name": "Ascendant Sword",
     "value": 3555,
     "kind": "weapon",
     "family": "weapon",
@@ -425,29 +425,6 @@ export const V2_CONTENT_ITEMS = [
       "heal": 0,
       "speed": 0
     }
-  },
-  {
-    "id": "bronze_dagger",
-    "name": "Bronze Dagger",
-    "value": 40,
-    "kind": "weapon",
-    "family": "weapon",
-    "icon_key": "bronze_dagger",
-    "rarity": "common",
-    "tier_index": 1,
-    "level_requirement": 3,
-    "stackable": false,
-    "tradable": false,
-    "colour": "#d9a066",
-    "stats": {
-      "attack": 4,
-      "boost_hits": 0,
-      "defense": 0,
-      "dmg_boost": 0,
-      "heal": 0,
-      "speed": 0
-    },
-    "equip_skill": "combat"
   },
   {
     "id": "bronze_damage_potion",
@@ -985,7 +962,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "frost_greatblade",
-    "name": "Frost Greatblade",
+    "name": "Froststeel Sword",
     "value": 1375,
     "kind": "weapon",
     "family": "weapon",
@@ -1318,7 +1295,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "glacial_greatblade",
-    "name": "Glacial Greatblade",
+    "name": "Glacial Sword",
     "value": 1885,
     "kind": "weapon",
     "family": "weapon",
@@ -1896,7 +1873,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "mithril_blade",
-    "name": "Mithril Blade",
+    "name": "Mithril Sword",
     "value": 720,
     "kind": "weapon",
     "family": "weapon",
@@ -2273,7 +2250,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "runite_greatsword",
-    "name": "Runite Greatsword",
+    "name": "Runite Sword",
     "value": 1120,
     "kind": "weapon",
     "family": "weapon",
@@ -2474,7 +2451,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "shadow_blade",
-    "name": "Shadow Blade",
+    "name": "Shadowsteel Sword",
     "value": 1165,
     "kind": "weapon",
     "family": "weapon",
@@ -2763,7 +2740,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "starsteel_blade",
-    "name": "Starsteel Blade",
+    "name": "Starsteel Sword",
     "value": 2135,
     "kind": "weapon",
     "family": "weapon",
@@ -3032,29 +3009,6 @@ export const V2_CONTENT_ITEMS = [
     }
   },
   {
-    "id": "sunspire_wand",
-    "name": "Sunspire Wand",
-    "value": 700,
-    "kind": "weapon",
-    "family": "weapon",
-    "icon_key": "sunspire_wand",
-    "rarity": "uncommon",
-    "tier_index": 5,
-    "level_requirement": 45,
-    "stackable": false,
-    "tradable": false,
-    "colour": "#f5d78a",
-    "stats": {
-      "attack": 22,
-      "boost_hits": 0,
-      "defense": 0,
-      "dmg_boost": 0,
-      "heal": 0,
-      "speed": 0
-    },
-    "equip_skill": "combat"
-  },
-  {
     "id": "sunsteel_bar",
     "name": "Sunsteel Bar",
     "value": 205,
@@ -3078,7 +3032,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "sunsteel_blade",
-    "name": "Sunsteel Blade",
+    "name": "Sunsteel Sword",
     "value": 865,
     "kind": "weapon",
     "family": "weapon",
@@ -3278,29 +3232,6 @@ export const V2_CONTENT_ITEMS = [
     }
   },
   {
-    "id": "tungsten_maul",
-    "name": "Tungsten Maul",
-    "value": 1500,
-    "kind": "weapon",
-    "family": "weapon",
-    "icon_key": "tungsten_maul",
-    "rarity": "epic",
-    "tier_index": 11,
-    "level_requirement": 105,
-    "stackable": false,
-    "tradable": false,
-    "colour": "#d3d9e8",
-    "stats": {
-      "attack": 38,
-      "boost_hits": 0,
-      "defense": 0,
-      "dmg_boost": 0,
-      "heal": 0,
-      "speed": 0
-    },
-    "equip_skill": "combat"
-  },
-  {
     "id": "tungsten_ore",
     "name": "Tungsten Ore",
     "value": 150,
@@ -3412,7 +3343,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "voidsteel_greatblade",
-    "name": "Voidsteel Greatblade",
+    "name": "Voidsteel Sword",
     "value": 2390,
     "kind": "weapon",
     "family": "weapon",
@@ -3522,29 +3453,6 @@ export const V2_CONTENT_ITEMS = [
       "heal": 0,
       "speed": 0
     }
-  },
-  {
-    "id": "wooden_club",
-    "name": "Wooden Club",
-    "value": 15,
-    "kind": "weapon",
-    "family": "weapon",
-    "icon_key": "wooden_club",
-    "rarity": "common",
-    "tier_index": 1,
-    "level_requirement": 1,
-    "stackable": false,
-    "tradable": false,
-    "colour": "#b98a5c",
-    "stats": {
-      "attack": 2,
-      "boost_hits": 0,
-      "defense": 0,
-      "dmg_boost": 0,
-      "heal": 0,
-      "speed": 0
-    },
-    "equip_skill": "combat"
   },
   {
     "id": "wraith_ice_core",
@@ -3702,7 +3610,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "wyrmforged_blade",
-    "name": "Wyrmforged Blade",
+    "name": "Wyrmforged Sword",
     "value": 2690,
     "kind": "weapon",
     "family": "weapon",
@@ -3859,7 +3767,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "wyrmsteel_blade",
-    "name": "Wyrmsteel Blade",
+    "name": "Wyrmsteel Sword",
     "value": 1630,
     "kind": "weapon",
     "family": "weapon",

@@ -71,6 +71,18 @@ for (const set of armour) {
   if (!recipes.some((recipe) => recipe.out === set.id)) throw new Error(`Armour ${set.id} has no recipe`);
 }
 
+// The 16-tier sword ladder the Weaponsmith renders: one sword per tier, each
+// with a recipe, ordered low to high.
+const weapons = items.filter((entry) => entry.kind === "weapon").sort((left, right) => left.tier_index - right.tier_index);
+if (weapons.length !== 16) throw new Error(`Expected 16 swords, got ${weapons.length}`);
+weapons.forEach((weapon, index) => {
+  if (weapon.tier_index !== index + 1) throw new Error(`Sword ladder has no tier ${index + 1}`);
+  if (!recipes.some((recipe) => recipe.out === weapon.id)) throw new Error(`Sword ${weapon.id} has no recipe`);
+  if (index > 0 && weapon.stats.attack <= weapons[index - 1].stats.attack) {
+    throw new Error(`Sword attack progression is not monotonic at tier ${weapon.tier_index}`);
+  }
+});
+
 const tiers = manifest.tiers
   .map(({ tier_index, level_requirement, theme }) => ({ tier_index, level_requirement, theme }))
   .sort((left, right) => left.tier_index - right.tier_index);
@@ -84,14 +96,16 @@ const generated =
   `export const RELEASE_ITEMS = ${JSON.stringify(items, null, 2)} as const;\n` +
   `export const RELEASE_RECIPES = ${JSON.stringify(recipes, null, 2)} as const;\n\n` +
   `export const RELEASE_ITEM_BY_ID = Object.fromEntries(RELEASE_ITEMS.map((entry) => [entry.id, entry])) as Record<string, (typeof RELEASE_ITEMS)[number]>;\n` +
-  `export const RELEASE_ARMOUR = RELEASE_ITEMS.filter((entry) => entry.kind === "armor");\n`;
+  `export const RELEASE_ARMOUR = RELEASE_ITEMS.filter((entry) => entry.kind === "armor");\n` +
+  `export const RELEASE_WEAPONS = RELEASE_ITEMS.filter((entry) => entry.kind === "weapon");\n` +
+  `export const BASE_ATTACK_INTERVAL_S = 0.85;\n`;
 
 if (checkOnly) {
   if ((await readFile(output, "utf8").catch(() => "")) !== generated) {
     throw new Error("Client release catalog drifted; run node scripts/v5/build-client-catalog.mjs");
   }
-  console.log(`Verified client catalog (${items.length} items, ${recipes.length} recipes, ${armour.length} armour)`);
+  console.log(`Verified client catalog (${items.length} items, ${recipes.length} recipes, ${armour.length} armour, ${weapons.length} swords)`);
 } else {
   await writeFile(output, generated);
-  console.log(`Wrote ${output.slice(root.length + 1)} (${items.length} items, ${recipes.length} recipes, ${armour.length} armour)`);
+  console.log(`Wrote ${output.slice(root.length + 1)} (${items.length} items, ${recipes.length} recipes, ${armour.length} armour, ${weapons.length} swords)`);
 }
