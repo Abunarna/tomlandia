@@ -110,7 +110,7 @@ const EMPTY: HudSnapshot = {
   },
   inv: new Array(20).fill(null),
   bank: { gold: 0, items: new Array(60).fill(null) },
-  weapon: { id: "wooden_club", plus: 0 },
+  weapon: { id: "copper_sword", plus: 0 },
   armor: { id: "copper_light_armor", plus: 0 },
   food: null,
   autoPotionState: { on: false, item: null, qty: 0, hits: 0, maxHits: 0, firedAt: 0 },

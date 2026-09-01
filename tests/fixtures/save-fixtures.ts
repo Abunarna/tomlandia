@@ -12,7 +12,7 @@ export function baseSave(): StoredSaveContract {
     inv: [],
     bank: { gold: 0, items: [] },
     skills: structuredClone(skills),
-    weapon: { id: "wooden_club", plus: 0 },
+    weapon: { id: "copper_sword", plus: 0 },
     armor: { id: "copper_light_armor", plus: 0 },
     food: null,
     autoEatAt: 0.5,

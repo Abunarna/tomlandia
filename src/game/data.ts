@@ -142,14 +142,10 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
     def("herb_weave", "Herb Weave", 70, "#a7dcb4", "material"),
     def("mystic_cloth", "Mystic Cloth", 200, "#d5b7f0", "material"),
     // weapons
-    def("wooden_club", "Wooden Club", 15, "#b98a5c", "weapon", { attack: 2 }),
-    def("bronze_dagger", "Bronze Dagger", 40, "#d9a066", "weapon", { attack: 4 }),
     def("copper_sword", "Copper Sword", 70, "#e0a070", "weapon", { attack: 6 }),
     def("steel_sword", "Steel Sword", 150, "#cdd8e6", "weapon", { attack: 9 }),
     def("mithril_blade", "Mithril Blade", 380, "#a8cdee", "weapon", { attack: 16 }),
     def("runite_greatsword", "Runite Greatsword", 900, "#95e6d6", "weapon", { attack: 26 }),
-    def("tungsten_maul", "Tungsten Maul", 1500, "#d3d9e8", "weapon", { attack: 38 }),
-    def("sunspire_wand", "Sunspire Wand", 700, "#f5d78a", "weapon", { attack: 22 }),
     // armor
     // food
     def("honey_bun", "Honey Bun", 12, "#f4c56b", "food", { heal: 14 }),
@@ -1678,12 +1674,9 @@ export const RECIPES: Recipe[] = [
   { id: "tungsten_bar", station: "smelt", skill: "smithing", out: "tungsten_bar", outQty: 1, inputs: [{ id: "tungsten_ore", qty: 2 }, { id: "runite_bar", qty: 1 }], req: 100, xp: 620, time: 3 },
   // Smithing — bar to gear
   { id: "copper_sword", station: "forge", skill: "smithing", out: "copper_sword", outQty: 1, inputs: [{ id: "copper_bar", qty: 3 }], req: 5, xp: 90, time: 2.4 },
-  { id: "bronze_dagger", station: "forge", skill: "smithing", out: "bronze_dagger", outQty: 1, inputs: [{ id: "copper_bar", qty: 2 }, { id: "willow_logs", qty: 1 }, { id: "goblin_charm", qty: 1 }, { id: "ram_horn", qty: 1 }], req: 3, xp: 60, time: 2.2 },
-  { id: "sunspire_wand", station: "forge", skill: "smithing", out: "sunspire_wand", outQty: 1, inputs: [{ id: "mithril_bar", qty: 2 }, { id: "willow_logs", qty: 2 }, { id: "feather", qty: 2 }], req: 45, xp: 640, time: 3 },
   { id: "steel_sword", station: "forge", skill: "smithing", out: "steel_sword", outQty: 1, inputs: [{ id: "iron_bar", qty: 3 }, { id: "oak_logs", qty: 1 }, { id: "boar_tusk", qty: 1 }], req: 20, xp: 220, time: 2.6 },
   { id: "mithril_blade", station: "forge", skill: "smithing", out: "mithril_blade", outQty: 1, inputs: [{ id: "mithril_bar", qty: 3 }, { id: "palm_logs", qty: 1 }, { id: "maple_logs", qty: 1 }, { id: "jackal_fang", qty: 1 }], req: 45, xp: 620, time: 3 },
   { id: "runite_greatsword", station: "forge", skill: "smithing", out: "runite_greatsword", outQty: 1, inputs: [{ id: "runite_bar", qty: 4 }, { id: "frostpine_logs", qty: 1 }, { id: "ghoul_essence", qty: 1 }], req: 75, xp: 1500, time: 3.4 },
-  { id: "tungsten_maul", station: "forge", skill: "smithing", out: "tungsten_maul", outQty: 1, inputs: [{ id: "tungsten_bar", qty: 4 }, { id: "cursed_bark", qty: 1 }, { id: "frost_fang", qty: 1 }], req: 105, xp: 2600, time: 3.8 },
   // Skinning — hides to leather
   { id: "light_leather", station: "skin", skill: "skinning", out: "light_leather", outQty: 1, inputs: [{ id: "raw_hide", qty: 3 }], req: 1, xp: 30, time: 1.6 },
   { id: "thick_leather", station: "skin", skill: "skinning", out: "thick_leather", outQty: 1, inputs: [{ id: "thick_hide", qty: 3 }], req: 25, xp: 110, time: 2 },
@@ -1712,7 +1705,13 @@ export const RECIPES: Recipe[] = [
 
 export const MAX_PLUS = 100;
 /** each upgrade level grants +5% of base stat */
-export const PLUS_STEP = 0.05;
+/**
+ * Upgrade curve. Mirrors the server (game_apply_plus): +2% per level through
+ * +50, then +0.5% per level. The client must not predict a different value.
+ */
+export const PLUS_STEP = 0.02;
+export const PLUS_STEP_ABOVE_50 = 0.005;
+export const PLUS_BREAKPOINT = 50;
 
 export function upgradeCost(base: number, plus: number): number {
   // cost doubles every 5 upgrade levels, forever
@@ -1723,7 +1722,8 @@ export function upgradeCost(base: number, plus: number): number {
 
 
 export function statWithPlus(base: number, plus: number): number {
-  return Math.round(base * (1 + plus * PLUS_STEP) * 10) / 10;
+  const multiplier = 1 + PLUS_STEP * Math.min(plus, PLUS_BREAKPOINT) + PLUS_STEP_ABOVE_50 * Math.max(plus - PLUS_BREAKPOINT, 0);
+  return Math.round(base * multiplier * 10) / 10;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1734,7 +1734,7 @@ export const QUESTS: QuestDef[] = [
   { id: "feather_duster", name: "Feather Duster", desc: "Chickens have run wild. Defeat 5 of them.", kind: "kill", key: "chicken", count: 5, gold: 45, xpSkill: "combat", xp: 45 },
   { id: "copper_run", name: "Copper Run", desc: "The forge is cold. Mine 6 Copper Ore.", kind: "gather", key: "copper_ore", count: 6, gold: 60, xpSkill: "mining", xp: 70 },
   { id: "log_delivery", name: "Firewood Duty", desc: "The inn needs warmth. Chop 6 Oak Logs.", kind: "gather", key: "oak_logs", count: 6, gold: 55, xpSkill: "woodcutting", xp: 65 },
-  { id: "goblin_trouble", name: "Goblin Trouble", desc: "Goblins raid the east fields. Defeat 3.", kind: "kill", key: "goblin", count: 3, gold: 120, xpSkill: "combat", xp: 130, reward: "bronze_dagger" },
+  { id: "goblin_trouble", name: "Goblin Trouble", desc: "Goblins raid the east fields. Defeat 3.", kind: "kill", key: "goblin", count: 3, gold: 120, xpSkill: "combat", xp: 130 },
   { id: "flax_bundle", name: "Bundle of Flax", desc: "Gather 8 Flax for the weavers.", kind: "gather", key: "flax", count: 8, gold: 90, xpSkill: "gathering", xp: 120 },
   { id: "wolf_watch", name: "Wolf Watch", desc: "Thin the forest pack. Defeat 4 Meadow Wolves.", kind: "kill", key: "wolf", count: 4, gold: 260, xpSkill: "combat", xp: 380, reward: "steel_sword" },
   { id: "dune_patrol", name: "Dune Patrol", desc: "Bandits harass the caravans. Defeat 3.", kind: "kill", key: "bandit", count: 3, gold: 700, xpSkill: "combat", xp: 1200 },
