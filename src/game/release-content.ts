@@ -82,7 +82,16 @@ export interface ArmourTierRow {
   light: { item: ItemDef; recipe: Recipe } | null;
 }
 
+export interface WeaponTierRow {
+  tier: number;
+  theme: string;
+  levelRequirement: number;
+  item: ItemDef;
+  recipe: Recipe;
+}
+
 let armourTiers: ArmourTierRow[] = [];
+let weaponTiers: WeaponTierRow[] = [];
 let initialized = false;
 
 /** Idempotent, explicit registration (the package is declared side-effect free). */
@@ -120,6 +129,18 @@ export function ensureReleaseContent() {
     };
   });
 
+  // The 16-tier sword ladder the Weaponsmith renders, low tier to high.
+  weaponTiers = RELEASE_WEAPONS.map((entry) => {
+    const tier = RELEASE_TIERS.find((row) => row.tier_index === entry.tier_index);
+    const recipe = byOutput.get(entry.id as ItemId);
+    const def = ITEMS[entry.id as ItemId];
+    if (!tier || !recipe || !def) throw new Error(`Release sword catalog incomplete for ${entry.id}`);
+    return { tier: entry.tier_index, theme: tier.theme, levelRequirement: tier.level_requirement, item: def, recipe };
+  }).sort((left, right) => left.tier - right.tier);
+  if (weaponTiers.length !== 16) {
+    throw new Error(`Release sword catalog must hold 16 tiers, found ${weaponTiers.length}`);
+  }
+
   const missing = armourTiers.filter((row) => !row.heavy || !row.light);
   if (missing.length) {
     throw new Error(`Release armour catalog incomplete for tier(s) ${missing.map((row) => row.tier).join(", ")}`);
@@ -134,11 +155,17 @@ export function releaseArmourTiers(): ArmourTierRow[] {
   return armourTiers;
 }
 
+/** All 16 sword tiers, ordered low to high. */
+export function releaseWeaponTiers(): WeaponTierRow[] {
+  ensureReleaseContent();
+  return weaponTiers;
+}
+
 export function releaseSkillFor(recipeId: string): SkillId | null {
   const recipe = RECIPES.find((entry) => entry.id === recipeId);
   return recipe ? recipe.skill : null;
 }
 
-export { RELEASE_CONTENT_VERSION };
+export { BASE_ATTACK_INTERVAL_S, RELEASE_CONTENT_VERSION };
 
 ensureReleaseContent();
