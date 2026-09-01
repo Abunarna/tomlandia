@@ -51,7 +51,8 @@ const contentHash = world.source_content_manifest_hash;
 if (!contentSql.includes(`Manifest SHA-256: ${contentHash}`)) {
   throw new Error("Generated content SQL hash does not match the v5 manifest");
 }
-if (!contentSql.includes(`Content version: ${VERSION}`)) throw new Error("Generated content SQL is not the v5 cut");
+if (!contentSql.includes(`Content version: ${VERSION}`))
+  throw new Error("Generated content SQL is not the v5 cut");
 
 // The sword release must not move a single spawn. Prove it before emitting.
 const key = (spawn) => `${spawn.entity_type}:${spawn.kind}:${spawn.ordinal}`;
@@ -60,29 +61,44 @@ if (previousById.size !== world.spawns.length) throw new Error("v4/v5 spawn coun
 for (const spawn of world.spawns) {
   const previous = previousById.get(key(spawn));
   if (!previous) throw new Error(`v5 spawn ${key(spawn)} has no v4 counterpart`);
-  if (previous.x !== spawn.x || previous.y !== spawn.y || previous.biome !== spawn.biome || previous.subzone !== spawn.subzone) {
+  if (
+    previous.x !== spawn.x ||
+    previous.y !== spawn.y ||
+    previous.biome !== spawn.biome ||
+    previous.subzone !== spawn.subzone
+  ) {
     throw new Error(`v5 relocated ${key(spawn)}; the sword release must not move spawns`);
   }
 }
 
 const md5 = (value) => createHash("md5").update(value).digest("hex");
 const num = (value) => String(Number(value));
-const bySpawnId = [...world.spawns].sort((left, right) => (left.spawn_id < right.spawn_id ? -1 : 1));
+const bySpawnId = [...world.spawns].sort((left, right) =>
+  left.spawn_id < right.spawn_id ? -1 : 1,
+);
 const spawnDigest = md5(
   bySpawnId
-    .map((s) => `${s.spawn_id}:${s.entity_type}:${s.kind}:${s.ordinal}:${num(s.x)}:${num(s.y)}:${s.biome}:${s.subzone}`)
+    .map(
+      (s) =>
+        `${s.spawn_id}:${s.entity_type}:${s.kind}:${s.ordinal}:${num(s.x)}:${num(s.y)}:${s.biome}:${s.subzone}`,
+    )
     .join(","),
 );
 const nodeDigest = md5(
   bySpawnId
     .filter((s) => s.entity_type === "node")
-    .map((s) => `${s.spawn_id}:${s.kind}:${s.cell}:${num(s.x)}:${num(s.y)}:${s.max_charges}:${num(s.gather_s)}:${s.respawn_s}`)
+    .map(
+      (s) =>
+        `${s.spawn_id}:${s.kind}:${s.cell}:${num(s.x)}:${num(s.y)}:${s.max_charges}:${num(s.gather_s)}:${s.respawn_s}`,
+    )
     .join(","),
 );
 const monsterDigest = md5(
   bySpawnId
     .filter((s) => s.entity_type === "monster")
-    .map((s) => `${s.spawn_id}:${s.kind}:${s.cell}:${num(s.x)}:${num(s.y)}:${s.max_hp}:${s.respawn_s}`)
+    .map(
+      (s) => `${s.spawn_id}:${s.kind}:${s.cell}:${num(s.x)}:${num(s.y)}:${s.max_hp}:${s.respawn_s}`,
+    )
     .join(","),
 );
 
@@ -92,8 +108,12 @@ const monsterCount = world.counts.monsters;
 const sqlText = (value) => `'${String(value).replaceAll("'", "''")}'`;
 
 // ---- 1. stage content ------------------------------------------------------
-const v4Manifest = JSON.parse(await readFile(resolve(root, "content/v4/manifest.authoring.json"), "utf8")).runtime;
-const v5Manifest = JSON.parse(await readFile(resolve(root, "content/v5/manifest.authoring.json"), "utf8")).runtime;
+const v4Manifest = JSON.parse(
+  await readFile(resolve(root, "content/v4/manifest.authoring.json"), "utf8"),
+).runtime;
+const v5Manifest = JSON.parse(
+  await readFile(resolve(root, "content/v5/manifest.authoring.json"), "utf8"),
+).runtime;
 const stable = (value) => JSON.stringify(value);
 
 const deletedIds = [...DELETED_ITEMS];
@@ -101,7 +121,8 @@ const itemDelta = [...new Set([...deletedIds, ...SWORD_IDS])].sort();
 
 // Build-time proof that the delta is exhaustive.
 const sameOutside = (before, after, field, skip) => {
-  const pick = (rows) => rows.filter((row) => !skip.includes(row[field])).sort((l, r) => (l[field] < r[field] ? -1 : 1));
+  const pick = (rows) =>
+    rows.filter((row) => !skip.includes(row[field])).sort((l, r) => (l[field] < r[field] ? -1 : 1));
   return stable(pick(before)) === stable(pick(after));
 };
 if (!sameOutside(v4Manifest.items, v5Manifest.items, "id", itemDelta)) {
@@ -146,9 +167,12 @@ const itemRows = blockRows("INSERT INTO public.game_content_items");
 const ruleRows = blockRows("INSERT INTO public.game_content_migration_rules");
 const swordRows = itemRows.filter((row) => SWORD_IDS.includes(field(row, 1)));
 if (swordRows.length !== SWORD_IDS.length) throw new Error("sword item extraction is incomplete");
-if (ruleRows.length !== v5Manifest.migration_rules.length) throw new Error("migration rule extraction is incomplete");
+if (ruleRows.length !== v5Manifest.migration_rules.length)
+  throw new Error("migration rule extraction is incomplete");
 
-const versionStart = sqlLines.findIndex((line) => line.startsWith("INSERT INTO public.game_content_versions"));
+const versionStart = sqlLines.findIndex((line) =>
+  line.startsWith("INSERT INTO public.game_content_versions"),
+);
 const versionBlock = sqlLines.slice(versionStart, versionStart + 4).join("\n");
 if (!versionBlock.includes("ON CONFLICT")) throw new Error("could not extract the v5 version row");
 
@@ -713,7 +737,10 @@ for (const [file, body] of outputs) {
     await writeFile(file, body, "utf8");
   }
 }
-if (drift) throw new Error("V5 migrations drifted from the artifacts; rerun scripts/v5/build-migrations.mjs");
+if (drift)
+  throw new Error(
+    "V5 migrations drifted from the artifacts; rerun scripts/v5/build-migrations.mjs",
+  );
 
 console.log(
   `${checkOnly ? "Verified" : "Wrote"} 3 V5 migrations: ${SWORD_IDS.length} swords re-stated, ` +

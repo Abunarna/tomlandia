@@ -68,7 +68,10 @@ for (const sword of SWORDS) {
     throw new Error(`target sword ${sword.id} is tier ${item.tier_index}, expected ${sword.tier}`);
   }
 }
-const v4Weapons = src.items.filter((item) => item.kind === "weapon").map((item) => item.id).sort();
+const v4Weapons = src.items
+  .filter((item) => item.kind === "weapon")
+  .map((item) => item.id)
+  .sort();
 const expectedWeapons = [...SWORD_IDS, ...DELETED_ITEMS].sort();
 if (JSON.stringify(v4Weapons) !== JSON.stringify(expectedWeapons)) {
   throw new Error("V4 weapon catalogue does not match the enumerated V5 sword delta");
@@ -79,7 +82,9 @@ if (JSON.stringify(v4Weapons) !== JSON.stringify(expectedWeapons)) {
 // ---------------------------------------------------------------------------
 const items = src.items
   .filter((item) => !deleted.has(item.id))
-  .map((item) => (nameById.has(item.id) ? { ...item, active: true, name: nameById.get(item.id) } : item))
+  .map((item) =>
+    nameById.has(item.id) ? { ...item, active: true, name: nameById.get(item.id) } : item,
+  )
   .sort((left, right) => left.id.localeCompare(right.id));
 const itemIds = new Set(items.map((item) => item.id));
 
@@ -88,31 +93,43 @@ const itemIds = new Set(items.map((item) => item.id));
 // ---------------------------------------------------------------------------
 const recipes = src.recipes
   .filter((recipe) => !deleted.has(recipe.output_item_id))
-  .map((recipe) => ({ ...recipe, inputs: recipe.inputs.filter((input) => !deleted.has(input.item_id)) }))
+  .map((recipe) => ({
+    ...recipe,
+    inputs: recipe.inputs.filter((input) => !deleted.has(input.item_id)),
+  }))
   .sort((left, right) => left.id.localeCompare(right.id));
 
 for (const recipe of recipes) {
   const before = src.recipes.find((entry) => entry.id === recipe.id);
   if (JSON.stringify(before) !== JSON.stringify(recipe)) {
-    throw new Error(`V5 changed recipe ${recipe.id}; the sword release must not touch recipe economy`);
+    throw new Error(
+      `V5 changed recipe ${recipe.id}; the sword release must not touch recipe economy`,
+    );
   }
-  if (!itemIds.has(recipe.output_item_id)) throw new Error(`recipe ${recipe.id} outputs unknown item`);
+  if (!itemIds.has(recipe.output_item_id))
+    throw new Error(`recipe ${recipe.id} outputs unknown item`);
   for (const input of recipe.inputs) {
-    if (!itemIds.has(input.item_id)) throw new Error(`recipe ${recipe.id} consumes unknown item ${input.item_id}`);
+    if (!itemIds.has(input.item_id))
+      throw new Error(`recipe ${recipe.id} consumes unknown item ${input.item_id}`);
   }
 }
 const swordRecipes = recipes.filter((recipe) => SWORD_IDS.includes(recipe.output_item_id));
-if (swordRecipes.length !== 16) throw new Error(`V5 must publish 16 sword recipes, found ${swordRecipes.length}`);
+if (swordRecipes.length !== 16)
+  throw new Error(`V5 must publish 16 sword recipes, found ${swordRecipes.length}`);
 for (const sword of SWORDS) {
   const recipe = swordRecipes.find((entry) => entry.output_item_id === sword.id);
   if (!recipe) throw new Error(`sword ${sword.id} has no recipe`);
-  if (recipe.tier_index !== sword.tier) throw new Error(`recipe for ${sword.id} is not tier ${sword.tier}`);
+  if (recipe.tier_index !== sword.tier)
+    throw new Error(`recipe for ${sword.id} is not tier ${sword.tier}`);
 }
 
 // ---------------------------------------------------------------------------
 // Monotonic attack progression across the 16 tiers (values carried from V4).
 // ---------------------------------------------------------------------------
-const ladder = SWORDS.map((sword) => ({ ...sword, item: items.find((entry) => entry.id === sword.id) }));
+const ladder = SWORDS.map((sword) => ({
+  ...sword,
+  item: items.find((entry) => entry.id === sword.id),
+}));
 for (let index = 1; index < ladder.length; index += 1) {
   if (ladder[index].item.stats.attack <= ladder[index - 1].item.stats.attack) {
     throw new Error(`sword attack progression is not monotonic at tier ${ladder[index].tier}`);
@@ -145,7 +162,9 @@ for (const [key, value] of Object.entries(starterLoadout)) {
 }
 
 const migrationRules = [
-  ...src.migration_rules.filter((rule) => !deleted.has(rule.from_id) && !deleted.has(rule.to_id ?? "")),
+  ...src.migration_rules.filter(
+    (rule) => !deleted.has(rule.from_id) && !deleted.has(rule.to_id ?? ""),
+  ),
   ...DELETED_ITEMS.map((from) => ({
     action: "stop",
     captured_value_required: false,
@@ -167,7 +186,8 @@ const runtime = {
 };
 const serialised = JSON.stringify({ ...runtime, migration_rules: [] });
 for (const id of DELETED_ITEMS) {
-  if (serialised.includes(`"${id}"`)) throw new Error(`V5 content still references deleted id ${id}`);
+  if (serialised.includes(`"${id}"`))
+    throw new Error(`V5 content still references deleted id ${id}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -189,7 +209,10 @@ const contentHash = manifestHash(JSON.parse(contentRendered));
 const v5Spawns = v4World.spawns
   .map((spawn) => ({
     ...spawn,
-    spawn_id: uuidV5(v4Content.uuid_namespace, `${V5_VERSION}:${spawn.entity_type}:${spawn.kind}:${spawn.ordinal}`),
+    spawn_id: uuidV5(
+      v4Content.uuid_namespace,
+      `${V5_VERSION}:${spawn.entity_type}:${spawn.kind}:${spawn.ordinal}`,
+    ),
   }))
   .sort((left, right) => left.spawn_id.localeCompare(right.spawn_id));
 
@@ -204,12 +227,14 @@ const world = {
     spawn_set_version: v4World.spawn_set_version,
     spawn_hash: v4World.spawn_hash,
     source_content_manifest_hash: v4World.source_content_manifest_hash,
-    policy: "V5 changes sword content only; every V4 spawn identity and position is carried forward unchanged",
+    policy:
+      "V5 changes sword content only; every V4 spawn identity and position is carried forward unchanged",
   },
   rollback: {
     v4_rows_mutated: false,
     player_state_mutated: false,
-    switch_back: "select v4 content/spawn control; v4 content, spawn and world rows remain in place",
+    switch_back:
+      "select v4 content/spawn control; v4 content, spawn and world rows remain in place",
   },
 };
 const spawnHash = manifestHash({
@@ -220,8 +245,12 @@ const spawnHash = manifestHash({
 world.spawn_hash = spawnHash;
 const worldRendered = prettyCanonicalJson(world);
 
-if (world.spawns.length !== v4World.spawns.length) throw new Error("V5 must not change the spawn count");
-if (world.counts.nodes !== v4World.counts.nodes || world.counts.monsters !== v4World.counts.monsters) {
+if (world.spawns.length !== v4World.spawns.length)
+  throw new Error("V5 must not change the spawn count");
+if (
+  world.counts.nodes !== v4World.counts.nodes ||
+  world.counts.monsters !== v4World.counts.monsters
+) {
   throw new Error("V5 spawn counts drifted from V4");
 }
 
@@ -270,7 +299,8 @@ const outputs = [
 for (const [file, rendered] of outputs) {
   if (checkOnly) {
     const existing = await readFile(file, "utf8").catch(() => "");
-    if (existing !== rendered) throw new Error(`V5 artifact drifted: ${file}; run bun run v5:build`);
+    if (existing !== rendered)
+      throw new Error(`V5 artifact drifted: ${file}; run bun run v5:build`);
   } else {
     await mkdir(file.slice(0, file.lastIndexOf("/")), { recursive: true });
     await writeFile(file, rendered);

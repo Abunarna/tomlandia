@@ -10,7 +10,6 @@ import {
 } from "../generated/release-catalog";
 import type { ItemDef, ItemFamily, ItemId, SkillId } from "./types";
 
-
 /**
  * Registers the authoritative release catalog in the renderer's registries.
  *
@@ -134,8 +133,15 @@ export function ensureReleaseContent() {
     const tier = RELEASE_TIERS.find((row) => row.tier_index === entry.tier_index);
     const recipe = byOutput.get(entry.id as ItemId);
     const def = ITEMS[entry.id as ItemId];
-    if (!tier || !recipe || !def) throw new Error(`Release sword catalog incomplete for ${entry.id}`);
-    return { tier: entry.tier_index, theme: tier.theme, levelRequirement: tier.level_requirement, item: def, recipe };
+    if (!tier || !recipe || !def)
+      throw new Error(`Release sword catalog incomplete for ${entry.id}`);
+    return {
+      tier: entry.tier_index,
+      theme: tier.theme,
+      levelRequirement: tier.level_requirement,
+      item: def,
+      recipe,
+    };
   }).sort((left, right) => left.tier - right.tier);
   if (weaponTiers.length !== 16) {
     throw new Error(`Release sword catalog must hold 16 tiers, found ${weaponTiers.length}`);
@@ -143,7 +149,9 @@ export function ensureReleaseContent() {
 
   const missing = armourTiers.filter((row) => !row.heavy || !row.light);
   if (missing.length) {
-    throw new Error(`Release armour catalog incomplete for tier(s) ${missing.map((row) => row.tier).join(", ")}`);
+    throw new Error(
+      `Release armour catalog incomplete for tier(s) ${missing.map((row) => row.tier).join(", ")}`,
+    );
   }
 
   initialized = true;

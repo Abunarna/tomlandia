@@ -18,32 +18,49 @@ const output = resolve(root, "src/generated/release-catalog.ts");
 const checkOnly = process.argv.includes("--check");
 
 const manifest = JSON.parse(await readFile(source, "utf8"));
-if (manifest.lifecycle !== "runtime") throw new Error("Client catalog requires the approved runtime manifest");
+if (manifest.lifecycle !== "runtime")
+  throw new Error("Client catalog requires the approved runtime manifest");
 const runtime = manifest.runtime;
 
 // Skills the client's Recipe type accepts; the station is the NPC surface.
 const CRAFT_SKILLS = new Set(["smithing", "tailoring", "skinning", "cooking", "alchemy"]);
 
 const items = runtime.items
-  .map(({ id, name, value, kind, family, colour, rarity, tier_index, level_requirement, stackable, tradable, stats }) => ({
-    id,
-    name,
-    value,
-    kind,
-    family,
-    colour,
-    rarity,
-    tier_index,
-    level_requirement,
-    stackable,
-    tradable,
-    stats,
-  }))
+  .map(
+    ({
+      id,
+      name,
+      value,
+      kind,
+      family,
+      colour,
+      rarity,
+      tier_index,
+      level_requirement,
+      stackable,
+      tradable,
+      stats,
+    }) => ({
+      id,
+      name,
+      value,
+      kind,
+      family,
+      colour,
+      rarity,
+      tier_index,
+      level_requirement,
+      stackable,
+      tradable,
+      stats,
+    }),
+  )
   .sort((left, right) => left.id.localeCompare(right.id));
 
 const recipes = runtime.recipes
   .map((recipe) => {
-    if (!CRAFT_SKILLS.has(recipe.skill)) throw new Error(`Recipe ${recipe.id} uses non-craft skill ${recipe.skill}`);
+    if (!CRAFT_SKILLS.has(recipe.skill))
+      throw new Error(`Recipe ${recipe.id} uses non-craft skill ${recipe.skill}`);
     return {
       id: recipe.id,
       station: recipe.station,
@@ -65,19 +82,25 @@ const armour = items.filter((entry) => entry.kind === "armor");
 const heavy = armour.filter((entry) => entry.family === "heavy_armor");
 const light = armour.filter((entry) => entry.family === "light_armor");
 if (heavy.length !== 16 || light.length !== 16) {
-  throw new Error(`Expected 16 heavy and 16 light armour sets, got ${heavy.length}/${light.length}`);
+  throw new Error(
+    `Expected 16 heavy and 16 light armour sets, got ${heavy.length}/${light.length}`,
+  );
 }
 for (const set of armour) {
-  if (!recipes.some((recipe) => recipe.out === set.id)) throw new Error(`Armour ${set.id} has no recipe`);
+  if (!recipes.some((recipe) => recipe.out === set.id))
+    throw new Error(`Armour ${set.id} has no recipe`);
 }
 
 // The 16-tier sword ladder the Weaponsmith renders: one sword per tier, each
 // with a recipe, ordered low to high.
-const weapons = items.filter((entry) => entry.kind === "weapon").sort((left, right) => left.tier_index - right.tier_index);
+const weapons = items
+  .filter((entry) => entry.kind === "weapon")
+  .sort((left, right) => left.tier_index - right.tier_index);
 if (weapons.length !== 16) throw new Error(`Expected 16 swords, got ${weapons.length}`);
 weapons.forEach((weapon, index) => {
   if (weapon.tier_index !== index + 1) throw new Error(`Sword ladder has no tier ${index + 1}`);
-  if (!recipes.some((recipe) => recipe.out === weapon.id)) throw new Error(`Sword ${weapon.id} has no recipe`);
+  if (!recipes.some((recipe) => recipe.out === weapon.id))
+    throw new Error(`Sword ${weapon.id} has no recipe`);
   if (index > 0 && weapon.stats.attack <= weapons[index - 1].stats.attack) {
     throw new Error(`Sword attack progression is not monotonic at tier ${weapon.tier_index}`);
   }
@@ -104,8 +127,12 @@ if (checkOnly) {
   if ((await readFile(output, "utf8").catch(() => "")) !== generated) {
     throw new Error("Client release catalog drifted; run node scripts/v5/build-client-catalog.mjs");
   }
-  console.log(`Verified client catalog (${items.length} items, ${recipes.length} recipes, ${armour.length} armour, ${weapons.length} swords)`);
+  console.log(
+    `Verified client catalog (${items.length} items, ${recipes.length} recipes, ${armour.length} armour, ${weapons.length} swords)`,
+  );
 } else {
   await writeFile(output, generated);
-  console.log(`Wrote ${output.slice(root.length + 1)} (${items.length} items, ${recipes.length} recipes, ${armour.length} armour, ${weapons.length} swords)`);
+  console.log(
+    `Wrote ${output.slice(root.length + 1)} (${items.length} items, ${recipes.length} recipes, ${armour.length} armour, ${weapons.length} swords)`,
+  );
 }
