@@ -74,6 +74,8 @@ export function NpcDialog({
 
   const count = (id: ItemId) => hud.inv.reduce((n, s) => (s && s.id === id ? n + s.qty : n), 0);
   const armourTiers = releaseArmourTiers();
+  const weaponTiers = releaseWeaponTiers();
+
 
 
   const STATIONS = ["smelt", "forge", "weave", "armor", "skin", "cook", "alchemy"] as const;
