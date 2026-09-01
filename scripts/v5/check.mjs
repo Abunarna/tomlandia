@@ -244,7 +244,7 @@ check(
   "the Weaponsmith does not show the base attack interval",
 );
 check(
-  dialog.includes("armour modifies cadence"),
+  /armour\s+modifies\s+(that\s+)?cadence/.test(dialog.replace(/\s+/g, " ")),
   "the Weaponsmith does not note that armour modifies cadence",
 );
 check(dialog.includes("atk vs"), "the Weaponsmith does not compare against the equipped weapon");
