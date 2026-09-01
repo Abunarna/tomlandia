@@ -762,7 +762,7 @@ export class GameEngine {
     gold: 0,
     items: new Array(BANK_SIZE).fill(null),
   };
-  weapon: EquipState | null = { id: "wooden_club", plus: 0 };
+  weapon: EquipState | null = { id: "copper_sword", plus: 0 };
   armor: EquipState | null = { id: "copper_light_armor", plus: 0 };
   food: ItemId | null = null;
   /** player-chosen auto-eat threshold (fraction of max HP) */

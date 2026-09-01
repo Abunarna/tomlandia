@@ -25,7 +25,15 @@ import {
 
 /** Icon shape family per item — weapons/armour fall back to their kind. */
 const FAMILY_GROUPS: Record<string, string[]> = {
-  ore: ["copper_ore", "iron_ore", "sandstone", "mithril_ore", "cursed_shard", "runite_ore", "tungsten_ore"],
+  ore: [
+    "copper_ore",
+    "iron_ore",
+    "sandstone",
+    "mithril_ore",
+    "cursed_shard",
+    "runite_ore",
+    "tungsten_ore",
+  ],
   log: ["oak_logs", "willow_logs", "maple_logs", "palm_logs", "cursed_bark", "frostpine_logs"],
   herb: ["flax", "forest_herbs", "desert_bloom", "gloomcap", "frost_lichen"],
   berries: ["meadow_berries"],
@@ -142,14 +150,10 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
     def("herb_weave", "Herb Weave", 70, "#a7dcb4", "material"),
     def("mystic_cloth", "Mystic Cloth", 200, "#d5b7f0", "material"),
     // weapons
-    def("wooden_club", "Wooden Club", 15, "#b98a5c", "weapon", { attack: 2 }),
-    def("bronze_dagger", "Bronze Dagger", 40, "#d9a066", "weapon", { attack: 4 }),
     def("copper_sword", "Copper Sword", 70, "#e0a070", "weapon", { attack: 6 }),
     def("steel_sword", "Steel Sword", 150, "#cdd8e6", "weapon", { attack: 9 }),
     def("mithril_blade", "Mithril Blade", 380, "#a8cdee", "weapon", { attack: 16 }),
     def("runite_greatsword", "Runite Greatsword", 900, "#95e6d6", "weapon", { attack: 26 }),
-    def("tungsten_maul", "Tungsten Maul", 1500, "#d3d9e8", "weapon", { attack: 38 }),
-    def("sunspire_wand", "Sunspire Wand", 700, "#f5d78a", "weapon", { attack: 22 }),
     // armor
     // food
     def("honey_bun", "Honey Bun", 12, "#f4c56b", "food", { heal: 14 }),
@@ -164,11 +168,23 @@ export const ITEMS: Record<string, ItemDef> = Object.fromEntries(
     def("deepwater_eel", "Deepwater Eel", 150, "#7b8fb0", "resource"),
     def("starlight_salmon", "Starlight Salmon", 320, "#f0a3b6", "resource"),
     // potions
-    def("minor_venom_draught", "Minor Venom Draught", 35, "#a7d97f", "potion", { dmgBoost: 2, boostHits: 5 }),
-    def("goblins_fury_tonic", "Goblin's Fury Tonic", 90, "#e08a5c", "potion", { dmgBoost: 5, boostHits: 8 }),
-    def("serpents_bite_elixir", "Serpent's Bite Elixir", 220, "#6fc8a0", "potion", { dmgBoost: 10, boostHits: 10 }),
+    def("minor_venom_draught", "Minor Venom Draught", 35, "#a7d97f", "potion", {
+      dmgBoost: 2,
+      boostHits: 5,
+    }),
+    def("goblins_fury_tonic", "Goblin's Fury Tonic", 90, "#e08a5c", "potion", {
+      dmgBoost: 5,
+      boostHits: 8,
+    }),
+    def("serpents_bite_elixir", "Serpent's Bite Elixir", 220, "#6fc8a0", "potion", {
+      dmgBoost: 10,
+      boostHits: 10,
+    }),
     def("shadow_venom", "Shadow Venom", 480, "#9b7ac0", "potion", { dmgBoost: 18, boostHits: 12 }),
-    def("frostfire_brew", "Frostfire Brew", 900, "#8fd6ee", "potion", { dmgBoost: 30, boostHits: 15 }),
+    def("frostfire_brew", "Frostfire Brew", 900, "#8fd6ee", "potion", {
+      dmgBoost: 30,
+      boostHits: 15,
+    }),
   ].map((d) => [d.id, d]),
 );
 
@@ -228,7 +244,10 @@ export interface BiomeDef {
   tint: string;
 }
 
-type Palette = Omit<BiomeDef, "id" | "key" | "x" | "y" | "w" | "h" | "poly" | "label" | "plaza" | "pond">;
+type Palette = Omit<
+  BiomeDef,
+  "id" | "key" | "x" | "y" | "w" | "h" | "poly" | "label" | "plaza" | "pond"
+>;
 
 const PALETTES: Record<BiomeId, Palette> = {
   fields: {
@@ -305,11 +324,48 @@ interface RegionSpec {
 const REGION_SPECS: RegionSpec[] = [
   // V2 — exactly one contiguous territory per biome, laid out as a gentle arc
   // running south-west to north-east and back down to the south-east.
-  { id: "fields", x: 700, y: 2400, size: 1.2, label: true, pond: { x: 330, y: 2780, rx: 168, ry: 104 } },
-  { id: "forest", x: 1900, y: 1650, size: 0.95, label: true, plaza: { x: 1685, y: 1460, w: 440, h: 380 }, pond: { x: 1540, y: 1180, rx: 210, ry: 78 } },
-  { id: "desert", x: 3100, y: 900, size: 1.1, label: true, plaza: { x: 2870, y: 705, w: 460, h: 390 } },
-  { id: "evil", x: 4300, y: 1500, size: 1.0, label: true, pond: { x: 4420, y: 1830, rx: 186, ry: 108 } },
-  { id: "winter", x: 5000, y: 2500, size: 1.3, label: true, plaza: { x: 4785, y: 2310, w: 440, h: 380 }, pond: { x: 5210, y: 2760, rx: 168, ry: 96 } },
+  {
+    id: "fields",
+    x: 700,
+    y: 2400,
+    size: 1.2,
+    label: true,
+    pond: { x: 330, y: 2780, rx: 168, ry: 104 },
+  },
+  {
+    id: "forest",
+    x: 1900,
+    y: 1650,
+    size: 0.95,
+    label: true,
+    plaza: { x: 1685, y: 1460, w: 440, h: 380 },
+    pond: { x: 1540, y: 1180, rx: 210, ry: 78 },
+  },
+  {
+    id: "desert",
+    x: 3100,
+    y: 900,
+    size: 1.1,
+    label: true,
+    plaza: { x: 2870, y: 705, w: 460, h: 390 },
+  },
+  {
+    id: "evil",
+    x: 4300,
+    y: 1500,
+    size: 1.0,
+    label: true,
+    pond: { x: 4420, y: 1830, rx: 186, ry: 108 },
+  },
+  {
+    id: "winter",
+    x: 5000,
+    y: 2500,
+    size: 1.3,
+    label: true,
+    plaza: { x: 4785, y: 2310, w: 440, h: 380 },
+    pond: { x: 5210, y: 2760, rx: 168, ry: 96 },
+  },
 ];
 
 /* --- grid partition ------------------------------------------------- */
@@ -393,8 +449,6 @@ const CELL_OWNER: number[] = (() => {
     }
   }
 
-
-
   // Keep every region a single solid blob: any island of cells that isn't
   // connected to its own seed is handed to the neighbouring region, so no
   // patch of ground is ever left unpainted.
@@ -417,7 +471,12 @@ const CELL_OWNER: number[] = (() => {
         const c = queue.pop()!;
         const cx = c % GX;
         const cy = (c - cx) / GX;
-        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as const) {
+        for (const [dx, dy] of [
+          [1, 0],
+          [-1, 0],
+          [0, 1],
+          [0, -1],
+        ] as const) {
           const nx = cx + dx;
           const ny = cy + dy;
           if (nx < 0 || ny < 0 || nx >= GX || ny >= GY) continue;
@@ -435,7 +494,12 @@ const CELL_OWNER: number[] = (() => {
       for (const c of comp) {
         const cx = c % GX;
         const cy = (c - cx) / GX;
-        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as const) {
+        for (const [dx, dy] of [
+          [1, 0],
+          [-1, 0],
+          [0, 1],
+          [0, -1],
+        ] as const) {
           const nx = cx + dx;
           const ny = cy + dy;
           if (nx < 0 || ny < 0 || nx >= GX || ny >= GY) continue;
@@ -456,12 +520,17 @@ const CELL_OWNER: number[] = (() => {
   return out;
 })();
 
-
 /** grid vertex -> world point, barely nudged, world edges pinned */
 function vertex(gx: number, gy: number): [number, number] {
   const amp = 4;
-  const x = gx === 0 ? 0 : gx === GX ? WORLD_W : gx * CELL + (rand01(gx * 12.9 + gy * 4.3) - 0.5) * 2 * amp;
-  const y = gy === 0 ? 0 : gy === GY ? WORLD_H : gy * CELL + (rand01(gx * 6.7 + gy * 19.1 + 3) - 0.5) * 2 * amp;
+  const x =
+    gx === 0 ? 0 : gx === GX ? WORLD_W : gx * CELL + (rand01(gx * 12.9 + gy * 4.3) - 0.5) * 2 * amp;
+  const y =
+    gy === 0
+      ? 0
+      : gy === GY
+        ? WORLD_H
+        : gy * CELL + (rand01(gx * 6.7 + gy * 19.1 + 3) - 0.5) * 2 * amp;
   return [x, y];
 }
 
@@ -470,12 +539,14 @@ function pinEdges(pts: [number, number][]): [number, number][] {
   // Wide snap: smoothing rounds off the world corners, which would leave the
   // backdrop showing through. Anything close to an edge is pulled onto it.
   const T = 70;
-  return pts.map(([x, y]) => [
-    x < T ? 0 : x > WORLD_W - T ? WORLD_W : x,
-    y < T ? 0 : y > WORLD_H - T ? WORLD_H : y,
-  ] as [number, number]);
+  return pts.map(
+    ([x, y]) =>
+      [x < T ? 0 : x > WORLD_W - T ? WORLD_W : x, y < T ? 0 : y > WORLD_H - T ? WORLD_H : y] as [
+        number,
+        number,
+      ],
+  );
 }
-
 
 /** Chaikin corner cutting on a closed loop: staircase -> sweeping curve */
 function chaikin(pts: [number, number][], iterations: number): [number, number][] {
@@ -563,7 +634,6 @@ function smoothLoop(pts: [number, number][], radius: number, passes: number): [n
   return cur;
 }
 
-
 const owner = (gx: number, gy: number) =>
   gx < 0 || gy < 0 || gx >= GX || gy >= GY ? -1 : CELL_OWNER[gy * GX + gx]!;
 
@@ -634,9 +704,6 @@ export function biomeAt(x: number, y: number): BiomeDef {
   return BIOMES[CELL_OWNER[gy * GX + gx]!]!;
 }
 
-
-
-
 /* ------------------------------------------------------------------ */
 /* Lakes, jetties & fishing spots                                      */
 /* ------------------------------------------------------------------ */
@@ -688,13 +755,57 @@ interface LakeSpec {
 
 const LAKE_SPECS: LakeSpec[] = [
   // Peaceful Fields — soft and rounded, bright and open
-  { key: "fields", style: "fields", cx: 330, cy: 2780, rx: 168, ry: 104, jitter: 0.1, points: 26, rot: 0.15, jettyAngles: [-0.55, 2.5] },
+  {
+    key: "fields",
+    style: "fields",
+    cx: 330,
+    cy: 2780,
+    rx: 168,
+    ry: 104,
+    jitter: 0.1,
+    points: 26,
+    rot: 0.15,
+    jettyAngles: [-0.55, 2.5],
+  },
   // Lush Forest — narrow and elongated, shaded by the canopy
-  { key: "forest", style: "forest", cx: 1540, cy: 1180, rx: 210, ry: 78, jitter: 0.16, points: 22, rot: -0.42, jettyAngles: [1.25, 4.3] },
+  {
+    key: "forest",
+    style: "forest",
+    cx: 1540,
+    cy: 1180,
+    rx: 210,
+    ry: 78,
+    jitter: 0.16,
+    points: 22,
+    rot: -0.42,
+    jettyAngles: [1.25, 4.3],
+  },
   // Winter Mountain — angular, ice-rimmed
-  { key: "winter", style: "winter", cx: 5210, cy: 2760, rx: 168, ry: 96, jitter: 0.26, points: 13, rot: 0.3, jettyAngles: [-1.05] },
+  {
+    key: "winter",
+    style: "winter",
+    cx: 5210,
+    cy: 2760,
+    rx: 168,
+    ry: 96,
+    jitter: 0.26,
+    points: 13,
+    rot: 0.3,
+    jettyAngles: [-1.05],
+  },
   // Evil Woods — murky and misshapen
-  { key: "evil", style: "evil", cx: 4420, cy: 1830, rx: 186, ry: 108, jitter: 0.22, points: 17, rot: -0.2, jettyAngles: [2.15] },
+  {
+    key: "evil",
+    style: "evil",
+    cx: 4420,
+    cy: 1830,
+    rx: 186,
+    ry: 108,
+    jitter: 0.22,
+    points: 17,
+    rot: -0.2,
+    jettyAngles: [2.15],
+  },
 ];
 
 /** the same jittered-outline trick the biome patches use, applied to water */
@@ -702,7 +813,8 @@ function lakeOutline(s: LakeSpec, seed: number): [number, number][] {
   const pts: [number, number][] = [];
   for (let i = 0; i < s.points; i++) {
     const a = (i / s.points) * Math.PI * 2;
-    const wob = 1 + (rand01(seed + i * 7.13) - 0.5) * 2 * s.jitter + Math.sin(a * 3 + seed) * s.jitter * 0.4;
+    const wob =
+      1 + (rand01(seed + i * 7.13) - 0.5) * 2 * s.jitter + Math.sin(a * 3 + seed) * s.jitter * 0.4;
     const lx = Math.cos(a) * s.rx * wob;
     const ly = Math.sin(a) * s.ry * wob;
     pts.push([
@@ -738,7 +850,17 @@ export const LAKES: LakeDef[] = LAKE_SPECS.map((s, si) => {
     const [x2, y2] = lakePoint(s, a, 0.42);
     return { id: ++spotId, x1, y1, x2, y2, hw: 20 };
   });
-  return { key: s.key, style: s.style, cx: s.cx, cy: s.cy, rx: s.rx, ry: s.ry, poly: lakeOutline(s, seed), props, jetties };
+  return {
+    key: s.key,
+    style: s.style,
+    cx: s.cx,
+    cy: s.cy,
+    rx: s.rx,
+    ry: s.ry,
+    poly: lakeOutline(s, seed),
+    props,
+    jetties,
+  };
 });
 
 export interface FishingSpot {
@@ -802,7 +924,6 @@ export function rollFish(level: number): FishTier {
   return FISH_TABLE[0]!;
 }
 
-
 export const REGION_NAME = "Peaceful Fields";
 
 /* ------------------------------------------------------------------ */
@@ -844,25 +965,234 @@ export interface NodeDefT {
 }
 
 export const NODE_DEFS: Record<NodeKind, NodeDefT> = {
-  copper: { name: "Copper Rock", skill: "mining", shape: "rock", xp: 18, item: "copper_ore", time: 3.2, respawn: 36, req: 1, color: "#b8a999", accent: "#e0955f" },
-  oak: { name: "Oak Tree", skill: "woodcutting", shape: "tree", xp: 16, item: "oak_logs", time: 3.0, respawn: 32, req: 1, color: "#8a6a45", accent: "#79c46b" },
-  flax: { name: "Flax Patch", skill: "gathering", shape: "bush", xp: 14, item: "flax", time: 2.4, respawn: 28, req: 1, color: "#9ec27a", accent: "#e6e0a6" },
-  berries: { name: "Berry Bush", skill: "gathering", shape: "bush", xp: 20, item: "meadow_berries", time: 2.8, respawn: 32, req: 3, color: "#6fa85c", accent: "#f19bb0" },
-  iron: { name: "Iron Rock", skill: "mining", shape: "rock", xp: 42, item: "iron_ore", time: 4.0, respawn: 44, req: 15, color: "#9c948c", accent: "#b0a49b" },
-  willow: { name: "Willow Tree", skill: "woodcutting", shape: "tree", xp: 38, item: "willow_logs", time: 3.8, respawn: 40, req: 15, color: "#7b6a4a", accent: "#a8b87a" },
-  maple: { name: "Maple Tree", skill: "woodcutting", shape: "tree", xp: 60, item: "maple_logs", time: 4.4, respawn: 48, req: 28, color: "#7a5236", accent: "#d59470" },
-  herbs: { name: "Herb Cluster", skill: "gathering", shape: "bush", xp: 48, item: "forest_herbs", time: 3.4, respawn: 40, req: 18, color: "#3f8f6a", accent: "#8fd6a0" },
-  sandstone: { name: "Sandstone Vein", skill: "mining", shape: "rock", xp: 90, item: "sandstone", time: 4.6, respawn: 48, req: 40, color: "#d3bb88", accent: "#e6cf9a" },
-  mithril: { name: "Mithril Vein", skill: "mining", shape: "rock", xp: 140, item: "mithril_ore", time: 5.4, respawn: 60, req: 50, color: "#8fa6bb", accent: "#9fc4e8" },
-  palm: { name: "Desert Palm", skill: "woodcutting", shape: "tree", xp: 120, item: "palm_logs", time: 5.0, respawn: 56, req: 45, color: "#a8834e", accent: "#d8bb7c" },
-  bloom: { name: "Desert Bloom", skill: "gathering", shape: "bush", xp: 110, item: "desert_bloom", time: 4.0, respawn: 48, req: 42, color: "#c79b56", accent: "#f4c66b" },
-  cursed_rock: { name: "Cursed Rock", skill: "mining", shape: "rock", xp: 240, item: "cursed_shard", time: 6.0, respawn: 68, req: 70, color: "#6b5b93", accent: "#b58ce0" },
-  cursed_tree: { name: "Cursed Tree", skill: "woodcutting", shape: "tree", xp: 230, item: "cursed_bark", time: 6.0, respawn: 68, req: 70, color: "#4a3c6d", accent: "#8f7bb0" },
-  gloomcap: { name: "Gloomcap", skill: "gathering", shape: "bush", xp: 210, item: "gloomcap", time: 4.8, respawn: 56, req: 68, color: "#3f3460", accent: "#c39ae8" },
-  runite: { name: "Runite Vein", skill: "mining", shape: "rock", xp: 420, item: "runite_ore", time: 7.0, respawn: 80, req: 100, color: "#7d9fa8", accent: "#8fe0d0" },
-  tungsten: { name: "Tungsten Vein", skill: "mining", shape: "rock", xp: 520, item: "tungsten_ore", time: 7.6, respawn: 88, req: 110, color: "#98a2b5", accent: "#c8cfe0" },
-  frostpine: { name: "Frostpine", skill: "woodcutting", shape: "tree", xp: 400, item: "frostpine_logs", time: 6.8, respawn: 76, req: 100, color: "#6f8798", accent: "#a9d8e6" },
-  lichen: { name: "Frost Lichen", skill: "gathering", shape: "bush", xp: 380, item: "frost_lichen", time: 5.4, respawn: 64, req: 98, color: "#8bb0c4", accent: "#cfeaf5" },
+  copper: {
+    name: "Copper Rock",
+    skill: "mining",
+    shape: "rock",
+    xp: 18,
+    item: "copper_ore",
+    time: 3.2,
+    respawn: 36,
+    req: 1,
+    color: "#b8a999",
+    accent: "#e0955f",
+  },
+  oak: {
+    name: "Oak Tree",
+    skill: "woodcutting",
+    shape: "tree",
+    xp: 16,
+    item: "oak_logs",
+    time: 3.0,
+    respawn: 32,
+    req: 1,
+    color: "#8a6a45",
+    accent: "#79c46b",
+  },
+  flax: {
+    name: "Flax Patch",
+    skill: "gathering",
+    shape: "bush",
+    xp: 14,
+    item: "flax",
+    time: 2.4,
+    respawn: 28,
+    req: 1,
+    color: "#9ec27a",
+    accent: "#e6e0a6",
+  },
+  berries: {
+    name: "Berry Bush",
+    skill: "gathering",
+    shape: "bush",
+    xp: 20,
+    item: "meadow_berries",
+    time: 2.8,
+    respawn: 32,
+    req: 3,
+    color: "#6fa85c",
+    accent: "#f19bb0",
+  },
+  iron: {
+    name: "Iron Rock",
+    skill: "mining",
+    shape: "rock",
+    xp: 42,
+    item: "iron_ore",
+    time: 4.0,
+    respawn: 44,
+    req: 15,
+    color: "#9c948c",
+    accent: "#b0a49b",
+  },
+  willow: {
+    name: "Willow Tree",
+    skill: "woodcutting",
+    shape: "tree",
+    xp: 38,
+    item: "willow_logs",
+    time: 3.8,
+    respawn: 40,
+    req: 15,
+    color: "#7b6a4a",
+    accent: "#a8b87a",
+  },
+  maple: {
+    name: "Maple Tree",
+    skill: "woodcutting",
+    shape: "tree",
+    xp: 60,
+    item: "maple_logs",
+    time: 4.4,
+    respawn: 48,
+    req: 28,
+    color: "#7a5236",
+    accent: "#d59470",
+  },
+  herbs: {
+    name: "Herb Cluster",
+    skill: "gathering",
+    shape: "bush",
+    xp: 48,
+    item: "forest_herbs",
+    time: 3.4,
+    respawn: 40,
+    req: 18,
+    color: "#3f8f6a",
+    accent: "#8fd6a0",
+  },
+  sandstone: {
+    name: "Sandstone Vein",
+    skill: "mining",
+    shape: "rock",
+    xp: 90,
+    item: "sandstone",
+    time: 4.6,
+    respawn: 48,
+    req: 40,
+    color: "#d3bb88",
+    accent: "#e6cf9a",
+  },
+  mithril: {
+    name: "Mithril Vein",
+    skill: "mining",
+    shape: "rock",
+    xp: 140,
+    item: "mithril_ore",
+    time: 5.4,
+    respawn: 60,
+    req: 50,
+    color: "#8fa6bb",
+    accent: "#9fc4e8",
+  },
+  palm: {
+    name: "Desert Palm",
+    skill: "woodcutting",
+    shape: "tree",
+    xp: 120,
+    item: "palm_logs",
+    time: 5.0,
+    respawn: 56,
+    req: 45,
+    color: "#a8834e",
+    accent: "#d8bb7c",
+  },
+  bloom: {
+    name: "Desert Bloom",
+    skill: "gathering",
+    shape: "bush",
+    xp: 110,
+    item: "desert_bloom",
+    time: 4.0,
+    respawn: 48,
+    req: 42,
+    color: "#c79b56",
+    accent: "#f4c66b",
+  },
+  cursed_rock: {
+    name: "Cursed Rock",
+    skill: "mining",
+    shape: "rock",
+    xp: 240,
+    item: "cursed_shard",
+    time: 6.0,
+    respawn: 68,
+    req: 70,
+    color: "#6b5b93",
+    accent: "#b58ce0",
+  },
+  cursed_tree: {
+    name: "Cursed Tree",
+    skill: "woodcutting",
+    shape: "tree",
+    xp: 230,
+    item: "cursed_bark",
+    time: 6.0,
+    respawn: 68,
+    req: 70,
+    color: "#4a3c6d",
+    accent: "#8f7bb0",
+  },
+  gloomcap: {
+    name: "Gloomcap",
+    skill: "gathering",
+    shape: "bush",
+    xp: 210,
+    item: "gloomcap",
+    time: 4.8,
+    respawn: 56,
+    req: 68,
+    color: "#3f3460",
+    accent: "#c39ae8",
+  },
+  runite: {
+    name: "Runite Vein",
+    skill: "mining",
+    shape: "rock",
+    xp: 420,
+    item: "runite_ore",
+    time: 7.0,
+    respawn: 80,
+    req: 100,
+    color: "#7d9fa8",
+    accent: "#8fe0d0",
+  },
+  tungsten: {
+    name: "Tungsten Vein",
+    skill: "mining",
+    shape: "rock",
+    xp: 520,
+    item: "tungsten_ore",
+    time: 7.6,
+    respawn: 88,
+    req: 110,
+    color: "#98a2b5",
+    accent: "#c8cfe0",
+  },
+  frostpine: {
+    name: "Frostpine",
+    skill: "woodcutting",
+    shape: "tree",
+    xp: 400,
+    item: "frostpine_logs",
+    time: 6.8,
+    respawn: 76,
+    req: 100,
+    color: "#6f8798",
+    accent: "#a9d8e6",
+  },
+  lichen: {
+    name: "Frost Lichen",
+    skill: "gathering",
+    shape: "bush",
+    xp: 380,
+    item: "frost_lichen",
+    time: 5.4,
+    respawn: 64,
+    req: 98,
+    color: "#8bb0c4",
+    accent: "#cfeaf5",
+  },
 };
 
 export interface NodeSpawn {
@@ -877,7 +1207,6 @@ export interface NodeSpawn {
  * placed inside the biome it belongs to and clear of anything solid.
  */
 export const NODE_SPAWNS: NodeSpawn[] = [];
-
 
 /* ------------------------------------------------------------------ */
 /* Monsters                                                            */
@@ -923,27 +1252,327 @@ export interface MonsterDefT {
 }
 
 export const MONSTER_DEFS: Record<MonsterKind, MonsterDefT> = {
-  chicken: { name: "Chicken", hp: 8, attack: 2, defense: 0, xp: 12, gold: [1, 4], drop: "feather", dropChance: 0.7, hide: null, hideXp: 0, body: "#fff6e0", accent: "#f2a154", size: 1, ears: "beak" },
-  goblin: { name: "Goblin", hp: 22, attack: 5, defense: 2, xp: 34, gold: [4, 12], drop: "goblin_charm", dropChance: 0.35, hide: "raw_hide", hideXp: 16, body: "#a7d97f", accent: "#6fae52", size: 1, ears: "horns" },
-  wolf: { name: "Meadow Wolf", hp: 60, attack: 11, defense: 5, xp: 95, gold: [10, 24], drop: "raw_hide", dropChance: 0.6, hide: "raw_hide", hideXp: 40, body: "#c9c2bb", accent: "#8e857c", size: 1.1, ears: "horns" },
-  bear: { name: "Honey Bear", hp: 130, attack: 20, defense: 10, xp: 210, gold: [22, 48], drop: "thick_hide", dropChance: 0.5, hide: "thick_hide", hideXp: 85, body: "#c08a5c", accent: "#8a5f3b", size: 1.35, ears: "none" },
-  serpent: { name: "Sand Serpent", hp: 260, attack: 34, defense: 18, xp: 430, gold: [45, 95], drop: "scale_hide", dropChance: 0.5, hide: "scale_hide", hideXp: 170, body: "#e0c078", accent: "#b8934c", size: 1.2, ears: "spikes" },
-  bandit: { name: "Dune Bandit", hp: 320, attack: 42, defense: 22, xp: 520, gold: [70, 160], drop: "desert_bloom", dropChance: 0.4, hide: "scale_hide", hideXp: 190, body: "#e8b98a", accent: "#a86f45", size: 1.1, ears: "none" },
-  wraith: { name: "Pale Wraith", hp: 620, attack: 68, defense: 34, xp: 980, gold: [120, 250], drop: "gloomcap", dropChance: 0.45, hide: "shadow_pelt", hideXp: 330, body: "#cbb8e8", accent: "#8f7bb0", size: 1.2, ears: "spikes" },
-  shadow_beast: { name: "Shadow Beast", hp: 820, attack: 84, defense: 42, xp: 1300, gold: [160, 320], drop: "shadow_pelt", dropChance: 0.55, hide: "shadow_pelt", hideXp: 400, body: "#7b6a9c", accent: "#4a3c6d", size: 1.45, ears: "horns" },
-  yeti: { name: "Fluffy Yeti", hp: 1500, attack: 130, defense: 62, xp: 2400, gold: [280, 520], drop: "frost_pelt", dropChance: 0.55, hide: "frost_pelt", hideXp: 720, body: "#eef7fd", accent: "#a9d8e6", size: 1.5, ears: "horns" },
-  frost_giant: { name: "Frost Giant", hp: 2200, attack: 165, defense: 80, xp: 3400, gold: [400, 780], drop: "tungsten_ore", dropChance: 0.4, hide: "frost_pelt", hideXp: 900, body: "#bcd9ec", accent: "#7fa8c4", size: 1.7, ears: "spikes" },
+  chicken: {
+    name: "Chicken",
+    hp: 8,
+    attack: 2,
+    defense: 0,
+    xp: 12,
+    gold: [1, 4],
+    drop: "feather",
+    dropChance: 0.7,
+    hide: null,
+    hideXp: 0,
+    body: "#fff6e0",
+    accent: "#f2a154",
+    size: 1,
+    ears: "beak",
+  },
+  goblin: {
+    name: "Goblin",
+    hp: 22,
+    attack: 5,
+    defense: 2,
+    xp: 34,
+    gold: [4, 12],
+    drop: "goblin_charm",
+    dropChance: 0.35,
+    hide: "raw_hide",
+    hideXp: 16,
+    body: "#a7d97f",
+    accent: "#6fae52",
+    size: 1,
+    ears: "horns",
+  },
+  wolf: {
+    name: "Meadow Wolf",
+    hp: 60,
+    attack: 11,
+    defense: 5,
+    xp: 95,
+    gold: [10, 24],
+    drop: "raw_hide",
+    dropChance: 0.6,
+    hide: "raw_hide",
+    hideXp: 40,
+    body: "#c9c2bb",
+    accent: "#8e857c",
+    size: 1.1,
+    ears: "horns",
+  },
+  bear: {
+    name: "Honey Bear",
+    hp: 130,
+    attack: 20,
+    defense: 10,
+    xp: 210,
+    gold: [22, 48],
+    drop: "thick_hide",
+    dropChance: 0.5,
+    hide: "thick_hide",
+    hideXp: 85,
+    body: "#c08a5c",
+    accent: "#8a5f3b",
+    size: 1.35,
+    ears: "none",
+  },
+  serpent: {
+    name: "Sand Serpent",
+    hp: 260,
+    attack: 34,
+    defense: 18,
+    xp: 430,
+    gold: [45, 95],
+    drop: "scale_hide",
+    dropChance: 0.5,
+    hide: "scale_hide",
+    hideXp: 170,
+    body: "#e0c078",
+    accent: "#b8934c",
+    size: 1.2,
+    ears: "spikes",
+  },
+  bandit: {
+    name: "Dune Bandit",
+    hp: 320,
+    attack: 42,
+    defense: 22,
+    xp: 520,
+    gold: [70, 160],
+    drop: "desert_bloom",
+    dropChance: 0.4,
+    hide: "scale_hide",
+    hideXp: 190,
+    body: "#e8b98a",
+    accent: "#a86f45",
+    size: 1.1,
+    ears: "none",
+  },
+  wraith: {
+    name: "Pale Wraith",
+    hp: 620,
+    attack: 68,
+    defense: 34,
+    xp: 980,
+    gold: [120, 250],
+    drop: "gloomcap",
+    dropChance: 0.45,
+    hide: "shadow_pelt",
+    hideXp: 330,
+    body: "#cbb8e8",
+    accent: "#8f7bb0",
+    size: 1.2,
+    ears: "spikes",
+  },
+  shadow_beast: {
+    name: "Shadow Beast",
+    hp: 820,
+    attack: 84,
+    defense: 42,
+    xp: 1300,
+    gold: [160, 320],
+    drop: "shadow_pelt",
+    dropChance: 0.55,
+    hide: "shadow_pelt",
+    hideXp: 400,
+    body: "#7b6a9c",
+    accent: "#4a3c6d",
+    size: 1.45,
+    ears: "horns",
+  },
+  yeti: {
+    name: "Fluffy Yeti",
+    hp: 1500,
+    attack: 130,
+    defense: 62,
+    xp: 2400,
+    gold: [280, 520],
+    drop: "frost_pelt",
+    dropChance: 0.55,
+    hide: "frost_pelt",
+    hideXp: 720,
+    body: "#eef7fd",
+    accent: "#a9d8e6",
+    size: 1.5,
+    ears: "horns",
+  },
+  frost_giant: {
+    name: "Frost Giant",
+    hp: 2200,
+    attack: 165,
+    defense: 80,
+    xp: 3400,
+    gold: [400, 780],
+    drop: "tungsten_ore",
+    dropChance: 0.4,
+    hide: "frost_pelt",
+    hideXp: 900,
+    body: "#bcd9ec",
+    accent: "#7fa8c4",
+    size: 1.7,
+    ears: "spikes",
+  },
   // Phase 2 additions — fill the difficulty-curve gaps between neighbours.
-  disgruntled_ram: { name: "Disgruntled Ram", hp: 13, attack: 3, defense: 1, xp: 20, gold: [2, 7], drop: "ram_horn", dropChance: 0.45, hide: "raw_hide", hideXp: 20, body: "#f0ead6", accent: "#c9a876", size: 1.05, ears: "horns" },
-  forest_boar: { name: "Forest Boar", hp: 36, attack: 7, defense: 3, xp: 57, gold: [6, 17], drop: "boar_tusk", dropChance: 0.45, hide: "raw_hide", hideXp: 28, body: "#8a6a45", accent: "#e6ddc8", size: 1.15, ears: "spikes" },
-  forest_lynx: { name: "Forest Lynx", hp: 88, attack: 15, defense: 7, xp: 141, gold: [15, 34], drop: "lynx_claw", dropChance: 0.45, hide: "thick_hide", hideXp: 65, body: "#b8a888", accent: "#6b5a42", size: 1.15, ears: "horns" },
-  dust_jackal: { name: "Dust Jackal", hp: 184, attack: 26, defense: 13, xp: 300, gold: [31, 68], drop: "jackal_fang", dropChance: 0.45, hide: "thick_hide", hideXp: 130, body: "#d4b382", accent: "#7a5c3a", size: 1.1, ears: "horns" },
-  scorpion_stalker: { name: "Scorpion Stalker", hp: 288, attack: 38, defense: 20, xp: 473, gold: [56, 123], drop: "scorpion_stinger", dropChance: 0.45, hide: "scale_hide", hideXp: 180, body: "#c9963f", accent: "#5a4020", size: 1.25, ears: "spikes" },
-  withered_ghoul: { name: "Withered Ghoul", hp: 445, attack: 53, defense: 27, xp: 714, gold: [92, 200], drop: "ghoul_essence", dropChance: 0.45, hide: "shadow_pelt", hideXp: 250, body: "#7a8a6e", accent: "#3f4a38", size: 1.2, ears: "none" },
-  bone_reaper: { name: "Bone Reaper", hp: 713, attack: 76, defense: 38, xp: 1129, gold: [139, 283], drop: "reaper_bone", dropChance: 0.45, hide: "shadow_pelt", hideXp: 400, body: "#e8e0d0", accent: "#2b2b35", size: 1.3, ears: "spikes" },
-  frost_wolf: { name: "Frost Wolf", hp: 1109, attack: 105, defense: 51, xp: 1766, gold: [212, 408], drop: "frost_fang", dropChance: 0.45, hide: "frost_pelt", hideXp: 600, body: "#dceaf5", accent: "#8fb8d4", size: 1.2, ears: "horns" },
-  ice_wraith: { name: "Ice Wraith", hp: 1817, attack: 146, defense: 70, xp: 2857, gold: [335, 637], drop: "wraith_ice_core", dropChance: 0.45, hide: "frost_pelt", hideXp: 800, body: "#cfe8f5", accent: "#5f9ec4", size: 1.35, ears: "spikes" },
-  ancient_frost_wyrm: { name: "Ancient Frost Wyrm", hp: 3080, attack: 210, defense: 95, xp: 4760, gold: [560, 1092], drop: "wyrm_scale", dropChance: 0.45, hide: "frost_pelt", hideXp: 1000, body: "#a8d4e8", accent: "#5a6fa0", size: 1.9, ears: "spikes" },
+  disgruntled_ram: {
+    name: "Disgruntled Ram",
+    hp: 13,
+    attack: 3,
+    defense: 1,
+    xp: 20,
+    gold: [2, 7],
+    drop: "ram_horn",
+    dropChance: 0.45,
+    hide: "raw_hide",
+    hideXp: 20,
+    body: "#f0ead6",
+    accent: "#c9a876",
+    size: 1.05,
+    ears: "horns",
+  },
+  forest_boar: {
+    name: "Forest Boar",
+    hp: 36,
+    attack: 7,
+    defense: 3,
+    xp: 57,
+    gold: [6, 17],
+    drop: "boar_tusk",
+    dropChance: 0.45,
+    hide: "raw_hide",
+    hideXp: 28,
+    body: "#8a6a45",
+    accent: "#e6ddc8",
+    size: 1.15,
+    ears: "spikes",
+  },
+  forest_lynx: {
+    name: "Forest Lynx",
+    hp: 88,
+    attack: 15,
+    defense: 7,
+    xp: 141,
+    gold: [15, 34],
+    drop: "lynx_claw",
+    dropChance: 0.45,
+    hide: "thick_hide",
+    hideXp: 65,
+    body: "#b8a888",
+    accent: "#6b5a42",
+    size: 1.15,
+    ears: "horns",
+  },
+  dust_jackal: {
+    name: "Dust Jackal",
+    hp: 184,
+    attack: 26,
+    defense: 13,
+    xp: 300,
+    gold: [31, 68],
+    drop: "jackal_fang",
+    dropChance: 0.45,
+    hide: "thick_hide",
+    hideXp: 130,
+    body: "#d4b382",
+    accent: "#7a5c3a",
+    size: 1.1,
+    ears: "horns",
+  },
+  scorpion_stalker: {
+    name: "Scorpion Stalker",
+    hp: 288,
+    attack: 38,
+    defense: 20,
+    xp: 473,
+    gold: [56, 123],
+    drop: "scorpion_stinger",
+    dropChance: 0.45,
+    hide: "scale_hide",
+    hideXp: 180,
+    body: "#c9963f",
+    accent: "#5a4020",
+    size: 1.25,
+    ears: "spikes",
+  },
+  withered_ghoul: {
+    name: "Withered Ghoul",
+    hp: 445,
+    attack: 53,
+    defense: 27,
+    xp: 714,
+    gold: [92, 200],
+    drop: "ghoul_essence",
+    dropChance: 0.45,
+    hide: "shadow_pelt",
+    hideXp: 250,
+    body: "#7a8a6e",
+    accent: "#3f4a38",
+    size: 1.2,
+    ears: "none",
+  },
+  bone_reaper: {
+    name: "Bone Reaper",
+    hp: 713,
+    attack: 76,
+    defense: 38,
+    xp: 1129,
+    gold: [139, 283],
+    drop: "reaper_bone",
+    dropChance: 0.45,
+    hide: "shadow_pelt",
+    hideXp: 400,
+    body: "#e8e0d0",
+    accent: "#2b2b35",
+    size: 1.3,
+    ears: "spikes",
+  },
+  frost_wolf: {
+    name: "Frost Wolf",
+    hp: 1109,
+    attack: 105,
+    defense: 51,
+    xp: 1766,
+    gold: [212, 408],
+    drop: "frost_fang",
+    dropChance: 0.45,
+    hide: "frost_pelt",
+    hideXp: 600,
+    body: "#dceaf5",
+    accent: "#8fb8d4",
+    size: 1.2,
+    ears: "horns",
+  },
+  ice_wraith: {
+    name: "Ice Wraith",
+    hp: 1817,
+    attack: 146,
+    defense: 70,
+    xp: 2857,
+    gold: [335, 637],
+    drop: "wraith_ice_core",
+    dropChance: 0.45,
+    hide: "frost_pelt",
+    hideXp: 800,
+    body: "#cfe8f5",
+    accent: "#5f9ec4",
+    size: 1.35,
+    ears: "spikes",
+  },
+  ancient_frost_wyrm: {
+    name: "Ancient Frost Wyrm",
+    hp: 3080,
+    attack: 210,
+    defense: 95,
+    xp: 4760,
+    gold: [560, 1092],
+    drop: "wyrm_scale",
+    dropChance: 0.45,
+    hide: "frost_pelt",
+    hideXp: 1000,
+    body: "#a8d4e8",
+    accent: "#5a6fa0",
+    size: 1.9,
+    ears: "spikes",
+  },
 };
 
 /** Approximate combat level derived from a monster's HP and attack. */
@@ -1156,14 +1785,15 @@ const TOWN_SPECS: TownSpec[] = [
   },
 ];
 
-
 const buildings: BuildingDef[] = [];
 const streets: StreetDef[] = [];
 const npcSpots: Record<string, { x: number; y: number }> = {};
 
 /** true when a bearing sits in a gate's approach corridor — kept build-free */
 function inGateCorridor(a: number, c: CityDef) {
-  return cityGateAt(a, c) !== null || cityGateAt(a + 0.2, c) !== null || cityGateAt(a - 0.2, c) !== null;
+  return (
+    cityGateAt(a, c) !== null || cityGateAt(a + 0.2, c) !== null || cityGateAt(a - 0.2, c) !== null
+  );
 }
 
 for (const t of TOWN_SPECS) {
@@ -1191,12 +1821,14 @@ for (const t of TOWN_SPECS) {
         const r = city.plazaR + 44 + rand01(s + 91) * (city.wallR - city.plazaR - 96);
         const x = city.cx + Math.cos(a) * r;
         const y = city.cy + Math.sin(a) * r;
-        if (inGateCorridor(a, city) || cityGateAt(a + 0.18, city) || cityGateAt(a - 0.18, city)) continue;
+        if (inGateCorridor(a, city) || cityGateAt(a + 0.18, city) || cityGateAt(a - 0.18, city))
+          continue;
         if (onMonument(x, y, Math.max(w, h) / 2 + 26)) continue;
         if (gy) {
           const gx = city.cx + gy.dx;
           const gyy = city.cy + gy.dy;
-          if (Math.abs(x - gx) < gy.rx + w / 2 + 16 && Math.abs(y - gyy) < gy.ry + h / 2 + 16) continue;
+          if (Math.abs(x - gx) < gy.rx + w / 2 + 16 && Math.abs(y - gyy) < gy.ry + h / 2 + 16)
+            continue;
         }
         // narrow alleys: neighbours may crowd in, but never overlap
         const alley = 12 + rand01(s + 33) * 14;
@@ -1320,14 +1952,13 @@ for (const t of TOWN_SPECS) {
       const above = y + h / 2 < t.cy;
       let sx = x + w / 2;
       const sy = above ? t.cy - 44 : t.cy + 36;
-      while (Object.values(npcSpots).some((s) => Math.abs(s.x - sx) < 52 && Math.abs(s.y - sy) < 40)) {
+      while (
+        Object.values(npcSpots).some((s) => Math.abs(s.x - sx) < 52 && Math.abs(s.y - sy) < 40)
+      ) {
         sx += 56;
       }
       npcSpots[role] = { x: sx, y: sy };
     }
-
-
-
   });
 }
 
@@ -1348,9 +1979,7 @@ for (const town of [GRAND_HAVEN, WILLOWBROOK]) {
 // trader evenly around its plaza on clear cobbles.
 {
   const onBuilding = (x: number, y: number) =>
-    buildings.some(
-      (b) => x > b.x - 18 && x < b.x + b.w + 18 && y > b.y - 18 && y < b.y + b.h + 18,
-    );
+    buildings.some((b) => x > b.x - 18 && x < b.x + b.w + 18 && y > b.y - 18 && y < b.y + b.h + 18);
   for (const city of CITIES) {
     const inCity = Object.entries(npcSpots).filter(
       ([, s]) => Math.hypot(s.x - city.cx, s.y - city.cy) <= cityOuterR(city),
@@ -1358,7 +1987,8 @@ for (const town of [GRAND_HAVEN, WILLOWBROOK]) {
     if (!inCity.length) continue;
     inCity.sort(
       (p, q) =>
-        Math.atan2(p[1].y - city.cy, p[1].x - city.cx) - Math.atan2(q[1].y - city.cy, q[1].x - city.cx),
+        Math.atan2(p[1].y - city.cy, p[1].x - city.cx) -
+        Math.atan2(q[1].y - city.cy, q[1].x - city.cx),
     );
     // the oasis (Sunspire) and the Great Oak Hall (Willowbrook) eat the middle
     // of the plaza, so traders ring them a little wider
@@ -1368,7 +1998,11 @@ for (const town of [GRAND_HAVEN, WILLOWBROOK]) {
     const taken: { x: number; y: number }[] = [];
     inCity.forEach(([role], i) => {
       const base = (i / inCity.length) * Math.PI * 2 + 0.25;
-      let best = { x: city.cx + Math.cos(base) * r0, y: city.cy + Math.sin(base) * r0, score: -1e9 };
+      let best = {
+        x: city.cx + Math.cos(base) * r0,
+        y: city.cy + Math.sin(base) * r0,
+        score: -1e9,
+      };
       for (let da = -0.55; da <= 0.55; da += 0.05) {
         for (const dr of [0, 26, -22, 48]) {
           const a = base + da;
@@ -1376,7 +2010,9 @@ for (const town of [GRAND_HAVEN, WILLOWBROOK]) {
           const x = city.cx + Math.cos(a) * r;
           const y = city.cy + Math.sin(a) * r;
           if (onBuilding(x, y) || inCityOasis(x, y, 18) || onMonument(x, y, 18)) continue;
-          const gap = taken.length ? Math.min(...taken.map((t) => Math.hypot(t.x - x, t.y - y))) : 400;
+          const gap = taken.length
+            ? Math.min(...taken.map((t) => Math.hypot(t.x - x, t.y - y)))
+            : 400;
           const score = Math.min(gap, 150) - Math.abs(da) * 40 - Math.abs(dr) * 0.2;
           if (score > best.score) best = { x, y, score };
         }
@@ -1495,8 +2131,6 @@ export const LANDMARKS: LandmarkDef[] = [
     h: 256,
     solid: { dx: 0, dy: 74, w: 108, h: 80 },
   },
-
-
 ];
 
 /**
@@ -1520,21 +2154,19 @@ export function occludedByLandmark(x: number, y: number, headroom = 78, pad = 6)
   return false;
 }
 
-
-
 /** true when the point sits inside a landmark's solid footprint */
 export function onLandmark(x: number, y: number, pad = 0): boolean {
   for (const l of LANDMARKS) {
     const cx = l.x + l.solid.dx;
     const cy = l.y + l.solid.dy;
-    if (Math.abs(x - cx) < l.solid.w / 2 + pad && Math.abs(y - cy) < l.solid.h / 2 + pad) return true;
+    if (Math.abs(x - cx) < l.solid.w / 2 + pad && Math.abs(y - cy) < l.solid.h / 2 + pad)
+      return true;
   }
   return false;
 }
 
 const NPC_SPOTS: Record<string, { x: number; y: number }> = npcSpots;
 const spot = (role: string, fx: number, fy: number) => NPC_SPOTS[role] ?? { x: fx, y: fy };
-
 
 export type NpcRole =
   | "smith"
@@ -1590,33 +2222,252 @@ export interface NpcDef {
 }
 
 export const NPCS: NpcDef[] = [
-  { id: "smith", name: "Bruna", title: "Haven Smelter", ...spot("smith", 625, 420), robe: "#d98b6a", hair: "#5c3a2e", greeting: "Ore in, bars out. That's the whole of it.", services: ["smelt"] },
-  { id: "merchant", name: "Pip", title: "Market Trader", ...spot("merchant", 782, 442), robe: "#8fbfd9", hair: "#3f5f78", greeting: "Ore, logs, feathers — I'll take the lot.", services: ["sell"] },
-  { id: "elder", name: "Elder Maren", title: "Village Elder", ...spot("elder", 712, 300), robe: "#c9a7e0", hair: "#e6e0ef", greeting: "Grand Haven could use a hand today.", services: ["quests"] },
-  { id: "sun_smith", name: "Master Alric", title: "Sunspire Smelter", ...spot("sun_smith", TILE_W * 2 + 735, 350), robe: "#f0c268", hair: "#8a6a45", greeting: "Mithril sings once the dross burns away.", services: ["smelt"] },
-  { id: "weaver", name: "Lira", title: "Arcane Weaver", ...spot("weaver", TILE_W * 2 + 905, 420), robe: "#e8b3d8", hair: "#6b4f7a", greeting: "Bring me fibre and I'll bring you silk.", services: ["weave"] },
-  { id: "banker", name: "Coinmaster Odo", title: "Golden Bank", ...spot("banker", TILE_W * 2 + 565, 440), robe: "#d9a95f", hair: "#4a3b2e", greeting: "Every scrap has a price, friend.", services: ["bank"] },
-  { id: "trapper", name: "Tanner", title: "Tanner", x: 1849, y: 2100, robe: "#b98a5c", hair: "#3f2f22", greeting: "Hides into leather — that's my trade.", services: ["skin"] },
-  { id: "frost_smith", name: "Sigrid", title: "Frostforge Smelter", ...spot("frost_smith", 882, TILE_H + 560), robe: "#a9c6e6", hair: "#e6eef7", greeting: "The furnace never sleeps in the cold.", services: ["smelt"] },
-  { id: "haven_weaponsmith", name: "Garrick", title: "Weaponsmith", ...spot("haven_weaponsmith", 560, 300), robe: "#c2765a", hair: "#402a20", greeting: "Give me bars and I'll give you an edge.", services: ["forge"] },
-  { id: "haven_armourer", name: "Dame Ysolde", title: "Armourer", ...spot("haven_armourer", 870, 300), robe: "#9aa7b8", hair: "#6b5540", greeting: "Plate, mail or robe — I'll fit you proper.", services: ["armor"] },
-  { id: "haven_upgrader", name: "Old Whetstone Tam", title: "Gear Upgrader", x: 1017, y: 2507, robe: "#b7a06d", hair: "#d8d2c4", greeting: "Every notch I grind makes you harder to kill.", services: ["upgrade"] },
-  { id: "sun_weaponsmith", name: "Zafira", title: "Weaponsmith", ...spot("sun_weaponsmith", TILE_W * 2 + 600, 300), robe: "#e09a4f", hair: "#4a3324", greeting: "Sun-tempered steel, hammered to sing.", services: ["forge"] },
-  { id: "sun_alchemist", name: "Nasrin", title: "Alchemist", ...spot("sun_alchemist", TILE_W * 2 + 790, 300), robe: "#a7d9c2", hair: "#5a4470", greeting: "One drop of this and your blade bites twice.", services: ["alchemy"] },
-  { id: "brook_chef", name: "Chef Bramble", title: "Willowbrook Chef", x: 2249, y: 2100, robe: "#c9d97f", hair: "#7a5a34", greeting: "Fresh catch? I'll turn it into something warm.", services: ["cook"] },
-  { id: "frost_weaponsmith", name: "Halvar", title: "Weaponsmith", ...spot("frost_weaponsmith", 720, TILE_H + 560), robe: "#7f9cbd", hair: "#c9d8e6", greeting: "Cold iron, hot hammer. Stand back.", services: ["forge"] },
-  { id: "haven_exchange", name: "Clerk Tobin", title: "Grand Market", ...spot("haven_exchange", 800, 300), robe: "#cbb98f", hair: "#5a4a35", greeting: "Ledgers open, offers posted. What'll it be?", services: ["exchange"] },
-  { id: "sun_exchange", name: "Clerk Amara", title: "Grand Market", ...spot("sun_exchange", TILE_W * 2 + 680, 300), robe: "#e8c98d", hair: "#4d3a26", greeting: "Every caravan's price, all in one book.", services: ["exchange"] },
-  { id: "brook_exchange", name: "Clerk Nessa", title: "Grand Market", x: 1949, y: 2215, robe: "#a8cf9b", hair: "#6b5233", greeting: "Small village, big ledger. Trade away.", services: ["exchange"] },
-  { id: "frost_exchange", name: "Clerk Bjorn", title: "Grand Market", ...spot("frost_exchange", 640, TILE_H + 560), robe: "#b6cbe0", hair: "#dfe8f2", greeting: "Frost keeps the coin cold and the deals honest.", services: ["exchange"] },
-  { id: "dusk_exchange", name: "Clerk Mordrey", title: "Grand Market", ...spot("dusk_exchange", 4400, 1400), robe: "#9a86b3", hair: "#2b2533", greeting: "The dead keep no ledgers. The living pay up front.", services: ["exchange"] },
-  { id: "haven_banker", name: "Coinmaster Bell", title: "Banker", ...spot("haven_banker", 900, 400), robe: "#d9c07a", hair: "#4a3b2e", greeting: "Your vault travels with you — same coin, any town.", services: ["bank"] },
-  { id: "brook_banker", name: "Coinmaster Wisp", title: "Banker", x: 2149, y: 2215, robe: "#bfd9a0", hair: "#6b5233", greeting: "One vault, every branch. Deposit away.", services: ["bank"] },
-  { id: "frost_banker", name: "Coinmaster Hilda", title: "Banker", ...spot("frost_banker", 800, TILE_H + 620), robe: "#c6dcef", hair: "#e6eef7", greeting: "The ice keeps your coin safe wherever you wander.", services: ["bank"] },
-  { id: "dusk_banker", name: "Coinmaster Vex", title: "Banker", ...spot("dusk_banker", 4460, 1300), robe: "#a08cb8", hair: "#2b2533", greeting: "Same vault, darker vault-keeper. Deposit if you dare.", services: ["bank"] },
+  {
+    id: "smith",
+    name: "Bruna",
+    title: "Haven Smelter",
+    ...spot("smith", 625, 420),
+    robe: "#d98b6a",
+    hair: "#5c3a2e",
+    greeting: "Ore in, bars out. That's the whole of it.",
+    services: ["smelt"],
+  },
+  {
+    id: "merchant",
+    name: "Pip",
+    title: "Market Trader",
+    ...spot("merchant", 782, 442),
+    robe: "#8fbfd9",
+    hair: "#3f5f78",
+    greeting: "Ore, logs, feathers — I'll take the lot.",
+    services: ["sell"],
+  },
+  {
+    id: "elder",
+    name: "Elder Maren",
+    title: "Village Elder",
+    ...spot("elder", 712, 300),
+    robe: "#c9a7e0",
+    hair: "#e6e0ef",
+    greeting: "Grand Haven could use a hand today.",
+    services: ["quests"],
+  },
+  {
+    id: "sun_smith",
+    name: "Master Alric",
+    title: "Sunspire Smelter",
+    ...spot("sun_smith", TILE_W * 2 + 735, 350),
+    robe: "#f0c268",
+    hair: "#8a6a45",
+    greeting: "Mithril sings once the dross burns away.",
+    services: ["smelt"],
+  },
+  {
+    id: "weaver",
+    name: "Lira",
+    title: "Arcane Weaver",
+    ...spot("weaver", TILE_W * 2 + 905, 420),
+    robe: "#e8b3d8",
+    hair: "#6b4f7a",
+    greeting: "Bring me fibre and I'll bring you silk.",
+    services: ["weave"],
+  },
+  {
+    id: "banker",
+    name: "Coinmaster Odo",
+    title: "Golden Bank",
+    ...spot("banker", TILE_W * 2 + 565, 440),
+    robe: "#d9a95f",
+    hair: "#4a3b2e",
+    greeting: "Every scrap has a price, friend.",
+    services: ["bank"],
+  },
+  {
+    id: "trapper",
+    name: "Tanner",
+    title: "Tanner",
+    x: 1849,
+    y: 2100,
+    robe: "#b98a5c",
+    hair: "#3f2f22",
+    greeting: "Hides into leather — that's my trade.",
+    services: ["skin"],
+  },
+  {
+    id: "frost_smith",
+    name: "Sigrid",
+    title: "Frostforge Smelter",
+    ...spot("frost_smith", 882, TILE_H + 560),
+    robe: "#a9c6e6",
+    hair: "#e6eef7",
+    greeting: "The furnace never sleeps in the cold.",
+    services: ["smelt"],
+  },
+  {
+    id: "haven_weaponsmith",
+    name: "Garrick",
+    title: "Weaponsmith",
+    ...spot("haven_weaponsmith", 560, 300),
+    robe: "#c2765a",
+    hair: "#402a20",
+    greeting: "Give me bars and I'll give you an edge.",
+    services: ["forge"],
+  },
+  {
+    id: "haven_armourer",
+    name: "Dame Ysolde",
+    title: "Armourer",
+    ...spot("haven_armourer", 870, 300),
+    robe: "#9aa7b8",
+    hair: "#6b5540",
+    greeting: "Plate, mail or robe — I'll fit you proper.",
+    services: ["armor"],
+  },
+  {
+    id: "haven_upgrader",
+    name: "Old Whetstone Tam",
+    title: "Gear Upgrader",
+    x: 1017,
+    y: 2507,
+    robe: "#b7a06d",
+    hair: "#d8d2c4",
+    greeting: "Every notch I grind makes you harder to kill.",
+    services: ["upgrade"],
+  },
+  {
+    id: "sun_weaponsmith",
+    name: "Zafira",
+    title: "Weaponsmith",
+    ...spot("sun_weaponsmith", TILE_W * 2 + 600, 300),
+    robe: "#e09a4f",
+    hair: "#4a3324",
+    greeting: "Sun-tempered steel, hammered to sing.",
+    services: ["forge"],
+  },
+  {
+    id: "sun_alchemist",
+    name: "Nasrin",
+    title: "Alchemist",
+    ...spot("sun_alchemist", TILE_W * 2 + 790, 300),
+    robe: "#a7d9c2",
+    hair: "#5a4470",
+    greeting: "One drop of this and your blade bites twice.",
+    services: ["alchemy"],
+  },
+  {
+    id: "brook_chef",
+    name: "Chef Bramble",
+    title: "Willowbrook Chef",
+    x: 2249,
+    y: 2100,
+    robe: "#c9d97f",
+    hair: "#7a5a34",
+    greeting: "Fresh catch? I'll turn it into something warm.",
+    services: ["cook"],
+  },
+  {
+    id: "frost_weaponsmith",
+    name: "Halvar",
+    title: "Weaponsmith",
+    ...spot("frost_weaponsmith", 720, TILE_H + 560),
+    robe: "#7f9cbd",
+    hair: "#c9d8e6",
+    greeting: "Cold iron, hot hammer. Stand back.",
+    services: ["forge"],
+  },
+  {
+    id: "haven_exchange",
+    name: "Clerk Tobin",
+    title: "Grand Market",
+    ...spot("haven_exchange", 800, 300),
+    robe: "#cbb98f",
+    hair: "#5a4a35",
+    greeting: "Ledgers open, offers posted. What'll it be?",
+    services: ["exchange"],
+  },
+  {
+    id: "sun_exchange",
+    name: "Clerk Amara",
+    title: "Grand Market",
+    ...spot("sun_exchange", TILE_W * 2 + 680, 300),
+    robe: "#e8c98d",
+    hair: "#4d3a26",
+    greeting: "Every caravan's price, all in one book.",
+    services: ["exchange"],
+  },
+  {
+    id: "brook_exchange",
+    name: "Clerk Nessa",
+    title: "Grand Market",
+    x: 1949,
+    y: 2215,
+    robe: "#a8cf9b",
+    hair: "#6b5233",
+    greeting: "Small village, big ledger. Trade away.",
+    services: ["exchange"],
+  },
+  {
+    id: "frost_exchange",
+    name: "Clerk Bjorn",
+    title: "Grand Market",
+    ...spot("frost_exchange", 640, TILE_H + 560),
+    robe: "#b6cbe0",
+    hair: "#dfe8f2",
+    greeting: "Frost keeps the coin cold and the deals honest.",
+    services: ["exchange"],
+  },
+  {
+    id: "dusk_exchange",
+    name: "Clerk Mordrey",
+    title: "Grand Market",
+    ...spot("dusk_exchange", 4400, 1400),
+    robe: "#9a86b3",
+    hair: "#2b2533",
+    greeting: "The dead keep no ledgers. The living pay up front.",
+    services: ["exchange"],
+  },
+  {
+    id: "haven_banker",
+    name: "Coinmaster Bell",
+    title: "Banker",
+    ...spot("haven_banker", 900, 400),
+    robe: "#d9c07a",
+    hair: "#4a3b2e",
+    greeting: "Your vault travels with you — same coin, any town.",
+    services: ["bank"],
+  },
+  {
+    id: "brook_banker",
+    name: "Coinmaster Wisp",
+    title: "Banker",
+    x: 2149,
+    y: 2215,
+    robe: "#bfd9a0",
+    hair: "#6b5233",
+    greeting: "One vault, every branch. Deposit away.",
+    services: ["bank"],
+  },
+  {
+    id: "frost_banker",
+    name: "Coinmaster Hilda",
+    title: "Banker",
+    ...spot("frost_banker", 800, TILE_H + 620),
+    robe: "#c6dcef",
+    hair: "#e6eef7",
+    greeting: "The ice keeps your coin safe wherever you wander.",
+    services: ["bank"],
+  },
+  {
+    id: "dusk_banker",
+    name: "Coinmaster Vex",
+    title: "Banker",
+    ...spot("dusk_banker", 4460, 1300),
+    robe: "#a08cb8",
+    hair: "#2b2533",
+    greeting: "Same vault, darker vault-keeper. Deposit if you dare.",
+    services: ["bank"],
+  },
 ];
-
-
 
 export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
   // NPCs sell nothing at all — gear, food and potions must be player-crafted
@@ -1647,8 +2498,6 @@ export const SHOP_STOCK: Record<NpcRole, { id: ItemId; price: number }[]> = {
   frost_weaponsmith: [],
 };
 
-
-
 /* ------------------------------------------------------------------ */
 /* Crafting                                                            */
 /* ------------------------------------------------------------------ */
@@ -1671,39 +2520,342 @@ export interface Recipe {
 
 export const RECIPES: Recipe[] = [
   // Smithing — ore to bar
-  { id: "copper_bar", station: "smelt", skill: "smithing", out: "copper_bar", outQty: 1, inputs: [{ id: "copper_ore", qty: 2 }], req: 1, xp: 22, time: 1.6 },
-  { id: "iron_bar", station: "smelt", skill: "smithing", out: "iron_bar", outQty: 1, inputs: [{ id: "iron_ore", qty: 2 }], req: 15, xp: 55, time: 1.8 },
-  { id: "mithril_bar", station: "smelt", skill: "smithing", out: "mithril_bar", outQty: 1, inputs: [{ id: "mithril_ore", qty: 2 }, { id: "sandstone", qty: 1 }], req: 40, xp: 150, time: 2.2 },
-  { id: "runite_bar", station: "smelt", skill: "smithing", out: "runite_bar", outQty: 1, inputs: [{ id: "runite_ore", qty: 2 }, { id: "cursed_shard", qty: 1 }], req: 70, xp: 420, time: 2.6 },
-  { id: "tungsten_bar", station: "smelt", skill: "smithing", out: "tungsten_bar", outQty: 1, inputs: [{ id: "tungsten_ore", qty: 2 }, { id: "runite_bar", qty: 1 }], req: 100, xp: 620, time: 3 },
+  {
+    id: "copper_bar",
+    station: "smelt",
+    skill: "smithing",
+    out: "copper_bar",
+    outQty: 1,
+    inputs: [{ id: "copper_ore", qty: 2 }],
+    req: 1,
+    xp: 22,
+    time: 1.6,
+  },
+  {
+    id: "iron_bar",
+    station: "smelt",
+    skill: "smithing",
+    out: "iron_bar",
+    outQty: 1,
+    inputs: [{ id: "iron_ore", qty: 2 }],
+    req: 15,
+    xp: 55,
+    time: 1.8,
+  },
+  {
+    id: "mithril_bar",
+    station: "smelt",
+    skill: "smithing",
+    out: "mithril_bar",
+    outQty: 1,
+    inputs: [
+      { id: "mithril_ore", qty: 2 },
+      { id: "sandstone", qty: 1 },
+    ],
+    req: 40,
+    xp: 150,
+    time: 2.2,
+  },
+  {
+    id: "runite_bar",
+    station: "smelt",
+    skill: "smithing",
+    out: "runite_bar",
+    outQty: 1,
+    inputs: [
+      { id: "runite_ore", qty: 2 },
+      { id: "cursed_shard", qty: 1 },
+    ],
+    req: 70,
+    xp: 420,
+    time: 2.6,
+  },
+  {
+    id: "tungsten_bar",
+    station: "smelt",
+    skill: "smithing",
+    out: "tungsten_bar",
+    outQty: 1,
+    inputs: [
+      { id: "tungsten_ore", qty: 2 },
+      { id: "runite_bar", qty: 1 },
+    ],
+    req: 100,
+    xp: 620,
+    time: 3,
+  },
   // Smithing — bar to gear
-  { id: "copper_sword", station: "forge", skill: "smithing", out: "copper_sword", outQty: 1, inputs: [{ id: "copper_bar", qty: 3 }], req: 5, xp: 90, time: 2.4 },
-  { id: "bronze_dagger", station: "forge", skill: "smithing", out: "bronze_dagger", outQty: 1, inputs: [{ id: "copper_bar", qty: 2 }, { id: "willow_logs", qty: 1 }, { id: "goblin_charm", qty: 1 }, { id: "ram_horn", qty: 1 }], req: 3, xp: 60, time: 2.2 },
-  { id: "sunspire_wand", station: "forge", skill: "smithing", out: "sunspire_wand", outQty: 1, inputs: [{ id: "mithril_bar", qty: 2 }, { id: "willow_logs", qty: 2 }, { id: "feather", qty: 2 }], req: 45, xp: 640, time: 3 },
-  { id: "steel_sword", station: "forge", skill: "smithing", out: "steel_sword", outQty: 1, inputs: [{ id: "iron_bar", qty: 3 }, { id: "oak_logs", qty: 1 }, { id: "boar_tusk", qty: 1 }], req: 20, xp: 220, time: 2.6 },
-  { id: "mithril_blade", station: "forge", skill: "smithing", out: "mithril_blade", outQty: 1, inputs: [{ id: "mithril_bar", qty: 3 }, { id: "palm_logs", qty: 1 }, { id: "maple_logs", qty: 1 }, { id: "jackal_fang", qty: 1 }], req: 45, xp: 620, time: 3 },
-  { id: "runite_greatsword", station: "forge", skill: "smithing", out: "runite_greatsword", outQty: 1, inputs: [{ id: "runite_bar", qty: 4 }, { id: "frostpine_logs", qty: 1 }, { id: "ghoul_essence", qty: 1 }], req: 75, xp: 1500, time: 3.4 },
-  { id: "tungsten_maul", station: "forge", skill: "smithing", out: "tungsten_maul", outQty: 1, inputs: [{ id: "tungsten_bar", qty: 4 }, { id: "cursed_bark", qty: 1 }, { id: "frost_fang", qty: 1 }], req: 105, xp: 2600, time: 3.8 },
+  {
+    id: "copper_sword",
+    station: "forge",
+    skill: "smithing",
+    out: "copper_sword",
+    outQty: 1,
+    inputs: [{ id: "copper_bar", qty: 3 }],
+    req: 5,
+    xp: 90,
+    time: 2.4,
+  },
+  {
+    id: "steel_sword",
+    station: "forge",
+    skill: "smithing",
+    out: "steel_sword",
+    outQty: 1,
+    inputs: [
+      { id: "iron_bar", qty: 3 },
+      { id: "oak_logs", qty: 1 },
+      { id: "boar_tusk", qty: 1 },
+    ],
+    req: 20,
+    xp: 220,
+    time: 2.6,
+  },
+  {
+    id: "mithril_blade",
+    station: "forge",
+    skill: "smithing",
+    out: "mithril_blade",
+    outQty: 1,
+    inputs: [
+      { id: "mithril_bar", qty: 3 },
+      { id: "palm_logs", qty: 1 },
+      { id: "maple_logs", qty: 1 },
+      { id: "jackal_fang", qty: 1 },
+    ],
+    req: 45,
+    xp: 620,
+    time: 3,
+  },
+  {
+    id: "runite_greatsword",
+    station: "forge",
+    skill: "smithing",
+    out: "runite_greatsword",
+    outQty: 1,
+    inputs: [
+      { id: "runite_bar", qty: 4 },
+      { id: "frostpine_logs", qty: 1 },
+      { id: "ghoul_essence", qty: 1 },
+    ],
+    req: 75,
+    xp: 1500,
+    time: 3.4,
+  },
   // Skinning — hides to leather
-  { id: "light_leather", station: "skin", skill: "skinning", out: "light_leather", outQty: 1, inputs: [{ id: "raw_hide", qty: 3 }], req: 1, xp: 30, time: 1.6 },
-  { id: "thick_leather", station: "skin", skill: "skinning", out: "thick_leather", outQty: 1, inputs: [{ id: "thick_hide", qty: 3 }], req: 25, xp: 110, time: 2 },
-  { id: "shadow_leather", station: "skin", skill: "skinning", out: "shadow_leather", outQty: 1, inputs: [{ id: "shadow_pelt", qty: 3 }, { id: "scale_hide", qty: 1 }], req: 65, xp: 460, time: 2.4 },
+  {
+    id: "light_leather",
+    station: "skin",
+    skill: "skinning",
+    out: "light_leather",
+    outQty: 1,
+    inputs: [{ id: "raw_hide", qty: 3 }],
+    req: 1,
+    xp: 30,
+    time: 1.6,
+  },
+  {
+    id: "thick_leather",
+    station: "skin",
+    skill: "skinning",
+    out: "thick_leather",
+    outQty: 1,
+    inputs: [{ id: "thick_hide", qty: 3 }],
+    req: 25,
+    xp: 110,
+    time: 2,
+  },
+  {
+    id: "shadow_leather",
+    station: "skin",
+    skill: "skinning",
+    out: "shadow_leather",
+    outQty: 1,
+    inputs: [
+      { id: "shadow_pelt", qty: 3 },
+      { id: "scale_hide", qty: 1 },
+    ],
+    req: 65,
+    xp: 460,
+    time: 2.4,
+  },
   // Tailoring
-  { id: "linen_cloth", station: "weave", skill: "tailoring", out: "linen_cloth", outQty: 1, inputs: [{ id: "flax", qty: 3 }, { id: "meadow_berries", qty: 1 }], req: 1, xp: 26, time: 1.6 },
-  { id: "herb_weave", station: "weave", skill: "tailoring", out: "herb_weave", outQty: 1, inputs: [{ id: "forest_herbs", qty: 3 }, { id: "linen_cloth", qty: 1 }], req: 22, xp: 120, time: 2 },
-  { id: "mystic_cloth", station: "weave", skill: "tailoring", out: "mystic_cloth", outQty: 1, inputs: [{ id: "gloomcap", qty: 2 }, { id: "herb_weave", qty: 2 }, { id: "desert_bloom", qty: 1 }], req: 60, xp: 520, time: 2.4 },
+  {
+    id: "linen_cloth",
+    station: "weave",
+    skill: "tailoring",
+    out: "linen_cloth",
+    outQty: 1,
+    inputs: [
+      { id: "flax", qty: 3 },
+      { id: "meadow_berries", qty: 1 },
+    ],
+    req: 1,
+    xp: 26,
+    time: 1.6,
+  },
+  {
+    id: "herb_weave",
+    station: "weave",
+    skill: "tailoring",
+    out: "herb_weave",
+    outQty: 1,
+    inputs: [
+      { id: "forest_herbs", qty: 3 },
+      { id: "linen_cloth", qty: 1 },
+    ],
+    req: 22,
+    xp: 120,
+    time: 2,
+  },
+  {
+    id: "mystic_cloth",
+    station: "weave",
+    skill: "tailoring",
+    out: "mystic_cloth",
+    outQty: 1,
+    inputs: [
+      { id: "gloomcap", qty: 2 },
+      { id: "herb_weave", qty: 2 },
+      { id: "desert_bloom", qty: 1 },
+    ],
+    req: 60,
+    xp: 520,
+    time: 2.4,
+  },
   // Cooking
-  { id: "honey_bun", station: "cook", skill: "cooking", out: "honey_bun", outQty: 1, inputs: [{ id: "river_minnow", qty: 2 }], req: 1, xp: 30, time: 1.6 },
-  { id: "berry_pie", station: "cook", skill: "cooking", out: "berry_pie", outQty: 1, inputs: [{ id: "silver_trout", qty: 2 }, { id: "feather", qty: 1 }], req: 15, xp: 110, time: 2 },
-  { id: "hearty_stew", station: "cook", skill: "cooking", out: "hearty_stew", outQty: 1, inputs: [{ id: "golden_koi", qty: 2 }, { id: "goblin_charm", qty: 1 }], req: 40, xp: 340, time: 2.4 },
-  { id: "frost_tonic", station: "cook", skill: "cooking", out: "frost_tonic", outQty: 1, inputs: [{ id: "deepwater_eel", qty: 2 }, { id: "thick_leather", qty: 1 }], req: 70, xp: 900, time: 2.8 },
-  { id: "phoenix_fillet", station: "cook", skill: "cooking", out: "phoenix_fillet", outQty: 1, inputs: [{ id: "starlight_salmon", qty: 3 }, { id: "frost_pelt", qty: 1 }], req: 100, xp: 2200, time: 3.2 },
+  {
+    id: "honey_bun",
+    station: "cook",
+    skill: "cooking",
+    out: "honey_bun",
+    outQty: 1,
+    inputs: [{ id: "river_minnow", qty: 2 }],
+    req: 1,
+    xp: 30,
+    time: 1.6,
+  },
+  {
+    id: "berry_pie",
+    station: "cook",
+    skill: "cooking",
+    out: "berry_pie",
+    outQty: 1,
+    inputs: [
+      { id: "silver_trout", qty: 2 },
+      { id: "feather", qty: 1 },
+    ],
+    req: 15,
+    xp: 110,
+    time: 2,
+  },
+  {
+    id: "hearty_stew",
+    station: "cook",
+    skill: "cooking",
+    out: "hearty_stew",
+    outQty: 1,
+    inputs: [
+      { id: "golden_koi", qty: 2 },
+      { id: "goblin_charm", qty: 1 },
+    ],
+    req: 40,
+    xp: 340,
+    time: 2.4,
+  },
+  {
+    id: "frost_tonic",
+    station: "cook",
+    skill: "cooking",
+    out: "frost_tonic",
+    outQty: 1,
+    inputs: [
+      { id: "deepwater_eel", qty: 2 },
+      { id: "thick_leather", qty: 1 },
+    ],
+    req: 70,
+    xp: 900,
+    time: 2.8,
+  },
+  {
+    id: "phoenix_fillet",
+    station: "cook",
+    skill: "cooking",
+    out: "phoenix_fillet",
+    outQty: 1,
+    inputs: [
+      { id: "starlight_salmon", qty: 3 },
+      { id: "frost_pelt", qty: 1 },
+    ],
+    req: 100,
+    xp: 2200,
+    time: 3.2,
+  },
   // Alchemy
-  { id: "minor_venom_draught", station: "alchemy", skill: "alchemy", out: "minor_venom_draught", outQty: 1, inputs: [{ id: "raw_hide", qty: 2 }], req: 1, xp: 40, time: 1.8 },
-  { id: "goblins_fury_tonic", station: "alchemy", skill: "alchemy", out: "goblins_fury_tonic", outQty: 1, inputs: [{ id: "goblin_charm", qty: 2 }, { id: "thick_hide", qty: 1 }], req: 20, xp: 180, time: 2.2 },
-  { id: "serpents_bite_elixir", station: "alchemy", skill: "alchemy", out: "serpents_bite_elixir", outQty: 1, inputs: [{ id: "scale_hide", qty: 2 }], req: 45, xp: 520, time: 2.6 },
-  { id: "shadow_venom", station: "alchemy", skill: "alchemy", out: "shadow_venom", outQty: 1, inputs: [{ id: "shadow_pelt", qty: 2 }, { id: "feather", qty: 1 }], req: 75, xp: 1400, time: 3 },
-  { id: "frostfire_brew", station: "alchemy", skill: "alchemy", out: "frostfire_brew", outQty: 1, inputs: [{ id: "frost_pelt", qty: 2 }, { id: "goblin_charm", qty: 1 }], req: 105, xp: 3000, time: 3.4 },
+  {
+    id: "minor_venom_draught",
+    station: "alchemy",
+    skill: "alchemy",
+    out: "minor_venom_draught",
+    outQty: 1,
+    inputs: [{ id: "raw_hide", qty: 2 }],
+    req: 1,
+    xp: 40,
+    time: 1.8,
+  },
+  {
+    id: "goblins_fury_tonic",
+    station: "alchemy",
+    skill: "alchemy",
+    out: "goblins_fury_tonic",
+    outQty: 1,
+    inputs: [
+      { id: "goblin_charm", qty: 2 },
+      { id: "thick_hide", qty: 1 },
+    ],
+    req: 20,
+    xp: 180,
+    time: 2.2,
+  },
+  {
+    id: "serpents_bite_elixir",
+    station: "alchemy",
+    skill: "alchemy",
+    out: "serpents_bite_elixir",
+    outQty: 1,
+    inputs: [{ id: "scale_hide", qty: 2 }],
+    req: 45,
+    xp: 520,
+    time: 2.6,
+  },
+  {
+    id: "shadow_venom",
+    station: "alchemy",
+    skill: "alchemy",
+    out: "shadow_venom",
+    outQty: 1,
+    inputs: [
+      { id: "shadow_pelt", qty: 2 },
+      { id: "feather", qty: 1 },
+    ],
+    req: 75,
+    xp: 1400,
+    time: 3,
+  },
+  {
+    id: "frostfire_brew",
+    station: "alchemy",
+    skill: "alchemy",
+    out: "frostfire_brew",
+    outQty: 1,
+    inputs: [
+      { id: "frost_pelt", qty: 2 },
+      { id: "goblin_charm", qty: 1 },
+    ],
+    req: 105,
+    xp: 3000,
+    time: 3.4,
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -1712,7 +2864,13 @@ export const RECIPES: Recipe[] = [
 
 export const MAX_PLUS = 100;
 /** each upgrade level grants +5% of base stat */
-export const PLUS_STEP = 0.05;
+/**
+ * Upgrade curve. Mirrors the server (game_apply_plus): +2% per level through
+ * +50, then +0.5% per level. The client must not predict a different value.
+ */
+export const PLUS_STEP = 0.02;
+export const PLUS_STEP_ABOVE_50 = 0.005;
+export const PLUS_BREAKPOINT = 50;
 
 export function upgradeCost(base: number, plus: number): number {
   // cost doubles every 5 upgrade levels, forever
@@ -1721,9 +2879,12 @@ export function upgradeCost(base: number, plus: number): number {
   return Math.round(cost);
 }
 
-
 export function statWithPlus(base: number, plus: number): number {
-  return Math.round(base * (1 + plus * PLUS_STEP) * 10) / 10;
+  const multiplier =
+    1 +
+    PLUS_STEP * Math.min(plus, PLUS_BREAKPOINT) +
+    PLUS_STEP_ABOVE_50 * Math.max(plus - PLUS_BREAKPOINT, 0);
+  return Math.round(base * multiplier * 10) / 10;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1731,14 +2892,95 @@ export function statWithPlus(base: number, plus: number): number {
 /* ------------------------------------------------------------------ */
 
 export const QUESTS: QuestDef[] = [
-  { id: "feather_duster", name: "Feather Duster", desc: "Chickens have run wild. Defeat 5 of them.", kind: "kill", key: "chicken", count: 5, gold: 45, xpSkill: "combat", xp: 45 },
-  { id: "copper_run", name: "Copper Run", desc: "The forge is cold. Mine 6 Copper Ore.", kind: "gather", key: "copper_ore", count: 6, gold: 60, xpSkill: "mining", xp: 70 },
-  { id: "log_delivery", name: "Firewood Duty", desc: "The inn needs warmth. Chop 6 Oak Logs.", kind: "gather", key: "oak_logs", count: 6, gold: 55, xpSkill: "woodcutting", xp: 65 },
-  { id: "goblin_trouble", name: "Goblin Trouble", desc: "Goblins raid the east fields. Defeat 3.", kind: "kill", key: "goblin", count: 3, gold: 120, xpSkill: "combat", xp: 130, reward: "bronze_dagger" },
-  { id: "flax_bundle", name: "Bundle of Flax", desc: "Gather 8 Flax for the weavers.", kind: "gather", key: "flax", count: 8, gold: 90, xpSkill: "gathering", xp: 120 },
-  { id: "wolf_watch", name: "Wolf Watch", desc: "Thin the forest pack. Defeat 4 Meadow Wolves.", kind: "kill", key: "wolf", count: 4, gold: 260, xpSkill: "combat", xp: 380, reward: "steel_sword" },
-  { id: "dune_patrol", name: "Dune Patrol", desc: "Bandits harass the caravans. Defeat 3.", kind: "kill", key: "bandit", count: 3, gold: 700, xpSkill: "combat", xp: 1200 },
-  { id: "gloom_harvest", name: "Gloom Harvest", desc: "Pick 5 Gloomcaps from the Evil Woods.", kind: "gather", key: "gloomcap", count: 5, gold: 1100, xpSkill: "gathering", xp: 1600 },
+  {
+    id: "feather_duster",
+    name: "Feather Duster",
+    desc: "Chickens have run wild. Defeat 5 of them.",
+    kind: "kill",
+    key: "chicken",
+    count: 5,
+    gold: 45,
+    xpSkill: "combat",
+    xp: 45,
+  },
+  {
+    id: "copper_run",
+    name: "Copper Run",
+    desc: "The forge is cold. Mine 6 Copper Ore.",
+    kind: "gather",
+    key: "copper_ore",
+    count: 6,
+    gold: 60,
+    xpSkill: "mining",
+    xp: 70,
+  },
+  {
+    id: "log_delivery",
+    name: "Firewood Duty",
+    desc: "The inn needs warmth. Chop 6 Oak Logs.",
+    kind: "gather",
+    key: "oak_logs",
+    count: 6,
+    gold: 55,
+    xpSkill: "woodcutting",
+    xp: 65,
+  },
+  {
+    id: "goblin_trouble",
+    name: "Goblin Trouble",
+    desc: "Goblins raid the east fields. Defeat 3.",
+    kind: "kill",
+    key: "goblin",
+    count: 3,
+    gold: 120,
+    xpSkill: "combat",
+    xp: 130,
+  },
+  {
+    id: "flax_bundle",
+    name: "Bundle of Flax",
+    desc: "Gather 8 Flax for the weavers.",
+    kind: "gather",
+    key: "flax",
+    count: 8,
+    gold: 90,
+    xpSkill: "gathering",
+    xp: 120,
+  },
+  {
+    id: "wolf_watch",
+    name: "Wolf Watch",
+    desc: "Thin the forest pack. Defeat 4 Meadow Wolves.",
+    kind: "kill",
+    key: "wolf",
+    count: 4,
+    gold: 260,
+    xpSkill: "combat",
+    xp: 380,
+    reward: "steel_sword",
+  },
+  {
+    id: "dune_patrol",
+    name: "Dune Patrol",
+    desc: "Bandits harass the caravans. Defeat 3.",
+    kind: "kill",
+    key: "bandit",
+    count: 3,
+    gold: 700,
+    xpSkill: "combat",
+    xp: 1200,
+  },
+  {
+    id: "gloom_harvest",
+    name: "Gloom Harvest",
+    desc: "Pick 5 Gloomcaps from the Evil Woods.",
+    kind: "gather",
+    key: "gloomcap",
+    count: 5,
+    gold: 1100,
+    xpSkill: "gathering",
+    xp: 1600,
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -1826,7 +3068,10 @@ function nearClearZone(x: number, y: number) {
 function buildBarriers(): Barrier[] {
   const out: Barrier[] = [];
   // group border segments by the pair of regions they separate
-  const groups = new Map<string, { a: number; b: number; segs: [number, number, number, number][] }>();
+  const groups = new Map<
+    string,
+    { a: number; b: number; segs: [number, number, number, number][] }
+  >();
   const push = (a: number, b: number, seg: [number, number, number, number]) => {
     const lo = Math.min(a, b);
     const hi = Math.max(a, b);
@@ -1925,7 +3170,6 @@ function buildBarriers(): Barrier[] {
   }
   return out;
 }
-
 
 /* ------------------------------------------------------------------ */
 /* The Great River — one continuous waterway from the far west to the  */
@@ -2084,7 +3328,10 @@ const RAW_BARRIERS = buildBarriers();
 const GREAT = buildGreatRiver(RAW_BARRIERS);
 
 /** crossings removed by hand — the vine bridge covers this area now */
-const REMOVED_BRIDGES: [number, number][] = [[1473, 2083], [2382, 2532]];
+const REMOVED_BRIDGES: [number, number][] = [
+  [1473, 2083],
+  [2382, 2532],
+];
 
 /** wooden bridges crossing the Great River */
 export const BRIDGES: BridgeDef[] = GREAT.bridges.filter(
@@ -2107,7 +3354,6 @@ const GREAT_RIVER: Barrier = {
   maxX: Math.max(...riverXs),
   maxY: Math.max(...riverYs),
 };
-
 
 /**
  * Grand Haven's moat feeds the Great River: a short channel leaves the moat on
@@ -2137,7 +3383,6 @@ const MOAT_CHANNEL: Barrier = {
 // Only water blocks movement now: the old rocky ridges and treelines that
 // walled off biome borders are gone (they rendered poorly and served no purpose).
 export const BARRIERS: Barrier[] = [GREAT_RIVER, MOAT_CHANNEL];
-
 
 /** true when the point stands on a bridge deck (so the river is crossable there) */
 export function onBridge(x: number, y: number, pad = 0): boolean {
@@ -2198,7 +3443,8 @@ export function blockedAt(x: number, y: number, pad = 10, wadesRivers = false): 
   }
   for (const d of SOLID_DISCS) {
     const r = d.r + pad;
-    if (Math.abs(x - d.x) < r && Math.abs(y - d.y) < r && Math.hypot(x - d.x, y - d.y) < r) return true;
+    if (Math.abs(x - d.x) < r && Math.abs(y - d.y) < r && Math.hypot(x - d.x, y - d.y) < r)
+      return true;
   }
   // lakes are water — you can fish from the shore but not walk on them,
   // except along the planked jetties that reach out to the fishing decks
@@ -2207,7 +3453,6 @@ export function blockedAt(x: number, y: number, pad = 10, wadesRivers = false): 
   if (cityBlocked(x, y, pad)) return true;
   if (onLandmark(x, y, pad)) return true;
   return false;
-
 }
 
 /**
@@ -2227,7 +3472,12 @@ export function hasClearance(x: number, y: number, radius = 12, margin = 10): bo
 }
 
 /** nearest spot around (x,y) with full clearance — used to nudge NPCs out of buildings */
-export function nudgeClear(x: number, y: number, radius = 12, margin = 10): { x: number; y: number } {
+export function nudgeClear(
+  x: number,
+  y: number,
+  radius = 12,
+  margin = 10,
+): { x: number; y: number } {
   if (hasClearance(x, y, radius, margin)) return { x, y };
   for (let ring = 16; ring <= 320; ring += 16) {
     for (let a = 0; a < 16; a++) {
@@ -2241,8 +3491,6 @@ export function nudgeClear(x: number, y: number, radius = 12, margin = 10): { x:
   return { x, y };
 }
 
-
-
 /** true when the point stands on a jetty deck (so it is walkable over water) */
 export function onJetty(x: number, y: number, pad = 0): boolean {
   for (const l of LAKES) {
@@ -2252,7 +3500,6 @@ export function onJetty(x: number, y: number, pad = 0): boolean {
   }
   return false;
 }
-
 
 export const BARRIER_LABEL: Record<BarrierKind, string> = {
   river: "River",
@@ -2265,7 +3512,10 @@ export const BARRIER_LABEL: Record<BarrierKind, string> = {
 // ---------------------------------------------------------------------------
 
 /** the crossroads at the heart of each town */
-export const TOWN_CENTERS: { x: number; y: number }[] = TOWN_SPECS.map((t) => ({ x: t.cx, y: t.cy }));
+export const TOWN_CENTERS: { x: number; y: number }[] = TOWN_SPECS.map((t) => ({
+  x: t.cx,
+  y: t.cy,
+}));
 
 function inLake(x: number, y: number, pad = 18): boolean {
   for (const l of LAKES) {
@@ -2322,7 +3572,10 @@ function nearestOpenCell(cx: number, cy: number): number {
 }
 
 /** plain A* over the coarse grid; returns world-space points */
-function routeBetween(a: { x: number; y: number }, b: { x: number; y: number }): [number, number][] {
+function routeBetween(
+  a: { x: number; y: number },
+  b: { x: number; y: number },
+): [number, number][] {
   const start = nearestOpenCell(Math.floor(a.x / ROAD_CELL), Math.floor(a.y / ROAD_CELL));
   const goal = nearestOpenCell(Math.floor(b.x / ROAD_CELL), Math.floor(b.y / ROAD_CELL));
   const total = ROAD_COLS * ROAD_ROWS;
@@ -2351,7 +3604,8 @@ function routeBetween(a: { x: number; y: number }, b: { x: number; y: number }):
         if (nx < 0 || ny < 0 || nx >= ROAD_COLS || ny >= ROAD_ROWS) continue;
         const ni = ny * ROAD_COLS + nx;
         if (ROAD_GRID[ni]) continue;
-        if (dx && dy && (ROAD_GRID[cy * ROAD_COLS + nx] || ROAD_GRID[ny * ROAD_COLS + cx])) continue;
+        if (dx && dy && (ROAD_GRID[cy * ROAD_COLS + nx] || ROAD_GRID[ny * ROAD_COLS + cx]))
+          continue;
         const step = dx && dy ? 1.414 : 1;
         const ng = g[cur]! + step;
         if (ng < g[ni]!) {
@@ -2449,11 +3703,7 @@ export const ROADS: RoadDef[] = (() => {
 const DECK_OVERLAP = 26;
 
 /** point `d` px from `from` toward `to` */
-const towards = (
-  from: [number, number],
-  to: [number, number],
-  d: number,
-): [number, number] => {
+const towards = (from: [number, number], to: [number, number], d: number): [number, number] => {
   const dx = to[0] - from[0];
   const dy = to[1] - from[1];
   const len = Math.hypot(dx, dy) || 1;
@@ -2461,8 +3711,8 @@ const towards = (
   return [from[0] + dx * t, from[1] + dy * t];
 };
 
-export const ROAD_RUNS: { pts: [number, number][]; width: number; trail?: boolean }[] = ROADS.flatMap(
-  (r) => {
+export const ROAD_RUNS: { pts: [number, number][]; width: number; trail?: boolean }[] =
+  ROADS.flatMap((r) => {
     const runs: { pts: [number, number][]; width: number; trail?: boolean }[] = [];
     let cur: [number, number][] = [];
     let pendingHead: [number, number] | null = null;
@@ -2481,7 +3731,11 @@ export const ROAD_RUNS: { pts: [number, number][]; width: number; trail?: boolea
         if (pendingHead) {
           // start the next run back under the deck we just left
           cur.push(
-            towards(p, pendingHead, Math.hypot(p[0] - pendingHead[0], p[1] - pendingHead[1]) + DECK_OVERLAP),
+            towards(
+              p,
+              pendingHead,
+              Math.hypot(p[0] - pendingHead[0], p[1] - pendingHead[1]) + DECK_OVERLAP,
+            ),
           );
           pendingHead = null;
         }
@@ -2490,11 +3744,7 @@ export const ROAD_RUNS: { pts: [number, number][]; width: number; trail?: boolea
     }
     if (cur.length > 1) runs.push({ pts: cur, width: r.width, trail: !!r.trail });
     return runs;
-  },
-);
-
-
-
+  });
 
 /* ------------------------------------------------------------------ */
 /* Spawn generation — biome aware, obstacle aware                      */
@@ -2510,24 +3760,73 @@ const SPAWN_PLAN: Record<BiomeId, BiomePlan> = {
   // V2 — counts doubled alongside the doubled world area so density per
   // square of ground stays the same as the old, smaller map.
   fields: {
-    nodes: [["copper", 17], ["oak", 17], ["flax", 14], ["berries", 14]],
-    mobs: [["chicken", 17], ["goblin", 14], ["disgruntled_ram", 10]],
+    nodes: [
+      ["copper", 17],
+      ["oak", 17],
+      ["flax", 14],
+      ["berries", 14],
+    ],
+    mobs: [
+      ["chicken", 17],
+      ["goblin", 14],
+      ["disgruntled_ram", 10],
+    ],
   },
   forest: {
-    nodes: [["iron", 14], ["willow", 14], ["maple", 12], ["herbs", 14]],
-    mobs: [["forest_boar", 10], ["wolf", 14], ["forest_lynx", 10], ["bear", 12]],
+    nodes: [
+      ["iron", 14],
+      ["willow", 14],
+      ["maple", 12],
+      ["herbs", 14],
+    ],
+    mobs: [
+      ["forest_boar", 10],
+      ["wolf", 14],
+      ["forest_lynx", 10],
+      ["bear", 12],
+    ],
   },
   desert: {
-    nodes: [["sandstone", 13], ["mithril", 11], ["palm", 11], ["bloom", 11]],
-    mobs: [["dust_jackal", 10], ["serpent", 12], ["scorpion_stalker", 10], ["bandit", 11]],
+    nodes: [
+      ["sandstone", 13],
+      ["mithril", 11],
+      ["palm", 11],
+      ["bloom", 11],
+    ],
+    mobs: [
+      ["dust_jackal", 10],
+      ["serpent", 12],
+      ["scorpion_stalker", 10],
+      ["bandit", 11],
+    ],
   },
   evil: {
-    nodes: [["cursed_rock", 11], ["cursed_tree", 11], ["gloomcap", 11]],
-    mobs: [["withered_ghoul", 10], ["wraith", 11], ["bone_reaper", 8], ["shadow_beast", 10]],
+    nodes: [
+      ["cursed_rock", 11],
+      ["cursed_tree", 11],
+      ["gloomcap", 11],
+    ],
+    mobs: [
+      ["withered_ghoul", 10],
+      ["wraith", 11],
+      ["bone_reaper", 8],
+      ["shadow_beast", 10],
+    ],
   },
   winter: {
-    nodes: [["runite", 11], ["tungsten", 8], ["frostpine", 11], ["lichen", 10]],
-    mobs: [["frost_wolf", 10], ["yeti", 10], ["ice_wraith", 8], ["frost_giant", 7], ["ancient_frost_wyrm", 6]],
+    nodes: [
+      ["runite", 11],
+      ["tungsten", 8],
+      ["frostpine", 11],
+      ["lichen", 10],
+    ],
+    mobs: [
+      ["frost_wolf", 10],
+      ["yeti", 10],
+      ["ice_wraith", 8],
+      ["frost_giant", 7],
+      ["ancient_frost_wyrm", 6],
+    ],
   },
 };
 
@@ -2572,7 +3871,6 @@ export const DECOR_CLEAR: { x: number; y: number; w: number; h: number }[] = [
   // Willowbrook town centre paving at (2051, 2151): 700x700 tile — towns stay
   // free of resource nodes and creatures.
   { x: 2051, y: 2151, w: 700, h: 700 },
-
 ];
 
 export function inDecorClear(x: number, y: number, pad = 0): boolean {
@@ -2668,7 +3966,12 @@ function spawnable(x: number, y: number) {
   }
 
   /** nearest-cluster pick among kinds that still have quota */
-  const pickNear = <K extends string>(m: Map<K, number>, bid: string, x: number, y: number): K | null => {
+  const pickNear = <K extends string>(
+    m: Map<K, number>,
+    bid: string,
+    x: number,
+    y: number,
+  ): K | null => {
     let best: K | null = null;
     let bestD = Infinity;
     for (const [k, v] of m) {
@@ -2680,7 +3983,6 @@ function spawnable(x: number, y: number) {
     }
     return best;
   };
-
 
   for (const c of cands) {
     // a spawn that would land in the new walls or moat is nudged out past the
@@ -2755,7 +4057,9 @@ function spawnable(x: number, y: number) {
     // roughly 55% nodes / 45% monsters, kind picked deterministically
     if (c.k * 1000 - Math.floor(c.k * 1000) < 0.55) {
       const list = plan.nodes;
-      const kind = list[Math.floor(rand01(c.x * 0.017 + c.y * 0.031) * list.length) % list.length]![0] as NodeKind;
+      const kind = list[
+        Math.floor(rand01(c.x * 0.017 + c.y * 0.031) * list.length) % list.length
+      ]![0] as NodeKind;
       NODE_SPAWNS.push({ kind, x: Math.round(c.x), y: Math.round(c.y) });
       SOLID_DISCS.push({
         x: Math.round(c.x),
@@ -2764,7 +4068,9 @@ function spawnable(x: number, y: number) {
       });
     } else {
       const list = plan.mobs;
-      const kind = list[Math.floor(rand01(c.x * 0.023 + c.y * 0.019 + 5) * list.length) % list.length]![0] as MonsterKind;
+      const kind = list[
+        Math.floor(rand01(c.x * 0.023 + c.y * 0.019 + 5) * list.length) % list.length
+      ]![0] as MonsterKind;
       MONSTER_SPAWNS.push({ kind, x: Math.round(c.x), y: Math.round(c.y) });
     }
     placed.push({ x: c.x, y: c.y });

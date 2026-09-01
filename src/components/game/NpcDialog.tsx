@@ -1,12 +1,22 @@
 import { useState } from "react";
 import { Coins, Check, X, Hammer, ArrowUpCircle, ChevronDown, Lock } from "lucide-react";
-import { MAX_PLUS, NPCS, QUESTS, RECIPES, SHOP_STOCK, item, type NpcRole, type Recipe } from "@/game/data";
-import { releaseArmourTiers } from "@/game/release-content";
+import {
+  MAX_PLUS,
+  NPCS,
+  QUESTS,
+  RECIPES,
+  SHOP_STOCK,
+  item,
+  type NpcRole,
+  type Recipe,
+} from "@/game/data";
+import {
+  BASE_ATTACK_INTERVAL_S,
+  releaseArmourTiers,
+  releaseWeaponTiers,
+} from "@/game/release-content";
 import type { HudSnapshot, InvSlot, ItemDef, ItemId } from "@/game/types";
 import { ItemIcon } from "./ItemIcon";
-
-
-
 
 export function NpcDialog({
   npc,
@@ -74,7 +84,7 @@ export function NpcDialog({
 
   const count = (id: ItemId) => hud.inv.reduce((n, s) => (s && s.id === id ? n + s.qty : n), 0);
   const armourTiers = releaseArmourTiers();
-
+  const weaponTiers = releaseWeaponTiers();
 
   const STATIONS = ["smelt", "forge", "weave", "armor", "skin", "cook", "alchemy"] as const;
   type Station = (typeof STATIONS)[number];
@@ -120,14 +130,24 @@ export function NpcDialog({
               const d = item(entry.id);
               const afford = hud.gold >= entry.price;
               return (
-                <div key={entry.id} className="flex items-center gap-2.5 rounded-2xl border border-border/70 bg-muted/40 p-2">
+                <div
+                  key={entry.id}
+                  className="flex items-center gap-2.5 rounded-2xl border border-border/70 bg-muted/40 p-2"
+                >
                   <ItemIcon item={d} className="size-9" />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-xs font-bold text-foreground">{d.name}</p>
                     <p className="text-[10px] text-muted-foreground">
                       {d.attack || d.defense
-                        ? [d.attack ? `+${d.attack} attack` : null, d.defense ? `+${d.defense} defense` : null].filter(Boolean).join(" · ")
-                        : d.heal ? `Heals ${d.heal} hp` : "Material"}
+                        ? [
+                            d.attack ? `+${d.attack} attack` : null,
+                            d.defense ? `+${d.defense} defense` : null,
+                          ]
+                            .filter(Boolean)
+                            .join(" · ")
+                        : d.heal
+                          ? `Heals ${d.heal} hp`
+                          : "Material"}
                     </p>
                   </div>
                   <button
@@ -143,7 +163,6 @@ export function NpcDialog({
             })}
           </Section>
         )}
-
 
         {services.includes("bank") && (
           <Section title="Bank">
@@ -201,13 +220,18 @@ export function NpcDialog({
             <p className="pt-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
               In the bank — tap to withdraw
             </p>
-            <ItemGrid slots={hud.bank.items} onTap={(i, qty) => onWithdrawItem(i, qty)} empty="The vault is empty." />
+            <ItemGrid
+              slots={hud.bank.items}
+              onTap={(i, qty) => onWithdrawItem(i, qty)}
+              empty="The vault is empty."
+            />
           </Section>
         )}
         {services.includes("sell") && (
           <Section title="Trade">
             <p className="text-xs text-muted-foreground">
-              Your bag holds <span className="font-bold text-foreground">{resourceValue}g</span> worth of resources.
+              Your bag holds <span className="font-bold text-foreground">{resourceValue}g</span>{" "}
+              worth of resources.
             </p>
             <button
               disabled={resourceValue === 0}
@@ -251,20 +275,28 @@ export function NpcDialog({
             return (
               <Section key={svc} title={`${stationTitle[svc]} (Lv ${stationLvl})`}>
                 <p className="text-[10px] text-muted-foreground">
-                  Every tier offers a Heavy and a Light set. Heavy trades swing speed for survivability; Light swings
-                  faster for more experience per minute.
+                  Every tier offers a Heavy and a Light set. Heavy trades swing speed for
+                  survivability; Light swings faster for more experience per minute.
                 </p>
                 {armourTiers.map((row) => {
                   const unlocked =
-                    (row.heavy ? hud.skills[row.heavy.recipe.skill].level >= row.heavy.recipe.req : false) ||
-                    (row.light ? hud.skills[row.light.recipe.skill].level >= row.light.recipe.req : false);
+                    (row.heavy
+                      ? hud.skills[row.heavy.recipe.skill].level >= row.heavy.recipe.req
+                      : false) ||
+                    (row.light
+                      ? hud.skills[row.light.recipe.skill].level >= row.light.recipe.req
+                      : false);
                   return (
                     <div key={row.tier} className="space-y-1.5">
                       <div className="flex items-center gap-2 px-0.5">
-                        <span className={`text-[11px] font-bold ${unlocked ? "text-foreground" : "text-muted-foreground"}`}>
+                        <span
+                          className={`text-[11px] font-bold ${unlocked ? "text-foreground" : "text-muted-foreground"}`}
+                        >
                           T{row.tier} · {row.theme}
                         </span>
-                        <span className="text-[10px] text-muted-foreground">Lv {row.levelRequirement}</span>
+                        <span className="text-[10px] text-muted-foreground">
+                          Lv {row.levelRequirement}
+                        </span>
                       </div>
                       <div className="grid grid-cols-2 gap-1.5">
                         {[row.heavy, row.light].map((entry, side) =>
@@ -276,7 +308,11 @@ export function NpcDialog({
                               level={hud.skills[entry.recipe.skill].level}
                               count={count}
                               open={openRecipe === entry.recipe.id}
-                              onToggle={() => setOpenRecipe(openRecipe === entry.recipe.id ? null : entry.recipe.id)}
+                              onToggle={() =>
+                                setOpenRecipe(
+                                  openRecipe === entry.recipe.id ? null : entry.recipe.id,
+                                )
+                              }
                               onCraft={onCraft}
                               onCraftAll={onCraftAll}
                             />
@@ -284,6 +320,86 @@ export function NpcDialog({
                             <div key={side} />
                           ),
                         )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </Section>
+            );
+          }
+
+          if (svc === "forge") {
+            const swordRecipeIds = new Set(weaponTiers.map((row) => row.recipe.id));
+            const others = list.filter((r) => !swordRecipeIds.has(r.id));
+            return (
+              <Section key={svc} title={`${stationTitle[svc]} (Lv ${stationLvl})`}>
+                <p className="text-[10px] text-muted-foreground">
+                  One sword per tier, from Lv 1 to Lv 150. Every sword swings on a{" "}
+                  {BASE_ATTACK_INTERVAL_S.toFixed(2)}s base interval; your armour modifies that
+                  cadence.
+                </p>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {weaponTiers.map((row) => (
+                    <WeaponCard
+                      key={row.recipe.id}
+                      tier={row.tier}
+                      theme={row.theme}
+                      recipe={row.recipe}
+                      def={row.item}
+                      equipped={hud.weapon ? item(hud.weapon.id) : null}
+                      level={hud.skills[row.recipe.skill].level}
+                      count={count}
+                      open={openRecipe === row.recipe.id}
+                      onToggle={() =>
+                        setOpenRecipe(openRecipe === row.recipe.id ? null : row.recipe.id)
+                      }
+                      onCraft={onCraft}
+                      onCraftAll={onCraftAll}
+                    />
+                  ))}
+                </div>
+                {others.length > 0 && (
+                  <p className="pt-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+                    Materials
+                  </p>
+                )}
+                {others.map((r) => {
+                  const lvl = hud.skills[r.skill].level;
+                  const ok = lvl >= r.req && r.inputs.every((i) => count(i.id) >= i.qty);
+                  return (
+                    <div
+                      key={r.id}
+                      className="flex items-center gap-2 rounded-2xl border border-border/70 bg-muted/40 p-2"
+                    >
+                      <ItemIcon item={item(r.out)} className="size-8 shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-xs font-bold text-foreground">
+                          {item(r.out).name}
+                          {r.outQty > 1 ? ` x${r.outQty}` : ""}
+                        </p>
+                        <p className="truncate text-[10px] text-muted-foreground">
+                          Lv {r.req} {r.skill} · {r.xp} xp ·{" "}
+                          {r.inputs
+                            .map((i) => `${item(i.id).name} ${count(i.id)}/${i.qty}`)
+                            .join(", ")}
+                        </p>
+                      </div>
+                      <div className="flex shrink-0 gap-1">
+                        <button
+                          disabled={!ok}
+                          onClick={() => onCraft(r.id)}
+                          className="flex items-center gap-1 rounded-xl bg-primary px-2.5 py-1.5 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+                        >
+                          <Hammer className="size-3" />
+                          Make
+                        </button>
+                        <button
+                          disabled={!ok}
+                          onClick={() => onCraftAll(r.id)}
+                          className="rounded-xl bg-primary px-2.5 py-1.5 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+                        >
+                          All
+                        </button>
                       </div>
                     </div>
                   );
@@ -319,7 +435,10 @@ export function NpcDialog({
                             />
                           </span>
                           <span className="block truncate text-[10px] text-muted-foreground">
-                            Lv {r.req} · {r.inputs.map((i) => `${count(i.id)}/${i.qty} ${item(i.id).name}`).join(", ")}
+                            Lv {r.req} ·{" "}
+                            {r.inputs
+                              .map((i) => `${count(i.id)}/${i.qty} ${item(i.id).name}`)
+                              .join(", ")}
                           </span>
                         </span>
                       </button>
@@ -340,7 +459,6 @@ export function NpcDialog({
                           Make all
                         </button>
                       </div>
-
                     </div>
 
                     {open && (
@@ -357,8 +475,7 @@ export function NpcDialog({
                               ? `Heals ${out.heal} hp`
                               : "Crafting material"}
                           {" · "}
-                          {r.xp} {skill} xp · {r.time}s
-                          {lvl < r.req && ` · needs Lv ${r.req}`}
+                          {r.xp} {skill} xp · {r.time}s{lvl < r.req && ` · needs Lv ${r.req}`}
                         </p>
                         <div className="space-y-1">
                           {r.inputs.map((i) => {
@@ -369,7 +486,9 @@ export function NpcDialog({
                               <div key={i.id}>
                                 <div className="flex items-center gap-2">
                                   <ItemIcon item={mat} className="size-4" />
-                                  <span className="min-w-0 flex-1 truncate text-[11px] text-foreground">{mat.name}</span>
+                                  <span className="min-w-0 flex-1 truncate text-[11px] text-foreground">
+                                    {mat.name}
+                                  </span>
                                   <span
                                     className={`text-[11px] font-bold ${have >= i.qty ? "text-primary" : "text-destructive"}`}
                                   >
@@ -378,7 +497,10 @@ export function NpcDialog({
                                 </div>
                                 {sub && have < i.qty && (
                                   <p className="ml-6 text-[10px] text-muted-foreground">
-                                    Craft from {sub.inputs.map((s) => `${s.qty}x ${item(s.id).name}`).join(" + ")}
+                                    Craft from{" "}
+                                    {sub.inputs
+                                      .map((s) => `${s.qty}x ${item(s.id).name}`)
+                                      .join(" + ")}
                                   </p>
                                 )}
                               </div>
@@ -390,11 +512,9 @@ export function NpcDialog({
                   </div>
                 );
               })}
-
             </Section>
           );
         })}
-
 
         {services.includes("upgrade") && (
           <Section title="Upgrade gear">
@@ -403,14 +523,23 @@ export function NpcDialog({
               const cost = upgradeCosts[which];
               const d = eq ? item(eq.id) : null;
               return (
-                <div key={which} className="flex items-center gap-2.5 rounded-2xl border border-border/70 bg-muted/40 p-2">
-                  {d ? <ItemIcon item={d} className="size-9" /> : <span className="size-9 shrink-0 rounded-xl bg-muted" />}
+                <div
+                  key={which}
+                  className="flex items-center gap-2.5 rounded-2xl border border-border/70 bg-muted/40 p-2"
+                >
+                  {d ? (
+                    <ItemIcon item={d} className="size-9" />
+                  ) : (
+                    <span className="size-9 shrink-0 rounded-xl bg-muted" />
+                  )}
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-xs font-bold text-foreground">
                       {d ? `${d.name} +${eq!.plus}` : `No ${which}`}
                     </p>
                     <p className="text-[10px] text-muted-foreground">
-                      {eq && eq.plus >= MAX_PLUS ? "Fully upgraded" : "+5% stats per level"}
+                      {eq && eq.plus >= MAX_PLUS
+                        ? "Fully upgraded"
+                        : "+2% attack per level through +50, then +0.5% per level"}
                     </p>
                   </div>
                   <button
@@ -530,7 +659,9 @@ function ItemGrid({
             <span className="relative block aspect-square w-full">
               <ItemIcon item={def} className="size-full" />
               {s!.qty > 1 && (
-                <span className="absolute bottom-0 right-0.5 text-[10px] font-black text-foreground">{s!.qty}</span>
+                <span className="absolute bottom-0 right-0.5 text-[10px] font-black text-foreground">
+                  {s!.qty}
+                </span>
               )}
             </span>
             <span className="w-full truncate text-center text-[9px] font-semibold leading-tight text-muted-foreground">
@@ -633,8 +764,135 @@ function ArmourCard({
             return (
               <div key={i.id} className="flex items-center gap-1.5">
                 <ItemIcon item={mat} className="size-4" />
-                <span className="min-w-0 flex-1 truncate text-[10px] text-foreground">{mat.name}</span>
-                <span className={`text-[10px] font-bold ${have >= i.qty ? "text-primary" : "text-destructive"}`}>
+                <span className="min-w-0 flex-1 truncate text-[10px] text-foreground">
+                  {mat.name}
+                </span>
+                <span
+                  className={`text-[10px] font-bold ${have >= i.qty ? "text-primary" : "text-destructive"}`}
+                >
+                  {have}/{i.qty}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Compact sword tile used by the Weaponsmith's 16-tier ladder.
+ *
+ * Locked tiers stay visible so players can plan the whole ladder, and the tile
+ * always compares against the equipped weapon: the ladder is only useful if you
+ * can see whether the next tier is actually an upgrade.
+ */
+function WeaponCard({
+  tier,
+  theme,
+  recipe,
+  def,
+  equipped,
+  level,
+  count,
+  open,
+  onToggle,
+  onCraft,
+  onCraftAll,
+}: {
+  tier: number;
+  theme: string;
+  recipe: Recipe;
+  def: ItemDef;
+  equipped: ItemDef | null;
+  level: number;
+  count: (id: ItemId) => number;
+  open: boolean;
+  onToggle: () => void;
+  onCraft: (recipeId: string) => void;
+  onCraftAll: (recipeId: string) => void;
+}) {
+  const levelOk = level >= recipe.req;
+  const hasMats = recipe.inputs.every((i) => count(i.id) >= i.qty);
+  const ok = levelOk && hasMats;
+  const attack = def.attack ?? 0;
+  const delta = equipped ? attack - (equipped.attack ?? 0) : attack;
+  return (
+    <div
+      className={`rounded-2xl border p-1.5 ${
+        levelOk ? "border-border/70 bg-muted/40" : "border-border/40 bg-muted/20 opacity-70"
+      }`}
+    >
+      <button
+        onClick={onToggle}
+        aria-expanded={open}
+        className="flex w-full min-w-0 items-center gap-1.5 text-left active:scale-[0.99]"
+      >
+        <span className="relative shrink-0">
+          <ItemIcon item={def} className="size-8" />
+          {!levelOk && (
+            <Lock className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-card p-[1px] text-muted-foreground" />
+          )}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[11px] font-bold text-foreground">{def.name}</span>
+          <span className="block truncate text-[9px] text-muted-foreground">
+            T{tier} · {theme} · Lv {def.level ?? recipe.req} · {attack} atk
+          </span>
+        </span>
+        <ChevronDown
+          className={`size-3.5 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      <div className="mt-1.5 flex gap-1">
+        <button
+          disabled={!ok}
+          onClick={() => onCraft(recipe.id)}
+          className="flex flex-1 items-center justify-center gap-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+        >
+          <Hammer className="size-3" />
+          Make
+        </button>
+        <button
+          disabled={!ok}
+          onClick={() => onCraftAll(recipe.id)}
+          className="rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+        >
+          All
+        </button>
+      </div>
+
+      {open && (
+        <div className="mt-1.5 space-y-1 rounded-xl bg-card/70 p-2">
+          <p className="text-[10px] text-muted-foreground">
+            {attack} attack · {BASE_ATTACK_INTERVAL_S.toFixed(2)}s base attack interval (armour
+            modifies cadence)
+          </p>
+          <p className="text-[10px] text-muted-foreground">
+            Lv {recipe.req} {recipe.skill} · {recipe.xp} xp · {recipe.time}s
+            {!levelOk && ` · needs Lv ${recipe.req}`}
+          </p>
+          <p
+            className={`text-[10px] font-bold ${delta > 0 ? "text-primary" : delta < 0 ? "text-destructive" : "text-muted-foreground"}`}
+          >
+            {equipped
+              ? `${delta >= 0 ? "+" : ""}${delta} atk vs ${equipped.name}`
+              : "No weapon equipped"}
+          </p>
+          {recipe.inputs.map((i) => {
+            const mat = item(i.id);
+            const have = count(i.id);
+            return (
+              <div key={i.id} className="flex items-center gap-1.5">
+                <ItemIcon item={mat} className="size-4" />
+                <span className="min-w-0 flex-1 truncate text-[10px] text-foreground">
+                  {mat.name}
+                </span>
+                <span
+                  className={`text-[10px] font-bold ${have >= i.qty ? "text-primary" : "text-destructive"}`}
+                >
                   {have}/{i.qty}
                 </span>
               </div>
