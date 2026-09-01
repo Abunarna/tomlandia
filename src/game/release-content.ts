@@ -1,12 +1,15 @@
 import { ITEMS, RECIPES, type CraftStation, type Recipe } from "./data";
 import {
+  BASE_ATTACK_INTERVAL_S,
   RELEASE_ARMOUR,
   RELEASE_CONTENT_VERSION,
   RELEASE_ITEMS,
   RELEASE_RECIPES,
   RELEASE_TIERS,
+  RELEASE_WEAPONS,
 } from "../generated/release-catalog";
 import type { ItemDef, ItemFamily, ItemId, SkillId } from "./types";
+
 
 /**
  * Registers the authoritative release catalog in the renderer's registries.
