@@ -282,14 +282,23 @@ $v5_copy_content$;
 -- ---------------------------------------------------------------------------
 -- Sword delta. Deletions first, then the re-stated sword definitions.
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+-- Sword delta. The four tester definitions are deleted; the 16 stable target
+-- swords are renamed in place, so nothing ever drops a row that the copied v5
+-- recipes reference.
+-- ---------------------------------------------------------------------------
 DELETE FROM public.game_content_items
-WHERE content_version = '${VERSION}' AND id IN (${list(itemDelta)});
+WHERE content_version = '${VERSION}' AND id IN (${deletedList});
 DELETE FROM public.game_content_migration_rules WHERE content_version = '${VERSION}';
 
-INSERT INTO public.game_content_items
-  (content_version, id, name, active, tier_index, level_requirement, kind, family, icon_key, colour, rarity, tradable, stackable, value, equip_skill, attack, defense, heal, speed, dmg_boost, boost_hits)
-VALUES
-  ${values(swordRows)};
+UPDATE public.game_content_items AS item
+SET name = renamed.name
+FROM (VALUES
+  ${swordRenames.map((entry) => `('${entry.id}', ${sqlText(entry.name)})`).join(",\n  ")}
+) AS renamed(id, name)
+WHERE item.content_version = '${VERSION}'
+  AND item.id = renamed.id;
+
 
 INSERT INTO public.game_content_migration_rules
   (content_version, from_id, action, to_id, captured_value_required, notice_key, equipped_action, unequipped_action)
