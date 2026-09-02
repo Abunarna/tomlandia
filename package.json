@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit",
     "test": "bun run test:unit && bun run test:static",
     "test:unit": "bun test tests/contracts tests/fixtures",
-    "test:static": "node scripts/gate1/check-rpc-boundaries.mjs && node scripts/gate2/check-authority.mjs",
+    "test:static": "node scripts/gate1/check-rpc-boundaries.mjs && node scripts/gate2/check-authority.mjs && node --test tests/content/v5-stage-content-migration.test.mjs",
     "test:db:foundation": "supabase test db supabase/tests/gate1_foundation.sql",
     "test:db:known-defects": "supabase test db supabase/tests/gate1_known_defects.sql",
     "test:db:gate2": "supabase test db supabase/tests/gate2_authority.sql",

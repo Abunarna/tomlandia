@@ -63,29 +63,38 @@ $v5_copy_content$;
 -- ---------------------------------------------------------------------------
 -- Sword delta. Deletions first, then the re-stated sword definitions.
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+-- Sword delta. The four tester definitions are deleted; the 16 stable target
+-- swords are renamed in place, so nothing ever drops a row that the copied v5
+-- recipes reference.
+-- ---------------------------------------------------------------------------
 DELETE FROM public.game_content_items
-WHERE content_version = 'v5' AND id IN ('ancient_greatblade', 'ascendant_blade', 'bronze_dagger', 'bronze_sword', 'copper_sword', 'frost_greatblade', 'glacial_greatblade', 'iron_sword', 'mithril_blade', 'runite_greatsword', 'shadow_blade', 'starsteel_blade', 'steel_sword', 'sunspire_wand', 'sunsteel_blade', 'tungsten_maul', 'voidsteel_greatblade', 'wooden_club', 'wyrmforged_blade', 'wyrmsteel_blade');
+WHERE content_version = 'v5' AND id IN ('bronze_dagger', 'sunspire_wand', 'tungsten_maul', 'wooden_club');
 DELETE FROM public.game_content_migration_rules WHERE content_version = 'v5';
 
-INSERT INTO public.game_content_items
-  (content_version, id, name, active, tier_index, level_requirement, kind, family, icon_key, colour, rarity, tradable, stackable, value, equip_skill, attack, defense, heal, speed, dmg_boost, boost_hits)
-VALUES
-  ('v5', 'ancient_greatblade', 'Ancient Sword', true, 15, 140, 'weapon', 'weapon', 'ancient_greatblade', '#5c4c2d', 'legendary', true, false, 3005, 'combat', 115, 0, 0, 0, 0, 0),
-  ('v5', 'ascendant_blade', 'Ascendant Sword', true, 16, 150, 'weapon', 'weapon', 'ascendant_blade', '#6f622e', 'legendary', true, false, 3555, 'combat', 127, 0, 0, 0, 0, 0),
-  ('v5', 'bronze_sword', 'Bronze Sword', true, 2, 10, 'weapon', 'weapon', 'bronze_sword', '#5f4632', 'common', true, false, 150, 'combat', 11, 0, 0, 0, 0, 0),
-  ('v5', 'copper_sword', 'Copper Sword', true, 1, 1, 'weapon', 'weapon', 'copper_sword', '#6f4932', 'common', true, false, 70, 'combat', 6, 0, 0, 0, 0, 0),
-  ('v5', 'frost_greatblade', 'Froststeel Sword', true, 9, 80, 'weapon', 'weapon', 'frost_greatblade', '#243e58', 'rare', true, false, 1375, 'combat', 63, 0, 0, 0, 0, 0),
-  ('v5', 'glacial_greatblade', 'Glacial Sword', true, 11, 100, 'weapon', 'weapon', 'glacial_greatblade', '#286a7b', 'epic', true, false, 1885, 'combat', 77, 0, 0, 0, 0, 0),
-  ('v5', 'iron_sword', 'Iron Sword', true, 3, 20, 'weapon', 'weapon', 'iron_sword', '#343943', 'common', true, false, 360, 'combat', 21, 0, 0, 0, 0, 0),
-  ('v5', 'mithril_blade', 'Mithril Sword', true, 5, 40, 'weapon', 'weapon', 'mithril_blade', '#263f5a', 'uncommon', true, false, 720, 'combat', 40, 0, 0, 0, 0, 0),
-  ('v5', 'runite_greatsword', 'Runite Sword', true, 7, 60, 'weapon', 'weapon', 'runite_greatsword', '#4c1d24', 'rare', true, false, 1120, 'combat', 51, 0, 0, 0, 0, 0),
-  ('v5', 'shadow_blade', 'Shadowsteel Sword', true, 8, 70, 'weapon', 'weapon', 'shadow_blade', '#241a31', 'rare', true, false, 1165, 'combat', 57, 0, 0, 0, 0, 0),
-  ('v5', 'starsteel_blade', 'Starsteel Sword', true, 12, 110, 'weapon', 'weapon', 'starsteel_blade', '#171f4b', 'epic', true, false, 2135, 'combat', 85, 0, 0, 0, 0, 0),
-  ('v5', 'steel_sword', 'Steel Sword', true, 4, 30, 'weapon', 'weapon', 'steel_sword', '#4e5968', 'uncommon', true, false, 550, 'combat', 32, 0, 0, 0, 0, 0),
-  ('v5', 'sunsteel_blade', 'Sunsteel Sword', true, 6, 50, 'weapon', 'weapon', 'sunsteel_blade', '#734319', 'uncommon', true, false, 865, 'combat', 44, 0, 0, 0, 0, 0),
-  ('v5', 'voidsteel_greatblade', 'Voidsteel Sword', true, 13, 120, 'weapon', 'weapon', 'voidsteel_greatblade', '#130f22', 'epic', true, false, 2390, 'combat', 94, 0, 0, 0, 0, 0),
-  ('v5', 'wyrmforged_blade', 'Wyrmforged Sword', true, 14, 130, 'weapon', 'weapon', 'wyrmforged_blade', '#2d0d13', 'legendary', true, false, 2690, 'combat', 104, 0, 0, 0, 0, 0),
-  ('v5', 'wyrmsteel_blade', 'Wyrmsteel Sword', true, 10, 90, 'weapon', 'weapon', 'wyrmsteel_blade', '#3b5970', 'epic', true, false, 1630, 'combat', 70, 0, 0, 0, 0, 0);
+UPDATE public.game_content_items AS item
+SET name = renamed.name
+FROM (VALUES
+  ('copper_sword', 'Copper Sword'),
+  ('bronze_sword', 'Bronze Sword'),
+  ('iron_sword', 'Iron Sword'),
+  ('steel_sword', 'Steel Sword'),
+  ('mithril_blade', 'Mithril Sword'),
+  ('sunsteel_blade', 'Sunsteel Sword'),
+  ('runite_greatsword', 'Runite Sword'),
+  ('shadow_blade', 'Shadowsteel Sword'),
+  ('frost_greatblade', 'Froststeel Sword'),
+  ('wyrmsteel_blade', 'Wyrmsteel Sword'),
+  ('glacial_greatblade', 'Glacial Sword'),
+  ('starsteel_blade', 'Starsteel Sword'),
+  ('voidsteel_greatblade', 'Voidsteel Sword'),
+  ('wyrmforged_blade', 'Wyrmforged Sword'),
+  ('ancient_greatblade', 'Ancient Sword'),
+  ('ascendant_blade', 'Ascendant Sword')
+) AS renamed(id, name)
+WHERE item.content_version = 'v5'
+  AND item.id = renamed.id;
+
 
 INSERT INTO public.game_content_migration_rules
   (content_version, from_id, action, to_id, captured_value_required, notice_key, equipped_action, unequipped_action)
