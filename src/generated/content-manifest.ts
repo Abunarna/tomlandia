@@ -2,13 +2,13 @@
 /*
  * GENERATED FILE — DO NOT EDIT.
  * Source: content/v2/manifest.authoring.json (or the generator input named in CI)
- * Manifest SHA-256: 26e80ffe38a76677a0cbb8b768c7d06c9786c10e4717885129ef89ebd63026aa
+ * Manifest SHA-256: b6945416b0e2723c9530471e7cac18edb634052931fb0aad16dcce1e294a48b4
  */
 
 export const CONTENT_SCHEMA_VERSION = "tomlandia-content-manifest/v1";
-export const CONTENT_VERSION = "v4";
-export const SPAWN_SET_VERSION = "v4";
-export const CONTENT_MANIFEST_HASH = "26e80ffe38a76677a0cbb8b768c7d06c9786c10e4717885129ef89ebd63026aa";
+export const CONTENT_VERSION = "v5";
+export const SPAWN_SET_VERSION = "v5";
+export const CONTENT_MANIFEST_HASH = "b6945416b0e2723c9530471e7cac18edb634052931fb0aad16dcce1e294a48b4";
 export const CONTENT_RUNNABLE = true;
 
 export const CONTENT_TIERS = [
@@ -193,7 +193,6 @@ export const CONTENT_ITEM_IDS = [
   "berry_pie",
   "boar_tusk",
   "bronze_bar",
-  "bronze_dagger",
   "bronze_damage_potion",
   "bronze_heavy_armor",
   "bronze_light_armor",
@@ -310,7 +309,6 @@ export const CONTENT_ITEM_IDS = [
   "steel_light_armor",
   "steel_sword",
   "sunspiced_eel",
-  "sunspire_wand",
   "sunsteel_bar",
   "sunsteel_blade",
   "sunsteel_damage_potion",
@@ -321,7 +319,6 @@ export const CONTENT_ITEM_IDS = [
   "thick_leather",
   "troll_fang",
   "tungsten_bar",
-  "tungsten_maul",
   "tungsten_ore",
   "void_essence",
   "void_feast",
@@ -332,7 +329,6 @@ export const CONTENT_ITEM_IDS = [
   "voidsteel_light_armor",
   "voidsteel_ore",
   "willow_logs",
-  "wooden_club",
   "wraith_ice_core",
   "wyrm_feast",
   "wyrm_hide",
