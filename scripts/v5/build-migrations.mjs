@@ -128,13 +128,27 @@ const sameOutside = (before, after, field, skip) => {
 if (!sameOutside(v4Manifest.items, v5Manifest.items, "id", itemDelta)) {
   throw new Error("v5 changes an item outside the enumerated sword delta");
 }
+// Name-only proof: every target sword must be byte-identical to its v4 row on
+// every field except `name`. Generation fails if anything else moved.
+const swordRenames = [];
 for (const id of SWORD_IDS) {
   const before = v4Manifest.items.find((item) => item.id === id);
   const after = v5Manifest.items.find((item) => item.id === id);
-  if (stable({ ...before, name: "" }) !== stable({ ...after, name: "" })) {
-    throw new Error(`v5 changes more than the display name of ${id}`);
+  if (!before) throw new Error(`v4 does not define target sword ${id}`);
+  if (!after) throw new Error(`v5 does not define target sword ${id}`);
+  const fields = [...new Set([...Object.keys(before), ...Object.keys(after)])].sort();
+  for (const fieldName of fields) {
+    if (fieldName === "name") continue;
+    if (stable(before[fieldName]) !== stable(after[fieldName])) {
+      throw new Error(
+        `v5 changes ${fieldName} of ${id} (${stable(before[fieldName])} -> ${stable(after[fieldName])}); ` +
+          "the sword release may only change display names",
+      );
+    }
   }
+  swordRenames.push({ id, name: after.name });
 }
+
 for (const table of ["recipes", "monsters", "nodes", "fish", "fishing_spots", "quests", "bosses"]) {
   if (stable(v4Manifest[table]) !== stable(v5Manifest[table])) {
     throw new Error(`v5 changes ${table}, which the sword release must not do`);
@@ -167,6 +181,15 @@ const itemRows = blockRows("INSERT INTO public.game_content_items");
 const ruleRows = blockRows("INSERT INTO public.game_content_migration_rules");
 const swordRows = itemRows.filter((row) => SWORD_IDS.includes(field(row, 1)));
 if (swordRows.length !== SWORD_IDS.length) throw new Error("sword item extraction is incomplete");
+for (const row of swordRows) {
+  const id = field(row, 1);
+  const expected = swordRenames.find((entry) => entry.id === id);
+  if (field(row, 2) !== expected.name) {
+    throw new Error(
+      `generated artifact names ${id} "${field(row, 2)}", expected "${expected.name}"`,
+    );
+  }
+}
 if (ruleRows.length !== v5Manifest.migration_rules.length)
   throw new Error("migration rule extraction is incomplete");
 
@@ -260,14 +283,23 @@ $v5_copy_content$;
 -- ---------------------------------------------------------------------------
 -- Sword delta. Deletions first, then the re-stated sword definitions.
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+-- Sword delta. The four tester definitions are deleted; the 16 stable target
+-- swords are renamed in place, so nothing ever drops a row that the copied v5
+-- recipes reference.
+-- ---------------------------------------------------------------------------
 DELETE FROM public.game_content_items
-WHERE content_version = '${VERSION}' AND id IN (${list(itemDelta)});
+WHERE content_version = '${VERSION}' AND id IN (${deletedList});
 DELETE FROM public.game_content_migration_rules WHERE content_version = '${VERSION}';
 
-INSERT INTO public.game_content_items
-  (content_version, id, name, active, tier_index, level_requirement, kind, family, icon_key, colour, rarity, tradable, stackable, value, equip_skill, attack, defense, heal, speed, dmg_boost, boost_hits)
-VALUES
-  ${values(swordRows)};
+UPDATE public.game_content_items AS item
+SET name = renamed.name
+FROM (VALUES
+  ${swordRenames.map((entry) => `('${entry.id}', ${sqlText(entry.name)})`).join(",\n  ")}
+) AS renamed(id, name)
+WHERE item.content_version = '${VERSION}'
+  AND item.id = renamed.id;
+
 
 INSERT INTO public.game_content_migration_rules
   (content_version, from_id, action, to_id, captured_value_required, notice_key, equipped_action, unequipped_action)
@@ -718,6 +750,33 @@ $v5_activate_exit$;
 
 COMMIT;
 `;
+
+// Emitted-SQL proof: the item DELETE may only name the four tester ids, and the
+// swords must be renamed in place.
+const itemDeleteStatements = [
+  ...stageContent.matchAll(/DELETE FROM public\.game_content_items[\s\S]*?;/g),
+].map((match) => match[0]);
+if (!itemDeleteStatements.length) throw new Error("stage-content emits no item deletion");
+for (const statement of itemDeleteStatements) {
+  for (const id of SWORD_IDS) {
+    if (statement.includes(`'${id}'`)) {
+      throw new Error(`stage-content deletes stable sword id ${id}`);
+    }
+  }
+  for (const id of deletedIds) {
+    if (!statement.includes(`'${id}'`)) {
+      throw new Error(`stage-content item deletion omits tester id ${id}`);
+    }
+  }
+}
+if (!/UPDATE public\.game_content_items AS item\nSET name = renamed\.name/.test(stageContent)) {
+  throw new Error("stage-content does not rename the swords in place");
+}
+for (const entry of swordRenames) {
+  if (!stageContent.includes(`('${entry.id}', ${sqlText(entry.name)})`)) {
+    throw new Error(`stage-content does not rename ${entry.id}`);
+  }
+}
 
 const outputs = [
   [paths.stageContent, stageContent],
