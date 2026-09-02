@@ -185,12 +185,13 @@ for (const row of swordRows) {
   const id = field(row, 1);
   const expected = swordRenames.find((entry) => entry.id === id);
   if (field(row, 2) !== expected.name) {
-    throw new Error(`generated artifact names ${id} "${field(row, 2)}", expected "${expected.name}"`);
+    throw new Error(
+      `generated artifact names ${id} "${field(row, 2)}", expected "${expected.name}"`,
+    );
   }
 }
 if (ruleRows.length !== v5Manifest.migration_rules.length)
   throw new Error("migration rule extraction is incomplete");
-
 
 const versionStart = sqlLines.findIndex((line) =>
   line.startsWith("INSERT INTO public.game_content_versions"),
@@ -752,9 +753,9 @@ COMMIT;
 
 // Emitted-SQL proof: the item DELETE may only name the four tester ids, and the
 // swords must be renamed in place.
-const itemDeleteStatements = [...stageContent.matchAll(/DELETE FROM public\.game_content_items[\s\S]*?;/g)].map(
-  (match) => match[0],
-);
+const itemDeleteStatements = [
+  ...stageContent.matchAll(/DELETE FROM public\.game_content_items[\s\S]*?;/g),
+].map((match) => match[0]);
 if (!itemDeleteStatements.length) throw new Error("stage-content emits no item deletion");
 for (const statement of itemDeleteStatements) {
   for (const id of SWORD_IDS) {
@@ -782,7 +783,6 @@ const outputs = [
   [paths.stageWorld, stageWorld],
   [paths.activate, activate],
 ];
-
 
 let drift = 0;
 for (const [file, body] of outputs) {
