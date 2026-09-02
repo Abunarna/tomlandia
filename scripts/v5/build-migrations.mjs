@@ -128,13 +128,27 @@ const sameOutside = (before, after, field, skip) => {
 if (!sameOutside(v4Manifest.items, v5Manifest.items, "id", itemDelta)) {
   throw new Error("v5 changes an item outside the enumerated sword delta");
 }
+// Name-only proof: every target sword must be byte-identical to its v4 row on
+// every field except `name`. Generation fails if anything else moved.
+const swordRenames = [];
 for (const id of SWORD_IDS) {
   const before = v4Manifest.items.find((item) => item.id === id);
   const after = v5Manifest.items.find((item) => item.id === id);
-  if (stable({ ...before, name: "" }) !== stable({ ...after, name: "" })) {
-    throw new Error(`v5 changes more than the display name of ${id}`);
+  if (!before) throw new Error(`v4 does not define target sword ${id}`);
+  if (!after) throw new Error(`v5 does not define target sword ${id}`);
+  const fields = [...new Set([...Object.keys(before), ...Object.keys(after)])].sort();
+  for (const fieldName of fields) {
+    if (fieldName === "name") continue;
+    if (stable(before[fieldName]) !== stable(after[fieldName])) {
+      throw new Error(
+        `v5 changes ${fieldName} of ${id} (${stable(before[fieldName])} -> ${stable(after[fieldName])}); ` +
+          "the sword release may only change display names",
+      );
+    }
   }
+  swordRenames.push({ id, name: after.name });
 }
+
 for (const table of ["recipes", "monsters", "nodes", "fish", "fishing_spots", "quests", "bosses"]) {
   if (stable(v4Manifest[table]) !== stable(v5Manifest[table])) {
     throw new Error(`v5 changes ${table}, which the sword release must not do`);
