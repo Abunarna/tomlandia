@@ -750,11 +750,39 @@ $v5_activate_exit$;
 COMMIT;
 `;
 
+// Emitted-SQL proof: the item DELETE may only name the four tester ids, and the
+// swords must be renamed in place.
+const itemDeleteStatements = [...stageContent.matchAll(/DELETE FROM public\.game_content_items[\s\S]*?;/g)].map(
+  (match) => match[0],
+);
+if (!itemDeleteStatements.length) throw new Error("stage-content emits no item deletion");
+for (const statement of itemDeleteStatements) {
+  for (const id of SWORD_IDS) {
+    if (statement.includes(`'${id}'`)) {
+      throw new Error(`stage-content deletes stable sword id ${id}`);
+    }
+  }
+  for (const id of deletedIds) {
+    if (!statement.includes(`'${id}'`)) {
+      throw new Error(`stage-content item deletion omits tester id ${id}`);
+    }
+  }
+}
+if (!/UPDATE public\.game_content_items AS item\nSET name = renamed\.name/.test(stageContent)) {
+  throw new Error("stage-content does not rename the swords in place");
+}
+for (const entry of swordRenames) {
+  if (!stageContent.includes(`('${entry.id}', ${sqlText(entry.name)})`)) {
+    throw new Error(`stage-content does not rename ${entry.id}`);
+  }
+}
+
 const outputs = [
   [paths.stageContent, stageContent],
   [paths.stageWorld, stageWorld],
   [paths.activate, activate],
 ];
+
 
 let drift = 0;
 for (const [file, body] of outputs) {
