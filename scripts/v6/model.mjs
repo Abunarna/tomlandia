@@ -56,9 +56,17 @@ export const DELETED_ITEMS = Object.freeze([]);
 export const MAX_SAME_TIER_UPLIFT_PCT = 22;
 
 export const PLAYER_NOTICE = Object.freeze({
-  body:
-    "Strength potions now grant a percentage strength boost instead of a flat damage bonus. " +
-    "Your potions, recipes and holdings are unchanged; an active potion keeps its remaining hits.",
-  headline: "Strength potions rebuilt",
-  key: "v6_strength_potions",
+  details: [
+    "Every tier from level 1 to level 150 offers exactly one strength potion, named after its tier.",
+    "Strength potions now grant a percentage strength boost instead of a flat damage bonus.",
+    "The boost applies to your attack after weapon and armour upgrades, before the target's defence.",
+    "Potion recipes, ingredients, Alchemy requirements, crafting experience, crafting durations and boosted-hit counts are unchanged.",
+    "Drinking a potion replaces any active potion; boosts never stack and never add together.",
+    "An active potion carries over at activation and keeps its remaining hits.",
+    "No potion is deleted, converted or re-identified, and every holding, listing and price is preserved.",
+    "Healing food is untouched by this release.",
+  ],
+  summary:
+    "All 16 strength potions are now listed on one Alchemist ladder with normalised names and an explicit percentage strength boost.",
+  title: "Tomlandia strength potion release",
 });
