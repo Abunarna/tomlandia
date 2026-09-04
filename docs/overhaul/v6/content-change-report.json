@@ -1,0 +1,1250 @@
+{
+  "base_attack_interval_s": 0.85,
+  "content_manifest_hash": "d87267194b34a7eba300115adfa29600d1d63f52daad4e0e96b947414e673d9e",
+  "content_version": "v6",
+  "counts": {
+    "clusters": 152,
+    "monsters": 361,
+    "nodes": 369
+  },
+  "deleted_items": [],
+  "effect_semantics": {
+    "field": "strength_pct",
+    "formula": "base_attack = round(3 + combat_level + weapon_attack + armour_attack); strength_bonus = round(base_attack * strength_pct / 100); damage = max(1, floor((base_attack + strength_bonus) * U[0.6,1.2) - monster_defense * 0.4))",
+    "legacy_field_preserved": "dmg_boost"
+  },
+  "generated_from": {
+    "content": "content/v5/manifest.authoring.json",
+    "world": "content/v5/world-spawn-manifest.json"
+  },
+  "healing_food_unchanged": true,
+  "ingredient_acquisition": [
+    {
+      "capstone": false,
+      "earliest_source_level": 98,
+      "item_id": "frost_lichen",
+      "obtainable_at_gate": true,
+      "qty": 3,
+      "recipe_id": "alchemy_ancient_damage_potion",
+      "recipe_level_requirement": 140,
+      "sources": [
+        {
+          "key": "lichen",
+          "kind": "node",
+          "level_requirement": 98
+        }
+      ],
+      "value": 95
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 130,
+      "item_id": "void_essence",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_ancient_damage_potion",
+      "recipe_level_requirement": 140,
+      "sources": [
+        {
+          "chance": 0.45,
+          "key": "void_wraith",
+          "kind": "monster",
+          "level_requirement": 130
+        }
+      ],
+      "value": 265
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 150,
+      "item_id": "ascendant_core",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_ascendant_damage_potion",
+      "recipe_level_requirement": 150,
+      "sources": [
+        {
+          "chance": 0.45,
+          "key": "ascendant_wyrm",
+          "kind": "monster",
+          "level_requirement": 150
+        }
+      ],
+      "value": 350
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 98,
+      "item_id": "frost_lichen",
+      "obtainable_at_gate": true,
+      "qty": 3,
+      "recipe_id": "alchemy_ascendant_damage_potion",
+      "recipe_level_requirement": 150,
+      "sources": [
+        {
+          "key": "lichen",
+          "kind": "node",
+          "level_requirement": 98
+        }
+      ],
+      "value": 95
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 10,
+      "item_id": "brute_fang",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_bronze_damage_potion",
+      "recipe_level_requirement": 10,
+      "sources": [
+        {
+          "chance": 0.45,
+          "key": "goblin_brute",
+          "kind": "monster",
+          "level_requirement": 10
+        }
+      ],
+      "value": 15
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 1,
+      "item_id": "meadow_berries",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_bronze_damage_potion",
+      "recipe_level_requirement": 10,
+      "sources": [
+        {
+          "key": "berries",
+          "kind": "node",
+          "level_requirement": 1
+        }
+      ],
+      "value": 7
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 55,
+      "item_id": "frost_pelt",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_frostfire_brew",
+      "recipe_level_requirement": 100,
+      "sources": [
+        {
+          "chance": 1,
+          "key": "frost_wolf",
+          "kind": "monster",
+          "level_requirement": 55
+        },
+        {
+          "chance": 0.55,
+          "key": "yeti",
+          "kind": "monster",
+          "level_requirement": 73
+        },
+        {
+          "chance": 1,
+          "key": "yeti",
+          "kind": "monster",
+          "level_requirement": 73
+        },
+        {
+          "chance": 1,
+          "key": "frost_troll",
+          "kind": "monster",
+          "level_requirement": 80
+        },
+        {
+          "chance": 1,
+          "key": "ice_wraith",
+          "kind": "monster",
+          "level_requirement": 88
+        },
+        {
+          "chance": 1,
+          "key": "frost_revenant",
+          "kind": "monster",
+          "level_requirement": 90
+        },
+        {
+          "chance": 1,
+          "key": "frost_giant",
+          "kind": "monster",
+          "level_requirement": 105
+        },
+        {
+          "chance": 1,
+          "key": "glacial_guardian",
+          "kind": "monster",
+          "level_requirement": 110
+        },
+        {
+          "chance": 1,
+          "key": "void_wraith",
+          "kind": "monster",
+          "level_requirement": 130
+        },
+        {
+          "chance": 1,
+          "key": "ancient_frost_wyrm",
+          "kind": "monster",
+          "level_requirement": 146
+        }
+      ],
+      "value": 140
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 1,
+      "item_id": "goblin_charm",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_frostfire_brew",
+      "recipe_level_requirement": 100,
+      "sources": [
+        {
+          "chance": 0.35,
+          "key": "goblin",
+          "kind": "monster",
+          "level_requirement": 1
+        }
+      ],
+      "value": 14
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 78,
+      "item_id": "frost_crystal",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_froststeel_damage_potion",
+      "recipe_level_requirement": 80,
+      "sources": [
+        {
+          "key": "frost_crystal_vein",
+          "kind": "node",
+          "level_requirement": 78
+        },
+        {
+          "chance": 0.5,
+          "key": "glacial_guardian",
+          "kind": "monster",
+          "level_requirement": 110
+        }
+      ],
+      "value": 115
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 80,
+      "item_id": "troll_fang",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_froststeel_damage_potion",
+      "recipe_level_requirement": 80,
+      "sources": [
+        {
+          "chance": 0.45,
+          "key": "frost_troll",
+          "kind": "monster",
+          "level_requirement": 80
+        }
+      ],
+      "value": 135
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 1,
+      "item_id": "goblin_charm",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_goblins_fury_tonic",
+      "recipe_level_requirement": 20,
+      "sources": [
+        {
+          "chance": 0.35,
+          "key": "goblin",
+          "kind": "monster",
+          "level_requirement": 1
+        }
+      ],
+      "value": 14
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 5,
+      "item_id": "thick_hide",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_goblins_fury_tonic",
+      "recipe_level_requirement": 20,
+      "sources": [
+        {
+          "chance": 1,
+          "key": "forest_lynx",
+          "kind": "monster",
+          "level_requirement": 5
+        },
+        {
+          "chance": 0.5,
+          "key": "bear",
+          "kind": "monster",
+          "level_requirement": 7
+        },
+        {
+          "chance": 1,
+          "key": "bear",
+          "kind": "monster",
+          "level_requirement": 7
+        },
+        {
+          "chance": 1,
+          "key": "dust_jackal",
+          "kind": "monster",
+          "level_requirement": 10
+        },
+        {
+          "chance": 1,
+          "key": "ironback_boar",
+          "kind": "monster",
+          "level_requirement": 20
+        }
+      ],
+      "value": 28
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 1,
+      "item_id": "raw_hide",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_minor_venom_draught",
+      "recipe_level_requirement": 1,
+      "sources": [
+        {
+          "chance": 1,
+          "key": "disgruntled_ram",
+          "kind": "monster",
+          "level_requirement": 1
+        },
+        {
+          "chance": 1,
+          "key": "goblin",
+          "kind": "monster",
+          "level_requirement": 1
+        },
+        {
+          "chance": 1,
+          "key": "forest_boar",
+          "kind": "monster",
+          "level_requirement": 2
+        },
+        {
+          "chance": 0.6,
+          "key": "wolf",
+          "kind": "monster",
+          "level_requirement": 3
+        },
+        {
+          "chance": 1,
+          "key": "wolf",
+          "kind": "monster",
+          "level_requirement": 3
+        },
+        {
+          "chance": 1,
+          "key": "goblin_brute",
+          "kind": "monster",
+          "level_requirement": 10
+        }
+      ],
+      "value": 10
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 17,
+      "item_id": "desert_bloom",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_runite_damage_potion",
+      "recipe_level_requirement": 60,
+      "sources": [
+        {
+          "key": "bloom",
+          "kind": "node",
+          "level_requirement": 42
+        },
+        {
+          "chance": 0.4,
+          "key": "bandit",
+          "kind": "monster",
+          "level_requirement": 17
+        }
+      ],
+      "value": 30
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 23,
+      "item_id": "ghoul_essence",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_runite_damage_potion",
+      "recipe_level_requirement": 60,
+      "sources": [
+        {
+          "chance": 0.45,
+          "key": "withered_ghoul",
+          "kind": "monster",
+          "level_requirement": 23
+        }
+      ],
+      "value": 95
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 14,
+      "item_id": "scale_hide",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_serpents_bite_elixir",
+      "recipe_level_requirement": 40,
+      "sources": [
+        {
+          "chance": 0.5,
+          "key": "serpent",
+          "kind": "monster",
+          "level_requirement": 14
+        },
+        {
+          "chance": 1,
+          "key": "serpent",
+          "kind": "monster",
+          "level_requirement": 14
+        },
+        {
+          "chance": 1,
+          "key": "scorpion_stalker",
+          "kind": "monster",
+          "level_requirement": 15
+        },
+        {
+          "chance": 1,
+          "key": "bandit",
+          "kind": "monster",
+          "level_requirement": 17
+        },
+        {
+          "chance": 0.5,
+          "key": "mithril_stalker",
+          "kind": "monster",
+          "level_requirement": 30
+        },
+        {
+          "chance": 1,
+          "key": "mithril_stalker",
+          "kind": "monster",
+          "level_requirement": 30
+        },
+        {
+          "chance": 1,
+          "key": "desert_raider",
+          "kind": "monster",
+          "level_requirement": 50
+        },
+        {
+          "chance": 0.55,
+          "key": "dune_devourer",
+          "kind": "monster",
+          "level_requirement": 60
+        },
+        {
+          "chance": 1,
+          "key": "dune_devourer",
+          "kind": "monster",
+          "level_requirement": 60
+        }
+      ],
+      "value": 55
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 1,
+      "item_id": "feather",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_shadow_venom",
+      "recipe_level_requirement": 70,
+      "sources": [
+        {
+          "chance": 0.7,
+          "key": "chicken",
+          "kind": "monster",
+          "level_requirement": 1
+        }
+      ],
+      "value": 2
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 23,
+      "item_id": "shadow_pelt",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_shadow_venom",
+      "recipe_level_requirement": 70,
+      "sources": [
+        {
+          "chance": 1,
+          "key": "withered_ghoul",
+          "kind": "monster",
+          "level_requirement": 23
+        },
+        {
+          "chance": 1,
+          "key": "wraith",
+          "kind": "monster",
+          "level_requirement": 32
+        },
+        {
+          "chance": 1,
+          "key": "bone_reaper",
+          "kind": "monster",
+          "level_requirement": 36
+        },
+        {
+          "chance": 0.55,
+          "key": "shadow_beast",
+          "kind": "monster",
+          "level_requirement": 41
+        },
+        {
+          "chance": 1,
+          "key": "shadow_beast",
+          "kind": "monster",
+          "level_requirement": 41
+        },
+        {
+          "chance": 1,
+          "key": "cursed_knight",
+          "kind": "monster",
+          "level_requirement": 70
+        }
+      ],
+      "value": 90
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 105,
+      "item_id": "frost_giant_heart",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_starsteel_damage_potion",
+      "recipe_level_requirement": 110,
+      "sources": [
+        {
+          "chance": 0.4,
+          "key": "frost_giant",
+          "kind": "monster",
+          "level_requirement": 105
+        }
+      ],
+      "value": 185
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 98,
+      "item_id": "frost_lichen",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_starsteel_damage_potion",
+      "recipe_level_requirement": 110,
+      "sources": [
+        {
+          "key": "lichen",
+          "kind": "node",
+          "level_requirement": 98
+        }
+      ],
+      "value": 95
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 18,
+      "item_id": "forest_herbs",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_steel_damage_potion",
+      "recipe_level_requirement": 30,
+      "sources": [
+        {
+          "key": "herbs",
+          "kind": "node",
+          "level_requirement": 18
+        }
+      ],
+      "value": 16
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 20,
+      "item_id": "ironback_tusk",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_steel_damage_potion",
+      "recipe_level_requirement": 30,
+      "sources": [
+        {
+          "chance": 0.45,
+          "key": "ironback_boar",
+          "kind": "monster",
+          "level_requirement": 20
+        }
+      ],
+      "value": 35
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 17,
+      "item_id": "desert_bloom",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_sunsteel_damage_potion",
+      "recipe_level_requirement": 50,
+      "sources": [
+        {
+          "key": "bloom",
+          "kind": "node",
+          "level_requirement": 42
+        },
+        {
+          "chance": 0.4,
+          "key": "bandit",
+          "kind": "monster",
+          "level_requirement": 17
+        }
+      ],
+      "value": 30
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 50,
+      "item_id": "raider_fang",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_sunsteel_damage_potion",
+      "recipe_level_requirement": 50,
+      "sources": [
+        {
+          "chance": 0.45,
+          "key": "desert_raider",
+          "kind": "monster",
+          "level_requirement": 50
+        }
+      ],
+      "value": 85
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 98,
+      "item_id": "frost_lichen",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_voidsteel_damage_potion",
+      "recipe_level_requirement": 120,
+      "sources": [
+        {
+          "key": "lichen",
+          "kind": "node",
+          "level_requirement": 98
+        }
+      ],
+      "value": 95
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 120,
+      "item_id": "wyrm_knight_fang",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_voidsteel_damage_potion",
+      "recipe_level_requirement": 120,
+      "sources": [
+        {
+          "chance": 0.45,
+          "key": "wyrm_knight",
+          "kind": "monster",
+          "level_requirement": 120
+        }
+      ],
+      "value": 235
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 98,
+      "item_id": "frost_lichen",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_wyrmforged_damage_potion",
+      "recipe_level_requirement": 130,
+      "sources": [
+        {
+          "key": "lichen",
+          "kind": "node",
+          "level_requirement": 98
+        }
+      ],
+      "value": 95
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 130,
+      "item_id": "void_essence",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_wyrmforged_damage_potion",
+      "recipe_level_requirement": 130,
+      "sources": [
+        {
+          "chance": 0.45,
+          "key": "void_wraith",
+          "kind": "monster",
+          "level_requirement": 130
+        }
+      ],
+      "value": 265
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 32,
+      "item_id": "gloomcap",
+      "obtainable_at_gate": true,
+      "qty": 2,
+      "recipe_id": "alchemy_wyrmsteel_damage_potion",
+      "recipe_level_requirement": 90,
+      "sources": [
+        {
+          "key": "gloomcap",
+          "kind": "node",
+          "level_requirement": 68
+        },
+        {
+          "chance": 0.45,
+          "key": "wraith",
+          "kind": "monster",
+          "level_requirement": 32
+        }
+      ],
+      "value": 58
+    },
+    {
+      "capstone": false,
+      "earliest_source_level": 88,
+      "item_id": "wraith_ice_core",
+      "obtainable_at_gate": true,
+      "qty": 1,
+      "recipe_id": "alchemy_wyrmsteel_damage_potion",
+      "recipe_level_requirement": 90,
+      "sources": [
+        {
+          "chance": 0.45,
+          "key": "ice_wraith",
+          "kind": "monster",
+          "level_requirement": 88
+        }
+      ],
+      "value": 220
+    }
+  ],
+  "items": {
+    "total": 173,
+    "v5_total": 173
+  },
+  "potions": [
+    {
+      "boost_hits": 8,
+      "id": "minor_venom_draught",
+      "legacy_dmg_boost": 2,
+      "level_requirement": 1,
+      "name": "Copper Strength Potion",
+      "previous_name": "Minor Venom Draught",
+      "recipe_id": "alchemy_minor_venom_draught",
+      "strength_pct": 12,
+      "tier": 1,
+      "value": 35
+    },
+    {
+      "boost_hits": 25,
+      "id": "bronze_damage_potion",
+      "legacy_dmg_boost": 3,
+      "level_requirement": 10,
+      "name": "Bronze Strength Potion",
+      "previous_name": "Bronze Damage Potion",
+      "recipe_id": "alchemy_bronze_damage_potion",
+      "strength_pct": 12,
+      "tier": 2,
+      "value": 65
+    },
+    {
+      "boost_hits": 30,
+      "id": "goblins_fury_tonic",
+      "legacy_dmg_boost": 5,
+      "level_requirement": 20,
+      "name": "Iron Strength Potion",
+      "previous_name": "Goblin's Fury Tonic",
+      "recipe_id": "alchemy_goblins_fury_tonic",
+      "strength_pct": 12,
+      "tier": 3,
+      "value": 135
+    },
+    {
+      "boost_hits": 30,
+      "id": "steel_damage_potion",
+      "legacy_dmg_boost": 7,
+      "level_requirement": 30,
+      "name": "Steel Strength Potion",
+      "previous_name": "Steel Damage Potion",
+      "recipe_id": "alchemy_steel_damage_potion",
+      "strength_pct": 12,
+      "tier": 4,
+      "value": 190
+    },
+    {
+      "boost_hits": 30,
+      "id": "serpents_bite_elixir",
+      "legacy_dmg_boost": 10,
+      "level_requirement": 40,
+      "name": "Mithril Strength Potion",
+      "previous_name": "Serpent's Bite Elixir",
+      "recipe_id": "alchemy_serpents_bite_elixir",
+      "strength_pct": 12,
+      "tier": 5,
+      "value": 275
+    },
+    {
+      "boost_hits": 33,
+      "id": "sunsteel_damage_potion",
+      "legacy_dmg_boost": 12,
+      "level_requirement": 50,
+      "name": "Sunsteel Strength Potion",
+      "previous_name": "Sunsteel Damage Potion",
+      "recipe_id": "alchemy_sunsteel_damage_potion",
+      "strength_pct": 12,
+      "tier": 6,
+      "value": 340
+    },
+    {
+      "boost_hits": 33,
+      "id": "runite_damage_potion",
+      "legacy_dmg_boost": 14,
+      "level_requirement": 60,
+      "name": "Runite Strength Potion",
+      "previous_name": "Runite Damage Potion",
+      "recipe_id": "alchemy_runite_damage_potion",
+      "strength_pct": 12,
+      "tier": 7,
+      "value": 430
+    },
+    {
+      "boost_hits": 35,
+      "id": "shadow_venom",
+      "legacy_dmg_boost": 18,
+      "level_requirement": 70,
+      "name": "Shadowsteel Strength Potion",
+      "previous_name": "Shadow Venom",
+      "recipe_id": "alchemy_shadow_venom",
+      "strength_pct": 13,
+      "tier": 8,
+      "value": 505
+    },
+    {
+      "boost_hits": 35,
+      "id": "froststeel_damage_potion",
+      "legacy_dmg_boost": 19,
+      "level_requirement": 80,
+      "name": "Froststeel Strength Potion",
+      "previous_name": "Froststeel Damage Potion",
+      "recipe_id": "alchemy_froststeel_damage_potion",
+      "strength_pct": 13,
+      "tier": 9,
+      "value": 555
+    },
+    {
+      "boost_hits": 35,
+      "id": "wyrmsteel_damage_potion",
+      "legacy_dmg_boost": 22,
+      "level_requirement": 90,
+      "name": "Wyrmsteel Strength Potion",
+      "previous_name": "Wyrmsteel Damage Potion",
+      "recipe_id": "alchemy_wyrmsteel_damage_potion",
+      "strength_pct": 14,
+      "tier": 10,
+      "value": 670
+    },
+    {
+      "boost_hits": 35,
+      "id": "frostfire_brew",
+      "legacy_dmg_boost": 30,
+      "level_requirement": 100,
+      "name": "Glacial Strength Potion",
+      "previous_name": "Frostfire Brew",
+      "recipe_id": "alchemy_frostfire_brew",
+      "strength_pct": 15,
+      "tier": 11,
+      "value": 955
+    },
+    {
+      "boost_hits": 35,
+      "id": "starsteel_damage_potion",
+      "legacy_dmg_boost": 31,
+      "level_requirement": 110,
+      "name": "Starsteel Strength Potion",
+      "previous_name": "Starsteel Damage Potion",
+      "recipe_id": "alchemy_starsteel_damage_potion",
+      "strength_pct": 16,
+      "tier": 12,
+      "value": 1015
+    },
+    {
+      "boost_hits": 35,
+      "id": "voidsteel_damage_potion",
+      "legacy_dmg_boost": 33,
+      "level_requirement": 120,
+      "name": "Voidsteel Strength Potion",
+      "previous_name": "Voidsteel Damage Potion",
+      "recipe_id": "alchemy_voidsteel_damage_potion",
+      "strength_pct": 16,
+      "tier": 13,
+      "value": 1085
+    },
+    {
+      "boost_hits": 35,
+      "id": "wyrmforged_damage_potion",
+      "legacy_dmg_boost": 38,
+      "level_requirement": 130,
+      "name": "Wyrmforged Strength Potion",
+      "previous_name": "Wyrmforged Damage Potion",
+      "recipe_id": "alchemy_wyrmforged_damage_potion",
+      "strength_pct": 17,
+      "tier": 14,
+      "value": 1280
+    },
+    {
+      "boost_hits": 35,
+      "id": "ancient_damage_potion",
+      "legacy_dmg_boost": 43,
+      "level_requirement": 140,
+      "name": "Ancient Strength Potion",
+      "previous_name": "Ancient Damage Potion",
+      "recipe_id": "alchemy_ancient_damage_potion",
+      "strength_pct": 17,
+      "tier": 15,
+      "value": 1470
+    },
+    {
+      "boost_hits": 35,
+      "id": "ascendant_damage_potion",
+      "legacy_dmg_boost": 48,
+      "level_requirement": 150,
+      "name": "Ascendant Strength Potion",
+      "previous_name": "Ascendant Damage Potion",
+      "recipe_id": "alchemy_ascendant_damage_potion",
+      "strength_pct": 18,
+      "tier": 16,
+      "value": 1775
+    }
+  ],
+  "recipes": {
+    "detail": [
+      {
+        "id": "alchemy_minor_venom_draught",
+        "inputs": [
+          {
+            "item_id": "raw_hide",
+            "qty": 2
+          }
+        ],
+        "level_requirement": 1,
+        "output_item_id": "minor_venom_draught",
+        "tier_index": 1,
+        "time_s": 1.81,
+        "xp": 5
+      },
+      {
+        "id": "alchemy_bronze_damage_potion",
+        "inputs": [
+          {
+            "item_id": "brute_fang",
+            "qty": 1
+          },
+          {
+            "item_id": "meadow_berries",
+            "qty": 2
+          }
+        ],
+        "level_requirement": 10,
+        "output_item_id": "bronze_damage_potion",
+        "tier_index": 2,
+        "time_s": 1.94,
+        "xp": 10
+      },
+      {
+        "id": "alchemy_goblins_fury_tonic",
+        "inputs": [
+          {
+            "item_id": "goblin_charm",
+            "qty": 2
+          },
+          {
+            "item_id": "thick_hide",
+            "qty": 1
+          }
+        ],
+        "level_requirement": 20,
+        "output_item_id": "goblins_fury_tonic",
+        "tier_index": 3,
+        "time_s": 2.08,
+        "xp": 28
+      },
+      {
+        "id": "alchemy_steel_damage_potion",
+        "inputs": [
+          {
+            "item_id": "forest_herbs",
+            "qty": 2
+          },
+          {
+            "item_id": "ironback_tusk",
+            "qty": 1
+          }
+        ],
+        "level_requirement": 30,
+        "output_item_id": "steel_damage_potion",
+        "tier_index": 4,
+        "time_s": 2.22,
+        "xp": 68
+      },
+      {
+        "id": "alchemy_serpents_bite_elixir",
+        "inputs": [
+          {
+            "item_id": "scale_hide",
+            "qty": 2
+          }
+        ],
+        "level_requirement": 40,
+        "output_item_id": "serpents_bite_elixir",
+        "tier_index": 5,
+        "time_s": 2.36,
+        "xp": 174
+      },
+      {
+        "id": "alchemy_sunsteel_damage_potion",
+        "inputs": [
+          {
+            "item_id": "desert_bloom",
+            "qty": 1
+          },
+          {
+            "item_id": "raider_fang",
+            "qty": 1
+          }
+        ],
+        "level_requirement": 50,
+        "output_item_id": "sunsteel_damage_potion",
+        "tier_index": 6,
+        "time_s": 2.5,
+        "xp": 573
+      },
+      {
+        "id": "alchemy_runite_damage_potion",
+        "inputs": [
+          {
+            "item_id": "desert_bloom",
+            "qty": 1
+          },
+          {
+            "item_id": "ghoul_essence",
+            "qty": 2
+          }
+        ],
+        "level_requirement": 60,
+        "output_item_id": "runite_damage_potion",
+        "tier_index": 7,
+        "time_s": 2.64,
+        "xp": 1031
+      },
+      {
+        "id": "alchemy_shadow_venom",
+        "inputs": [
+          {
+            "item_id": "feather",
+            "qty": 1
+          },
+          {
+            "item_id": "shadow_pelt",
+            "qty": 2
+          }
+        ],
+        "level_requirement": 70,
+        "output_item_id": "shadow_venom",
+        "tier_index": 8,
+        "time_s": 2.78,
+        "xp": 1174
+      },
+      {
+        "id": "alchemy_froststeel_damage_potion",
+        "inputs": [
+          {
+            "item_id": "frost_crystal",
+            "qty": 1
+          },
+          {
+            "item_id": "troll_fang",
+            "qty": 1
+          }
+        ],
+        "level_requirement": 80,
+        "output_item_id": "froststeel_damage_potion",
+        "tier_index": 9,
+        "time_s": 2.92,
+        "xp": 1358
+      },
+      {
+        "id": "alchemy_wyrmsteel_damage_potion",
+        "inputs": [
+          {
+            "item_id": "gloomcap",
+            "qty": 2
+          },
+          {
+            "item_id": "wraith_ice_core",
+            "qty": 1
+          }
+        ],
+        "level_requirement": 90,
+        "output_item_id": "wyrmsteel_damage_potion",
+        "tier_index": 10,
+        "time_s": 3.06,
+        "xp": 1543
+      },
+      {
+        "id": "alchemy_frostfire_brew",
+        "inputs": [
+          {
+            "item_id": "frost_pelt",
+            "qty": 2
+          },
+          {
+            "item_id": "goblin_charm",
+            "qty": 1
+          }
+        ],
+        "level_requirement": 100,
+        "output_item_id": "frostfire_brew",
+        "tier_index": 11,
+        "time_s": 3.2,
+        "xp": 1734
+      },
+      {
+        "id": "alchemy_starsteel_damage_potion",
+        "inputs": [
+          {
+            "item_id": "frost_giant_heart",
+            "qty": 1
+          },
+          {
+            "item_id": "frost_lichen",
+            "qty": 2
+          }
+        ],
+        "level_requirement": 110,
+        "output_item_id": "starsteel_damage_potion",
+        "tier_index": 12,
+        "time_s": 3.34,
+        "xp": 1927
+      },
+      {
+        "id": "alchemy_voidsteel_damage_potion",
+        "inputs": [
+          {
+            "item_id": "frost_lichen",
+            "qty": 2
+          },
+          {
+            "item_id": "wyrm_knight_fang",
+            "qty": 1
+          }
+        ],
+        "level_requirement": 120,
+        "output_item_id": "voidsteel_damage_potion",
+        "tier_index": 13,
+        "time_s": 3.48,
+        "xp": 2120
+      },
+      {
+        "id": "alchemy_wyrmforged_damage_potion",
+        "inputs": [
+          {
+            "item_id": "frost_lichen",
+            "qty": 2
+          },
+          {
+            "item_id": "void_essence",
+            "qty": 1
+          }
+        ],
+        "level_requirement": 130,
+        "output_item_id": "wyrmforged_damage_potion",
+        "tier_index": 14,
+        "time_s": 3.62,
+        "xp": 2332
+      },
+      {
+        "id": "alchemy_ancient_damage_potion",
+        "inputs": [
+          {
+            "item_id": "frost_lichen",
+            "qty": 3
+          },
+          {
+            "item_id": "void_essence",
+            "qty": 2
+          }
+        ],
+        "level_requirement": 140,
+        "output_item_id": "ancient_damage_potion",
+        "tier_index": 15,
+        "time_s": 3.76,
+        "xp": 2567
+      },
+      {
+        "id": "alchemy_ascendant_damage_potion",
+        "inputs": [
+          {
+            "item_id": "ascendant_core",
+            "qty": 1
+          },
+          {
+            "item_id": "frost_lichen",
+            "qty": 3
+          }
+        ],
+        "level_requirement": 150,
+        "output_item_id": "ascendant_damage_potion",
+        "tier_index": 16,
+        "time_s": 3.9,
+        "xp": 2799
+      }
+    ],
+    "potions": 16,
+    "total": 108,
+    "v5_total": 108
+  },
+  "spawn_hash": "69a4276f9466c02eef28ff8b8d93804e9d103504c163c1e1aa630dd9aba0c163",
+  "spawn_set_version": "v6",
+  "world_unchanged": true
+}

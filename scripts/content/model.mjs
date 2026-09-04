@@ -781,8 +781,26 @@ export function validateManifest(manifest, lockedRegistry) {
     "light_attack_multiplier_rule", "defense_multiplier_rule", "upgrade_cost_rule", "gear_resale_rule",
     "fishing_xp_curve",
   ];
-  onlyKeys(mechanics, "$manifest.runtime.mechanics", new Set(mechanicKeys));
+  // `strength_potions` is optional and additive (introduced by the V6 strength
+  // release). Older manifests omit it and stay byte-identical.
+  onlyKeys(mechanics, "$manifest.runtime.mechanics", new Set([...mechanicKeys, "strength_potions"]));
   requireKeys(mechanics, "$manifest.runtime.mechanics", mechanicKeys);
+  if (mechanics.strength_potions !== undefined) {
+    const strengthPotions = arrayAt(mechanics.strength_potions, "$manifest.runtime.mechanics.strength_potions");
+    if (strengthPotions.length !== 16) issue("$manifest.runtime.mechanics.strength_potions", "must contain exactly 16 tier entries");
+    assertUnique(strengthPotions, "tier_index", "$manifest.runtime.mechanics.strength_potions");
+    assertUnique(strengthPotions, "item_id", "$manifest.runtime.mechanics.strength_potions");
+    strengthPotions.forEach((rawEntry, index) => {
+      const path = `$manifest.runtime.mechanics.strength_potions[${index}]`;
+      const entry = objectAt(rawEntry, path);
+      onlyKeys(entry, path, new Set(["tier_index", "item_id", "strength_pct", "boost_hits"]));
+      requireKeys(entry, path, ["tier_index", "item_id", "strength_pct", "boost_hits"]);
+      numberAt(entry.tier_index, `${path}.tier_index`, { integer: true, min: 1, max: 16 });
+      stringAt(entry.item_id, `${path}.item_id`, CONTENT_ID);
+      numberAt(entry.strength_pct, `${path}.strength_pct`, { integer: true, min: 1, max: 100 });
+      numberAt(entry.boost_hits, `${path}.boost_hits`, { integer: true, min: 1, max: 1000 });
+    });
+  }
   stringAt(mechanics.approved_balance_model_hash, "$manifest.runtime.mechanics.approved_balance_model_hash", SHA256);
   const maxLevel = numberAt(mechanics.max_level, "$manifest.runtime.mechanics.max_level", { integer: true, min: 1, max: 150 });
   if (maxLevel !== 150) issue("$manifest.runtime.mechanics.max_level", "must equal 150");
