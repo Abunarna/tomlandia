@@ -104,7 +104,7 @@
     "v5_rows_mutated": false
   },
   "schema_version": "tomlandia-world-spawn-manifest/v1",
-  "source_content_manifest_hash": "e4822e70a717d1cd9b45215a653e804b55f1566ebae647b51b6a0a3f357ae9a9",
+  "source_content_manifest_hash": "d87267194b34a7eba300115adfa29600d1d63f52daad4e0e96b947414e673d9e",
   "southern_extension_policy": {
     "deepest_frontier_preferred": true,
     "min_y": 3000
