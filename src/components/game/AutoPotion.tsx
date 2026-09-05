@@ -11,6 +11,8 @@ const C = 2 * Math.PI * R;
 export function AutoPotion({ hud, onToggle }: { hud: HudSnapshot; onToggle: () => void }) {
   const { on, item, qty, hits, maxHits, firedAt } = hud.autoPotionState;
   const def = item ? ITEMS[item] : undefined;
+  const buff = hud.buff;
+  const effect = buff ? (buff.pct > 0 ? `+${buff.pct}% strength` : `+${buff.dmg} damage`) : null;
   const has = !!def && qty > 0;
   const left = maxHits > 0 ? Math.max(0, Math.min(1, hits / maxHits)) : 0;
 
@@ -30,7 +32,7 @@ export function AutoPotion({ hud, onToggle }: { hud: HudSnapshot; onToggle: () =
   return (
     <button
       type="button"
-      aria-label={`Auto-potion ${on ? "on" : "off"}`}
+      aria-label={`Auto-potion ${on ? "on" : "off"}${effect ? `, ${effect} for ${hits} hits` : ""}`}
       aria-pressed={on}
       onClick={onToggle}
       className="pointer-events-auto relative grid place-items-center rounded-full bg-card/80 shadow-soft backdrop-blur-md transition active:scale-95"
@@ -81,7 +83,7 @@ export function AutoPotion({ hud, onToggle }: { hud: HudSnapshot; onToggle: () =
 
       {/* on/off + remaining hits readout */}
       <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-card/95 px-1.5 py-[1px] text-[9px] font-black leading-none text-foreground shadow-soft">
-        {on ? (hits > 0 ? `${hits} hits` : "ON") : "OFF"}
+        {on ? (hits > 0 ? `${buff && buff.pct > 0 ? `+${buff.pct}% · ` : ""}${hits} hits` : "ON") : "OFF"}
       </span>
     </button>
   );
