@@ -497,7 +497,7 @@ export interface DamageRes {
   leveled?: boolean;
   tagged_by?: string | null;
   respawn_at?: string | null;
-  buff?: { dmg: number; hits: number };
+  buff?: ServerBuff | null;
   death?: { at: number; reason: string; lost_gold?: number } | null;
   food_used?: boolean;
   skipped_loot?: ItemId[];
@@ -516,11 +516,55 @@ export interface FishRes {
   state?: ServerState;
 }
 
+/**
+ * The server-owned potion buff. V6 potions send `strength_pct`; releases up to
+ * V5 send the flat `dmg` bonus, and both shapes must keep parsing.
+ */
+export interface ServerBuff {
+  dmg?: number | null;
+  strength_pct?: number | null;
+  hits: number;
+  item?: string | null;
+  content_version?: string | null;
+}
+
+/** Active potion buff as the client mirrors it. */
+export interface ClientBuff {
+  /** Percentage strength boost (V6). Zero for legacy flat buffs. */
+  pct: number;
+  /** Flat damage bonus (V1..V5). Zero for percentage buffs. */
+  dmg: number;
+  hits: number;
+  item: ItemId | null;
+}
+
+/**
+ * Parses any buff the server may return: absent, a legacy flat buff, a V6
+ * percentage buff, an expired buff or a corrupt one. Anything that is not a
+ * live, positive buff becomes null.
+ */
+export function readServerBuff(raw: ServerBuff | null | undefined): ClientBuff | null {
+  if (!raw || typeof raw !== "object") return null;
+  const hits = Number(raw.hits);
+  if (!Number.isFinite(hits) || hits <= 0) return null;
+  const pct = Number(raw.strength_pct);
+  const dmg = Number(raw.dmg);
+  const safePct = Number.isFinite(pct) && pct > 0 ? pct : 0;
+  const safeDmg = Number.isFinite(dmg) && dmg > 0 ? dmg : 0;
+  if (safePct <= 0 && safeDmg <= 0) return null;
+  return {
+    pct: safePct,
+    dmg: safeDmg,
+    hits: Math.floor(hits),
+    item: typeof raw.item === "string" && raw.item ? (raw.item as ItemId) : null,
+  };
+}
+
 /** Authoritative reply from drinking a potion. */
 export interface PotionRes {
   ok: boolean;
   reason?: string;
-  buff?: { dmg: number; hits: number; item?: string };
+  buff?: ServerBuff | null;
   state?: ServerState;
 }
 
@@ -977,8 +1021,8 @@ export class GameEngine {
   onSellAllResources: (() => Promise<GearRes>) | null = null;
 
 
-  /** Active damage buff from a potion — mirrored from the server. */
-  buff: { dmg: number; hits: number } | null = null;
+  /** Active potion buff — mirrored from the server, never computed here. */
+  buff: ClientBuff | null = null;
 
   /** Most recent death event shown as a fullscreen red overlay. */
   death: { at: number; reason: string } | null = null;
@@ -2133,17 +2177,33 @@ export class GameEngine {
     this.emitHud(true);
   }
 
-  /** Strongest potion currently in the bag, if any. */
+  /**
+   * Strongest potion currently in the bag, if any.
+   *
+   * Ranked by strength percentage, then boosted hits, then tier. Definitions
+   * the active release does not publish are ignored; a legacy flat-only potion
+   * ranks below every percentage potion.
+   */
   private bestPotionSlot(): number {
     let best = -1;
-    let dmg = -1;
+    let bestKey: [number, number, number] | null = null;
     for (let i = 0; i < this.inv.length; i++) {
       const s = this.inv[i];
       if (!s) continue;
-      const def = item(s.id);
-      if (def.kind !== "potion" || !def.dmgBoost) continue;
-      if (def.dmgBoost > dmg) {
-        dmg = def.dmgBoost;
+      const def = ITEMS[s.id];
+      if (!def || def.kind !== "potion") continue;
+      const pct = def.strengthPct ?? 0;
+      const hits = def.boostHits ?? 0;
+      if (hits <= 0) continue;
+      if (pct <= 0 && !(def.dmgBoost ?? 0)) continue;
+      const key: [number, number, number] = [pct, hits, def.tier ?? def.level ?? 0];
+      if (
+        !bestKey ||
+        key[0] > bestKey[0] ||
+        (key[0] === bestKey[0] && key[1] > bestKey[1]) ||
+        (key[0] === bestKey[0] && key[1] === bestKey[1] && key[2] > bestKey[2])
+      ) {
+        bestKey = key;
         best = i;
       }
     }
@@ -2475,9 +2535,9 @@ export class GameEngine {
                   this.pushText(m.x, m.y - 24, `${res.dmg ?? 0}`, "#fff0c9");
                   if (typeof res.hp === "number") m.hp = res.hp;
                   if (res.tagged_by !== undefined) m.taggedBy = res.tagged_by ?? null;
-                  if (res.buff) {
-                    const hits = Number(res.buff.hits) || 0;
-                    this.buff = hits > 0 ? { dmg: Number(res.buff.dmg) || 0, hits } : null;
+                  if (res.buff !== undefined) {
+                    this.buff = readServerBuff(res.buff);
+                    const hits = this.buff?.hits ?? 0;
                     if (!this.buff) {
                       this.buffMaxHits = 0;
                       this.autoDrink();
@@ -2980,11 +3040,16 @@ export class GameEngine {
           this.potionPending = false;
           if (!res.ok) return;
           this.applyServerState(res.state);
-          if (res.buff) {
-            this.buff = { dmg: Number(res.buff.dmg) || 0, hits: Number(res.buff.hits) || 0 };
-            this.buffMaxHits = Math.max(this.buff.hits, 1);
+          if (res.buff !== undefined) {
+            this.buff = readServerBuff(res.buff);
+            this.buffMaxHits = Math.max(this.buff?.hits ?? 0, 1);
           }
-          this.pushText(this.px, this.py - 46, `+${this.buff?.dmg ?? 0} dmg`, "#e7c7ff");
+          const label = this.buff
+            ? this.buff.pct > 0
+              ? `+${this.buff.pct}% strength`
+              : `+${this.buff.dmg} dmg`
+            : "no effect";
+          this.pushText(this.px, this.py - 46, label, "#e7c7ff");
           sfx.play("gather");
           this.emitHud(true);
         })
