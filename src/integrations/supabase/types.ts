@@ -266,6 +266,7 @@ export type Database = {
           rarity: string
           speed: number
           stackable: boolean
+          strength_pct: number
           tier_index: number
           tradable: boolean
           value: number
@@ -289,6 +290,7 @@ export type Database = {
           rarity: string
           speed: number
           stackable: boolean
+          strength_pct?: number
           tier_index: number
           tradable: boolean
           value: number
@@ -312,6 +314,7 @@ export type Database = {
           rarity?: string
           speed?: number
           stackable?: boolean
+          strength_pct?: number
           tier_index?: number
           tradable?: boolean
           value?: number
@@ -1809,6 +1812,7 @@ export type Database = {
           rarity: string | null
           speed: number | null
           stackable: boolean | null
+          strength_pct: number | null
           tier_index: number | null
           tradable: boolean | null
           untradable: boolean | null
@@ -1922,6 +1926,10 @@ export type Database = {
       active_starter_save: { Args: never; Returns: Json }
       advance_quest: {
         Args: { _data: Json; _key: string; _kind: string }
+        Returns: Json
+      }
+      apply_strength_buff: {
+        Args: { _base_attack: number; _data: Json }
         Returns: Json
       }
       attack_boss: {
