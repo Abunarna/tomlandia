@@ -872,7 +872,6 @@ for (const [name, body] of [
   }
 }
 
-
 if (!/jsonb_set\(\n {6}s\.data,\n {6}'\{buff\}'/.test(activate)) {
   throw new Error(
     "activate must convert buffs with a targeted jsonb_set, not a whole-save rewrite",
