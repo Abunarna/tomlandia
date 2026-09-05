@@ -83,7 +83,11 @@ export function AutoPotion({ hud, onToggle }: { hud: HudSnapshot; onToggle: () =
 
       {/* on/off + remaining hits readout */}
       <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-card/95 px-1.5 py-[1px] text-[9px] font-black leading-none text-foreground shadow-soft">
-        {on ? (hits > 0 ? `${buff && buff.pct > 0 ? `+${buff.pct}% · ` : ""}${hits} hits` : "ON") : "OFF"}
+        {on
+          ? hits > 0
+            ? `${buff && buff.pct > 0 ? `+${buff.pct}% · ` : ""}${hits} hits`
+            : "ON"
+          : "OFF"}
       </span>
     </button>
   );

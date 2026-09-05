@@ -16,7 +16,8 @@ const output = resolve(root, "src/generated/release-catalog.ts");
 const checkOnly = process.argv.includes("--check");
 
 const manifest = JSON.parse(await readFile(source, "utf8"));
-if (manifest.lifecycle !== "runtime") throw new Error("Client catalog requires the approved runtime manifest");
+if (manifest.lifecycle !== "runtime")
+  throw new Error("Client catalog requires the approved runtime manifest");
 const runtime = manifest.runtime;
 
 // Skills the client's Recipe type accepts; the station is the NPC surface.
@@ -56,7 +57,8 @@ const items = runtime.items
 
 const recipes = runtime.recipes
   .map((recipe) => {
-    if (!CRAFT_SKILLS.has(recipe.skill)) throw new Error(`Recipe ${recipe.id} uses non-craft skill ${recipe.skill}`);
+    if (!CRAFT_SKILLS.has(recipe.skill))
+      throw new Error(`Recipe ${recipe.id} uses non-craft skill ${recipe.skill}`);
     return {
       id: recipe.id,
       station: recipe.station,
@@ -78,10 +80,13 @@ const armour = items.filter((entry) => entry.kind === "armor");
 const heavy = armour.filter((entry) => entry.family === "heavy_armor");
 const light = armour.filter((entry) => entry.family === "light_armor");
 if (heavy.length !== 16 || light.length !== 16) {
-  throw new Error(`Expected 16 heavy and 16 light armour sets, got ${heavy.length}/${light.length}`);
+  throw new Error(
+    `Expected 16 heavy and 16 light armour sets, got ${heavy.length}/${light.length}`,
+  );
 }
 for (const set of armour) {
-  if (!recipes.some((recipe) => recipe.out === set.id)) throw new Error(`Armour ${set.id} has no recipe`);
+  if (!recipes.some((recipe) => recipe.out === set.id))
+    throw new Error(`Armour ${set.id} has no recipe`);
 }
 
 const weapons = items
@@ -90,7 +95,8 @@ const weapons = items
 if (weapons.length !== 16) throw new Error(`Expected 16 swords, got ${weapons.length}`);
 weapons.forEach((weapon, index) => {
   if (weapon.tier_index !== index + 1) throw new Error(`Sword ladder has no tier ${index + 1}`);
-  if (!recipes.some((recipe) => recipe.out === weapon.id)) throw new Error(`Sword ${weapon.id} has no recipe`);
+  if (!recipes.some((recipe) => recipe.out === weapon.id))
+    throw new Error(`Sword ${weapon.id} has no recipe`);
   if (index > 0 && weapon.stats.attack <= weapons[index - 1].stats.attack) {
     throw new Error(`Sword attack progression is not monotonic at tier ${weapon.tier_index}`);
   }
@@ -100,7 +106,8 @@ weapons.forEach((weapon, index) => {
 const strengthRows = [...runtime.mechanics.strength_potions].sort(
   (left, right) => left.tier_index - right.tier_index,
 );
-if (strengthRows.length !== 16) throw new Error(`Expected 16 strength potions, got ${strengthRows.length}`);
+if (strengthRows.length !== 16)
+  throw new Error(`Expected 16 strength potions, got ${strengthRows.length}`);
 const potions = strengthRows.map((row, index) => {
   const item = items.find((entry) => entry.id === row.item_id);
   if (!item) throw new Error(`Strength potion ${row.item_id} is not an item`);
@@ -115,7 +122,8 @@ const potions = strengthRows.map((row, index) => {
   }
   const recipe = recipes.find((entry) => entry.out === row.item_id);
   if (!recipe) throw new Error(`Potion ${row.item_id} has no recipe`);
-  if (recipe.skill !== "alchemy") throw new Error(`Potion ${row.item_id} is not crafted with Alchemy`);
+  if (recipe.skill !== "alchemy")
+    throw new Error(`Potion ${row.item_id} is not crafted with Alchemy`);
   return {
     id: row.item_id,
     tier_index: row.tier_index,
@@ -125,7 +133,8 @@ const potions = strengthRows.map((row, index) => {
   };
 });
 const potionItems = items.filter((entry) => entry.kind === "potion");
-if (potionItems.length !== 16) throw new Error(`Expected 16 potion items, got ${potionItems.length}`);
+if (potionItems.length !== 16)
+  throw new Error(`Expected 16 potion items, got ${potionItems.length}`);
 
 const tiers = manifest.tiers
   .map(({ tier_index, level_requirement, theme }) => ({ tier_index, level_requirement, theme }))

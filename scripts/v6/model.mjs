@@ -39,7 +39,12 @@ export const POTIONS = Object.freeze([
   { tier: 11, id: "frostfire_brew", name: "Glacial Strength Potion", strength_pct: 15 },
   { tier: 12, id: "starsteel_damage_potion", name: "Starsteel Strength Potion", strength_pct: 16 },
   { tier: 13, id: "voidsteel_damage_potion", name: "Voidsteel Strength Potion", strength_pct: 16 },
-  { tier: 14, id: "wyrmforged_damage_potion", name: "Wyrmforged Strength Potion", strength_pct: 17 },
+  {
+    tier: 14,
+    id: "wyrmforged_damage_potion",
+    name: "Wyrmforged Strength Potion",
+    strength_pct: 17,
+  },
   { tier: 15, id: "ancient_damage_potion", name: "Ancient Strength Potion", strength_pct: 17 },
   { tier: 16, id: "ascendant_damage_potion", name: "Ascendant Strength Potion", strength_pct: 18 },
 ]);

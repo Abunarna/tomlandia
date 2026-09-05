@@ -28,7 +28,9 @@ const OUT = Object.freeze({
 const manifest = JSON.parse(await readFile("content/v6/manifest.authoring.json", "utf8"));
 const runtime = manifest.runtime;
 const items = new Map(runtime.items.map((item) => [item.id, item]));
-const strengthByTier = new Map(runtime.mechanics.strength_potions.map((row) => [row.tier_index, row]));
+const strengthByTier = new Map(
+  runtime.mechanics.strength_potions.map((row) => [row.tier_index, row]),
+);
 
 const GRID = 4000;
 const PLUS_LEVELS = [0, 20, 50, 100];
@@ -38,7 +40,8 @@ const r2 = (value) => Math.round(value * 100) / 100;
 const r3 = (value) => Math.round(value * 1000) / 1000;
 
 const weaponMultiplier = (plus) => 1 + 0.02 * Math.min(plus, 50) + 0.005 * Math.max(plus - 50, 0);
-const lightAttackMultiplier = (plus) => 1 + 0.05 * Math.min(plus, 20) + 0.01 * Math.max(plus - 20, 0);
+const lightAttackMultiplier = (plus) =>
+  1 + 0.05 * Math.min(plus, 20) + 0.01 * Math.max(plus - 20, 0);
 const defenseMultiplier = (plus) => 1 + 0.001 * plus;
 
 /** Mean of max(1, floor(attack * u - defense * 0.4)) over u ~ U[0.6, 1.2). */
@@ -79,7 +82,9 @@ for (const tier of tiers) {
   const weapon = weaponByTier.get(tier);
   const armour = armourByTier.get(tier);
   const combatLevel = tierLevel.get(tier);
-  const sameTier = [...(monstersByTier.get(tier) ?? [])].sort((l, r) => l.kind.localeCompare(r.kind));
+  const sameTier = [...(monstersByTier.get(tier) ?? [])].sort((l, r) =>
+    l.kind.localeCompare(r.kind),
+  );
   const adjacent = [...(monstersByTier.get(Math.min(tier + 1, 16)) ?? [])].sort((l, r) =>
     l.kind.localeCompare(r.kind),
   );
@@ -112,7 +117,18 @@ for (const tier of tiers) {
         ["adjacent_tier", adjacentTarget],
         ["high_defense", highDefense],
         ["ascendant_wyrm", ascendant],
-        ["desolatus_boss", { kind: "desolatus", defense: BOSS_DEFENSE, hp: 250000, attack: 340, xp: 0, gold_min: 0, gold_max: 0 }],
+        [
+          "desolatus_boss",
+          {
+            kind: "desolatus",
+            defense: BOSS_DEFENSE,
+            hp: 250000,
+            attack: 340,
+            xp: 0,
+            gold_min: 0,
+            gold_max: 0,
+          },
+        ],
       ].filter(([, target]) => Boolean(target));
 
       for (const [label, target] of targets) {
@@ -195,7 +211,8 @@ for (const delta of [-2, 2]) {
       (row) => row.tier === tier && row.target === "same_tier" && row.armour === "heavy",
     );
     for (const row of rows) {
-      const shifted = row.base_attack + round((row.base_attack * (strength.strength_pct + delta)) / 100);
+      const shifted =
+        row.base_attack + round((row.base_attack * (strength.strength_pct + delta)) / 100);
       const before = meanDamage(row.base_attack, row.target_defense);
       const after = meanDamage(shifted, row.target_defense);
       sensitivity.push({
@@ -267,7 +284,11 @@ const economyRows = runtime.recipes
     const strength = strengthByTier.get(potion.tier);
     const perHour = 3600 / recipe.time_s;
     const sameTier = combatRows.find(
-      (row) => row.tier === potion.tier && row.target === "same_tier" && row.armour === "heavy" && row.plus === 0,
+      (row) =>
+        row.tier === potion.tier &&
+        row.target === "same_tier" &&
+        row.armour === "heavy" &&
+        row.plus === 0,
     );
     const killsPerPotion = sameTier ? strength.boost_hits / sameTier.hits_to_kill_buffed : null;
     return {
@@ -319,7 +340,8 @@ const outputs = [
 for (const [file, rendered] of outputs) {
   if (checkOnly) {
     const existing = await readFile(file, "utf8").catch(() => "");
-    if (existing !== rendered) throw new Error(`V6 simulation drifted: ${file}; run bun run v6:build`);
+    if (existing !== rendered)
+      throw new Error(`V6 simulation drifted: ${file}; run bun run v6:build`);
   } else {
     await mkdir(file.slice(0, file.lastIndexOf("/")), { recursive: true });
     await writeFile(file, rendered);

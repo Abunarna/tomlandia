@@ -1,4 +1,16 @@
-import { Heart, Coins, Sparkles, MapPin, Swords, Shield, ScrollText, Sun, Moon, Users, FlaskConical } from "lucide-react";
+import {
+  Heart,
+  Coins,
+  Sparkles,
+  MapPin,
+  Swords,
+  Shield,
+  ScrollText,
+  Sun,
+  Moon,
+  Users,
+  FlaskConical,
+} from "lucide-react";
 import type { HudSnapshot } from "@/game/types";
 
 export function Hud({ hud }: { hud: HudSnapshot }) {
@@ -28,7 +40,11 @@ export function Hud({ hud }: { hud: HudSnapshot }) {
               {hud.nearby}
             </span>
             <span className="flex items-center gap-1 rounded-xl bg-muted px-2 py-1 text-[11px] font-bold text-muted-foreground">
-              {hud.phase === "Night" ? <Moon className="size-3.5" /> : <Sun className="size-3.5 text-gold" />}
+              {hud.phase === "Night" ? (
+                <Moon className="size-3.5" />
+              ) : (
+                <Sun className="size-3.5 text-gold" />
+              )}
               {hud.phase}
             </span>
             <span className="flex items-center gap-1 rounded-xl bg-gold/15 px-2 py-1 text-sm font-bold text-gold-foreground">
@@ -36,7 +52,6 @@ export function Hud({ hud }: { hud: HudSnapshot }) {
               {hud.gold}
             </span>
           </div>
-
         </div>
 
         <div className="mt-2 space-y-1.5">
@@ -61,7 +76,9 @@ export function Hud({ hud }: { hud: HudSnapshot }) {
             <Shield className="ml-1 size-3 text-accent" />
             {hud.defense}
           </span>
-          <span className="truncate text-[11px] font-semibold text-muted-foreground">{hud.activity}</span>
+          <span className="truncate text-[11px] font-semibold text-muted-foreground">
+            {hud.activity}
+          </span>
           <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted">
             <div
               className="h-full rounded-full bg-accent transition-[width] duration-100"
