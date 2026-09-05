@@ -100,3 +100,36 @@ test("the shared helper keeps its safe, side-effect-free shape", () => {
     "the helper reads or mutates player state",
   );
 });
+
+test("the public boss entry point keeps a gate, but not the legacy v1 contract", () => {
+  assert.ok(
+    activate.includes(
+      "CREATE OR REPLACE FUNCTION public.attack_boss(\n  _x numeric, _y numeric, _bx numeric, _by numeric, _passive boolean DEFAULT false\n)",
+    ),
+    "activation does not rebuild the public wrapper with its client signature",
+  );
+  assert.ok(
+    activate.includes("PERFORM public.game_assert_action_allowed(false);"),
+    "the wrapper drops maintenance / minimum-client enforcement",
+  );
+  assert.ok(
+    !activate.includes("PERFORM public.game_assert_action_allowed(true);"),
+    "the wrapper still asserts the legacy v1 world contract",
+  );
+  assert.ok(
+    activate.includes("RETURN public.attack_boss_v1(_x, _y, _bx, _by, _passive);"),
+    "the wrapper does not delegate to the authoritative implementation",
+  );
+  assert.ok(
+    activate.includes(
+      "GRANT EXECUTE ON FUNCTION public.attack_boss(numeric, numeric, numeric, numeric, boolean) TO authenticated;",
+    ),
+    "signed-in players lose the public boss entry point",
+  );
+  assert.ok(
+    /REVOKE ALL ON FUNCTION public\.attack_boss_v1\(numeric, numeric, numeric, numeric, boolean\)\s*\nFROM PUBLIC, anon, authenticated;/.test(
+      activate,
+    ),
+    "attack_boss_v1 must stay non-public",
+  );
+});

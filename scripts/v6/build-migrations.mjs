@@ -34,6 +34,7 @@ const UUID_NAMESPACE = "bf50882c-ad8a-57ab-bb73-3ea3dd8fcb5c";
 const paths = {
   contentSql: resolve(root, "artifacts/v6/supabase/generated/content-manifest.sql"),
   runtime: resolve(root, "supabase/v6/strength-runtime.sql"),
+  entrypoints: resolve(root, "supabase/v6/public-entrypoints.sql"),
   world: resolve(root, "content/v6/world-spawn-manifest.json"),
   previousWorld: resolve(root, "content/v5/world-spawn-manifest.json"),
   stageContent: resolve(root, "supabase/migrations/20260903120000_v6_stage_content.sql"),
@@ -41,9 +42,10 @@ const paths = {
   activate: resolve(root, "supabase/migrations/20260903120200_v6_activate.sql"),
 };
 
-const [contentSql, runtimeSql, worldText, previousWorldText] = await Promise.all([
+const [contentSql, runtimeSql, entrypointsSql, worldText, previousWorldText] = await Promise.all([
   readFile(paths.contentSql, "utf8"),
   readFile(paths.runtime, "utf8"),
+  readFile(paths.entrypoints, "utf8"),
   readFile(paths.world, "utf8"),
   readFile(paths.previousWorld, "utf8"),
 ]);
@@ -733,6 +735,10 @@ REVOKE ALL
 ON FUNCTION public.apply_strength_buff(jsonb, numeric)
 FROM PUBLIC, anon, authenticated, service_role;
 
+${entrypointsSql.trim()}
+
+
+
 
 
 DO $v6_activate_exit$
@@ -870,6 +876,28 @@ for (const [name, body] of [
   if (body.includes("FROM PUBLIC, anon, authenticated, service_role;")) {
     throw new Error(`${name} must not carry the activation-time revoke`);
   }
+}
+
+// The public boss entry point must keep an action gate, but not the legacy-v1
+// world contract that made it unusable under v5/v6.
+if (!activate.includes("CREATE OR REPLACE FUNCTION public.attack_boss(")) {
+  throw new Error("activate does not rebuild the public attack_boss wrapper");
+}
+if (!activate.includes("PERFORM public.game_assert_action_allowed(false);")) {
+  throw new Error("activate does not keep a non-legacy action gate on attack_boss");
+}
+if (activate.includes("PERFORM public.game_assert_action_allowed(true);")) {
+  throw new Error("activate still asserts the legacy v1 world contract");
+}
+if (!activate.includes("RETURN public.attack_boss_v1(_x, _y, _bx, _by, _passive);")) {
+  throw new Error("the public wrapper must delegate to attack_boss_v1");
+}
+if (
+  !activate.includes(
+    "REVOKE ALL ON FUNCTION public.attack_boss_v1(numeric, numeric, numeric, numeric, boolean)",
+  )
+) {
+  throw new Error("activate does not keep attack_boss_v1 non-public");
 }
 
 if (!/jsonb_set\(\n {6}s\.data,\n {6}'\{buff\}'/.test(activate)) {
