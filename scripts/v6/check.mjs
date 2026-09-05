@@ -47,7 +47,8 @@ check(
   "every published potion must be active",
 );
 check(
-  JSON.stringify(potions.map((potion) => potion.id).sort()) === JSON.stringify([...POTION_IDS].sort()),
+  JSON.stringify(potions.map((potion) => potion.id).sort()) ===
+    JSON.stringify([...POTION_IDS].sort()),
   "potion ids drifted from the approved stable id set",
 );
 check(new Set(potions.map((p) => p.tier_index)).size === 16, "potions are not one per tier");
@@ -56,7 +57,10 @@ const byId = new Map(potions.map((potion) => [potion.id, potion]));
 // The percentage effect is authored in the runtime mechanics block, not in the
 // shared item stats, so V1..V5 keep reading `dmg_boost` as a flat bonus.
 const mechanics = runtime.mechanics?.strength_potions ?? [];
-check(mechanics.length === 16, `expected 16 strength-potion mechanics rows, found ${mechanics.length}`);
+check(
+  mechanics.length === 16,
+  `expected 16 strength-potion mechanics rows, found ${mechanics.length}`,
+);
 const pctById = new Map(mechanics.map((row) => [row.item_id, row]));
 const v5ById = new Map(v5.runtime.items.map((item) => [item.id, item]));
 for (const spec of POTIONS) {
@@ -117,7 +121,9 @@ check(
 
 // ---- exactly 16 alchemy recipes, one per potion, unchanged from V5 ---------
 const itemIds = new Set(runtime.items.map((item) => item.id));
-const potionRecipes = runtime.recipes.filter((recipe) => POTION_IDS.includes(recipe.output_item_id));
+const potionRecipes = runtime.recipes.filter((recipe) =>
+  POTION_IDS.includes(recipe.output_item_id),
+);
 check(potionRecipes.length === 16, `expected 16 potion recipes, found ${potionRecipes.length}`);
 check(
   new Set(potionRecipes.map((recipe) => recipe.output_item_id)).size === 16,
@@ -140,7 +146,8 @@ for (const node of runtime.nodes) noteSource(node.item_id, node.level_requiremen
 for (const monster of runtime.monsters) {
   for (const drop of monster.loot ?? []) noteSource(drop.item_id, monster.level_requirement ?? 1);
 }
-for (const recipe of runtime.recipes) noteSource(recipe.output_item_id, recipe.level_requirement ?? 1);
+for (const recipe of runtime.recipes)
+  noteSource(recipe.output_item_id, recipe.level_requirement ?? 1);
 
 for (const recipe of potionRecipes) {
   const before = v5.runtime.recipes.find((entry) => entry.id === recipe.id);
@@ -155,7 +162,10 @@ for (const recipe of potionRecipes) {
   check(recipe.inputs.length > 0, `recipe ${recipe.id} has no ingredients`);
   for (const input of recipe.inputs) {
     check(itemIds.has(input.item_id), `recipe ${recipe.id} consumes undefined ${input.item_id}`);
-    check(obtainable.has(input.item_id), `recipe ${recipe.id} consumes unobtainable ${input.item_id}`);
+    check(
+      obtainable.has(input.item_id),
+      `recipe ${recipe.id} consumes unobtainable ${input.item_id}`,
+    );
     check(input.qty > 0, `recipe ${recipe.id} consumes a non-positive quantity`);
     const gate = sourceLevel.get(input.item_id);
     // The tier-16 capstone is an explicit soft gate: Ascendant Core drops from
@@ -281,4 +291,6 @@ if (failures.length) {
   console.error(`V6 check failed:\n  ${failures.join("\n  ")}`);
   process.exit(1);
 }
-console.log(`V6 contract verified: ${POTIONS.length} potions, ${potionRecipes.length} recipes, 0 deletions`);
+console.log(
+  `V6 contract verified: ${POTIONS.length} potions, ${potionRecipes.length} recipes, 0 deletions`,
+);

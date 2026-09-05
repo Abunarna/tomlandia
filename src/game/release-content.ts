@@ -168,7 +168,8 @@ export function ensureReleaseContent() {
     const tier = RELEASE_TIERS.find((row) => row.tier_index === entry.tier_index);
     const recipe = byOutput.get(entry.id as ItemId);
     const def = ITEMS[entry.id as ItemId];
-    if (!tier || !recipe || !def) throw new Error(`Release potion catalog incomplete for ${entry.id}`);
+    if (!tier || !recipe || !def)
+      throw new Error(`Release potion catalog incomplete for ${entry.id}`);
     return {
       tier: entry.tier_index,
       theme: tier.theme,

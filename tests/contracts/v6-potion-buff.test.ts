@@ -36,7 +36,12 @@ describe("readServerBuff", () => {
 
   test("valid V6 percentage buff", () => {
     expect(
-      readServerBuff({ strength_pct: 12, hits: 30, item: "minor_venom_draught", content_version: "v6" }),
+      readServerBuff({
+        strength_pct: 12,
+        hits: 30,
+        item: "minor_venom_draught",
+        content_version: "v6",
+      }),
     ).toEqual({ pct: 12, dmg: 0, hits: 30, item: "minor_venom_draught" });
   });
 
@@ -63,7 +68,8 @@ describe("bestPotionIndex", () => {
     legacy: potion({ id: "legacy", dmgBoost: 48, boostHits: 35, tier: 16 }),
     food: potion({ id: "food", kind: "food", heal: 20 }),
   };
-  const slots = (...ids: string[]): (InvSlot | null)[] => ids.map((id) => (id ? { id, qty: 1 } : null));
+  const slots = (...ids: string[]): (InvSlot | null)[] =>
+    ids.map((id) => (id ? { id, qty: 1 } : null));
 
   test("ranks by percentage first", () => {
     expect(bestPotionIndex(slots("weak", "strong"), defs)).toBe(1);
