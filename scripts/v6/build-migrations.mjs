@@ -872,8 +872,7 @@ for (const [name, body] of [
   }
 }
 
-  throw new Error("activate does not convert active potion buffs to the percentage shape");
-}
+
 if (!/jsonb_set\(\n {6}s\.data,\n {6}'\{buff\}'/.test(activate)) {
   throw new Error(
     "activate must convert buffs with a targeted jsonb_set, not a whole-save rewrite",
