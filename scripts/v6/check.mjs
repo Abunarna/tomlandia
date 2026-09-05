@@ -53,6 +53,11 @@ check(
 check(new Set(potions.map((p) => p.tier_index)).size === 16, "potions are not one per tier");
 
 const byId = new Map(potions.map((potion) => [potion.id, potion]));
+// The percentage effect is authored in the runtime mechanics block, not in the
+// shared item stats, so V1..V5 keep reading `dmg_boost` as a flat bonus.
+const mechanics = runtime.mechanics?.strength_potions ?? [];
+check(mechanics.length === 16, `expected 16 strength-potion mechanics rows, found ${mechanics.length}`);
+const pctById = new Map(mechanics.map((row) => [row.item_id, row]));
 const v5ById = new Map(v5.runtime.items.map((item) => [item.id, item]));
 for (const spec of POTIONS) {
   const potion = byId.get(spec.id);
@@ -60,10 +65,13 @@ for (const spec of POTIONS) {
   if (!potion) continue;
   check(potion.name === spec.name, `potion ${spec.id} is named "${potion.name}"`);
   check(potion.tier_index === spec.tier, `potion ${spec.id} is not tier ${spec.tier}`);
+  const effect = pctById.get(spec.id);
   check(
-    potion.stats.strength_pct === spec.strength_pct,
+    effect?.strength_pct === spec.strength_pct,
     `potion ${spec.id} does not match the frozen percentage model`,
   );
+  check(effect?.tier_index === spec.tier, `potion ${spec.id} mechanics row is on the wrong tier`);
+  check(effect?.boost_hits === potion.stats.boost_hits, `potion ${spec.id} hit counts disagree`);
   check(potion.stats.boost_hits > 0, `potion ${spec.id} has a non-positive hit count`);
 
   // strict field-level delta: only the name and the strength effect may differ
@@ -80,18 +88,18 @@ for (const spec of POTIONS) {
     `potion ${spec.id} hit count changed from v5`,
   );
   const strip = (item) => {
-    const { name, stats, ...rest } = item;
-    const { strength_pct, ...restStats } = stats;
-    return JSON.stringify({ ...rest, stats: restStats });
+    const { name, ...rest } = item;
+    return JSON.stringify(rest);
   };
   check(strip(potion) === strip(before), `potion ${spec.id} changed fields V6 must not touch`);
 }
 
 // non-decreasing progression across the ladder
 const ladder = [...potions].sort((left, right) => left.tier_index - right.tier_index);
+const pctOf = (potion) => pctById.get(potion.id)?.strength_pct ?? 0;
 for (let index = 1; index < ladder.length; index += 1) {
   check(
-    ladder[index].stats.strength_pct >= ladder[index - 1].stats.strength_pct,
+    pctOf(ladder[index]) >= pctOf(ladder[index - 1]),
     `strength progression decreases at tier ${ladder[index].tier_index}`,
   );
   check(
