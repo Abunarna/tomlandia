@@ -13,7 +13,9 @@ import {
 import {
   BASE_ATTACK_INTERVAL_S,
   releaseArmourTiers,
+  releasePotionTiers,
   releaseWeaponTiers,
+  type PotionTierRow,
 } from "@/game/release-content";
 import type { HudSnapshot, InvSlot, ItemDef, ItemId } from "@/game/types";
 import { ItemIcon } from "./ItemIcon";
@@ -85,6 +87,7 @@ export function NpcDialog({
   const count = (id: ItemId) => hud.inv.reduce((n, s) => (s && s.id === id ? n + s.qty : n), 0);
   const armourTiers = releaseArmourTiers();
   const weaponTiers = releaseWeaponTiers();
+  const potionTiers = releasePotionTiers();
 
   const STATIONS = ["smelt", "forge", "weave", "armor", "skin", "cook", "alchemy"] as const;
   type Station = (typeof STATIONS)[number];
@@ -320,6 +323,85 @@ export function NpcDialog({
                             <div key={side} />
                           ),
                         )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </Section>
+            );
+          }
+
+          if (svc === "alchemy") {
+            const potionRecipeIds = new Set(potionTiers.map((row) => row.recipe.id));
+            const others = list.filter((r) => !potionRecipeIds.has(r.id));
+            const bagBest = potionTiers
+              .filter((row) => count(row.item.id) > 0)
+              .sort((a, b) => b.strengthPct - a.strengthPct || b.boostHits - a.boostHits)[0];
+            return (
+              <Section key={svc} title={`${stationTitle[svc]} (Lv ${stationLvl})`}>
+                <p className="text-[10px] text-muted-foreground">
+                  One strength potion per tier, from Lv 1 to Lv 150. A potion raises your attack by
+                  a percentage for a set number of hits — it never changes how much your food heals.
+                </p>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {potionTiers.map((row) => (
+                    <PotionCard
+                      key={row.recipe.id}
+                      row={row}
+                      attackInterval={hud.attackInterval}
+                      activePct={hud.buff?.pct ?? 0}
+                      bagBest={bagBest ?? null}
+                      owned={count(row.item.id)}
+                      level={hud.skills[row.recipe.skill].level}
+                      count={count}
+                      open={openRecipe === row.recipe.id}
+                      onToggle={() =>
+                        setOpenRecipe(openRecipe === row.recipe.id ? null : row.recipe.id)
+                      }
+                      onCraft={onCraft}
+                      onCraftAll={onCraftAll}
+                    />
+                  ))}
+                </div>
+                {others.length > 0 && (
+                  <p className="pt-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+                    Other brews
+                  </p>
+                )}
+                {others.map((r) => {
+                  const lvl = hud.skills[r.skill].level;
+                  const ok = lvl >= r.req && r.inputs.every((i) => count(i.id) >= i.qty);
+                  return (
+                    <div
+                      key={r.id}
+                      className="flex items-center gap-2 rounded-2xl border border-border/70 bg-muted/40 p-2"
+                    >
+                      <ItemIcon item={item(r.out)} className="size-8 shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-xs font-bold text-foreground">
+                          {item(r.out).name}
+                          {r.outQty > 1 ? ` x${r.outQty}` : ""}
+                        </p>
+                        <p className="truncate text-[10px] text-muted-foreground">
+                          Lv {r.req} {r.skill} · {r.xp} xp
+                        </p>
+                      </div>
+                      <div className="flex shrink-0 gap-1">
+                        <button
+                          disabled={!ok}
+                          onClick={() => onCraft(r.id)}
+                          className="flex items-center gap-1 rounded-xl bg-primary px-2.5 py-1.5 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+                        >
+                          <Hammer className="size-3" />
+                          Make
+                        </button>
+                        <button
+                          disabled={!ok}
+                          onClick={() => onCraftAll(r.id)}
+                          className="rounded-xl bg-primary px-2.5 py-1.5 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+                        >
+                          All
+                        </button>
                       </div>
                     </div>
                   );
@@ -788,6 +870,130 @@ function ArmourCard({
  * always compares against the equipped weapon: the ladder is only useful if you
  * can see whether the next tier is actually an upgrade.
  */
+/**
+ * One strength potion tier for the Alchemist. Locked future tiers still show,
+ * so the whole ladder is readable from level 1.
+ */
+function PotionCard({
+  row,
+  attackInterval,
+  activePct,
+  bagBest,
+  owned,
+  level,
+  count,
+  open,
+  onToggle,
+  onCraft,
+  onCraftAll,
+}: {
+  row: PotionTierRow;
+  attackInterval: number;
+  activePct: number;
+  bagBest: PotionTierRow | null;
+  owned: number;
+  level: number;
+  count: (id: ItemId) => number;
+  open: boolean;
+  onToggle: () => void;
+  onCraft: (recipeId: string) => void;
+  onCraftAll: (recipeId: string) => void;
+}) {
+  const { recipe, item: def, strengthPct, boostHits } = row;
+  const levelOk = level >= recipe.req;
+  const hasMats = recipe.inputs.every((i) => count(i.id) >= i.qty);
+  const ok = levelOk && hasMats;
+  const seconds = Math.round(boostHits * Math.max(attackInterval, 0.1));
+  const effect = `+${strengthPct}% strength for ${boostHits} hits`;
+  return (
+    <div
+      className={`rounded-2xl border p-1.5 ${
+        levelOk ? "border-border/70 bg-muted/40" : "border-border/40 bg-muted/20 opacity-70"
+      }`}
+    >
+      <button
+        onClick={onToggle}
+        aria-expanded={open}
+        aria-label={`${def.name}, tier ${row.tier}, ${effect}`}
+        className="flex w-full min-w-0 items-center gap-1.5 text-left active:scale-[0.99]"
+      >
+        <span className="relative shrink-0">
+          <ItemIcon item={def} className="size-8" />
+          {!levelOk && (
+            <Lock className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-card p-[1px] text-muted-foreground" />
+          )}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[11px] font-bold text-foreground">{def.name}</span>
+          <span className="block truncate text-[9px] text-muted-foreground">
+            T{row.tier} · Lv {row.levelRequirement} · {effect}
+          </span>
+        </span>
+        <ChevronDown
+          className={`size-3.5 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      <div className="mt-1.5 flex gap-1">
+        <button
+          disabled={!ok}
+          onClick={() => onCraft(recipe.id)}
+          className="flex flex-1 items-center justify-center gap-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+        >
+          <Hammer className="size-3" />
+          Brew
+        </button>
+        <button
+          disabled={!ok}
+          onClick={() => onCraftAll(recipe.id)}
+          className="rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+        >
+          All
+        </button>
+      </div>
+
+      {open && (
+        <div className="mt-1.5 space-y-1 rounded-xl bg-card/70 p-2">
+          <p className="text-[10px] text-muted-foreground">
+            {effect} · about {seconds}s at your current swing speed
+          </p>
+          <p className="text-[10px] text-muted-foreground">
+            Lv {recipe.req} {recipe.skill} · {recipe.xp} xp · {recipe.time}s · worth {def.value}g ·
+            you hold {owned}
+          </p>
+          <p className="text-[10px] font-bold text-muted-foreground">
+            {activePct > 0
+              ? `${strengthPct - activePct >= 0 ? "+" : ""}${strengthPct - activePct}% vs the potion you are drinking`
+              : "No potion active"}
+          </p>
+          <p className="text-[10px] font-bold text-muted-foreground">
+            {bagBest
+              ? `${strengthPct - bagBest.strengthPct >= 0 ? "+" : ""}${strengthPct - bagBest.strengthPct}% vs your best carried potion (${bagBest.item.name})`
+              : "No strength potion in your bag"}
+          </p>
+          {recipe.inputs.map((i) => {
+            const mat = item(i.id);
+            const have = count(i.id);
+            return (
+              <div key={i.id} className="flex items-center gap-1.5">
+                <ItemIcon item={mat} className="size-4" />
+                <span className="min-w-0 flex-1 truncate text-[10px] text-foreground">
+                  {mat.name}
+                </span>
+                <span
+                  className={`text-[10px] font-bold ${have >= i.qty ? "text-primary" : "text-destructive"}`}
+                >
+                  {have}/{i.qty}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function WeaponCard({
   tier,
   theme,

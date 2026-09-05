@@ -75,7 +75,7 @@ export function Hud({ hud }: { hud: HudSnapshot }) {
         <div className="w-fit rounded-2xl border border-primary/40 bg-primary/15 px-3 py-1.5 shadow-soft backdrop-blur-md">
           <p className="flex items-center gap-1.5 text-[11px] font-bold text-primary">
             <FlaskConical className="size-3.5" />
-            +{hud.buff.dmg} damage
+            {hud.buff.pct > 0 ? `+${hud.buff.pct}% strength` : `+${hud.buff.dmg} damage`}
             <span className="text-muted-foreground">{hud.buff.hits} hits left</span>
           </p>
         </div>
