@@ -803,9 +803,10 @@ for (const [name, body] of [
   if (/DELETE FROM public\.player_saves/.test(body)) {
     throw new Error(`${name} deletes player saves`);
   }
-  for (const id of POTION_IDS) {
-    if (new RegExp(`DELETE[\\s\\S]{0,400}'${id}'`).test(body)) {
-      throw new Error(`${name} deletes stable potion id ${id}`);
+  // Inspect each DELETE statement on its own, up to its terminating semicolon.
+  for (const statement of body.match(/DELETE FROM[\s\S]*?;/g) ?? []) {
+    for (const id of POTION_IDS) {
+      if (statement.includes(`'${id}'`)) throw new Error(`${name} deletes stable potion id ${id}`);
     }
   }
 }
