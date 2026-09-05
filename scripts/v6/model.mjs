@@ -55,6 +55,28 @@ export const DELETED_ITEMS = Object.freeze([]);
  */
 export const MAX_SAME_TIER_UPLIFT_PCT = 22;
 
+/**
+ * Owner-approved exceptions to MAX_SAME_TIER_UPLIFT_PCT (2026-09-03).
+ *
+ * Narrowly scoped: an isolated integer-rounding artifact in an unrealistic
+ * progression state. The general 22% gate is unchanged for every other case,
+ * and lowering tier 1 to 11% would not remove it — round(14 * 0.11) is still 2.
+ */
+export const APPROVED_UPLIFT_EXCEPTIONS = Object.freeze([
+  Object.freeze({
+    tier: 1,
+    potion_id: "minor_venom_draught",
+    combat_level: 1,
+    plus: 20,
+    strength_pct: 12,
+    base_attack: 14,
+    strength_bonus: 2,
+    modeled_uplift_pct: 22.24,
+    reason:
+      "isolated integer-rounding artifact: a level-1 character with +20 weapon and +20 armour is not a reachable progression state",
+  }),
+]);
+
 export const PLAYER_NOTICE = Object.freeze({
   details: [
     "Every tier from level 1 to level 150 offers exactly one strength potion, named after its tier.",

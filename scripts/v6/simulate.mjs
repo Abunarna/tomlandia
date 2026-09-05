@@ -12,7 +12,12 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 
 import { prettyCanonicalJson } from "../content/model.mjs";
-import { BASE_ATTACK_INTERVAL_S, MAX_SAME_TIER_UPLIFT_PCT, POTIONS } from "./model.mjs";
+import {
+  APPROVED_UPLIFT_EXCEPTIONS,
+  BASE_ATTACK_INTERVAL_S,
+  MAX_SAME_TIER_UPLIFT_PCT,
+  POTIONS,
+} from "./model.mjs";
 
 const checkOnly = process.argv.includes("--check");
 const OUT = Object.freeze({
@@ -66,6 +71,7 @@ const ascendant = runtime.monsters.find((monster) => monster.kind === "ascendant
 
 const combatRows = [];
 const violations = [];
+const exceptionsHit = [];
 
 for (const tier of tiers) {
   const potion = POTIONS.find((entry) => entry.tier === tier);
@@ -156,9 +162,21 @@ for (const tier of tiers) {
         combatRows.push(row);
 
         if (label === "same_tier" && uplift > MAX_SAME_TIER_UPLIFT_PCT) {
-          violations.push(
-            `tier ${tier} ${style} +${plus} same-tier uplift ${r2(uplift)}% exceeds ${MAX_SAME_TIER_UPLIFT_PCT}%`,
+          const approved = APPROVED_UPLIFT_EXCEPTIONS.find(
+            (entry) =>
+              entry.tier === tier &&
+              entry.plus === plus &&
+              entry.base_attack === baseAttack &&
+              entry.strength_bonus === bonus &&
+              r2(uplift) === entry.modeled_uplift_pct,
           );
+          if (!approved) {
+            violations.push(
+              `tier ${tier} ${style} +${plus} same-tier uplift ${r2(uplift)}% exceeds ${MAX_SAME_TIER_UPLIFT_PCT}%`,
+            );
+          } else {
+            exceptionsHit.push({ ...approved, armour: style, target_defense: target.defense });
+          }
         }
         if (row.one_hit_kill && label !== "low_defense") {
           violations.push(`tier ${tier} ${style} +${plus} vs ${label} introduces a one-hit kill`);
@@ -225,6 +243,8 @@ const combat = {
     ],
   },
   approved_threshold_pct: MAX_SAME_TIER_UPLIFT_PCT,
+  approved_exceptions: APPROVED_UPLIFT_EXCEPTIONS,
+  approved_exceptions_observed: exceptionsHit,
   same_tier_uplift_pct: {
     min: Math.min(...sameTierUplifts),
     max: Math.max(...sameTierUplifts),
@@ -307,7 +327,7 @@ for (const [file, rendered] of outputs) {
 }
 
 if (violations.length) {
-  if (!process.env.V6_REPORT_ONLY) throw new Error(`V6 combat model rejected the curve:\n  ${violations.join("\n  ")}`);
+  throw new Error(`V6 combat model rejected the curve:\n  ${violations.join("\n  ")}`);
 }
 
 console.log(
