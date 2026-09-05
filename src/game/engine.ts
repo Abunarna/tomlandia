@@ -70,6 +70,8 @@ import {
   desolatusAt,
 } from "./boss";
 import { levelFromXp } from "./progression";
+import { bestPotionIndex, readServerBuff, type ClientBuff, type ServerBuff } from "./potion-buff";
+export { readServerBuff, type ClientBuff, type ServerBuff } from "./potion-buff";
 import { BUSH_PALETTE_BY_NODE, bushSprite } from "./bush-sprite";
 import { ORE_PALETTE_BY_NODE, oreSprite } from "./ore-sprite";
 import { TREE_PALETTE_BY_NODE, treeSprite } from "./tree-sprite";
@@ -497,7 +499,7 @@ export interface DamageRes {
   leveled?: boolean;
   tagged_by?: string | null;
   respawn_at?: string | null;
-  buff?: { dmg: number; hits: number };
+  buff?: ServerBuff | null;
   death?: { at: number; reason: string; lost_gold?: number } | null;
   food_used?: boolean;
   skipped_loot?: ItemId[];
@@ -520,7 +522,7 @@ export interface FishRes {
 export interface PotionRes {
   ok: boolean;
   reason?: string;
-  buff?: { dmg: number; hits: number; item?: string };
+  buff?: ServerBuff | null;
   state?: ServerState;
 }
 
@@ -977,8 +979,8 @@ export class GameEngine {
   onSellAllResources: (() => Promise<GearRes>) | null = null;
 
 
-  /** Active damage buff from a potion — mirrored from the server. */
-  buff: { dmg: number; hits: number } | null = null;
+  /** Active potion buff — mirrored from the server, never computed here. */
+  buff: ClientBuff | null = null;
 
   /** Most recent death event shown as a fullscreen red overlay. */
   death: { at: number; reason: string } | null = null;
@@ -2133,21 +2135,9 @@ export class GameEngine {
     this.emitHud(true);
   }
 
-  /** Strongest potion currently in the bag, if any. */
+  /** Strongest potion currently in the bag, ranked by the shared helper. */
   private bestPotionSlot(): number {
-    let best = -1;
-    let dmg = -1;
-    for (let i = 0; i < this.inv.length; i++) {
-      const s = this.inv[i];
-      if (!s) continue;
-      const def = item(s.id);
-      if (def.kind !== "potion" || !def.dmgBoost) continue;
-      if (def.dmgBoost > dmg) {
-        dmg = def.dmgBoost;
-        best = i;
-      }
-    }
-    return best;
+    return bestPotionIndex(this.inv, ITEMS);
   }
 
   /** Drink the next potion when auto-potion is on and no buff is running. */
@@ -2475,9 +2465,9 @@ export class GameEngine {
                   this.pushText(m.x, m.y - 24, `${res.dmg ?? 0}`, "#fff0c9");
                   if (typeof res.hp === "number") m.hp = res.hp;
                   if (res.tagged_by !== undefined) m.taggedBy = res.tagged_by ?? null;
-                  if (res.buff) {
-                    const hits = Number(res.buff.hits) || 0;
-                    this.buff = hits > 0 ? { dmg: Number(res.buff.dmg) || 0, hits } : null;
+                  if (res.buff !== undefined) {
+                    this.buff = readServerBuff(res.buff);
+                    const hits = this.buff?.hits ?? 0;
                     if (!this.buff) {
                       this.buffMaxHits = 0;
                       this.autoDrink();
@@ -2980,11 +2970,16 @@ export class GameEngine {
           this.potionPending = false;
           if (!res.ok) return;
           this.applyServerState(res.state);
-          if (res.buff) {
-            this.buff = { dmg: Number(res.buff.dmg) || 0, hits: Number(res.buff.hits) || 0 };
-            this.buffMaxHits = Math.max(this.buff.hits, 1);
+          if (res.buff !== undefined) {
+            this.buff = readServerBuff(res.buff);
+            this.buffMaxHits = Math.max(this.buff?.hits ?? 0, 1);
           }
-          this.pushText(this.px, this.py - 46, `+${this.buff?.dmg ?? 0} dmg`, "#e7c7ff");
+          const label = this.buff
+            ? this.buff.pct > 0
+              ? `+${this.buff.pct}% strength`
+              : `+${this.buff.dmg} dmg`
+            : "no effect";
+          this.pushText(this.px, this.py - 46, label, "#e7c7ff");
           sfx.play("gather");
           this.emitHud(true);
         })

@@ -55,7 +55,8 @@ const contentHash = world.source_content_manifest_hash;
 if (!contentSql.includes(`Manifest SHA-256: ${contentHash}`)) {
   throw new Error("Generated content SQL hash does not match the v6 manifest");
 }
-if (!contentSql.includes(`Content version: ${VERSION}`)) throw new Error("Generated content SQL is not the v6 cut");
+if (!contentSql.includes(`Content version: ${VERSION}`))
+  throw new Error("Generated content SQL is not the v6 cut");
 if (DELETED_ITEMS.length) throw new Error("V6 must not delete any item definition");
 
 // The potion release must not move a single spawn. Prove it before emitting.
@@ -77,7 +78,9 @@ for (const spawn of world.spawns) {
 
 const md5 = (value) => createHash("md5").update(value).digest("hex");
 const num = (value) => String(Number(value));
-const bySpawnId = [...world.spawns].sort((left, right) => (left.spawn_id < right.spawn_id ? -1 : 1));
+const bySpawnId = [...world.spawns].sort((left, right) =>
+  left.spawn_id < right.spawn_id ? -1 : 1,
+);
 const spawnDigest = md5(
   bySpawnId
     .map(
@@ -98,7 +101,9 @@ const nodeDigest = md5(
 const monsterDigest = md5(
   bySpawnId
     .filter((s) => s.entity_type === "monster")
-    .map((s) => `${s.spawn_id}:${s.kind}:${s.cell}:${num(s.x)}:${num(s.y)}:${s.max_hp}:${s.respawn_s}`)
+    .map(
+      (s) => `${s.spawn_id}:${s.kind}:${s.cell}:${num(s.x)}:${num(s.y)}:${s.max_hp}:${s.respawn_s}`,
+    )
     .join(","),
 );
 
@@ -108,8 +113,12 @@ const monsterCount = world.counts.monsters;
 const sqlText = (value) => `'${String(value).replaceAll("'", "''")}'`;
 
 // ---- field-level v5 -> v6 delta -------------------------------------------
-const v5Manifest = JSON.parse(await readFile(resolve(root, "content/v5/manifest.authoring.json"), "utf8")).runtime;
-const v6Manifest = JSON.parse(await readFile(resolve(root, "content/v6/manifest.authoring.json"), "utf8")).runtime;
+const v5Manifest = JSON.parse(
+  await readFile(resolve(root, "content/v5/manifest.authoring.json"), "utf8"),
+).runtime;
+const v6Manifest = JSON.parse(
+  await readFile(resolve(root, "content/v6/manifest.authoring.json"), "utf8"),
+).runtime;
 const stable = (value) => JSON.stringify(value);
 
 const sameOutside = (before, after, field, skip) => {
@@ -198,26 +207,34 @@ const values = (rows) => rows.join(",\n  ");
 const itemRows = blockRows("INSERT INTO public.game_content_items");
 const ruleRows = blockRows("INSERT INTO public.game_content_migration_rules");
 const potionRows = itemRows.filter((row) => POTION_IDS.includes(field(row, 1)));
-if (potionRows.length !== POTION_IDS.length) throw new Error("potion item extraction is incomplete");
+if (potionRows.length !== POTION_IDS.length)
+  throw new Error("potion item extraction is incomplete");
 for (const row of potionRows) {
   const id = field(row, 1);
   const expected = potionRenames.find((entry) => entry.id === id);
   if (field(row, 2) !== expected.name) {
-    throw new Error(`generated artifact names ${id} "${field(row, 2)}", expected "${expected.name}"`);
+    throw new Error(
+      `generated artifact names ${id} "${field(row, 2)}", expected "${expected.name}"`,
+    );
   }
 }
 if (ruleRows.length !== v6Manifest.migration_rules.length) {
   throw new Error("migration rule extraction is incomplete");
 }
 
-const versionStart = sqlLines.findIndex((line) => line.startsWith("INSERT INTO public.game_content_versions"));
+const versionStart = sqlLines.findIndex((line) =>
+  line.startsWith("INSERT INTO public.game_content_versions"),
+);
 const versionBlock = sqlLines.slice(versionStart, versionStart + 4).join("\n");
 if (!versionBlock.includes("ON CONFLICT")) throw new Error("could not extract the v6 version row");
 
 const list = (ids) => ids.map((id) => `'${id}'`).join(", ");
 const inputCount = v6Manifest.recipes.reduce((total, recipe) => total + recipe.inputs.length, 0);
-const alchemyRecipes = v6Manifest.recipes.filter((recipe) => POTION_IDS.includes(recipe.output_item_id));
-if (alchemyRecipes.length !== POTION_IDS.length) throw new Error("v6 must define one recipe per potion");
+const alchemyRecipes = v6Manifest.recipes.filter((recipe) =>
+  POTION_IDS.includes(recipe.output_item_id),
+);
+if (alchemyRecipes.length !== POTION_IDS.length)
+  throw new Error("v6 must define one recipe per potion");
 const copyTables = [
   "game_content_tiers",
   "game_content_items",
@@ -803,13 +820,18 @@ for (const [name, body] of [
   if (/DELETE FROM public\.player_saves/.test(body)) {
     throw new Error(`${name} deletes player saves`);
   }
-  for (const id of POTION_IDS) {
-    if (new RegExp(`DELETE[\\s\\S]{0,400}'${id}'`).test(body)) {
-      throw new Error(`${name} deletes stable potion id ${id}`);
+  // Inspect each DELETE statement on its own, up to its terminating semicolon.
+  for (const statement of body.match(/DELETE FROM[\s\S]*?;/g) ?? []) {
+    for (const id of POTION_IDS) {
+      if (statement.includes(`'${id}'`)) throw new Error(`${name} deletes stable potion id ${id}`);
     }
   }
 }
-if (!/UPDATE public\.game_content_items AS item\nSET name = updated\.name,\n {4}strength_pct = updated\.strength_pct/.test(stageContent)) {
+if (
+  !/UPDATE public\.game_content_items AS item\nSET name = updated\.name,\n {4}strength_pct = updated\.strength_pct/.test(
+    stageContent,
+  )
+) {
   throw new Error("stage-content does not update the potions in place");
 }
 for (const potion of POTIONS) {
@@ -822,7 +844,9 @@ if (!activate.includes("'strength_pct', potion.strength_pct")) {
   throw new Error("activate does not convert active potion buffs to the percentage shape");
 }
 if (!/jsonb_set\(\n {6}s\.data,\n {6}'\{buff\}'/.test(activate)) {
-  throw new Error("activate must convert buffs with a targeted jsonb_set, not a whole-save rewrite");
+  throw new Error(
+    "activate must convert buffs with a targeted jsonb_set, not a whole-save rewrite",
+  );
 }
 if (!stageContent.includes("CREATE OR REPLACE FUNCTION public.apply_strength_buff")) {
   throw new Error("stage-content does not install the shared buff helper");
@@ -832,7 +856,8 @@ for (const fn of ["public.use_potion", "public.attack_monster_v2", "public.attac
     throw new Error(`stage-content does not update ${fn}`);
   }
 }
-const helperCalls = (stageContent.match(/public\.apply_strength_buff\(data, attack_stat\)/g) ?? []).length;
+const helperCalls = (stageContent.match(/public\.apply_strength_buff\(data, attack_stat\)/g) ?? [])
+  .length;
 if (helperCalls !== 2) {
   throw new Error(`the shared helper must be called once per combat path, found ${helperCalls}`);
 }
@@ -855,7 +880,10 @@ for (const [file, body] of outputs) {
     await writeFile(file, body, "utf8");
   }
 }
-if (drift) throw new Error("V6 migrations drifted from the artifacts; rerun scripts/v6/build-migrations.mjs");
+if (drift)
+  throw new Error(
+    "V6 migrations drifted from the artifacts; rerun scripts/v6/build-migrations.mjs",
+  );
 
 console.log(
   `${checkOnly ? "Verified" : "Wrote"} 3 V6 migrations: ${POTION_IDS.length} potions renamed and re-rated, ` +

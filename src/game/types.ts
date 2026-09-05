@@ -192,8 +192,8 @@ export interface HudSnapshot {
   /** Phase 7 — your display name and how many real players are nearby. */
   name: string;
   nearby: number;
-  /** Phase: active potion damage buff, if any. */
-  buff: { dmg: number; hits: number } | null;
+  /** Active potion buff, if any. `pct` is the V6 percentage, `dmg` the legacy flat bonus. */
+  buff: { pct: number; dmg: number; hits: number; item: ItemId | null } | null;
   /** Most recent death: epoch ms + description of the negative effects. Null while alive. */
   death: { at: number; reason: string } | null;
   /** DESOLATUS — the shared roaming world boss. `warn` is 0..1 proximity dread. */

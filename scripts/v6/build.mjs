@@ -67,7 +67,9 @@ for (const potion of POTIONS) {
   if (!item) throw new Error(`target potion ${potion.id} is not a V5 item`);
   if (item.kind !== "potion") throw new Error(`target potion ${potion.id} is not a potion`);
   if (item.tier_index !== potion.tier) {
-    throw new Error(`target potion ${potion.id} is tier ${item.tier_index}, expected ${potion.tier}`);
+    throw new Error(
+      `target potion ${potion.id} is tier ${item.tier_index}, expected ${potion.tier}`,
+    );
   }
   if (!(item.stats.boost_hits > 0)) throw new Error(`potion ${potion.id} has no boost hits`);
 }
@@ -76,7 +78,9 @@ for (const potion of POTIONS) {
 // Items: copy V5, rename the potions. Nothing else moves.
 // ---------------------------------------------------------------------------
 const items = src.items
-  .map((item) => (nameById.has(item.id) ? { ...item, active: true, name: nameById.get(item.id) } : item))
+  .map((item) =>
+    nameById.has(item.id) ? { ...item, active: true, name: nameById.get(item.id) } : item,
+  )
   .sort((left, right) => left.id.localeCompare(right.id));
 const itemIds = new Set(items.map((item) => item.id));
 
@@ -104,7 +108,10 @@ if (
 // Recipes: preserved exactly.
 // ---------------------------------------------------------------------------
 const recipes = [...src.recipes].sort((left, right) => left.id.localeCompare(right.id));
-if (JSON.stringify(recipes) !== JSON.stringify([...src.recipes].sort((l, r) => l.id.localeCompare(r.id)))) {
+if (
+  JSON.stringify(recipes) !==
+  JSON.stringify([...src.recipes].sort((l, r) => l.id.localeCompare(r.id)))
+) {
   throw new Error("V6 changed the recipe table");
 }
 const potionRecipes = recipes.filter((recipe) => POTION_IDS.includes(recipe.output_item_id));
@@ -115,9 +122,11 @@ for (const potion of POTIONS) {
   const recipe = potionRecipes.find((entry) => entry.output_item_id === potion.id);
   if (!recipe) throw new Error(`potion ${potion.id} has no recipe`);
   if (recipe.skill !== "alchemy") throw new Error(`recipe ${recipe.id} is not an Alchemy recipe`);
-  if (recipe.tier_index !== potion.tier) throw new Error(`recipe for ${potion.id} is not tier ${potion.tier}`);
+  if (recipe.tier_index !== potion.tier)
+    throw new Error(`recipe for ${potion.id} is not tier ${potion.tier}`);
   for (const input of recipe.inputs) {
-    if (!itemIds.has(input.item_id)) throw new Error(`recipe ${recipe.id} consumes unknown item ${input.item_id}`);
+    if (!itemIds.has(input.item_id))
+      throw new Error(`recipe ${recipe.id} consumes unknown item ${input.item_id}`);
   }
 }
 
@@ -143,10 +152,18 @@ for (const monster of src.monsters) {
   }
 }
 for (const recipe of recipes) {
-  note(recipe.output_item_id, { kind: "recipe", key: recipe.id, level_requirement: recipe.level_requirement });
+  note(recipe.output_item_id, {
+    kind: "recipe",
+    key: recipe.id,
+    level_requirement: recipe.level_requirement,
+  });
 }
 for (const fish of src.fish ?? []) {
-  note(fish.item_id, { kind: "fish", key: fish.item_id, level_requirement: fish.level_requirement });
+  note(fish.item_id, {
+    kind: "fish",
+    key: fish.item_id,
+    level_requirement: fish.level_requirement,
+  });
 }
 
 const acquisition = [];
@@ -155,7 +172,8 @@ for (const recipe of potionRecipes) {
     const sources = sourceOf.get(input.item_id) ?? [];
     if (!sources.length) throw new Error(`ingredient ${input.item_id} has no acquisition source`);
     const definition = v5Items.get(input.item_id);
-    if (!definition?.active) throw new Error(`ingredient ${input.item_id} is not an active definition`);
+    if (!definition?.active)
+      throw new Error(`ingredient ${input.item_id} is not an active definition`);
     const cheapest = Math.min(...sources.map((entry) => entry.level_requirement));
     acquisition.push({
       recipe_id: recipe.id,
@@ -247,7 +265,8 @@ const world = {
   rollback: {
     v5_rows_mutated: false,
     player_state_mutated: false,
-    switch_back: "select v5 content/spawn control; v5 content, spawn and world rows remain in place",
+    switch_back:
+      "select v5 content/spawn control; v5 content, spawn and world rows remain in place",
   },
 };
 const spawnHash = manifestHash({
@@ -258,8 +277,12 @@ const spawnHash = manifestHash({
 world.spawn_hash = spawnHash;
 const worldRendered = prettyCanonicalJson(world);
 
-if (world.spawns.length !== v5World.spawns.length) throw new Error("V6 must not change the spawn count");
-if (world.counts.nodes !== v5World.counts.nodes || world.counts.monsters !== v5World.counts.monsters) {
+if (world.spawns.length !== v5World.spawns.length)
+  throw new Error("V6 must not change the spawn count");
+if (
+  world.counts.nodes !== v5World.counts.nodes ||
+  world.counts.monsters !== v5World.counts.monsters
+) {
   throw new Error("V6 spawn counts drifted from V5");
 }
 
@@ -342,7 +365,8 @@ const outputs = [
 for (const [file, rendered] of outputs) {
   if (checkOnly) {
     const existing = await readFile(file, "utf8").catch(() => "");
-    if (existing !== rendered) throw new Error(`V6 artifact drifted: ${file}; run bun run v6:build`);
+    if (existing !== rendered)
+      throw new Error(`V6 artifact drifted: ${file}; run bun run v6:build`);
   } else {
     await mkdir(file.slice(0, file.lastIndexOf("/")), { recursive: true });
     await writeFile(file, rendered);
