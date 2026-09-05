@@ -171,19 +171,31 @@ for (const recipe of potionRecipes) {
 // ---- the modelled curve was actually simulated and passed ------------------
 const combat = await readJson("docs/overhaul/v6/combat-simulation.json");
 check(combat.approved_threshold_pct === MAX_SAME_TIER_UPLIFT_PCT, "simulation used another gate");
+const sortKeys = (value) =>
+  JSON.stringify(value, (_key, inner) =>
+    inner && typeof inner === "object" && !Array.isArray(inner)
+      ? Object.fromEntries(Object.entries(inner).sort(([a], [b]) => a.localeCompare(b)))
+      : inner,
+  );
 check(
-  JSON.stringify(combat.approved_exceptions) === JSON.stringify(APPROVED_UPLIFT_EXCEPTIONS),
+  sortKeys(combat.approved_exceptions) === sortKeys(APPROVED_UPLIFT_EXCEPTIONS),
   "simulation exceptions drifted from the owner-approved record",
 );
-for (const row of combat.cases ?? []) {
+check((combat.violations ?? []).length === 0, "the recorded simulation still has violations");
+check((combat.rows ?? []).length > 0, "the simulation recorded no cases");
+for (const row of combat.rows ?? []) {
   if (row.target !== "same_tier") continue;
   const approved = APPROVED_UPLIFT_EXCEPTIONS.some(
-    (entry) => entry.tier === row.tier && entry.modeled_uplift_pct === row.uplift_pct,
+    (entry) =>
+      entry.tier === row.tier &&
+      entry.plus === row.plus &&
+      entry.modeled_uplift_pct === row.post_defense_uplift_pct,
   );
   check(
-    row.uplift_pct <= MAX_SAME_TIER_UPLIFT_PCT || approved,
-    `modelled tier ${row.tier} same-tier uplift ${row.uplift_pct}% exceeds the approved gate`,
+    row.post_defense_uplift_pct <= MAX_SAME_TIER_UPLIFT_PCT || approved,
+    `modelled tier ${row.tier} same-tier uplift ${row.post_defense_uplift_pct}% exceeds the approved gate`,
   );
+  check(!row.one_hit_kill_new, `tier ${row.tier} potion introduces an unintended one-hit kill`);
 }
 
 // ---- migrations ------------------------------------------------------------
