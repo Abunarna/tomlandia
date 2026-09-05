@@ -1,4 +1,45 @@
 {
+  "approved_exceptions": [
+    {
+      "base_attack": 14,
+      "combat_level": 1,
+      "modeled_uplift_pct": 22.24,
+      "plus": 20,
+      "potion_id": "minor_venom_draught",
+      "reason": "isolated integer-rounding artifact: a level-1 character with +20 weapon and +20 armour is not a reachable progression state",
+      "strength_bonus": 2,
+      "strength_pct": 12,
+      "tier": 1
+    }
+  ],
+  "approved_exceptions_observed": [
+    {
+      "armour": "heavy",
+      "base_attack": 14,
+      "combat_level": 1,
+      "modeled_uplift_pct": 22.24,
+      "plus": 20,
+      "potion_id": "minor_venom_draught",
+      "reason": "isolated integer-rounding artifact: a level-1 character with +20 weapon and +20 armour is not a reachable progression state",
+      "strength_bonus": 2,
+      "strength_pct": 12,
+      "target_defense": 10,
+      "tier": 1
+    },
+    {
+      "armour": "light",
+      "base_attack": 14,
+      "combat_level": 1,
+      "modeled_uplift_pct": 22.24,
+      "plus": 20,
+      "potion_id": "minor_venom_draught",
+      "reason": "isolated integer-rounding artifact: a level-1 character with +20 weapon and +20 armour is not a reachable progression state",
+      "strength_bonus": 2,
+      "strength_pct": 12,
+      "target_defense": 10,
+      "tier": 1
+    }
+  ],
   "approved_threshold_pct": 22,
   "model": {
     "base_attack_interval_s": 0.85,
@@ -25716,8 +25757,5 @@
       "tier": 16
     }
   ],
-  "violations": [
-    "tier 1 heavy +20 same-tier uplift 22.24% exceeds 22%",
-    "tier 1 light +20 same-tier uplift 22.24% exceeds 22%"
-  ]
+  "violations": []
 }

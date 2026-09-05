@@ -69,6 +69,8 @@ export interface ItemDef {
   dmgBoost?: number;
   /** potions: number of hits the damage buff lasts for */
   boostHits?: number;
+  /** V6 strength potions: percentage strength boost applied to base attack */
+  strengthPct?: number;
 }
 
 
