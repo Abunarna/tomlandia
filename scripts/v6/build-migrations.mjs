@@ -867,7 +867,7 @@ for (const [name, body] of [
   ["stage-content", stageContent],
   ["stage-world", stageWorld],
 ]) {
-  if (/REVOKE[\s\S]*apply_strength_buff[\s\S]*service_role/.test(body)) {
+  if (body.includes("FROM PUBLIC, anon, authenticated, service_role;")) {
     throw new Error(`${name} must not carry the activation-time revoke`);
   }
 }
