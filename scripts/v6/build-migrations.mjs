@@ -855,6 +855,25 @@ for (const potion of POTIONS) {
 if (!activate.includes("'strength_pct', potion.strength_pct")) {
   throw new Error("activate does not convert active potion buffs to the percentage shape");
 }
+// Least-privilege hardening ships with activation, never as a fourth migration.
+if (
+  !activate.includes(
+    "REVOKE ALL\nON FUNCTION public.apply_strength_buff(jsonb, numeric)\nFROM PUBLIC, anon, authenticated, service_role;",
+  )
+) {
+  throw new Error("activate does not revoke direct EXECUTE on the shared strength helper");
+}
+for (const [name, body] of [
+  ["stage-content", stageContent],
+  ["stage-world", stageWorld],
+]) {
+  if (/REVOKE[\s\S]*apply_strength_buff[\s\S]*service_role/.test(body)) {
+    throw new Error(`${name} must not carry the activation-time revoke`);
+  }
+}
+
+  throw new Error("activate does not convert active potion buffs to the percentage shape");
+}
 if (!/jsonb_set\(\n {6}s\.data,\n {6}'\{buff\}'/.test(activate)) {
   throw new Error(
     "activate must convert buffs with a targeted jsonb_set, not a whole-save rewrite",
