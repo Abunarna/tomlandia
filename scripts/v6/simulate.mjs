@@ -307,7 +307,7 @@ for (const [file, rendered] of outputs) {
 }
 
 if (violations.length) {
-  throw new Error(`V6 combat model rejected the curve:\n  ${violations.join("\n  ")}`);
+  if (!process.env.V6_REPORT_ONLY) throw new Error(`V6 combat model rejected the curve:\n  ${violations.join("\n  ")}`);
 }
 
 console.log(
