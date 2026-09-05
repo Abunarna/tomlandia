@@ -89,7 +89,7 @@ test("the shared helper keeps its safe, side-effect-free shape", () => {
   );
   assert.ok(body.includes("IMMUTABLE"), "the helper is not IMMUTABLE");
   assert.ok(!/SECURITY DEFINER/.test(body), "the helper must stay SECURITY INVOKER");
-  assert.ok(body.includes("SET search_path = public"), "the helper does not pin search_path");
+  assert.match(body, /SET search_path (=|TO) '?public'?/, "the helper does not pin search_path");
   assert.ok(
     !/\b(INSERT|UPDATE|DELETE)\b\s+(INTO|FROM|public\.)/i.test(body),
     "the helper writes a table",
