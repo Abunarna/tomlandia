@@ -723,6 +723,18 @@ SET minimum_client_content_version = '${VERSION}',
     updated_at = now()
 WHERE singleton;
 
+-- ---------------------------------------------------------------------------
+-- Least-privilege hardening. public.apply_strength_buff is a pure, IMMUTABLE,
+-- SECURITY INVOKER helper with SET search_path = public; it is only ever called
+-- from inside the authoritative SECURITY DEFINER combat RPCs, which execute as
+-- the function owner and therefore keep working. No client role needs, or after
+-- this statement has, a direct EXECUTE path to it.
+REVOKE ALL
+ON FUNCTION public.apply_strength_buff(jsonb, numeric)
+FROM PUBLIC, anon, authenticated, service_role;
+
+
+
 DO $v6_activate_exit$
 DECLARE
   converted integer;
