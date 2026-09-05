@@ -53,7 +53,7 @@ function toItemDef(entry: ReleaseItem): ItemDef {
     speed: entry.stats.speed,
     dmgBoost: entry.stats.dmg_boost,
     boostHits: entry.stats.boost_hits,
-    strengthPct: RELEASE_POTION_BY_ID[entry.id]?.strength_pct,
+    strengthPct: RELEASE_POTION_BY_ID[entry.id]?.strength_pct ?? 0,
   };
 }
 
