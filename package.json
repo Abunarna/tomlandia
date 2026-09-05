@@ -39,6 +39,7 @@
     "gate7:check": "node scripts/gate7/check.mjs",
     "test:db:gate7": "supabase test db supabase/tests/gate7_versioned_world.sql",
     "test:db:v6-privileges": "supabase test db supabase/tests/v6_strength_privileges.sql",
+    "test:db:v6-boss-entrypoint": "supabase test db supabase/tests/v6_public_boss_entrypoint.sql",
     "test:gate7": "bun run test:gate6 && bun run gate7:check",
     "gate8:check": "node scripts/gate8/check.mjs",
     "test:gate8": "bun run test:gate7 && bun run gate8:check",
