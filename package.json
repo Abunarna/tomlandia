@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit",
     "test": "bun run test:unit && bun run test:static",
     "test:unit": "bun test tests/contracts tests/fixtures",
-    "test:static": "node scripts/gate1/check-rpc-boundaries.mjs && node scripts/gate2/check-authority.mjs && node --test tests/content/v5-stage-content-migration.test.mjs",
+    "test:static": "node scripts/gate1/check-rpc-boundaries.mjs && node scripts/gate2/check-authority.mjs && node --test tests/content/v5-stage-content-migration.test.mjs tests/content/v6-stage-content-migration.test.mjs",
     "test:db:foundation": "supabase test db supabase/tests/gate1_foundation.sql",
     "test:db:known-defects": "supabase test db supabase/tests/gate1_known_defects.sql",
     "test:db:gate2": "supabase test db supabase/tests/gate2_authority.sql",
@@ -48,7 +48,9 @@
     "v4:build": "bun run scripts/v4/build.mjs && node scripts/content/generate.mjs --input content/v4/manifest.authoring.json --out-root artifacts/v4 && node scripts/v4/build-client-catalog.mjs && node scripts/gate8/build-content-catalog.mjs --input content/v4/manifest.authoring.json && node scripts/v4/build-migrations.mjs",
     "v4:check": "bun run scripts/v4/build.mjs --check && node scripts/content/check.mjs --input content/v4/manifest.authoring.json --artifact-root artifacts/v4 && node scripts/content/generate.mjs --input content/v4/manifest.authoring.json --out-root artifacts/v4 --check && node scripts/v4/build-migrations.mjs --check",
     "v5:build": "bun run scripts/v5/build.mjs && node scripts/content/generate.mjs --input content/v5/manifest.authoring.json --out-root artifacts/v5 && node scripts/v5/build-client-catalog.mjs && node scripts/gate8/build-content-catalog.mjs --input content/v5/manifest.authoring.json && node scripts/v5/build-migrations.mjs",
-    "v5:check": "bun run scripts/v5/build.mjs --check && node scripts/content/generate.mjs --input content/v5/manifest.authoring.json --out-root artifacts/v5 --check && node scripts/v5/build-client-catalog.mjs --check && node scripts/gate8/build-content-catalog.mjs --input content/v5/manifest.authoring.json --check && node scripts/v5/build-migrations.mjs --check && node scripts/v5/check.mjs"
+    "v5:check": "bun run scripts/v5/build.mjs --check && node scripts/content/generate.mjs --input content/v5/manifest.authoring.json --out-root artifacts/v5 --check && node scripts/v5/build-client-catalog.mjs --check && node scripts/gate8/build-content-catalog.mjs --input content/v5/manifest.authoring.json --check && node scripts/v5/build-migrations.mjs --check && node scripts/v5/check.mjs",
+    "v6:build": "bun run scripts/v6/build.mjs && node scripts/v6/simulate.mjs && node scripts/v6/build-client-catalog.mjs && node scripts/v6/build-migrations.mjs",
+    "v6:check": "bun run scripts/v6/build.mjs --check && node scripts/v6/build-client-catalog.mjs --check && node scripts/v6/build-migrations.mjs --check && node scripts/v6/check.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
