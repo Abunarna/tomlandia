@@ -61,3 +61,42 @@ test("activation converts valid buffs and keeps v5 for rollback", () => {
     "activation removes v5 rollback rows",
   );
 });
+
+test("activation revokes every direct execute path to the shared helper", () => {
+  assert.ok(
+    activate.includes(
+      "REVOKE ALL\nON FUNCTION public.apply_strength_buff(jsonb, numeric)\nFROM PUBLIC, anon, authenticated, service_role;",
+    ),
+    "step 3 does not carry the least-privilege revoke",
+  );
+  // The hardening ships inside activation; there is no fourth migration and the
+  // already-applied steps must stay byte-stable.
+  for (const [name, sql] of [
+    ["stage-content", stage],
+    ["stage-world", world],
+  ]) {
+    assert.ok(
+      !sql.includes("FROM PUBLIC, anon, authenticated, service_role;"),
+      `${name} must not carry the activation-time revoke`,
+    );
+  }
+});
+
+test("the shared helper keeps its safe, side-effect-free shape", () => {
+  const body = stage.slice(
+    stage.indexOf("CREATE OR REPLACE FUNCTION public.apply_strength_buff"),
+    stage.indexOf("REVOKE ALL ON FUNCTION public.apply_strength_buff"),
+  );
+  assert.ok(body.includes("IMMUTABLE"), "the helper is not IMMUTABLE");
+  assert.ok(!/SECURITY DEFINER/.test(body), "the helper must stay SECURITY INVOKER");
+  assert.match(body, /SET search_path (=|TO) '?public'?/, "the helper does not pin search_path");
+  assert.ok(
+    !/\b(INSERT|UPDATE|DELETE)\b\s+(INTO|FROM|public\.)/i.test(body),
+    "the helper writes a table",
+  );
+  assert.ok(!/\bEXECUTE\s+format|EXECUTE\s+'/i.test(body), "the helper runs dynamic SQL");
+  assert.ok(
+    !/player_saves|world_boss|game_world_|market_/.test(body),
+    "the helper reads or mutates player state",
+  );
+});
