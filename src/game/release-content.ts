@@ -4,6 +4,8 @@ import {
   RELEASE_ARMOUR,
   RELEASE_CONTENT_VERSION,
   RELEASE_ITEMS,
+  RELEASE_POTION_BY_ID,
+  RELEASE_POTIONS,
   RELEASE_RECIPES,
   RELEASE_TIERS,
   RELEASE_WEAPONS,
@@ -51,6 +53,7 @@ function toItemDef(entry: ReleaseItem): ItemDef {
     speed: entry.stats.speed,
     dmgBoost: entry.stats.dmg_boost,
     boostHits: entry.stats.boost_hits,
+    strengthPct: RELEASE_POTION_BY_ID[entry.id]?.strength_pct,
   };
 }
 
@@ -81,6 +84,18 @@ export interface ArmourTierRow {
   light: { item: ItemDef; recipe: Recipe } | null;
 }
 
+export interface PotionTierRow {
+  tier: number;
+  theme: string;
+  levelRequirement: number;
+  item: ItemDef;
+  recipe: Recipe;
+  /** Authoritative percentage strength boost for this tier. */
+  strengthPct: number;
+  /** Accepted attacks the boost lasts for. */
+  boostHits: number;
+}
+
 export interface WeaponTierRow {
   tier: number;
   theme: string;
@@ -91,6 +106,7 @@ export interface WeaponTierRow {
 
 let armourTiers: ArmourTierRow[] = [];
 let weaponTiers: WeaponTierRow[] = [];
+let potionTiers: PotionTierRow[] = [];
 let initialized = false;
 
 /** Idempotent, explicit registration (the package is declared side-effect free). */
@@ -147,6 +163,26 @@ export function ensureReleaseContent() {
     throw new Error(`Release sword catalog must hold 16 tiers, found ${weaponTiers.length}`);
   }
 
+  // The 16-tier strength potion ladder the Alchemist renders, low tier to high.
+  potionTiers = RELEASE_POTIONS.map((entry) => {
+    const tier = RELEASE_TIERS.find((row) => row.tier_index === entry.tier_index);
+    const recipe = byOutput.get(entry.id as ItemId);
+    const def = ITEMS[entry.id as ItemId];
+    if (!tier || !recipe || !def) throw new Error(`Release potion catalog incomplete for ${entry.id}`);
+    return {
+      tier: entry.tier_index,
+      theme: tier.theme,
+      levelRequirement: tier.level_requirement,
+      item: def,
+      recipe,
+      strengthPct: entry.strength_pct,
+      boostHits: entry.boost_hits,
+    };
+  }).sort((left, right) => left.tier - right.tier);
+  if (potionTiers.length !== 16) {
+    throw new Error(`Release potion catalog must hold 16 tiers, found ${potionTiers.length}`);
+  }
+
   const missing = armourTiers.filter((row) => !row.heavy || !row.light);
   if (missing.length) {
     throw new Error(
@@ -167,6 +203,12 @@ export function releaseArmourTiers(): ArmourTierRow[] {
 export function releaseWeaponTiers(): WeaponTierRow[] {
   ensureReleaseContent();
   return weaponTiers;
+}
+
+/** All 16 strength potion tiers, ordered low to high. */
+export function releasePotionTiers(): PotionTierRow[] {
+  ensureReleaseContent();
+  return potionTiers;
 }
 
 export function releaseSkillFor(recipeId: string): SkillId | null {
