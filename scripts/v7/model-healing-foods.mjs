@@ -325,6 +325,10 @@ export function buildBalanceModel() {
         for (const threshold of [0.25, 0.5, 0.75]) {
           for (const [targetKey, target] of Object.entries({ ...targets, ...bossTargets })) {
             if (!target) continue;
+            // Boss targets are endgame content: only model them where the
+            // player band is within 10 levels of the boss requirement.
+            const bossLevel = targetKey === "desolatus" ? 150 : targetKey === "ascendant_wyrm" ? 150 : null;
+            if (bossLevel !== null && level < bossLevel - 10) continue;
             const isBoss = targetKey === "desolatus";
             const kills = isBoss ? 1 : 8;
             // Paired seeding: current and candidate healing share one seed so
