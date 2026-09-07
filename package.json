@@ -52,6 +52,9 @@
     "v5:build": "bun run scripts/v5/build.mjs && node scripts/content/generate.mjs --input content/v5/manifest.authoring.json --out-root artifacts/v5 && node scripts/v5/build-client-catalog.mjs && node scripts/gate8/build-content-catalog.mjs --input content/v5/manifest.authoring.json && node scripts/v5/build-migrations.mjs",
     "v5:check": "bun run scripts/v5/build.mjs --check && node scripts/content/generate.mjs --input content/v5/manifest.authoring.json --out-root artifacts/v5 --check && node scripts/v5/build-client-catalog.mjs --check && node scripts/gate8/build-content-catalog.mjs --input content/v5/manifest.authoring.json --check && node scripts/v5/build-migrations.mjs --check && node scripts/v5/check.mjs",
     "v6:build": "bun run scripts/v6/build.mjs && node scripts/v6/simulate.mjs && node scripts/v6/build-client-catalog.mjs && node scripts/v6/build-migrations.mjs",
+    "v7:plan": "node scripts/v7/model-healing-foods.mjs",
+    "v7:plan:canonical": "node scripts/v7/model-healing-foods.mjs && node -e \"import('./scripts/v7/model-healing-foods.mjs').then(m=>{const c=m.buildCurrentAndProposed();if(c.foods.length!==16)throw new Error('expected 16 foods');const bad=c.ingredients.filter(i=>!i.defined||!i.active||!i.obtainable||i.circular||!i.available_at_or_below_recipe_gate);if(bad.length)throw new Error('ingredient audit failed: '+bad.map(i=>i.id).join(', '));console.log('Canonical V6 food audit passed: 16 foods, '+c.ingredients.length+' ingredients')})\"",
+    "v7:plan:check": "node scripts/v7/model-healing-foods.mjs --check && bun run v7:plan:canonical",
     "v6:check": "bun run scripts/v6/build.mjs --check && node scripts/v6/build-client-catalog.mjs --check && node scripts/v6/build-migrations.mjs --check && node scripts/v6/check.mjs"
   },
   "dependencies": {
