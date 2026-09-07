@@ -1,13 +1,30 @@
 # V7 healing foods — canonical audit and plan
 
-Status: **Gate 0 stop.** The canonical V6 audit is complete and passes field for
-field, the deterministic planning model is built and green, but two conditions
-in the handoff require owner review before V7 runtime artifacts are generated.
+Status: **Implemented, awaiting activation approval.** The canonical V6 audit
+passes field for field, all owner decisions of 2026-09-07 are applied, and the
+complete V7 release is generated and committed. Nothing has been staged,
+activated, deployed or published.
+
+Owner decisions applied:
+
+1. The stale V6 client world stamp was regenerated, verified by
+   `bun run v6:client:check`, and republished. `V7-GATE0-001` is closed.
+2. Food values are unchanged in V7. The 1.25x ingredient revaluation below stays
+   as unapproved future research only.
+3. Manual eating is repaired generically for every active dish, with no
+   allowlist, covered per food id by `supabase/tests/v7_manual_eating.sql`.
+4. The healing curve is frozen at
+   `15, 45, 120, 135, 155, 180, 210, 245, 300, 340, 375, 445, 485, 525, 605, 645`.
+
+Generated V7 identity: content hash
+`89789521c5b84948af1b954e86fdd9d6bea127d8315d3bb5b4f553d340a46935`, spawn hash
+`3c3602f8247d58655d4a004f4af1cf330f606a84d0f22509e8a5ab5cdc47577c`, 173 items,
+108 recipes, 730 spawns (369 nodes / 361 monsters), 0 deletions.
 
 Everything below is derived from canonical V6
 (`content/v6/manifest.authoring.json`) and live production reads. No release
-data is copied from V5 generated output. Nothing has been staged, activated,
-deployed or published.
+data is copied from V5 generated output.
+
 
 ## 1. Gate 0 — production baseline
 
@@ -159,17 +176,31 @@ move for several tiers, driven purely by ingredient intrinsic value:
 Per the handoff, this rule is not frozen and is **not implemented**. Owner
 decision required before any runtime artifact is generated.
 
-## 5. Owner decisions required to resume
+## 5. What V7 ships
 
-1. Approve the V6 world-manifest promotion and republish (unblocks Gate 0).
-2. Confirm the SECURITY DEFINER scan group is accepted as by-design.
-3. Freeze or revise the candidate value column, given telemetry is unavailable.
-4. Confirm the manual-consumption defect is repaired inside V7.
-5. Confirm the corrected auto-eat wording (auto-eat can prevent the killing
-   blow) rather than the wording assumed in the handoff.
+| Deliverable | Path |
+| --- | --- |
+| Frozen model | `scripts/v7/model.mjs` |
+| Content and world generator | `scripts/v7/build.mjs` |
+| Client catalogue generator (unpromoted) | `scripts/v7/build-client-catalog.mjs` |
+| Migration generator | `scripts/v7/build-migrations.mjs` |
+| Deterministic verification | `scripts/v7/check.mjs` (`bun run v7:check`) |
+| Manual-eating runtime | `supabase/v7/food-runtime.sql` |
+| Database regression suite | `supabase/tests/v7_manual_eating.sql` (45 assertions) |
+| Migration regressions | `tests/content/v7-stage-content-migration.test.mjs` |
+| Cook interface and food ladder | `src/game/release-content.ts`, `src/components/game/NpcDialog.tsx` |
 
-On approval the remaining V7 deliverables proceed: authoring and world
-manifests, `artifacts/v7/*`, build/check/client/promotion/migration generators,
-generated `RELEASE_FOODS` and `releaseFoodTiers()`, the 16-tier Cook interface
-and surface updates, the client identity gate, the three forward-only
-migrations, and the full automated gate suite.
+The three generated migrations are written but **not applied**:
+
+* `supabase/migrations/20260908120000_v7_stage_content.sql`
+* `supabase/migrations/20260908120100_v7_stage_world.sql`
+* `supabase/migrations/20260908120200_v7_activate.sql`
+
+Verification run: `v7:check` (all four generators in check mode plus release
+invariants), 17 static/unit tests, 7 V7 migration regressions, typecheck,
+scoped lint and a production build — all green. No smoke tests were run.
+
+## 6. Remaining owner decision
+
+Only one item is still open: confirm the SECURITY DEFINER scan group is
+accepted as by-design. It does not block V7 implementation.

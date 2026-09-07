@@ -143,7 +143,9 @@ for (const id of FOOD_IDS) {
       );
     }
   }
-  for (const statName of [...new Set([...Object.keys(before.stats), ...Object.keys(after.stats)])]) {
+  for (const statName of [
+    ...new Set([...Object.keys(before.stats), ...Object.keys(after.stats)]),
+  ]) {
     if (statName === "heal") continue;
     if (stable(before.stats[statName]) !== stable(after.stats[statName])) {
       throw new Error(`v7 changes stat ${statName} of ${id}`);
@@ -164,7 +166,9 @@ for (const table of ["recipes", "monsters", "nodes", "fish", "fishing_spots", "q
 if (stable(v6Manifest.starter_loadout) !== stable(v7Manifest.starter_loadout)) {
   throw new Error("v7 changes the starter loadout, which the healing release must not do");
 }
-if (stable(v6Manifest.mechanics.strength_potions) !== stable(v7Manifest.mechanics.strength_potions)) {
+if (
+  stable(v6Manifest.mechanics.strength_potions) !== stable(v7Manifest.mechanics.strength_potions)
+) {
   throw new Error("v7 changes the strength potion ladder, which this release must not do");
 }
 
@@ -748,7 +752,13 @@ if (!consumeFoodBody) throw new Error("stage-content has no manual-eating functi
 if (/public\.game_items/.test(consumeFoodBody)) {
   throw new Error("manual eating still reads the legacy game_items table");
 }
-for (const guard of ["FOR UPDATE", "'not_food'", "'too_fast'", "'full_health'", "least(heal, max_hp - hp)"]) {
+for (const guard of [
+  "FOR UPDATE",
+  "'not_food'",
+  "'too_fast'",
+  "'full_health'",
+  "least(heal, max_hp - hp)",
+]) {
   if (!consumeFoodBody.includes(guard)) {
     throw new Error(`manual eating is missing its ${guard} guarantee`);
   }

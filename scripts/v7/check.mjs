@@ -44,7 +44,7 @@ if (v6.content_version !== V6_VERSION || v7.content_version !== V7_VERSION) {
   throw new Error("V7 must derive from canonical V6");
 }
 
-const byId = (manifest) => new Map(manifest.content.items.map((item) => [item.id, item]));
+const byId = (manifest) => new Map(manifest.runtime.items.map((item) => [item.id, item]));
 const before = byId(v6);
 const after = byId(v7);
 if (before.size !== after.size) throw new Error("V7 changes the item count");
@@ -67,11 +67,11 @@ for (const [id, prior] of before) {
   if (prior.value !== next.value) throw new Error(`V7 changes the value of ${id}`);
 }
 
-if (JSON.stringify(v6.content.recipes) !== JSON.stringify(v7.content.recipes)) {
+if (JSON.stringify(v6.runtime.recipes) !== JSON.stringify(v7.runtime.recipes)) {
   throw new Error("V7 changes recipes; only healing amounts may change");
 }
-for (const key of ["monsters", "nodes", "fish", "quests", "tiers", "fishing_spots"]) {
-  if (JSON.stringify(v6.content[key]) !== JSON.stringify(v7.content[key])) {
+for (const key of ["monsters", "nodes", "fish", "quests", "fishing_spots", "bosses"]) {
+  if (JSON.stringify(v6.runtime[key]) !== JSON.stringify(v7.runtime[key])) {
     throw new Error(`V7 changes ${key}; only healing amounts may change`);
   }
 }
@@ -112,11 +112,13 @@ for (const required of [
     throw new Error(`Manual eating is missing its ${required} guarantee`);
   }
 }
-if (/public\.game_items/.test(runtimeSql.split("AS $$")[1] ?? "")) {
+const runtimeBody = (runtimeSql.match(/AS \$\$[\s\S]*?\n\$\$;/) ?? [""])[0];
+if (!runtimeBody) throw new Error("Manual eating has no function body");
+if (/public\.game_items/.test(runtimeBody)) {
   throw new Error("Manual eating still reads the legacy item table");
 }
 for (const id of FOOD_IDS) {
-  if (runtimeSql.includes(id)) throw new Error(`Manual eating hard-codes ${id}`);
+  if (runtimeBody.includes(id)) throw new Error(`Manual eating hard-codes ${id}`);
 }
 if (/CREATE OR REPLACE FUNCTION public\.try_auto_eat/.test(runtimeSql)) {
   throw new Error("V7 must not redefine auto-eat");
