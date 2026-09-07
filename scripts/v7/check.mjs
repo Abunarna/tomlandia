@@ -112,11 +112,13 @@ for (const required of [
     throw new Error(`Manual eating is missing its ${required} guarantee`);
   }
 }
-if (/public\.game_items/.test(runtimeSql.split("AS $$")[1] ?? "")) {
+const runtimeBody = (runtimeSql.match(/AS \$\$[\s\S]*?\n\$\$;/) ?? [""])[0];
+if (!runtimeBody) throw new Error("Manual eating has no function body");
+if (/public\.game_items/.test(runtimeBody)) {
   throw new Error("Manual eating still reads the legacy item table");
 }
 for (const id of FOOD_IDS) {
-  if (runtimeSql.includes(id)) throw new Error(`Manual eating hard-codes ${id}`);
+  if (runtimeBody.includes(id)) throw new Error(`Manual eating hard-codes ${id}`);
 }
 if (/CREATE OR REPLACE FUNCTION public\.try_auto_eat/.test(runtimeSql)) {
   throw new Error("V7 must not redefine auto-eat");
