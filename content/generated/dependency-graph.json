@@ -1,5 +1,5 @@
 {
-  "content_version": "v3",
+  "content_version": "v7",
   "edges": [
     {
       "from": "fish_rule:deepwater_eel",
@@ -184,11 +184,6 @@
     {
       "from": "item:ancient_bar",
       "relation": "input_to",
-      "to": "recipe:armor_ancient_light_armor"
-    },
-    {
-      "from": "item:ancient_bar",
-      "relation": "input_to",
       "to": "recipe:forge_ancient_greatblade"
     },
     {
@@ -200,11 +195,6 @@
       "from": "item:ascendant_bar",
       "relation": "input_to",
       "to": "recipe:armor_ascendant_heavy_armor"
-    },
-    {
-      "from": "item:ascendant_bar",
-      "relation": "input_to",
-      "to": "recipe:armor_ascendant_light_armor"
     },
     {
       "from": "item:ascendant_bar",
@@ -224,6 +214,11 @@
     {
       "from": "item:ascendant_core",
       "relation": "input_to",
+      "to": "recipe:armor_ascendant_light_armor"
+    },
+    {
+      "from": "item:ascendant_core",
+      "relation": "input_to",
       "to": "recipe:forge_ascendant_blade"
     },
     {
@@ -234,12 +229,27 @@
     {
       "from": "item:ascendant_weave",
       "relation": "input_to",
+      "to": "recipe:armor_ancient_light_armor"
+    },
+    {
+      "from": "item:ascendant_weave",
+      "relation": "input_to",
       "to": "recipe:armor_ascendant_light_armor"
+    },
+    {
+      "from": "item:ascendant_weave",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmforged_light_armor"
     },
     {
       "from": "item:boar_tusk",
       "relation": "input_to",
-      "to": "recipe:armor_iron_mail"
+      "to": "recipe:armor_copper_heavy_armor"
+    },
+    {
+      "from": "item:boar_tusk",
+      "relation": "input_to",
+      "to": "recipe:armor_copper_light_armor"
     },
     {
       "from": "item:boar_tusk",
@@ -260,6 +270,16 @@
       "from": "item:brute_fang",
       "relation": "input_to",
       "to": "recipe:alchemy_bronze_damage_potion"
+    },
+    {
+      "from": "item:brute_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_bronze_heavy_armor"
+    },
+    {
+      "from": "item:brute_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_bronze_light_armor"
     },
     {
       "from": "item:brute_fang",
@@ -314,6 +334,11 @@
     {
       "from": "item:cursed_rune",
       "relation": "input_to",
+      "to": "recipe:armor_shadowsteel_light_armor"
+    },
+    {
+      "from": "item:cursed_rune",
+      "relation": "input_to",
       "to": "recipe:forge_shadow_blade"
     },
     {
@@ -355,6 +380,16 @@
       "from": "item:desert_bloom",
       "relation": "input_to",
       "to": "recipe:weave_mystic_cloth"
+    },
+    {
+      "from": "item:devourer_mandible",
+      "relation": "input_to",
+      "to": "recipe:armor_runite_heavy_armor"
+    },
+    {
+      "from": "item:devourer_mandible",
+      "relation": "input_to",
+      "to": "recipe:armor_runite_light_armor"
     },
     {
       "from": "item:feather",
@@ -414,7 +449,12 @@
     {
       "from": "item:frost_giant_heart",
       "relation": "input_to",
-      "to": "recipe:armor_frostguard_plate"
+      "to": "recipe:armor_glacial_heavy_armor"
+    },
+    {
+      "from": "item:frost_giant_heart",
+      "relation": "input_to",
+      "to": "recipe:armor_glacial_light_armor"
     },
     {
       "from": "item:frost_giant_heart",
@@ -424,7 +464,27 @@
     {
       "from": "item:frost_leather",
       "relation": "input_to",
+      "to": "recipe:armor_glacial_heavy_armor"
+    },
+    {
+      "from": "item:frost_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_glacial_light_armor"
+    },
+    {
+      "from": "item:frost_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_starsteel_heavy_armor"
+    },
+    {
+      "from": "item:frost_leather",
+      "relation": "input_to",
       "to": "recipe:armor_starsteel_light_armor"
+    },
+    {
+      "from": "item:frost_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_voidsteel_heavy_armor"
     },
     {
       "from": "item:frost_leather",
@@ -539,12 +599,7 @@
     {
       "from": "item:froststeel_bar",
       "relation": "input_to",
-      "to": "recipe:armor_froststeel_light_armor"
-    },
-    {
-      "from": "item:froststeel_bar",
-      "relation": "input_to",
-      "to": "recipe:armor_runite_plate"
+      "to": "recipe:armor_froststeel_heavy_armor"
     },
     {
       "from": "item:froststeel_bar",
@@ -564,17 +619,22 @@
     {
       "from": "item:frostweave",
       "relation": "input_to",
+      "to": "recipe:armor_starsteel_light_armor"
+    },
+    {
+      "from": "item:frostweave",
+      "relation": "input_to",
+      "to": "recipe:armor_voidsteel_light_armor"
+    },
+    {
+      "from": "item:frostweave",
+      "relation": "input_to",
       "to": "recipe:weave_ascendant_weave"
     },
     {
       "from": "item:ghoul_essence",
       "relation": "input_to",
       "to": "recipe:alchemy_runite_damage_potion"
-    },
-    {
-      "from": "item:ghoul_essence",
-      "relation": "input_to",
-      "to": "recipe:armor_runite_heavy_armor"
     },
     {
       "from": "item:ghoul_essence",
@@ -590,6 +650,16 @@
       "from": "item:glacial_bar",
       "relation": "input_to",
       "to": "recipe:forge_glacial_greatblade"
+    },
+    {
+      "from": "item:glacial_core",
+      "relation": "input_to",
+      "to": "recipe:armor_starsteel_heavy_armor"
+    },
+    {
+      "from": "item:glacial_core",
+      "relation": "input_to",
+      "to": "recipe:armor_starsteel_light_armor"
     },
     {
       "from": "item:glacial_ore",
@@ -629,11 +699,6 @@
     {
       "from": "item:goblin_charm",
       "relation": "input_to",
-      "to": "recipe:armor_bronze_heavy_armor"
-    },
-    {
-      "from": "item:goblin_charm",
-      "relation": "input_to",
       "to": "recipe:cook_hearty_stew"
     },
     {
@@ -650,6 +715,21 @@
       "from": "item:golden_koi",
       "relation": "input_to",
       "to": "recipe:cook_runic_fish_stew"
+    },
+    {
+      "from": "item:herb_weave",
+      "relation": "input_to",
+      "to": "recipe:armor_iron_light_armor"
+    },
+    {
+      "from": "item:herb_weave",
+      "relation": "input_to",
+      "to": "recipe:armor_mithril_light_armor"
+    },
+    {
+      "from": "item:herb_weave",
+      "relation": "input_to",
+      "to": "recipe:armor_steel_light_armor"
     },
     {
       "from": "item:herb_weave",
@@ -689,12 +769,12 @@
     {
       "from": "item:ironback_tusk",
       "relation": "input_to",
-      "to": "recipe:forge_iron_sword"
+      "to": "recipe:armor_iron_light_armor"
     },
     {
-      "from": "item:jackal_fang",
+      "from": "item:ironback_tusk",
       "relation": "input_to",
-      "to": "recipe:armor_mithril_heavy_armor"
+      "to": "recipe:forge_iron_sword"
     },
     {
       "from": "item:jackal_fang",
@@ -704,12 +784,32 @@
     {
       "from": "item:light_leather",
       "relation": "input_to",
-      "to": "recipe:armor_leather_vest"
+      "to": "recipe:armor_bronze_heavy_armor"
+    },
+    {
+      "from": "item:light_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_bronze_light_armor"
+    },
+    {
+      "from": "item:light_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_copper_heavy_armor"
+    },
+    {
+      "from": "item:light_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_copper_light_armor"
     },
     {
       "from": "item:linen_cloth",
       "relation": "input_to",
-      "to": "recipe:armor_cloth_tunic"
+      "to": "recipe:armor_bronze_light_armor"
+    },
+    {
+      "from": "item:linen_cloth",
+      "relation": "input_to",
+      "to": "recipe:armor_copper_light_armor"
     },
     {
       "from": "item:linen_cloth",
@@ -754,6 +854,16 @@
     {
       "from": "item:mystic_cloth",
       "relation": "input_to",
+      "to": "recipe:armor_runite_light_armor"
+    },
+    {
+      "from": "item:mystic_cloth",
+      "relation": "input_to",
+      "to": "recipe:armor_sunsteel_light_armor"
+    },
+    {
+      "from": "item:mystic_cloth",
+      "relation": "input_to",
       "to": "recipe:weave_shadowweave"
     },
     {
@@ -784,17 +894,17 @@
     {
       "from": "item:raider_fang",
       "relation": "input_to",
-      "to": "recipe:armor_mithril_plate"
+      "to": "recipe:armor_sunsteel_heavy_armor"
+    },
+    {
+      "from": "item:raider_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_sunsteel_light_armor"
     },
     {
       "from": "item:raider_fang",
       "relation": "input_to",
       "to": "recipe:forge_sunsteel_blade"
-    },
-    {
-      "from": "item:ram_horn",
-      "relation": "input_to",
-      "to": "recipe:armor_copper_heavy_armor"
     },
     {
       "from": "item:raw_hide",
@@ -807,9 +917,24 @@
       "to": "recipe:skin_light_leather"
     },
     {
+      "from": "item:reaper_bone",
+      "relation": "input_to",
+      "to": "recipe:armor_steel_heavy_armor"
+    },
+    {
+      "from": "item:reaper_bone",
+      "relation": "input_to",
+      "to": "recipe:armor_steel_light_armor"
+    },
+    {
       "from": "item:revenant_essence",
       "relation": "input_to",
-      "to": "recipe:armor_glacial_heavy_armor"
+      "to": "recipe:armor_wyrmsteel_heavy_armor"
+    },
+    {
+      "from": "item:revenant_essence",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmsteel_light_armor"
     },
     {
       "from": "item:revenant_essence",
@@ -825,11 +950,6 @@
       "from": "item:runite_bar",
       "relation": "input_to",
       "to": "recipe:armor_runite_heavy_armor"
-    },
-    {
-      "from": "item:runite_bar",
-      "relation": "input_to",
-      "to": "recipe:armor_runite_light_armor"
     },
     {
       "from": "item:runite_bar",
@@ -869,7 +989,17 @@
     {
       "from": "item:scaled_leather",
       "relation": "input_to",
+      "to": "recipe:armor_mithril_heavy_armor"
+    },
+    {
+      "from": "item:scaled_leather",
+      "relation": "input_to",
       "to": "recipe:armor_mithril_light_armor"
+    },
+    {
+      "from": "item:scaled_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_runite_heavy_armor"
     },
     {
       "from": "item:scaled_leather",
@@ -879,7 +1009,27 @@
     {
       "from": "item:scaled_leather",
       "relation": "input_to",
+      "to": "recipe:armor_sunsteel_heavy_armor"
+    },
+    {
+      "from": "item:scaled_leather",
+      "relation": "input_to",
       "to": "recipe:armor_sunsteel_light_armor"
+    },
+    {
+      "from": "item:shadow_claw",
+      "relation": "input_to",
+      "to": "recipe:armor_mithril_heavy_armor"
+    },
+    {
+      "from": "item:shadow_claw",
+      "relation": "input_to",
+      "to": "recipe:armor_mithril_light_armor"
+    },
+    {
+      "from": "item:shadow_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_froststeel_heavy_armor"
     },
     {
       "from": "item:shadow_leather",
@@ -889,7 +1039,17 @@
     {
       "from": "item:shadow_leather",
       "relation": "input_to",
-      "to": "recipe:armor_mystic_robe"
+      "to": "recipe:armor_shadowsteel_heavy_armor"
+    },
+    {
+      "from": "item:shadow_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_shadowsteel_light_armor"
+    },
+    {
+      "from": "item:shadow_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmsteel_heavy_armor"
     },
     {
       "from": "item:shadow_leather",
@@ -924,7 +1084,17 @@
     {
       "from": "item:shadowweave",
       "relation": "input_to",
-      "to": "recipe:armor_mystic_robe"
+      "to": "recipe:armor_froststeel_light_armor"
+    },
+    {
+      "from": "item:shadowweave",
+      "relation": "input_to",
+      "to": "recipe:armor_shadowsteel_light_armor"
+    },
+    {
+      "from": "item:shadowweave",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmsteel_light_armor"
     },
     {
       "from": "item:shadowweave",
@@ -979,12 +1149,7 @@
     {
       "from": "item:starsteel_bar",
       "relation": "input_to",
-      "to": "recipe:armor_frostguard_plate"
-    },
-    {
-      "from": "item:starsteel_bar",
-      "relation": "input_to",
-      "to": "recipe:armor_starsteel_light_armor"
+      "to": "recipe:armor_starsteel_heavy_armor"
     },
     {
       "from": "item:starsteel_bar",
@@ -999,12 +1164,7 @@
     {
       "from": "item:steel_bar",
       "relation": "input_to",
-      "to": "recipe:armor_iron_mail"
-    },
-    {
-      "from": "item:steel_bar",
-      "relation": "input_to",
-      "to": "recipe:armor_steel_light_armor"
+      "to": "recipe:armor_steel_heavy_armor"
     },
     {
       "from": "item:steel_bar",
@@ -1014,17 +1174,12 @@
     {
       "from": "item:sunsteel_bar",
       "relation": "input_to",
-      "to": "recipe:armor_mithril_plate"
+      "to": "recipe:armor_sunsteel_heavy_armor"
     },
     {
       "from": "item:sunsteel_bar",
       "relation": "input_to",
       "to": "recipe:forge_sunsteel_blade"
-    },
-    {
-      "from": "item:sunstone",
-      "relation": "input_to",
-      "to": "recipe:armor_sunsteel_light_armor"
     },
     {
       "from": "item:sunstone",
@@ -1044,7 +1199,17 @@
     {
       "from": "item:thick_leather",
       "relation": "input_to",
-      "to": "recipe:armor_linen_robe"
+      "to": "recipe:armor_iron_heavy_armor"
+    },
+    {
+      "from": "item:thick_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_iron_light_armor"
+    },
+    {
+      "from": "item:thick_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_steel_heavy_armor"
     },
     {
       "from": "item:thick_leather",
@@ -1064,7 +1229,12 @@
     {
       "from": "item:troll_fang",
       "relation": "input_to",
-      "to": "recipe:armor_runite_plate"
+      "to": "recipe:armor_froststeel_heavy_armor"
+    },
+    {
+      "from": "item:troll_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_froststeel_light_armor"
     },
     {
       "from": "item:troll_fang",
@@ -1084,12 +1254,12 @@
     {
       "from": "item:void_essence",
       "relation": "input_to",
-      "to": "recipe:armor_ancient_heavy_armor"
+      "to": "recipe:armor_wyrmforged_heavy_armor"
     },
     {
       "from": "item:void_essence",
       "relation": "input_to",
-      "to": "recipe:armor_wyrmforged_heavy_armor"
+      "to": "recipe:armor_wyrmforged_light_armor"
     },
     {
       "from": "item:void_essence",
@@ -1104,12 +1274,7 @@
     {
       "from": "item:voidsteel_bar",
       "relation": "input_to",
-      "to": "recipe:armor_voidsteel_light_armor"
-    },
-    {
-      "from": "item:voidsteel_bar",
-      "relation": "input_to",
-      "to": "recipe:armor_wyrmscale_plate"
+      "to": "recipe:armor_voidsteel_heavy_armor"
     },
     {
       "from": "item:voidsteel_bar",
@@ -1134,11 +1299,6 @@
     {
       "from": "item:wraith_ice_core",
       "relation": "input_to",
-      "to": "recipe:armor_wyrmsteel_heavy_armor"
-    },
-    {
-      "from": "item:wraith_ice_core",
-      "relation": "input_to",
       "to": "recipe:forge_wyrmsteel_blade"
     },
     {
@@ -1159,7 +1319,12 @@
     {
       "from": "item:wyrm_knight_fang",
       "relation": "input_to",
-      "to": "recipe:armor_wyrmscale_plate"
+      "to": "recipe:armor_voidsteel_heavy_armor"
+    },
+    {
+      "from": "item:wyrm_knight_fang",
+      "relation": "input_to",
+      "to": "recipe:armor_voidsteel_light_armor"
     },
     {
       "from": "item:wyrm_knight_fang",
@@ -1169,7 +1334,27 @@
     {
       "from": "item:wyrm_leather",
       "relation": "input_to",
+      "to": "recipe:armor_ancient_heavy_armor"
+    },
+    {
+      "from": "item:wyrm_leather",
+      "relation": "input_to",
       "to": "recipe:armor_ancient_light_armor"
+    },
+    {
+      "from": "item:wyrm_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_ascendant_heavy_armor"
+    },
+    {
+      "from": "item:wyrm_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_ascendant_light_armor"
+    },
+    {
+      "from": "item:wyrm_leather",
+      "relation": "input_to",
+      "to": "recipe:armor_wyrmforged_heavy_armor"
     },
     {
       "from": "item:wyrm_leather",
@@ -1179,7 +1364,12 @@
     {
       "from": "item:wyrm_scale",
       "relation": "input_to",
-      "to": "recipe:armor_ascendant_heavy_armor"
+      "to": "recipe:armor_ancient_heavy_armor"
+    },
+    {
+      "from": "item:wyrm_scale",
+      "relation": "input_to",
+      "to": "recipe:armor_ancient_light_armor"
     },
     {
       "from": "item:wyrm_scale",
@@ -1209,17 +1399,7 @@
     {
       "from": "item:wyrmsteel_bar",
       "relation": "input_to",
-      "to": "recipe:armor_wyrmsteel_light_armor"
-    },
-    {
-      "from": "item:wyrmsteel_bar",
-      "relation": "input_to",
       "to": "recipe:forge_wyrmsteel_blade"
-    },
-    {
-      "from": "legacy_item:wooden_club",
-      "relation": "replace_or_compensate",
-      "to": "item:copper_sword"
     },
     {
       "from": "monster:ancient_frost_wyrm",
@@ -1300,6 +1480,11 @@
       "from": "monster:disgruntled_ram",
       "relation": "hide",
       "to": "item:raw_hide"
+    },
+    {
+      "from": "monster:dune_devourer",
+      "relation": "drop",
+      "to": "item:devourer_mandible"
     },
     {
       "from": "monster:dune_devourer",
@@ -1388,6 +1573,11 @@
     },
     {
       "from": "monster:glacial_guardian",
+      "relation": "drop",
+      "to": "item:glacial_core"
+    },
+    {
+      "from": "monster:glacial_guardian",
       "relation": "hide",
       "to": "item:frost_pelt"
     },
@@ -1460,6 +1650,11 @@
       "from": "monster:serpent",
       "relation": "hide",
       "to": "item:scale_hide"
+    },
+    {
+      "from": "monster:shadow_beast",
+      "relation": "drop",
+      "to": "item:shadow_claw"
     },
     {
       "from": "monster:shadow_beast",
@@ -1822,9 +2017,9 @@
       "to": "item:bronze_heavy_armor"
     },
     {
-      "from": "recipe:armor_cloth_tunic",
+      "from": "recipe:armor_bronze_light_armor",
       "relation": "produces",
-      "to": "item:cloth_tunic"
+      "to": "item:bronze_light_armor"
     },
     {
       "from": "recipe:armor_copper_heavy_armor",
@@ -1832,9 +2027,14 @@
       "to": "item:copper_heavy_armor"
     },
     {
-      "from": "recipe:armor_frostguard_plate",
+      "from": "recipe:armor_copper_light_armor",
       "relation": "produces",
-      "to": "item:frostguard_plate"
+      "to": "item:copper_light_armor"
+    },
+    {
+      "from": "recipe:armor_froststeel_heavy_armor",
+      "relation": "produces",
+      "to": "item:froststeel_heavy_armor"
     },
     {
       "from": "recipe:armor_froststeel_light_armor",
@@ -1857,19 +2057,9 @@
       "to": "item:iron_heavy_armor"
     },
     {
-      "from": "recipe:armor_iron_mail",
+      "from": "recipe:armor_iron_light_armor",
       "relation": "produces",
-      "to": "item:iron_mail"
-    },
-    {
-      "from": "recipe:armor_leather_vest",
-      "relation": "produces",
-      "to": "item:leather_vest"
-    },
-    {
-      "from": "recipe:armor_linen_robe",
-      "relation": "produces",
-      "to": "item:linen_robe"
+      "to": "item:iron_light_armor"
     },
     {
       "from": "recipe:armor_mithril_heavy_armor",
@@ -1882,16 +2072,6 @@
       "to": "item:mithril_light_armor"
     },
     {
-      "from": "recipe:armor_mithril_plate",
-      "relation": "produces",
-      "to": "item:mithril_plate"
-    },
-    {
-      "from": "recipe:armor_mystic_robe",
-      "relation": "produces",
-      "to": "item:mystic_robe"
-    },
-    {
       "from": "recipe:armor_runite_heavy_armor",
       "relation": "produces",
       "to": "item:runite_heavy_armor"
@@ -1902,14 +2082,19 @@
       "to": "item:runite_light_armor"
     },
     {
-      "from": "recipe:armor_runite_plate",
-      "relation": "produces",
-      "to": "item:runite_plate"
-    },
-    {
       "from": "recipe:armor_shadowsteel_heavy_armor",
       "relation": "produces",
       "to": "item:shadowsteel_heavy_armor"
+    },
+    {
+      "from": "recipe:armor_shadowsteel_light_armor",
+      "relation": "produces",
+      "to": "item:shadowsteel_light_armor"
+    },
+    {
+      "from": "recipe:armor_starsteel_heavy_armor",
+      "relation": "produces",
+      "to": "item:starsteel_heavy_armor"
     },
     {
       "from": "recipe:armor_starsteel_light_armor",
@@ -1917,14 +2102,29 @@
       "to": "item:starsteel_light_armor"
     },
     {
+      "from": "recipe:armor_steel_heavy_armor",
+      "relation": "produces",
+      "to": "item:steel_heavy_armor"
+    },
+    {
       "from": "recipe:armor_steel_light_armor",
       "relation": "produces",
       "to": "item:steel_light_armor"
     },
     {
+      "from": "recipe:armor_sunsteel_heavy_armor",
+      "relation": "produces",
+      "to": "item:sunsteel_heavy_armor"
+    },
+    {
       "from": "recipe:armor_sunsteel_light_armor",
       "relation": "produces",
       "to": "item:sunsteel_light_armor"
+    },
+    {
+      "from": "recipe:armor_voidsteel_heavy_armor",
+      "relation": "produces",
+      "to": "item:voidsteel_heavy_armor"
     },
     {
       "from": "recipe:armor_voidsteel_light_armor",
@@ -1940,11 +2140,6 @@
       "from": "recipe:armor_wyrmforged_light_armor",
       "relation": "produces",
       "to": "item:wyrmforged_light_armor"
-    },
-    {
-      "from": "recipe:armor_wyrmscale_plate",
-      "relation": "produces",
-      "to": "item:wyrmscale_plate"
     },
     {
       "from": "recipe:armor_wyrmsteel_heavy_armor",
@@ -2257,7 +2452,7 @@
       "to": "item:shadowweave"
     }
   ],
-  "manifest_hash": "f8bc150f0edd4abfdec405dd7f58007d3e9da699100f2ec54cf2ecbd9fa03a0a",
+  "manifest_hash": "89789521c5b84948af1b954e86fdd9d6bea127d8315d3bb5b4f553d340a46935",
   "nodes": [
     {
       "active": true,
@@ -2390,11 +2585,6 @@
       "type": "item"
     },
     {
-      "active": false,
-      "id": "item:bronze_dagger",
-      "type": "item"
-    },
-    {
       "active": true,
       "id": "item:bronze_damage_potion",
       "type": "item"
@@ -2406,17 +2596,17 @@
     },
     {
       "active": true,
+      "id": "item:bronze_light_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
       "id": "item:bronze_sword",
       "type": "item"
     },
     {
       "active": true,
       "id": "item:brute_fang",
-      "type": "item"
-    },
-    {
-      "active": true,
-      "id": "item:cloth_tunic",
       "type": "item"
     },
     {
@@ -2432,6 +2622,11 @@
     {
       "active": true,
       "id": "item:copper_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:copper_light_armor",
       "type": "item"
     },
     {
@@ -2467,6 +2662,11 @@
     {
       "active": true,
       "id": "item:desert_bloom",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:devourer_mandible",
       "type": "item"
     },
     {
@@ -2536,11 +2736,6 @@
     },
     {
       "active": true,
-      "id": "item:frostguard_plate",
-      "type": "item"
-    },
-    {
-      "active": true,
       "id": "item:frostpine_logs",
       "type": "item"
     },
@@ -2552,6 +2747,11 @@
     {
       "active": true,
       "id": "item:froststeel_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:froststeel_heavy_armor",
       "type": "item"
     },
     {
@@ -2572,6 +2772,11 @@
     {
       "active": true,
       "id": "item:glacial_bar",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:glacial_core",
       "type": "item"
     },
     {
@@ -2646,7 +2851,7 @@
     },
     {
       "active": true,
-      "id": "item:iron_mail",
+      "id": "item:iron_light_armor",
       "type": "item"
     },
     {
@@ -2671,22 +2876,12 @@
     },
     {
       "active": true,
-      "id": "item:leather_vest",
-      "type": "item"
-    },
-    {
-      "active": true,
       "id": "item:light_leather",
       "type": "item"
     },
     {
       "active": true,
       "id": "item:linen_cloth",
-      "type": "item"
-    },
-    {
-      "active": true,
-      "id": "item:linen_robe",
       "type": "item"
     },
     {
@@ -2736,17 +2931,7 @@
     },
     {
       "active": true,
-      "id": "item:mithril_plate",
-      "type": "item"
-    },
-    {
-      "active": true,
       "id": "item:mystic_cloth",
-      "type": "item"
-    },
-    {
-      "active": true,
-      "id": "item:mystic_robe",
       "type": "item"
     },
     {
@@ -2831,11 +3016,6 @@
     },
     {
       "active": true,
-      "id": "item:runite_plate",
-      "type": "item"
-    },
-    {
-      "active": true,
       "id": "item:sandstone",
       "type": "item"
     },
@@ -2866,6 +3046,11 @@
     },
     {
       "active": true,
+      "id": "item:shadow_claw",
+      "type": "item"
+    },
+    {
+      "active": true,
       "id": "item:shadow_leather",
       "type": "item"
     },
@@ -2892,6 +3077,11 @@
     {
       "active": true,
       "id": "item:shadowsteel_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:shadowsteel_light_armor",
       "type": "item"
     },
     {
@@ -2931,6 +3121,11 @@
     },
     {
       "active": true,
+      "id": "item:starsteel_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
       "id": "item:starsteel_light_armor",
       "type": "item"
     },
@@ -2951,6 +3146,11 @@
     },
     {
       "active": true,
+      "id": "item:steel_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
       "id": "item:steel_light_armor",
       "type": "item"
     },
@@ -2962,11 +3162,6 @@
     {
       "active": true,
       "id": "item:sunspiced_eel",
-      "type": "item"
-    },
-    {
-      "active": false,
-      "id": "item:sunspire_wand",
       "type": "item"
     },
     {
@@ -2982,6 +3177,11 @@
     {
       "active": true,
       "id": "item:sunsteel_damage_potion",
+      "type": "item"
+    },
+    {
+      "active": true,
+      "id": "item:sunsteel_heavy_armor",
       "type": "item"
     },
     {
@@ -3016,11 +3216,6 @@
     },
     {
       "active": false,
-      "id": "item:tungsten_maul",
-      "type": "item"
-    },
-    {
-      "active": false,
       "id": "item:tungsten_ore",
       "type": "item"
     },
@@ -3051,6 +3246,11 @@
     },
     {
       "active": true,
+      "id": "item:voidsteel_heavy_armor",
+      "type": "item"
+    },
+    {
+      "active": true,
       "id": "item:voidsteel_light_armor",
       "type": "item"
     },
@@ -3062,11 +3262,6 @@
     {
       "active": true,
       "id": "item:willow_logs",
-      "type": "item"
-    },
-    {
-      "active": false,
-      "id": "item:wooden_club",
       "type": "item"
     },
     {
@@ -3136,11 +3331,6 @@
     },
     {
       "active": true,
-      "id": "item:wyrmscale_plate",
-      "type": "item"
-    },
-    {
-      "active": true,
       "id": "item:wyrmsteel_bar",
       "type": "item"
     },
@@ -3171,6 +3361,46 @@
     },
     {
       "active": false,
+      "id": "legacy_item:cloth_tunic",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:frostguard_plate",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:iron_mail",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:leather_vest",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:linen_robe",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:mithril_plate",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:mystic_robe",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:runite_plate",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
       "id": "legacy_item:sunspire_wand",
       "type": "legacy_item"
     },
@@ -3192,6 +3422,11 @@
     {
       "active": false,
       "id": "legacy_item:wooden_club",
+      "type": "legacy_item"
+    },
+    {
+      "active": false,
+      "id": "legacy_item:wyrmscale_plate",
       "type": "legacy_item"
     },
     {
@@ -3636,7 +3871,7 @@
     },
     {
       "active": true,
-      "id": "recipe:armor_cloth_tunic",
+      "id": "recipe:armor_bronze_light_armor",
       "type": "recipe"
     },
     {
@@ -3646,7 +3881,12 @@
     },
     {
       "active": true,
-      "id": "recipe:armor_frostguard_plate",
+      "id": "recipe:armor_copper_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_froststeel_heavy_armor",
       "type": "recipe"
     },
     {
@@ -3671,17 +3911,7 @@
     },
     {
       "active": true,
-      "id": "recipe:armor_iron_mail",
-      "type": "recipe"
-    },
-    {
-      "active": true,
-      "id": "recipe:armor_leather_vest",
-      "type": "recipe"
-    },
-    {
-      "active": true,
-      "id": "recipe:armor_linen_robe",
+      "id": "recipe:armor_iron_light_armor",
       "type": "recipe"
     },
     {
@@ -3696,16 +3926,6 @@
     },
     {
       "active": true,
-      "id": "recipe:armor_mithril_plate",
-      "type": "recipe"
-    },
-    {
-      "active": true,
-      "id": "recipe:armor_mystic_robe",
-      "type": "recipe"
-    },
-    {
-      "active": true,
       "id": "recipe:armor_runite_heavy_armor",
       "type": "recipe"
     },
@@ -3716,12 +3936,17 @@
     },
     {
       "active": true,
-      "id": "recipe:armor_runite_plate",
+      "id": "recipe:armor_shadowsteel_heavy_armor",
       "type": "recipe"
     },
     {
       "active": true,
-      "id": "recipe:armor_shadowsteel_heavy_armor",
+      "id": "recipe:armor_shadowsteel_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_starsteel_heavy_armor",
       "type": "recipe"
     },
     {
@@ -3731,12 +3956,27 @@
     },
     {
       "active": true,
+      "id": "recipe:armor_steel_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
       "id": "recipe:armor_steel_light_armor",
       "type": "recipe"
     },
     {
       "active": true,
+      "id": "recipe:armor_sunsteel_heavy_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
       "id": "recipe:armor_sunsteel_light_armor",
+      "type": "recipe"
+    },
+    {
+      "active": true,
+      "id": "recipe:armor_voidsteel_heavy_armor",
       "type": "recipe"
     },
     {
@@ -3752,11 +3992,6 @@
     {
       "active": true,
       "id": "recipe:armor_wyrmforged_light_armor",
-      "type": "recipe"
-    },
-    {
-      "active": true,
-      "id": "recipe:armor_wyrmscale_plate",
       "type": "recipe"
     },
     {

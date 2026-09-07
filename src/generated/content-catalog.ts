@@ -26,7 +26,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "ancient_damage_potion",
-    "name": "Ancient Damage Potion",
+    "name": "Ancient Strength Potion",
     "value": 1470,
     "kind": "potion",
     "family": "potion",
@@ -64,7 +64,7 @@ export const V2_CONTENT_ITEMS = [
       "boost_hits": 0,
       "defense": 0,
       "dmg_boost": 0,
-      "heal": 880,
+      "heal": 605,
       "speed": 0
     }
   },
@@ -228,7 +228,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "ascendant_damage_potion",
-    "name": "Ascendant Damage Potion",
+    "name": "Ascendant Strength Potion",
     "value": 1775,
     "kind": "potion",
     "family": "potion",
@@ -266,7 +266,7 @@ export const V2_CONTENT_ITEMS = [
       "boost_hits": 0,
       "defense": 0,
       "dmg_boost": 0,
-      "heal": 950,
+      "heal": 645,
       "speed": 0
     }
   },
@@ -428,7 +428,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "bronze_damage_potion",
-    "name": "Bronze Damage Potion",
+    "name": "Bronze Strength Potion",
     "value": 65,
     "kind": "potion",
     "family": "potion",
@@ -1073,7 +1073,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "frostfire_brew",
-    "name": "Frostfire Brew",
+    "name": "Glacial Strength Potion",
     "value": 955,
     "kind": "potion",
     "family": "potion",
@@ -1139,7 +1139,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "froststeel_damage_potion",
-    "name": "Froststeel Damage Potion",
+    "name": "Froststeel Strength Potion",
     "value": 555,
     "kind": "potion",
     "family": "potion",
@@ -1430,7 +1430,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "goblins_fury_tonic",
-    "name": "Goblin's Fury Tonic",
+    "name": "Iron Strength Potion",
     "value": 135,
     "kind": "potion",
     "family": "potion",
@@ -1829,7 +1829,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "minor_venom_draught",
-    "name": "Minor Venom Draught",
+    "name": "Copper Strength Potion",
     "value": 35,
     "kind": "potion",
     "family": "potion",
@@ -2046,7 +2046,7 @@ export const V2_CONTENT_ITEMS = [
       "boost_hits": 0,
       "defense": 0,
       "dmg_boost": 0,
-      "heal": 650,
+      "heal": 375,
       "speed": 0
     }
   },
@@ -2228,7 +2228,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "runite_damage_potion",
-    "name": "Runite Damage Potion",
+    "name": "Runite Strength Potion",
     "value": 430,
     "kind": "potion",
     "family": "potion",
@@ -2429,7 +2429,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "serpents_bite_elixir",
-    "name": "Serpent's Bite Elixir",
+    "name": "Mithril Strength Potion",
     "value": 275,
     "kind": "potion",
     "family": "potion",
@@ -2562,7 +2562,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "shadow_venom",
-    "name": "Shadow Venom",
+    "name": "Shadowsteel Strength Potion",
     "value": 505,
     "kind": "potion",
     "family": "potion",
@@ -2763,7 +2763,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "starsteel_damage_potion",
-    "name": "Starsteel Damage Potion",
+    "name": "Starsteel Strength Potion",
     "value": 1015,
     "kind": "potion",
     "family": "potion",
@@ -2801,7 +2801,7 @@ export const V2_CONTENT_ITEMS = [
       "boost_hits": 0,
       "defense": 0,
       "dmg_boost": 0,
-      "heal": 700,
+      "heal": 445,
       "speed": 0
     }
   },
@@ -2897,7 +2897,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "steel_damage_potion",
-    "name": "Steel Damage Potion",
+    "name": "Steel Strength Potion",
     "value": 190,
     "kind": "potion",
     "family": "potion",
@@ -3055,7 +3055,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "sunsteel_damage_potion",
-    "name": "Sunsteel Damage Potion",
+    "name": "Sunsteel Strength Potion",
     "value": 340,
     "kind": "potion",
     "family": "potion",
@@ -3293,7 +3293,7 @@ export const V2_CONTENT_ITEMS = [
       "boost_hits": 0,
       "defense": 0,
       "dmg_boost": 0,
-      "heal": 755,
+      "heal": 485,
       "speed": 0
     }
   },
@@ -3321,7 +3321,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "voidsteel_damage_potion",
-    "name": "Voidsteel Damage Potion",
+    "name": "Voidsteel Strength Potion",
     "value": 1085,
     "kind": "potion",
     "family": "potion",
@@ -3633,7 +3633,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "wyrmforged_damage_potion",
-    "name": "Wyrmforged Damage Potion",
+    "name": "Wyrmforged Strength Potion",
     "value": 1280,
     "kind": "potion",
     "family": "potion",
@@ -3671,7 +3671,7 @@ export const V2_CONTENT_ITEMS = [
       "boost_hits": 0,
       "defense": 0,
       "dmg_boost": 0,
-      "heal": 815,
+      "heal": 525,
       "speed": 0
     }
   },
@@ -3790,7 +3790,7 @@ export const V2_CONTENT_ITEMS = [
   },
   {
     "id": "wyrmsteel_damage_potion",
-    "name": "Wyrmsteel Damage Potion",
+    "name": "Wyrmsteel Strength Potion",
     "value": 670,
     "kind": "potion",
     "family": "potion",
