@@ -1,13 +1,30 @@
 # V7 healing foods — canonical audit and plan
 
-Status: **Gate 0 stop.** The canonical V6 audit is complete and passes field for
-field, the deterministic planning model is built and green, but two conditions
-in the handoff require owner review before V7 runtime artifacts are generated.
+Status: **Implemented, awaiting activation approval.** The canonical V6 audit
+passes field for field, all owner decisions of 2026-09-07 are applied, and the
+complete V7 release is generated and committed. Nothing has been staged,
+activated, deployed or published.
+
+Owner decisions applied:
+
+1. The stale V6 client world stamp was regenerated, verified by
+   `bun run v6:client:check`, and republished. `V7-GATE0-001` is closed.
+2. Food values are unchanged in V7. The 1.25x ingredient revaluation below stays
+   as unapproved future research only.
+3. Manual eating is repaired generically for every active dish, with no
+   allowlist, covered per food id by `supabase/tests/v7_manual_eating.sql`.
+4. The healing curve is frozen at
+   `15, 45, 120, 135, 155, 180, 210, 245, 300, 340, 375, 445, 485, 525, 605, 645`.
+
+Generated V7 identity: content hash
+`89789521c5b84948af1b954e86fdd9d6bea127d8315d3bb5b4f553d340a46935`, spawn hash
+`3c3602f8247d58655d4a004f4af1cf330f606a84d0f22509e8a5ab5cdc47577c`, 173 items,
+108 recipes, 730 spawns (369 nodes / 361 monsters), 0 deletions.
 
 Everything below is derived from canonical V6
 (`content/v6/manifest.authoring.json`) and live production reads. No release
-data is copied from V5 generated output. Nothing has been staged, activated,
-deployed or published.
+data is copied from V5 generated output.
+
 
 ## 1. Gate 0 — production baseline
 
