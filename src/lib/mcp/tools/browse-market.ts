@@ -9,7 +9,7 @@ export default defineTool({
   name: "browse_market",
   title: "Browse marketplace",
   description:
-    "Browse the shared Tomlandia marketplace order book: current listings (item, quantity, price, seller) and recent trades.",
+    "Browse the shared Abunaria marketplace order book: current listings (item, quantity, price, seller) and recent trades.",
   inputSchema: {
     item_id: z.string().optional().describe("Optional item id to filter listings by, e.g. copper_ore."),
   },

@@ -10,16 +10,16 @@ export const Route = createFileRoute("/auth")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Sign in to Tomlandia — Adventurer Accounts" },
+      { title: "Sign in to Abunaria — Adventurer Accounts" },
       {
         name: "description",
         content:
-          "Create your Tomlandia adventurer with a username and password, or sign back in to continue your journey through the Peaceful Fields.",
+          "Create your Abunaria adventurer with a username and password, or sign back in to continue your journey through the Peaceful Fields.",
       },
-      { property: "og:title", content: "Sign in to Tomlandia" },
+      { property: "og:title", content: "Sign in to Abunaria" },
       {
         property: "og:description",
-        content: "Username and password only — no email needed to play Tomlandia.",
+        content: "Username and password only — no email needed to play Abunaria.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -119,7 +119,7 @@ function AuthPage() {
   return (
     <main className="flex min-h-[100dvh] flex-col items-center justify-center bg-background px-5 py-8">
       <div className="w-full max-w-sm">
-        <h1 className="text-center font-display text-4xl font-extrabold text-foreground">Tomlandia</h1>
+        <h1 className="text-center font-display text-4xl font-extrabold text-foreground">Abunaria</h1>
         <p className="mt-1 text-center text-sm text-muted-foreground">
           {mode === "signin" ? "Welcome back, adventurer." : "Create your adventurer."}
         </p>
