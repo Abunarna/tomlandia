@@ -27,7 +27,8 @@ export const CANDIDATE_HEAL = [
 ];
 
 /** Provisional. NOT frozen until the economy gate is owner-approved. */
-export const CANDIDATE_VALUE_RULE = "round_up_to_5(max(current_value, ingredient_intrinsic_value * 1.25))";
+export const CANDIDATE_VALUE_RULE =
+  "round_up_to_5(max(current_value, ingredient_intrinsic_value * 1.25))";
 
 const roundUp5 = (n) => Math.ceil(n / 5) * 5;
 
@@ -94,11 +95,21 @@ export function acquisition(rt, id, seen = new Set()) {
   if (seen.has(id)) return { id, circular: true, routes: [] };
   seen.add(id);
   const routes = [];
-  for (const f of rt.fish) if (f.item_id === id) routes.push({ kind: "fish", skill: "fishing", level: f.level_requirement });
-  for (const n of rt.nodes) if (n.item_id === id) routes.push({ kind: "node", skill: n.skill, node: n.kind, level: n.level_requirement });
+  for (const f of rt.fish)
+    if (f.item_id === id)
+      routes.push({ kind: "fish", skill: "fishing", level: f.level_requirement });
+  for (const n of rt.nodes)
+    if (n.item_id === id)
+      routes.push({ kind: "node", skill: n.skill, node: n.kind, level: n.level_requirement });
   for (const m of rt.monsters)
     for (const l of m.loot ?? [])
-      if (l.item_id === id) routes.push({ kind: "drop", monster: m.kind, level: m.level_requirement, chance: l.chance });
+      if (l.item_id === id)
+        routes.push({
+          kind: "drop",
+          monster: m.kind,
+          level: m.level_requirement,
+          chance: l.chance,
+        });
   for (const r of rt.recipes)
     if (r.output_item_id === id)
       routes.push({
@@ -121,7 +132,10 @@ export function buildCurrentAndProposed() {
 
   const rows = foods.map(({ item, recipe }, index) => {
     const tier = item.tier_index;
-    const intrinsic = recipe.inputs.reduce((sum, i) => sum + (items.get(i.item_id)?.value ?? 0) * i.qty, 0);
+    const intrinsic = recipe.inputs.reduce(
+      (sum, i) => sum + (items.get(i.item_id)?.value ?? 0) * i.qty,
+      0,
+    );
     const candidateValue = roundUp5(Math.max(item.value, intrinsic * 1.25));
     const level = item.level_requirement;
     return {
@@ -154,12 +168,18 @@ export function buildCurrentAndProposed() {
         output_qty: recipe.output_qty,
         inputs: recipe.inputs.map((i) => ({ item_id: i.item_id, qty: i.qty })),
       },
-      heal_pct_of_max_hp_at_level: Number(((CANDIDATE_HEAL[index] / maxHp(level)) * 100).toFixed(1)),
-      current_heal_pct_of_max_hp_at_level: Number(((item.stats.heal / maxHp(level)) * 100).toFixed(1)),
+      heal_pct_of_max_hp_at_level: Number(
+        ((CANDIDATE_HEAL[index] / maxHp(level)) * 100).toFixed(1),
+      ),
+      current_heal_pct_of_max_hp_at_level: Number(
+        ((item.stats.heal / maxHp(level)) * 100).toFixed(1),
+      ),
     };
   });
 
-  const ingredientIds = [...new Set(rows.flatMap((r) => r.recipe.inputs.map((i) => i.item_id)))].sort();
+  const ingredientIds = [
+    ...new Set(rows.flatMap((r) => r.recipe.inputs.map((i) => i.item_id))),
+  ].sort();
   const ingredients = ingredientIds.map((id) => {
     const info = acquisition(rt, id);
     const item = items.get(id);
@@ -174,7 +194,8 @@ export function buildCurrentAndProposed() {
       earliest_level: info.earliest_level,
       obtainable: info.routes.length > 0,
       circular: info.circular,
-      available_at_or_below_recipe_gate: info.earliest_level !== null && info.earliest_level <= gate,
+      available_at_or_below_recipe_gate:
+        info.earliest_level !== null && info.earliest_level <= gate,
       earliest_recipe_gate_using_it: gate,
       routes: info.routes,
     };
@@ -213,19 +234,33 @@ function monstersFor(rt, tierLevels, tier) {
   const low = tierLevels[tier - 1];
   const high = tier < BANDS ? tierLevels[tier] : 1e9;
   const band = rt.monsters.filter((m) => m.level_requirement >= low && m.level_requirement < high);
-  const sameTier = band.length ? band[Math.floor(band.length / 2)] : rt.monsters[rt.monsters.length - 1];
+  const sameTier = band.length
+    ? band[Math.floor(band.length / 2)]
+    : rt.monsters[rt.monsters.length - 1];
   const worst = band.length
     ? band.reduce((a, b) => (b.attack > a.attack ? b : a))
     : rt.monsters[rt.monsters.length - 1];
   const adjacentLow = tier < BANDS ? tierLevels[tier] : tierLevels[tier - 1];
   const adjacent =
-    rt.monsters.filter((m) => m.level_requirement >= adjacentLow).sort((a, b) => a.level_requirement - b.level_requirement)[0] ??
-    worst;
+    rt.monsters
+      .filter((m) => m.level_requirement >= adjacentLow)
+      .sort((a, b) => a.level_requirement - b.level_requirement)[0] ?? worst;
   return { same_tier: sameTier, adjacent_tier: adjacent, worst_in_band: worst };
 }
 
 /** One deterministic encounter sequence; returns aggregate metrics. */
-function simulate({ level, weapon, armour, plus, threshold, target, heal, kills, seed, foodCooldownS }) {
+function simulate({
+  level,
+  weapon,
+  armour,
+  plus,
+  threshold,
+  target,
+  heal,
+  kills,
+  seed,
+  foodCooldownS,
+}) {
   const rand = rng(seed);
   const hpMax = maxHp(level);
   const armourAtkMult = armour.family === "light_armor" ? lightAtkMult(plus) : 1;
@@ -286,7 +321,9 @@ function simulate({ level, weapon, armour, plus, threshold, target, heal, kills,
     food_used: foodUsed,
     food_per_kill: Number((foodUsed / killsDone).toFixed(3)),
     food_per_minute: Number((foodUsed / Math.max(minutes, 1e-9)).toFixed(2)),
-    inventory_duration_min_28: Number((28 / Math.max(foodUsed / Math.max(minutes, 1e-9), 1e-9)).toFixed(1)),
+    inventory_duration_min_28: Number(
+      (28 / Math.max(foodUsed / Math.max(minutes, 1e-9), 1e-9)).toFixed(1),
+    ),
     deaths,
     death_probability_per_kill: Number((deaths / killsDone).toFixed(4)),
     downtime_s: downtime,
@@ -301,11 +338,22 @@ export function buildBalanceModel() {
   const { rt } = loadCanonical();
   const contract = buildCurrentAndProposed();
   const manifest = read(CANONICAL_SOURCE);
-  const tierLevels = manifest.tiers.sort((a, b) => a.tier_index - b.tier_index).map((t) => t.level_requirement);
+  const tierLevels = manifest.tiers
+    .sort((a, b) => a.tier_index - b.tier_index)
+    .map((t) => t.level_requirement);
   const bosses = rt.bosses.concat(
     rt.monsters
       .filter((m) => m.kind === "ascendant_wyrm")
-      .map((m) => ({ id: m.kind, name: m.name, hp: m.hp, attack: m.attack, defense: m.defense, xp: m.xp, gold_min: m.gold_min, gold_max: m.gold_max })),
+      .map((m) => ({
+        id: m.kind,
+        name: m.name,
+        hp: m.hp,
+        attack: m.attack,
+        defense: m.defense,
+        xp: m.xp,
+        gold_min: m.gold_min,
+        gold_max: m.gold_max,
+      })),
   );
 
   const cases = [];
@@ -327,7 +375,8 @@ export function buildBalanceModel() {
             if (!target) continue;
             // Boss targets are endgame content: only model them where the
             // player band is within 10 levels of the boss requirement.
-            const bossLevel = targetKey === "desolatus" ? 150 : targetKey === "ascendant_wyrm" ? 150 : null;
+            const bossLevel =
+              targetKey === "desolatus" ? 150 : targetKey === "ascendant_wyrm" ? 150 : null;
             if (bossLevel !== null && level < bossLevel - 10) continue;
             const isBoss = targetKey === "desolatus";
             const kills = isBoss ? 1 : 8;
@@ -410,7 +459,12 @@ export function buildBalanceModel() {
       const ing = contract.ingredients.find((i) => i.id === input.item_id);
       const route = ing?.routes?.[0];
       // Deterministic acquisition-time proxy: gather/fish ~4s, drops scaled by chance ~8s.
-      const per = route?.kind === "drop" ? 8 / Math.max(route.chance ?? 1, 0.05) : route?.kind === "recipe" ? 10 : 4;
+      const per =
+        route?.kind === "drop"
+          ? 8 / Math.max(route.chance ?? 1, 0.05)
+          : route?.kind === "recipe"
+            ? 10
+            : 4;
       return sum + (per * input.qty) / 60;
     }, 0);
     const netMarket = (value) => Math.floor(value * (1 - feePct / 100));
@@ -420,13 +474,21 @@ export function buildBalanceModel() {
       current_value: food.current_value,
       candidate_value: food.candidate_value,
       ingredient_intrinsic_value: food.ingredient_intrinsic_value,
-      value_over_intrinsic_current: Number((food.current_value / Math.max(food.ingredient_intrinsic_value, 1)).toFixed(2)),
-      value_over_intrinsic_candidate: Number((food.candidate_value / Math.max(food.ingredient_intrinsic_value, 1)).toFixed(2)),
+      value_over_intrinsic_current: Number(
+        (food.current_value / Math.max(food.ingredient_intrinsic_value, 1)).toFixed(2),
+      ),
+      value_over_intrinsic_candidate: Number(
+        (food.candidate_value / Math.max(food.ingredient_intrinsic_value, 1)).toFixed(2),
+      ),
       market_net_current: netMarket(food.current_value),
       market_net_candidate: netMarket(food.candidate_value),
       ingredient_minutes_per_food: Number(ingredientMinutes.toFixed(2)),
-      healing_per_gold_current: Number((food.current_heal / Math.max(food.current_value, 1)).toFixed(3)),
-      healing_per_gold_candidate: Number((food.candidate_heal / Math.max(food.candidate_value, 1)).toFixed(3)),
+      healing_per_gold_current: Number(
+        (food.current_heal / Math.max(food.current_value, 1)).toFixed(3),
+      ),
+      healing_per_gold_candidate: Number(
+        (food.candidate_heal / Math.max(food.candidate_value, 1)).toFixed(3),
+      ),
       cooking_xp: food.recipe.xp,
       cooking_time_s: food.recipe.time_s,
     };
