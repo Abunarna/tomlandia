@@ -2,6 +2,7 @@ import { ITEMS, RECIPES, type CraftStation, type Recipe } from "./data";
 import {
   BASE_ATTACK_INTERVAL_S,
   RELEASE_ARMOUR,
+  RELEASE_FOODS,
   RELEASE_CONTENT_VERSION,
   RELEASE_ITEMS,
   RELEASE_POTION_BY_ID,
@@ -96,6 +97,16 @@ export interface PotionTierRow {
   boostHits: number;
 }
 
+export interface FoodTierRow {
+  tier: number;
+  theme: string;
+  levelRequirement: number;
+  item: ItemDef;
+  recipe: Recipe;
+  /** Authoritative healing amount for this dish. */
+  heal: number;
+}
+
 export interface WeaponTierRow {
   tier: number;
   theme: string;
@@ -107,6 +118,7 @@ export interface WeaponTierRow {
 let armourTiers: ArmourTierRow[] = [];
 let weaponTiers: WeaponTierRow[] = [];
 let potionTiers: PotionTierRow[] = [];
+let foodTiers: FoodTierRow[] = [];
 let initialized = false;
 
 /** Idempotent, explicit registration (the package is declared side-effect free). */
@@ -184,6 +196,25 @@ export function ensureReleaseContent() {
     throw new Error(`Release potion catalog must hold 16 tiers, found ${potionTiers.length}`);
   }
 
+  // The 16-tier healing food ladder the Cook renders, low tier to high.
+  foodTiers = RELEASE_FOODS.map((entry) => {
+    const tier = RELEASE_TIERS.find((row) => row.tier_index === entry.tier_index);
+    const recipe = byOutput.get(entry.id as ItemId);
+    const def = ITEMS[entry.id as ItemId];
+    if (!tier || !recipe || !def) throw new Error(`Release food catalog incomplete for ${entry.id}`);
+    return {
+      tier: entry.tier_index,
+      theme: tier.theme,
+      levelRequirement: tier.level_requirement,
+      item: def,
+      recipe,
+      heal: entry.heal,
+    };
+  }).sort((left, right) => left.tier - right.tier);
+  if (foodTiers.length !== 16) {
+    throw new Error(`Release food catalog must hold 16 tiers, found ${foodTiers.length}`);
+  }
+
   const missing = armourTiers.filter((row) => !row.heavy || !row.light);
   if (missing.length) {
     throw new Error(
@@ -210,6 +241,12 @@ export function releaseWeaponTiers(): WeaponTierRow[] {
 export function releasePotionTiers(): PotionTierRow[] {
   ensureReleaseContent();
   return potionTiers;
+}
+
+/** All 16 healing food tiers, ordered low to high. */
+export function releaseFoodTiers(): FoodTierRow[] {
+  ensureReleaseContent();
+  return foodTiers;
 }
 
 export function releaseSkillFor(recipeId: string): SkillId | null {

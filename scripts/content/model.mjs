@@ -781,9 +781,26 @@ export function validateManifest(manifest, lockedRegistry) {
     "light_attack_multiplier_rule", "defense_multiplier_rule", "upgrade_cost_rule", "gear_resale_rule",
     "fishing_xp_curve",
   ];
-  // `strength_potions` is optional and additive (introduced by the V6 strength
-  // release). Older manifests omit it and stay byte-identical.
-  onlyKeys(mechanics, "$manifest.runtime.mechanics", new Set([...mechanicKeys, "strength_potions"]));
+  // `strength_potions` (V6) and `healing_foods` (V7) are optional and additive.
+  // Older manifests omit them and stay byte-identical.
+  onlyKeys(mechanics, "$manifest.runtime.mechanics", new Set([...mechanicKeys, "strength_potions", "healing_foods"]));
+  if (mechanics.healing_foods !== undefined) {
+    const healingFoods = arrayAt(mechanics.healing_foods, "$manifest.runtime.mechanics.healing_foods");
+    if (healingFoods.length !== 16) issue("$manifest.runtime.mechanics.healing_foods", "must contain exactly 16 tier entries");
+    assertUnique(healingFoods, "tier_index", "$manifest.runtime.mechanics.healing_foods");
+    assertUnique(healingFoods, "item_id", "$manifest.runtime.mechanics.healing_foods");
+    healingFoods.forEach((rawEntry, index) => {
+      const path = `$manifest.runtime.mechanics.healing_foods[${index}]`;
+      const entry = objectAt(rawEntry, path);
+      onlyKeys(entry, path, new Set(["tier_index", "item_id", "heal", "value", "recipe_id"]));
+      requireKeys(entry, path, ["tier_index", "item_id", "heal", "value", "recipe_id"]);
+      numberAt(entry.tier_index, `${path}.tier_index`, { integer: true, min: 1, max: 16 });
+      stringAt(entry.item_id, `${path}.item_id`, CONTENT_ID);
+      stringAt(entry.recipe_id, `${path}.recipe_id`, CONTENT_ID);
+      numberAt(entry.heal, `${path}.heal`, { integer: true, min: 1, max: 10000 });
+      numberAt(entry.value, `${path}.value`, { integer: true, min: 0, max: 1000000 });
+    });
+  }
   requireKeys(mechanics, "$manifest.runtime.mechanics", mechanicKeys);
   if (mechanics.strength_potions !== undefined) {
     const strengthPotions = arrayAt(mechanics.strength_potions, "$manifest.runtime.mechanics.strength_potions");

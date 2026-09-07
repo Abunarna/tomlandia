@@ -13,8 +13,10 @@ import {
 import {
   BASE_ATTACK_INTERVAL_S,
   releaseArmourTiers,
+  releaseFoodTiers,
   releasePotionTiers,
   releaseWeaponTiers,
+  type FoodTierRow,
   type PotionTierRow,
 } from "@/game/release-content";
 import type { HudSnapshot, InvSlot, ItemDef, ItemId } from "@/game/types";
@@ -88,6 +90,7 @@ export function NpcDialog({
   const armourTiers = releaseArmourTiers();
   const weaponTiers = releaseWeaponTiers();
   const potionTiers = releasePotionTiers();
+  const foodTiers = releaseFoodTiers();
 
   const STATIONS = ["smelt", "forge", "weave", "armor", "skin", "cook", "alchemy"] as const;
   type Station = (typeof STATIONS)[number];
@@ -324,6 +327,73 @@ export function NpcDialog({
                           ),
                         )}
                       </div>
+                    </div>
+                  );
+                })}
+              </Section>
+            );
+          }
+
+          if (svc === "cook") {
+            const foodRecipeIds = new Set(foodTiers.map((row) => row.recipe.id));
+            const others = list.filter((r) => !foodRecipeIds.has(r.id));
+            return (
+              <Section key={svc} title={`${stationTitle[svc]} (Lv ${stationLvl})`}>
+                <p className="text-[10px] text-muted-foreground">
+                  One dish per tier, from Lv 1 to Lv 150. Healing is capped by the health you are
+                  missing, so a bigger dish is only worth eating when you are badly hurt. Auto-snack
+                  uses the same dishes and can still save you from a killing blow.
+                </p>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {foodTiers.map((row) => (
+                    <FoodCard
+                      key={row.recipe.id}
+                      row={row}
+                      maxHp={hud.maxHp}
+                      missingHp={Math.max(0, hud.maxHp - hud.hp)}
+                      owned={count(row.item.id)}
+                      level={hud.skills[row.recipe.skill].level}
+                      count={count}
+                      open={openRecipe === row.recipe.id}
+                      onToggle={() =>
+                        setOpenRecipe(openRecipe === row.recipe.id ? null : row.recipe.id)
+                      }
+                      onCraft={onCraft}
+                      onCraftAll={onCraftAll}
+                    />
+                  ))}
+                </div>
+                {others.length > 0 && (
+                  <p className="pt-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+                    Other dishes
+                  </p>
+                )}
+                {others.map((r) => {
+                  const lvl = hud.skills[r.skill].level;
+                  const ok = lvl >= r.req && r.inputs.every((i) => count(i.id) >= i.qty);
+                  return (
+                    <div
+                      key={r.id}
+                      className="flex items-center gap-2 rounded-2xl border border-border/70 bg-muted/40 p-2"
+                    >
+                      <ItemIcon item={item(r.out)} className="size-8 shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-xs font-bold text-foreground">
+                          {item(r.out).name}
+                          {r.outQty > 1 ? ` x${r.outQty}` : ""}
+                        </p>
+                        <p className="truncate text-[10px] text-muted-foreground">
+                          Lv {r.req} {r.skill} · {r.xp} xp
+                        </p>
+                      </div>
+                      <button
+                        disabled={!ok}
+                        onClick={() => onCraft(r.id)}
+                        className="flex shrink-0 items-center gap-1 rounded-xl bg-primary px-2.5 py-1.5 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+                      >
+                        <Hammer className="size-3" />
+                        Cook
+                      </button>
                     </div>
                   );
                 })}
@@ -970,6 +1040,124 @@ function PotionCard({
             {bagBest
               ? `${strengthPct - bagBest.strengthPct >= 0 ? "+" : ""}${strengthPct - bagBest.strengthPct}% vs your best carried potion (${bagBest.item.name})`
               : "No strength potion in your bag"}
+          </p>
+          {recipe.inputs.map((i) => {
+            const mat = item(i.id);
+            const have = count(i.id);
+            return (
+              <div key={i.id} className="flex items-center gap-1.5">
+                <ItemIcon item={mat} className="size-4" />
+                <span className="min-w-0 flex-1 truncate text-[10px] text-foreground">
+                  {mat.name}
+                </span>
+                <span
+                  className={`text-[10px] font-bold ${have >= i.qty ? "text-primary" : "text-destructive"}`}
+                >
+                  {have}/{i.qty}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * One healing dish for the Cook. Locked future tiers still show, so the whole
+ * ladder is readable from level 1. Overheal is surfaced honestly: healing is
+ * always capped at the health you are missing.
+ */
+function FoodCard({
+  row,
+  maxHp,
+  missingHp,
+  owned,
+  level,
+  count,
+  open,
+  onToggle,
+  onCraft,
+  onCraftAll,
+}: {
+  row: FoodTierRow;
+  maxHp: number;
+  missingHp: number;
+  owned: number;
+  level: number;
+  count: (id: ItemId) => number;
+  open: boolean;
+  onToggle: () => void;
+  onCraft: (recipeId: string) => void;
+  onCraftAll: (recipeId: string) => void;
+}) {
+  const { recipe, item: def, heal } = row;
+  const levelOk = level >= recipe.req;
+  const hasMats = recipe.inputs.every((i) => count(i.id) >= i.qty);
+  const ok = levelOk && hasMats;
+  const effective = missingHp > 0 ? Math.min(heal, missingHp) : 0;
+  const share = maxHp > 0 ? Math.round((heal / maxHp) * 100) : 0;
+  return (
+    <div
+      className={`rounded-2xl border p-1.5 ${
+        levelOk ? "border-border/70 bg-muted/40" : "border-border/40 bg-muted/20 opacity-70"
+      }`}
+    >
+      <button
+        onClick={onToggle}
+        aria-expanded={open}
+        aria-label={`${def.name}, tier ${row.tier}, heals ${heal}`}
+        className="flex w-full min-w-0 items-center gap-1.5 text-left active:scale-[0.99]"
+      >
+        <span className="relative shrink-0">
+          <ItemIcon item={def} className="size-8" />
+          {!levelOk && (
+            <Lock className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-card p-[1px] text-muted-foreground" />
+          )}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[11px] font-bold text-foreground">{def.name}</span>
+          <span className="block truncate text-[9px] text-muted-foreground">
+            T{row.tier} · Lv {row.levelRequirement} · heals {heal}
+          </span>
+        </span>
+        <ChevronDown
+          className={`size-3.5 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      <div className="mt-1.5 flex gap-1">
+        <button
+          disabled={!ok}
+          onClick={() => onCraft(recipe.id)}
+          className="flex flex-1 items-center justify-center gap-1 rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+        >
+          <Hammer className="size-3" />
+          Cook
+        </button>
+        <button
+          disabled={!ok}
+          onClick={() => onCraftAll(recipe.id)}
+          className="rounded-xl bg-primary px-2 py-1 text-[11px] font-bold text-primary-foreground disabled:opacity-40 active:scale-95"
+        >
+          All
+        </button>
+      </div>
+
+      {open && (
+        <div className="mt-1.5 space-y-1 rounded-xl bg-card/70 p-2">
+          <p className="text-[10px] text-muted-foreground">
+            Heals up to {heal} · {share}% of your {maxHp} health
+          </p>
+          <p className="text-[10px] font-bold text-muted-foreground">
+            {missingHp > 0
+              ? `Right now it would heal ${effective}${effective < heal ? ` (${heal - effective} wasted)` : ""}`
+              : "You are at full health, so nothing would be healed"}
+          </p>
+          <p className="text-[10px] text-muted-foreground">
+            Lv {recipe.req} {recipe.skill} · {recipe.xp} xp · {recipe.time}s · worth {def.value}g ·
+            you hold {owned}
           </p>
           {recipe.inputs.map((i) => {
             const mat = item(i.id);
