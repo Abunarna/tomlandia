@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import splashBg from "@/assets/splash-bg.jpg.asset.json";
+import abunariaLogo from "@/assets/abunaria-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -55,22 +55,13 @@ function Title() {
   const go = useCallback(() => navigate({ to: "/auth" }), [navigate]);
 
   return (
-    <main
-      className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-background px-6 text-center"
-      style={{
-        backgroundImage: `url(${splashBg.url})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        imageRendering: "pixelated",
-      }}
-    >
-      <h1 className="font-display text-5xl font-extrabold text-foreground drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
-        Tomlandia
-      </h1>
-      <p className="mt-3 max-w-xs text-sm font-semibold text-foreground/80">
-        Welcome to Abunarnia
-      </p>
+    <main className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-black px-6 text-center">
+      <img
+        src={abunariaLogo.url}
+        alt="Abunaria"
+        className="w-full max-w-2xl"
+        style={{ imageRendering: "pixelated" }}
+      />
       {!checking && (
         <button
           onClick={go}
