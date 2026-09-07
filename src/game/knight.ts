@@ -120,19 +120,25 @@ function load(url: string): HTMLImageElement | null {
   return READY.has(url) ? img : null;
 }
 
-/** Kick off loading of every base strip (overlays are probed lazily). */
+/** Kick off loading of every base strip plus the registered overlays. */
 export function preloadKnight() {
   for (const a of Object.keys(KNIGHT_ANIMS) as KnightAnim[]) {
     load(KNIGHT_ANIMS[a].url);
-    load(OVERLAY_PATHS.armor[a]);
-    load(OVERLAY_PATHS.weapon[a]);
+    const armor = OVERLAY_PATHS.armor[a];
+    if (armor) load(armor);
+    const weapon = OVERLAY_PATHS.weapon[a];
+    if (weapon) load(weapon);
   }
 }
 
 /** True when at least one armour/weapon overlay strip has actually loaded. */
 export function overlaysAvailable(kind: "armor" | "weapon"): boolean {
-  return (Object.keys(KNIGHT_ANIMS) as KnightAnim[]).some((a) => READY.has(OVERLAY_PATHS[kind][a]));
+  return (Object.keys(KNIGHT_ANIMS) as KnightAnim[]).some((a) => {
+    const url = OVERLAY_PATHS[kind][a];
+    return !!url && READY.has(url);
+  });
 }
+
 
 /* ---------------- tinting ---------------- */
 
