@@ -133,9 +133,11 @@ const clientCatalogue = await read("src/generated/release-catalog.ts");
 if (!clientCatalogue.includes("RELEASE_FOODS")) {
   throw new Error("The client catalogue does not publish the food ladder");
 }
-if (clientCatalogue.includes(`RELEASE_CONTENT_VERSION = "${V7_VERSION}"`)) {
-  throw new Error("The V7 client catalogue must not be promoted before activation");
+// V7 is activated in production, so the client catalogue must be promoted to V7.
+if (!clientCatalogue.includes(`RELEASE_CONTENT_VERSION = "${V7_VERSION}"`)) {
+  throw new Error("The V7 client catalogue is not promoted to the active V7 release");
 }
+
 
 console.log(
   `V7 verified: 16 dishes re-rated, values unchanged, world unchanged, manual eating generic (${HEAL_CURVE.join(", ")})`,
