@@ -16,7 +16,7 @@
 begin;
 
 create extension if not exists pgtap with schema extensions;
-select plan(46);
+select plan(45);
 
 -- Apply the V7 runtime exactly as the generated migration emits it.
 \i supabase/v7/food-runtime.sql
@@ -101,7 +101,7 @@ select '00000000-0000-4000-8000-00000000f00d',
 -- Each dish, in turn: accepted, heals the capped amount, consumes exactly one.
 do $v7_eat$
 DECLARE
-  row record;
+  dish record;
   result jsonb;
   before_qty integer;
   after_qty integer;
@@ -109,30 +109,30 @@ DECLARE
   max_hp integer;
 BEGIN
   CREATE TEMP TABLE v7_results(id text, healed integer, consumed integer, ok boolean) ON COMMIT DROP;
-  FOR row IN SELECT * FROM v7_food ORDER BY ordinality LOOP
+  FOR dish IN SELECT * FROM v7_food ORDER BY ordinality LOOP
     -- reset health and the shared gate so each dish is measured cleanly
     UPDATE public.player_saves SET data = jsonb_set(data, '{hp}', to_jsonb(1))
     WHERE user_id = '00000000-0000-4000-8000-00000000f00d';
     DELETE FROM public.world_cooldowns
     WHERE user_id = '00000000-0000-4000-8000-00000000f00d' AND key = 'action:food';
 
-    SELECT (data#>>ARRAY['inv', (row.ordinality - 1)::text, 'qty'])::integer,
+    SELECT (data#>>ARRAY['inv', (dish.ordinality - 1)::text, 'qty'])::integer,
            (data->>'hp')::integer, public.player_max_hp(data)
       INTO before_qty, hp_before, max_hp
     FROM public.player_saves WHERE user_id = '00000000-0000-4000-8000-00000000f00d';
 
-    result := public.consume_food(row.ordinality - 1);
+    result := public.consume_food(dish.ordinality - 1);
 
-    SELECT coalesce((data#>>ARRAY['inv', (row.ordinality - 1)::text, 'qty'])::integer, 0)
+    SELECT coalesce((data#>>ARRAY['inv', (dish.ordinality - 1)::text, 'qty'])::integer, 0)
       INTO after_qty
     FROM public.player_saves WHERE user_id = '00000000-0000-4000-8000-00000000f00d';
 
     INSERT INTO v7_results VALUES (
-      row.id,
+      dish.id,
       (result->>'healed')::integer,
       before_qty - after_qty,
       (result->>'ok')::boolean
-        AND (result->>'healed')::integer = least(row.heal, max_hp - hp_before)
+        AND (result->>'healed')::integer = least(dish.heal, max_hp - hp_before)
         AND before_qty - after_qty = 1);
   END LOOP;
 END
