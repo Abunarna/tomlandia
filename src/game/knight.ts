@@ -288,14 +288,17 @@ export class KnightRig {
       ctx.drawImage(src, sx, 0, FRAME_W, FRAME_H, dx, dy, d, d);
     };
     drawLayer(baseImg);
-    if (armorColor) {
-      const s = tintedStrip(OVERLAY_PATHS.armor[this.anim], armorColor);
+    const armorUrl = OVERLAY_PATHS.armor[this.anim];
+    if (armorColor && armorUrl) {
+      const s = tintedStrip(armorUrl, armorColor);
       if (s) drawLayer(s);
     }
-    if (weaponColor) {
-      const s = tintedStrip(OVERLAY_PATHS.weapon[this.anim], weaponColor);
+    const weaponUrl = OVERLAY_PATHS.weapon[this.anim];
+    if (weaponColor && weaponUrl) {
+      const s = tintedStrip(weaponUrl, weaponColor);
       if (s) drawLayer(s);
     }
+
     ctx.restore();
     ctx.imageSmoothingEnabled = prevSmooth;
     return true;
