@@ -44,7 +44,7 @@ if (v6.content_version !== V6_VERSION || v7.content_version !== V7_VERSION) {
   throw new Error("V7 must derive from canonical V6");
 }
 
-const byId = (manifest) => new Map(manifest.content.items.map((item) => [item.id, item]));
+const byId = (manifest) => new Map(manifest.runtime.items.map((item) => [item.id, item]));
 const before = byId(v6);
 const after = byId(v7);
 if (before.size !== after.size) throw new Error("V7 changes the item count");
@@ -67,11 +67,11 @@ for (const [id, prior] of before) {
   if (prior.value !== next.value) throw new Error(`V7 changes the value of ${id}`);
 }
 
-if (JSON.stringify(v6.content.recipes) !== JSON.stringify(v7.content.recipes)) {
+if (JSON.stringify(v6.runtime.recipes) !== JSON.stringify(v7.runtime.recipes)) {
   throw new Error("V7 changes recipes; only healing amounts may change");
 }
-for (const key of ["monsters", "nodes", "fish", "quests", "tiers", "fishing_spots"]) {
-  if (JSON.stringify(v6.content[key]) !== JSON.stringify(v7.content[key])) {
+for (const key of ["monsters", "nodes", "fish", "quests", "fishing_spots", "bosses"]) {
+  if (JSON.stringify(v6.runtime[key]) !== JSON.stringify(v7.runtime[key])) {
     throw new Error(`V7 changes ${key}; only healing amounts may change`);
   }
 }
