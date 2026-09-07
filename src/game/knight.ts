@@ -82,25 +82,22 @@ const SCALE = KNIGHT_RENDER_SCALE;
 
 
 
-/** Overlay masks you still need to supply (served from /public). */
-export const OVERLAY_PATHS: Record<"armor" | "weapon", Record<KnightAnim, string>> = {
-  armor: {
-    idle: "/knight/idle_armor_strip.png",
-    walk: "/knight/walk_armor_strip.png",
-    attack: "/knight/attack_armor_strip.png",
-    mine: "/knight/mine_armor_strip.png",
-    chop: "/knight/chop_armor_strip.png",
-    loot: "/knight/loot_armor_strip.png",
-  },
+/**
+ * Optional recolourable overlay strips.
+ *
+ * Only overlays that ship as real bundled assets are registered here. Missing
+ * animations simply render the base sprite — no speculative `/knight/*`
+ * requests are made.
+ */
+export const OVERLAY_PATHS: Record<"armor" | "weapon", Partial<Record<KnightAnim, string>>> = {
+  armor: {},
   weapon: {
     idle: idleWeaponAsset.url,
     walk: walkWeaponAsset.url,
     attack: attackWeaponAsset.url,
-    mine: "/knight/mine_weapon_strip.png",
-    chop: "/knight/chop_weapon_strip.png",
-    loot: "/knight/loot_weapon_strip.png",
   },
 };
+
 
 type Layer = "base" | "armor" | "weapon";
 
