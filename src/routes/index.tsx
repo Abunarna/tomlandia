@@ -5,13 +5,13 @@ import abunariaLogo from "@/assets/abunaria-logo.png.asset.json";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tomlandia — Cozy Pixel Idle RPG" },
+      { title: "Abunaria — Cozy Pixel Idle RPG" },
       {
         name: "description",
         content:
-          "Explore the Peaceful Fields, mine copper, chop oak, battle goblins and take on quests from the folk of Grand Haven in Tomlandia.",
+          "Explore the Peaceful Fields, mine copper, chop oak, battle goblins and take on quests from the folk of Grand Haven in Abunaria.",
       },
-      { property: "og:title", content: "Tomlandia — Cozy Pixel Idle RPG" },
+      { property: "og:title", content: "Abunaria — Cozy Pixel Idle RPG" },
       {
         property: "og:description",
         content: "Gather, fight and quest your way through a cozy pixel world on your phone.",

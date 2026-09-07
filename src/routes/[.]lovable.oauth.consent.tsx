@@ -83,7 +83,7 @@ function Consent() {
   return (
     <main className="grid min-h-[100dvh] place-items-center bg-background px-5 py-8">
       <div className="w-full max-w-sm rounded-3xl border border-border/60 bg-card/90 p-5 shadow-soft backdrop-blur-md">
-        <h1 className="font-display text-xl font-bold text-foreground">Connect {client} to Tomlandia</h1>
+        <h1 className="font-display text-xl font-bold text-foreground">Connect {client} to Abunaria</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           This lets {client} read your adventurer&apos;s character sheet, bag and the shared
           marketplace as you.

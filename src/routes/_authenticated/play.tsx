@@ -42,13 +42,13 @@ import { WorldMap } from "@/components/game/WorldMap";
 export const Route = createFileRoute("/_authenticated/play")({
   head: () => ({
     meta: [
-      { title: "Tomlandia — Cozy Pixel Idle RPG" },
+      { title: "Abunaria — Cozy Pixel Idle RPG" },
       {
         name: "description",
         content:
-          "Explore the Peaceful Fields, mine copper, chop oak, battle goblins and take on quests from the folk of Grand Haven in Tomlandia.",
+          "Explore the Peaceful Fields, mine copper, chop oak, battle goblins and take on quests from the folk of Grand Haven in Abunaria.",
       },
-      { property: "og:title", content: "Tomlandia — Cozy Pixel Idle RPG" },
+      { property: "og:title", content: "Abunaria — Cozy Pixel Idle RPG" },
       {
         property: "og:description",
         content: "Gather, fight and quest your way through a cozy pixel world on your phone.",
@@ -529,7 +529,7 @@ function Game() {
 
   return (
     <main className="relative h-[100dvh] w-full overflow-hidden bg-background">
-      <h1 className="sr-only">Tomlandia — a cozy pixel idle RPG</h1>
+      <h1 className="sr-only">Abunaria — a cozy pixel idle RPG</h1>
       {username && (
         <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-1">
           <div className="rounded-full border border-border/60 bg-card/85 px-3 py-0.5 text-[11px] font-semibold tabular-nums text-muted-foreground backdrop-blur-md">
@@ -794,7 +794,7 @@ function Game() {
           <div className="w-full max-w-sm rounded-3xl border border-border/60 bg-card p-5 shadow-soft">
             <h2 className="font-display text-lg font-bold text-foreground">Play in fullscreen?</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Immerse yourself in Tomlandia. You can toggle fullscreen anytime with the button in the corner.
+              Immerse yourself in Abunaria. You can toggle fullscreen anytime with the button in the corner.
             </p>
             <div className="mt-5 flex gap-2">
               <button

@@ -8,7 +8,7 @@
 
 
 
-Build a cozy, mobile-first fantasy idle RPG called **Tomlandia**, using React, Tailwind CSS, HTML5 Canvas, and Lucide icons.
+Build a cozy, mobile-first fantasy idle RPG called **Abunaria**, using React, Tailwind CSS, HTML5 Canvas, and Lucide icons.
 
 
 
@@ -192,7 +192,7 @@ tosave every 30 seconds, covering player, inventory, skills, equipment, gold, an
 
 This project was built with [Lovable](https://lovable.dev).
 
-**Live app**: https://tomlandia.lovable.app
+**Live app**: https://abunaria.lovable.app
 
 ## Build with Lovable
 
