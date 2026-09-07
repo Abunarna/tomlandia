@@ -327,11 +327,14 @@ export function buildBalanceModel() {
             if (!target) continue;
             const isBoss = targetKey === "desolatus";
             const kills = isBoss ? 1 : 8;
+            // Paired seeding: current and candidate healing share one seed so
+            // the comparison isolates the heal change, not PRNG noise.
+            seed += 1;
+            const caseSeed = seed;
             for (const [healKey, heal] of [
               ["current", food.current_heal],
               ["candidate", food.candidate_heal],
             ]) {
-              seed += 1;
               cases.push({
                 tier_index: tier,
                 food_id: food.id,
@@ -353,7 +356,7 @@ export function buildBalanceModel() {
                   target,
                   heal,
                   kills,
-                  seed,
+                  seed: caseSeed,
                   foodCooldownS: 2,
                 }),
               });
