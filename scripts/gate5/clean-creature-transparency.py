@@ -9,7 +9,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
 CREATURES = ROOT / "public/assets/creatures"
@@ -59,6 +59,17 @@ def recolor_scorpion_pincer(path: Path) -> int:
     return changed
 
 
+def clear_yeti_leg_gaps(path: Path) -> None:
+    """Clear the last blue-white background flecks bordering the pale fur."""
+    image = Image.open(path).convert("RGBA")
+    alpha = image.getchannel("A")
+    draw = ImageDraw.Draw(alpha)
+    draw.polygon(((43, 106), (49, 109), (52, 121), (45, 121), (42, 112)), fill=0)
+    draw.polygon(((62, 109), (69, 105), (71, 112), (68, 121), (61, 121)), fill=0)
+    image.putalpha(alpha)
+    image.save(path, optimize=True)
+
+
 def clean(path: Path, rectangles: tuple[tuple[int, int, int, int], ...]) -> int:
     image = Image.open(path).convert("RGBA")
     pixels = image.load()
@@ -82,6 +93,8 @@ def main() -> None:
     for kind, rectangles in MASKS.items():
         path = CREATURES / f"{kind}.png"
         removed = clean(path, rectangles)
+        if kind == "yeti":
+            clear_yeti_leg_gaps(path)
         total += removed
         by_kind[kind]["padded_sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
         print(f"{kind}: removed {removed} background pixels")
