@@ -1016,6 +1016,25 @@ export function creatureSpriteImage(kind: string): HTMLImageElement | null {
 export function creatureSprite(kind: string) {
   return CREATURE_SPRITE_BY_KIND[kind as CreatureSpriteKind] ?? null;
 }
+const flashCache = new Map<CreatureSpriteKind, HTMLCanvasElement>();
+function flashSilhouette(kind: CreatureSpriteKind, image: HTMLImageElement): HTMLCanvasElement | null {
+  const cached = flashCache.get(kind);
+  if (cached) return cached;
+  if (typeof document === "undefined") return null;
+  const cv = document.createElement("canvas");
+  cv.width = image.naturalWidth;
+  cv.height = image.naturalHeight;
+  if (!cv.width || !cv.height) return null;
+  const c = cv.getContext("2d");
+  if (!c) return null;
+  c.imageSmoothingEnabled = false;
+  c.drawImage(image, 0, 0);
+  c.globalCompositeOperation = "source-in";
+  c.fillStyle = "#ffffff";
+  c.fillRect(0, 0, cv.width, cv.height);
+  flashCache.set(kind, cv);
+  return cv;
+}
 export function drawCreatureSprite(ctx: CanvasRenderingContext2D, kind: string, x: number, y: number, bob = 0, hitFlash = false, scale = 0.42): boolean {
   const sprite = creatureSprite(kind);
   const image = creatureSpriteImage(kind);
@@ -1029,12 +1048,13 @@ export function drawCreatureSprite(ctx: CanvasRenderingContext2D, kind: string, 
   ctx.imageSmoothingEnabled = false;
   ctx.drawImage(image, left, top, width, height);
   if (hitFlash) {
-    ctx.save();
-    ctx.globalCompositeOperation = "source-atop";
-    ctx.globalAlpha = 0.62;
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(left, top, width, height);
-    ctx.restore();
+    const silhouette = flashSilhouette(sprite.kind, image);
+    if (silhouette) {
+      ctx.save();
+      ctx.globalAlpha = 0.62;
+      ctx.drawImage(silhouette, left, top, width, height);
+      ctx.restore();
+    }
   }
   ctx.imageSmoothingEnabled = smooth;
   return true;
