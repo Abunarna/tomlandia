@@ -329,7 +329,7 @@
       "kind": "dust_jackal",
       "motion_profile": "static_front_facing_bob",
       "name": "Dust Jackal",
-      "padded_sha256": "18f2fbabb3c2d48b91cb57a161bcc7b7c5b1d05b53d0632f0c0208e70c99fba9",
+      "padded_sha256": "c87c919634fe176c40a5a20eb2586d32c4dd2c8e38273b0e8b353b1a8b87cd9e",
       "pivot": {
         "x": 48,
         "y": 121
@@ -391,7 +391,7 @@
       "kind": "forest_lynx",
       "motion_profile": "static_front_facing_bob",
       "name": "Forest Lynx",
-      "padded_sha256": "d11a742d81e9cb240ccc7cfb8a3f7d3a68eba5b05976c02dac05ffd034afe9ee",
+      "padded_sha256": "a7329991c0c85cc0e780ca1ec1e6861dab43f7cc3c8e5ba7268578c24ccb993c",
       "pivot": {
         "x": 49,
         "y": 119
@@ -577,7 +577,7 @@
       "kind": "goblin",
       "motion_profile": "static_front_facing_bob",
       "name": "Goblin",
-      "padded_sha256": "0dd7db58ab29ecae6be6efe590c94929a515fcca4d32c93943cc9dc99619f453",
+      "padded_sha256": "4b623b85fc3eb23392afa1960fb27745c207581164a0050df80246727f0337ad",
       "pivot": {
         "x": 43,
         "y": 115
@@ -608,7 +608,7 @@
       "kind": "goblin_brute",
       "motion_profile": "static_front_facing_bob",
       "name": "Goblin Brute",
-      "padded_sha256": "7259b0d22d7813e8985fc7058e3b3a0c69ff30838a171e06a82834fc3eb286c7",
+      "padded_sha256": "4ac24987c00ea0dcba45a46057374f0d1a4146e145a4eca7695f5e664332612e",
       "pivot": {
         "x": 59,
         "y": 148
@@ -670,7 +670,7 @@
       "kind": "ironback_boar",
       "motion_profile": "static_front_facing_bob",
       "name": "Ironback Boar",
-      "padded_sha256": "0096de143a2dfaf57d5f25a1e5be379a12ed577f8de1c8caf93d062b51584bed",
+      "padded_sha256": "d401afca639706ae30e3d49670cfe1e963f4ce23fa5038b58830df5582de7aa0",
       "pivot": {
         "x": 59,
         "y": 123
@@ -701,7 +701,7 @@
       "kind": "mithril_stalker",
       "motion_profile": "static_front_facing_bob",
       "name": "Mithril Stalker",
-      "padded_sha256": "9b3d64ee97643501e316f6091808b42b6081f0a33ed1c27dce4704ddaefdd163",
+      "padded_sha256": "39b87f7e9442ed3168a5c7f58ec1fe6d8fac793c0dd06c15a216cb6dab71e2bd",
       "pivot": {
         "x": 56.5,
         "y": 153
@@ -794,7 +794,7 @@
       "kind": "shadow_beast",
       "motion_profile": "static_front_facing_bob",
       "name": "Shadow Beast",
-      "padded_sha256": "60e1b64e1d3a32fa4186677056b42a8241640b1643630c1ded44ef4186579215",
+      "padded_sha256": "be3294abc494185771cc30e76d47ef698c5adec05f4b9bf02da2cd56c82f43cc",
       "pivot": {
         "x": 61.5,
         "y": 128
@@ -856,7 +856,7 @@
       "kind": "withered_ghoul",
       "motion_profile": "static_front_facing_bob",
       "name": "Withered Ghoul",
-      "padded_sha256": "c0b4957fc87de9d7b7e09c5fcb08fe0318680144c05e120fcbad28dca11ef4ca",
+      "padded_sha256": "05fb6fa698627bf0cc434636cf45383f001ec6ca4c69f8a84726ea7799bc263f",
       "pivot": {
         "x": 44,
         "y": 153
@@ -887,7 +887,7 @@
       "kind": "wolf",
       "motion_profile": "static_front_facing_bob",
       "name": "Meadow Wolf",
-      "padded_sha256": "cd748b4d2dae243f9078669f30cb0115f22149c369b17e6947ad54a53feecca4",
+      "padded_sha256": "8f53fa527de6c644867222769032850635fa927b4cae3a334634ccdfe1d894f1",
       "pivot": {
         "x": 49,
         "y": 123
@@ -949,7 +949,7 @@
       "kind": "wyrm_knight",
       "motion_profile": "static_front_facing_bob",
       "name": "Wyrm Knight",
-      "padded_sha256": "cd088100a44cfa4eb3953e3aefd54d0ee9ae9c088ed7c3ddca72bf4f6e2aaeac",
+      "padded_sha256": "54e49f99064150da834b9d5c8db15c4e11fce116bbc8b1a9abe6924fed888795",
       "pivot": {
         "x": 56.5,
         "y": 156
