@@ -980,7 +980,7 @@ export const CREATURE_SPRITES = [
     "kind": "yeti",
     "motion_profile": "static_front_facing_bob",
     "name": "Fluffy Yeti",
-    "padded_sha256": "b9945f0767be0b25f4c9f0edcdd0d5562b3d29253b7f09e0fe83c6ba980dc55c",
+    "padded_sha256": "9d9abf8c07a3fb8bf2f113ce9f4f4fb99a4e487de2ec7f1f5838c2b2ecb66436",
     "pivot": {
       "x": 56.5,
       "y": 128
