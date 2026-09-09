@@ -3532,6 +3532,43 @@ export class GameEngine {
 
   }
 
+  /**
+   * Dev tool: paint the whole world exactly as the gameplay view draws it
+   * (ground textures, water, roads, towns, bridges, landmarks), without any
+   * creatures, resource nodes, NPCs or the player. Returns a PNG data URL.
+   */
+  renderWorldSnapshot(scale = 0.5) {
+    const cv = document.createElement("canvas");
+    cv.width = Math.round(WORLD_W * scale);
+    cv.height = Math.round(WORLD_H * scale);
+    const ctx = cv.getContext("2d")!;
+    ctx.imageSmoothingEnabled = false;
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    const view = { x: 0, y: 0, w: WORLD_W, h: WORLD_H };
+
+    for (const b of BIOMES) this.drawBiome(ctx, b);
+    drawGroundDecals(ctx, view);
+    for (const l of LAKES) this.lake(ctx, l);
+    if (SHOW_PATHS) {
+      this.drawRoads(ctx, view);
+      this.drawStreets(ctx, view);
+    }
+    this.drawCity(ctx, view);
+    this.drawBarriers(ctx, view);
+    this.drawRiverFlow(ctx, view);
+    this.drawMoatFlow(ctx, view);
+    drawGroundDecals(ctx, view, OVER_WATER_DECALS);
+    this.drawBridges(ctx, view);
+
+    const drawables: { y: number; fn: () => void }[] = [];
+    for (const b of BUILDINGS) drawables.push({ y: b.y + b.h, fn: () => this.drawBuilding(ctx, b) });
+    for (const l of LANDMARKS) drawables.push({ y: l.y + l.h / 2, fn: () => drawLandmarkSprite(ctx, l) });
+    drawables.sort((a, b) => a.y - b.y);
+    for (const d of drawables) d.fn();
+
+    return cv.toDataURL("image/png");
+  }
+
   private inView(x: number, y: number, view: { x: number; y: number; w: number; h: number }) {
     return x > view.x - 120 && x < view.x + view.w + 120 && y > view.y - 160 && y < view.y + view.h + 160;
   }
