@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CharacterCreationRouteImport } from './routes/character-creation'
 import { Route as DevWorldshotRouteImport } from './routes/dev-worldshot'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
@@ -32,6 +33,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CharacterCreationRoute = CharacterCreationRouteImport.update({
+  id: '/character-creation',
+  path: '/character-creation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DevWorldshotRoute = DevWorldshotRouteImport.update({
@@ -76,6 +82,7 @@ const Char91DotmcpChar93InvokeToolToolRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/character-creation': typeof CharacterCreationRoute
   '/dev-worldshot': typeof DevWorldshotRoute
   '/mcp': typeof McpRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/character-creation': typeof CharacterCreationRoute
   '/dev-worldshot': typeof DevWorldshotRoute
   '/mcp': typeof McpRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/character-creation': typeof CharacterCreationRoute
   '/dev-worldshot': typeof DevWorldshotRoute
   '/mcp': typeof McpRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/character-creation'
     | '/dev-worldshot'
     | '/mcp'
     | '/.mcp/list-tools'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/character-creation'
     | '/dev-worldshot'
     | '/mcp'
     | '/.mcp/list-tools'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/character-creation'
     | '/dev-worldshot'
     | '/mcp'
     | '/.mcp/list-tools'
@@ -149,6 +161,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  CharacterCreationRoute: typeof CharacterCreationRoute
   DevWorldshotRoute: typeof DevWorldshotRoute
   McpRoute: typeof McpRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
@@ -178,6 +191,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/character-creation': {
+      id: '/character-creation'
+      path: '/character-creation'
+      fullPath: '/character-creation'
+      preLoaderRoute: typeof CharacterCreationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dev-worldshot': {
@@ -247,6 +267,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  CharacterCreationRoute: CharacterCreationRoute,
   DevWorldshotRoute: DevWorldshotRoute,
   McpRoute: McpRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
