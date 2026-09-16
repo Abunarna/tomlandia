@@ -63,8 +63,8 @@ export function AvatarPreview({ draft }: { draft: CharacterDraft }) {
     >
       <defs>
         <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="hsl(var(--muted))" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="hsl(var(--card))" stopOpacity="0.9" />
+          <stop offset="0%" stopColor="#e9e3d2" />
+          <stop offset="100%" stopColor="#cfd8c4" />
         </linearGradient>
       </defs>
       <rect width="200" height="260" rx="18" fill="url(#bg)" />
@@ -76,12 +76,12 @@ export function AvatarPreview({ draft }: { draft: CharacterDraft }) {
       {isFemale ? (
         <path
           d="M100 112c-20 0-34 12-40 34-4 16-6 34-6 52h92c0-18-2-36-6-52-6-22-20-34-40-34z"
-          fill="hsl(var(--primary))"
+          fill="#4c5b86"
         />
       ) : (
         <path
           d="M100 112c-24 0-40 14-44 38-3 16-4 32-4 48h96c0-16-1-32-4-48-4-24-20-38-44-38z"
-          fill="hsl(var(--primary))"
+          fill="#4c5b86"
         />
       )}
       {/* neck */}
