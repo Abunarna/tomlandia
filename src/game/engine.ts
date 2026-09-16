@@ -736,28 +736,6 @@ export class GameEngine {
   private prevPx = 0;
   private prevPy = 0;
   private isMoving = false;
-  /** debug overrides — null means "follow the equipped item" */
-  debugArmorColor: string | null = null;
-  debugWeaponColor: string | null = null;
-  /** debug animation lock — null means "follow gameplay" */
-  debugAnim: KnightAnim | null = null;
-
-  setDebugColor(kind: "armor" | "weapon", color: string | null) {
-    if (kind === "armor") this.debugArmorColor = color;
-    else this.debugWeaponColor = color;
-  }
-
-  setDebugAnim(anim: KnightAnim | null) {
-    this.debugAnim = anim;
-    if (!anim) this.rig.frameOverride = null;
-  }
-
-  /** Debug frame stepper: null resumes normal playback. */
-  setDebugFrame(frame: number | null) {
-    this.rig.frameOverride = frame;
-  }
-
-
   skills = emptySkills();
   inv: (InvSlot | null)[] = new Array(INV_SIZE).fill(null);
   bank: { gold: number; items: (InvSlot | null)[] } = {
@@ -5661,17 +5639,6 @@ export class GameEngine {
   /** Pick the animation the rig should be showing this frame. */
   private syncRig() {
     const rig = this.rig;
-    if (this.debugAnim) {
-      const a = this.debugAnim;
-      if (a === "idle" || a === "walk") {
-        rig.setLocomotion(a === "walk");
-        rig.release();
-      } else {
-        rig.play(a, { repeat: true });
-      }
-      rig.update(this.lastDt);
-      return;
-    }
     rig.setLocomotion(this.isMoving);
     if (this.activity.startsWith("Fighting")) rig.play("attack", { repeat: true });
     else if (this.actionLoop === "mining") rig.play("mine", { repeat: true });
@@ -5694,8 +5661,8 @@ export class GameEngine {
     this.shadow(ctx, x, y + 16, 16);
 
     this.syncRig();
-    const armorColor = this.debugArmorColor ?? (this.armor ? item(this.armor.id).color : undefined);
-    const weaponColor = this.debugWeaponColor ?? (this.weapon ? item(this.weapon.id).color : undefined);
+    const armorColor = this.armor ? item(this.armor.id).color : undefined;
+    const weaponColor = this.weapon ? item(this.weapon.id).color : undefined;
     if (this.rig.draw(ctx, x, y + 16, this.facing as 1 | -1, 72, armorColor, weaponColor)) {
       if (this.myEmote && this.myEmote.until > Date.now()) {
         this.drawEmoteBubble(ctx, x, y - 62, this.myEmote.e);
