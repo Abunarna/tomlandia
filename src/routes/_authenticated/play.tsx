@@ -30,7 +30,7 @@ import type { HudSnapshot, ItemId, SaveState } from "@/game/types";
 import { Hud } from "@/components/game/Hud";
 import { AutoEat } from "@/components/game/AutoEat";
 import { AutoPotion } from "@/components/game/AutoPotion";
-import { KnightDebug } from "@/components/game/KnightDebug";
+import { CharacterTestButton } from "@/components/game/CharacterTestButton";
 import { LoadingScreen } from "@/components/LoadingScreen";
 
 
@@ -559,11 +559,7 @@ function Game() {
       {/* overlays */}
       <div className="pointer-events-none absolute inset-0 flex flex-col">
         <Hud hud={hud} />
-        <KnightDebug
-          onAnim={(a) => engineRef.current?.setDebugAnim(a)}
-          onColor={(k, c) => engineRef.current?.setDebugColor(k, c)}
-          onFrame={(f) => engineRef.current?.setDebugFrame(f)}
-        />
+        <CharacterTestButton />
 
 
 
