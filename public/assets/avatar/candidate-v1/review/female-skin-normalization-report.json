@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "variant": "female-skin-master",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "results": [
+    {
+      "model": "female",
+      "input": "public/assets/avatar/candidate-v1/source/body-female-grayscale-skin-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/body-female-grayscale-skin.png",
+      "sourceSha256": "6359f5c45b2aa07f7db4737e644561af483ad7d8a8a2a6c67f676b7c9b035f70",
+      "outputSha256": "84ca7aac7c7b683a2467614591894feba95483ec3a8ebdaa469d60000810da23",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 429,
+        "minY": 179,
+        "maxX": 823,
+        "maxY": 1073
+      },
+      "targetBounds": {
+        "minX": 140,
+        "minY": 63,
+        "maxX": 244,
+        "maxY": 300
+      },
+      "targetCenterX": 192,
+      "centerDeltaFromPivot": 0,
+      "scale": 0.265922,
+      "status": "review-only",
+      "silhouetteComparison": {
+        "whole": {
+          "changedPixels": 64,
+          "intersectionOverUnion": 0.994982
+        },
+        "head": {
+          "changedPixels": 5,
+          "intersectionOverUnion": 0.996995
+        },
+        "hands": {
+          "changedPixels": 21,
+          "intersectionOverUnion": 0.996071
+        },
+        "feet": {
+          "changedPixels": 17,
+          "intersectionOverUnion": 0.987102
+        }
+      },
+      "grayscale": {
+        "maximumChannelSpread": 0,
+        "colouredPixels": 0,
+        "colouredFraction": 0
+      },
+      "blockers": [
+        "silhouette and grip comparison requires approval",
+        "matching modesty overlay has not been derived"
+      ]
+    }
+  ]
+}

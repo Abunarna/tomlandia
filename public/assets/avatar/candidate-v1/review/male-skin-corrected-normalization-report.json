@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "variant": "male-skin-master-corrected",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "results": [
+    {
+      "model": "male",
+      "input": "public/assets/avatar/candidate-v1/source/body-male-grayscale-skin-corrected-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/body-male-grayscale-skin-corrected.png",
+      "sourceSha256": "15a9bbeeb353bc409cbf4b7f28c1ddb37df84f45fa4dba961f040ec0859a4227",
+      "outputSha256": "5901272dc17931482852b7b55363da680b2cef22206a0fb646f5160316dc3624",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 418,
+        "minY": 179,
+        "maxX": 835,
+        "maxY": 1073
+      },
+      "targetBounds": {
+        "minX": 137,
+        "minY": 63,
+        "maxX": 247,
+        "maxY": 300
+      },
+      "targetCenterX": 192,
+      "centerDeltaFromPivot": 0,
+      "scale": 0.265922,
+      "status": "rejected",
+      "silhouetteComparison": {
+        "whole": {
+          "changedPixels": 254,
+          "intersectionOverUnion": 0.981484
+        },
+        "head": {
+          "changedPixels": 17,
+          "intersectionOverUnion": 0.99046
+        },
+        "hands": {
+          "changedPixels": 121,
+          "intersectionOverUnion": 0.979142
+        },
+        "feet": {
+          "changedPixels": 44,
+          "intersectionOverUnion": 0.967213
+        }
+      },
+      "grayscale": {
+        "maximumChannelSpread": 0,
+        "colouredPixels": 0,
+        "colouredFraction": 0
+      },
+      "blockers": [
+        "whole-region silhouette changed beyond the acceptance threshold",
+        "hand-region silhouette changed beyond the acceptance threshold",
+        "feet-region silhouette changed beyond the acceptance threshold",
+        "matching modesty overlay has not been derived"
+      ]
+    }
+  ]
+}

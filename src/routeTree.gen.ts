@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AvatarLabRouteImport } from './routes/avatar-lab'
 import { Route as CharacterCreationRouteImport } from './routes/character-creation'
 import { Route as CharacterTestRouteImport } from './routes/character-test'
 import { Route as DevWorldshotRouteImport } from './routes/dev-worldshot'
@@ -34,6 +35,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AvatarLabRoute = AvatarLabRouteImport.update({
+  id: '/avatar-lab',
+  path: '/avatar-lab',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CharacterCreationRoute = CharacterCreationRouteImport.update({
@@ -88,6 +94,7 @@ const Char91DotmcpChar93InvokeToolToolRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/avatar-lab': typeof AvatarLabRoute
   '/character-creation': typeof CharacterCreationRoute
   '/character-test': typeof CharacterTestRoute
   '/dev-worldshot': typeof DevWorldshotRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/avatar-lab': typeof AvatarLabRoute
   '/character-creation': typeof CharacterCreationRoute
   '/character-test': typeof CharacterTestRoute
   '/dev-worldshot': typeof DevWorldshotRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/avatar-lab': typeof AvatarLabRoute
   '/character-creation': typeof CharacterCreationRoute
   '/character-test': typeof CharacterTestRoute
   '/dev-worldshot': typeof DevWorldshotRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/avatar-lab'
     | '/character-creation'
     | '/character-test'
     | '/dev-worldshot'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/avatar-lab'
     | '/character-creation'
     | '/character-test'
     | '/dev-worldshot'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/avatar-lab'
     | '/character-creation'
     | '/character-test'
     | '/dev-worldshot'
@@ -173,6 +185,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  AvatarLabRoute: typeof AvatarLabRoute
   CharacterCreationRoute: typeof CharacterCreationRoute
   CharacterTestRoute: typeof CharacterTestRoute
   DevWorldshotRoute: typeof DevWorldshotRoute
@@ -204,6 +217,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/avatar-lab': {
+      id: '/avatar-lab'
+      path: '/avatar-lab'
+      fullPath: '/avatar-lab'
+      preLoaderRoute: typeof AvatarLabRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/character-creation': {
@@ -287,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  AvatarLabRoute: AvatarLabRoute,
   CharacterCreationRoute: CharacterCreationRoute,
   CharacterTestRoute: CharacterTestRoute,
   DevWorldshotRoute: DevWorldshotRoute,

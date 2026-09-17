@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "variant": "hair-10-artisan-bob",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "fitBox": {
+    "centerX": 192,
+    "centerY": 84,
+    "maxWidth": 68,
+    "maxHeight": 66
+  },
+  "input": "public/assets/avatar/candidate-v1/source/candidate-v1-hair-10-artisan-bob-grayscale-source.png",
+  "output": "public/assets/avatar/candidate-v1/review/hair-10-artisan-bob-grayscale.png",
+  "sourceSha256": "85b0153c74f94a0832f7f9f697db52886168c1e04eba934ca46c1a37a0302e49",
+  "outputSha256": "8622cfb4e51299f4cdaf897ccd3d3deef6740c40245c7c4d55d00087950d0f8e",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "sourceBounds": {
+    "minX": 377,
+    "minY": 374,
+    "maxX": 863,
+    "maxY": 825
+  },
+  "targetBounds": {
+    "minX": 158,
+    "minY": 53,
+    "maxX": 225,
+    "maxY": 115
+  },
+  "scale": 0.13963,
+  "visiblePixels": 2180,
+  "pixelsOutsideHairBoundary": 0,
+  "grayscale": {
+    "maximumChannelSpread": 0,
+    "colouredPixels": 0,
+    "colouredFraction": 0
+  },
+  "status": "review-only",
+  "blockers": [
+    "male/female fit, tinting, and game-scale readability require approval"
+  ]
+}

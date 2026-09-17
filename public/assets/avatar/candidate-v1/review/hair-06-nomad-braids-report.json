@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "variant": "hair-06-nomad-braids",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "fitBox": {
+    "centerX": 192,
+    "centerY": 87,
+    "maxWidth": 64,
+    "maxHeight": 72
+  },
+  "input": "public/assets/avatar/candidate-v1/source/candidate-v1-hair-06-nomad-braids-grayscale-source.png",
+  "output": "public/assets/avatar/candidate-v1/review/hair-06-nomad-braids-grayscale.png",
+  "sourceSha256": "69657637aec6da3db19aa950b9f71cc41c93f339adc55079576f371f4ad3f274",
+  "outputSha256": "cd1198c0d4dc333380f5af70a2ab1d024aa1424c645c9bdd8399ca0928cfe9e4",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "sourceBounds": {
+    "minX": 427,
+    "minY": 365,
+    "maxX": 826,
+    "maxY": 879
+  },
+  "targetBounds": {
+    "minX": 164,
+    "minY": 51,
+    "maxX": 219,
+    "maxY": 122
+  },
+  "scale": 0.139806,
+  "visiblePixels": 1743,
+  "pixelsOutsideHairBoundary": 0,
+  "grayscale": {
+    "maximumChannelSpread": 0,
+    "colouredPixels": 0,
+    "colouredFraction": 0
+  },
+  "status": "review-only",
+  "blockers": [
+    "male/female fit, tinting, and game-scale readability require approval"
+  ]
+}

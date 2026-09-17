@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "sharedPrompt": [
+    "front-facing compact fantasy game sprite",
+    "stepped pixel-art shading with near-black outer contour",
+    "perfectly flat solid #00ff00 chroma-key background",
+    "one centred subject with feet on y=300 and body centred on x=192",
+    "no cast shadow, text, watermark, scenery, weapon, armour, helmet, hair or facial hair",
+    "do not crop, rotate, mirror or invent a second pose"
+  ],
+  "jobs": [
+    {
+      "id": "candidate-v1-body-male",
+      "layer": "body",
+      "model": "male",
+      "output": "public/assets/avatar/candidate-v1/body/body-male.png",
+      "referenceIds": ["style-adventurer", "style-desert-spearman"],
+      "keywords": ["bald", "lightly dressed", "compact", "neutral stance"],
+      "prompt": "Create only a bald adult male base body for a layered paper-doll avatar. Use simple close-fitting sleeveless underclothes and short leggings that preserve a clean armour overlay silhouette. Both empty hands must remain visible; the right hand must close around the registered grip socket. Keep the expression neutral and the head unobstructed for separate face and hair layers."
+    },
+    {
+      "id": "candidate-v1-body-female",
+      "layer": "body",
+      "model": "female",
+      "output": "public/assets/avatar/candidate-v1/body/body-female.png",
+      "referenceIds": ["style-adventurer", "style-desert-spearman"],
+      "keywords": ["bald", "lightly dressed", "compact", "neutral stance"],
+      "prompt": "Create only a bald adult female base body for a layered paper-doll avatar. Use simple close-fitting sleeveless underclothes and short leggings that preserve a clean armour overlay silhouette. Both empty hands must remain visible; the right hand must close around the registered grip socket. Keep the expression neutral and the head unobstructed for separate face and hair layers."
+    }
+  ],
+  "acceptance": [
+    "source is converted to transparent RGBA without green fringe",
+    "final PNG is exactly 384x384",
+    "transparent corners and visible subject pixels are present",
+    "feet touch y=300 and horizontal centre remains x=192",
+    "body pixels remain inside the matching body mask",
+    "head is bald and free of baked face choices, hair, helmet or jewellery",
+    "underclothes remain visually separate from skin and thin enough for armour",
+    "male and female use the same foot, grip, neck and head registration sockets",
+    "composite remains readable at the 128x160 logical game view"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "variant": "female-face-01-warm",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "input": "public/assets/avatar/candidate-v1/source/candidate-v1-face-female-01-warm-source.png",
+  "output": "public/assets/avatar/candidate-v1/review/face-female-01-warm.png",
+  "sourceSha256": "9e9b3a29cff48cbe886183ae85ba56a9584e38b2d2676003d4c16df1b1aa6b09",
+  "outputSha256": "8c926271e679548e142a3311bcb67443df57170604f8f40e2dfda8091a6e689b",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "visibleBounds": {
+    "minX": 162,
+    "minY": 128,
+    "maxX": 223,
+    "maxY": 178
+  },
+  "visiblePixels": 764,
+  "pixelsOutsideFaceBoundary": 635,
+  "status": "rejected",
+  "blockers": [
+    "visible face pixels extend outside the registered face boundary"
+  ]
+}
