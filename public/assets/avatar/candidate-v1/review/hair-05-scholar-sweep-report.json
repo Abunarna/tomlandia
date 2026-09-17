@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "variant": "hair-05-scholar-sweep",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "fitBox": {
+    "centerX": 192,
+    "centerY": 80,
+    "maxWidth": 64,
+    "maxHeight": 56
+  },
+  "input": "public/assets/avatar/candidate-v1/source/candidate-v1-hair-05-scholar-sweep-grayscale-source.png",
+  "output": "public/assets/avatar/candidate-v1/review/hair-05-scholar-sweep-grayscale.png",
+  "sourceSha256": "e35a10cd48db303ec55c4e160a028c2957bc20e42d2444670b9577fbf8c4a565",
+  "outputSha256": "90a423e466766e5023b34e7ba099d52af2716160608e94636df88b36bb03b6a5",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "sourceBounds": {
+    "minX": 386,
+    "minY": 396,
+    "maxX": 868,
+    "maxY": 785
+  },
+  "targetBounds": {
+    "minX": 160,
+    "minY": 54,
+    "maxX": 223,
+    "maxY": 105
+  },
+  "scale": 0.132505,
+  "visiblePixels": 1787,
+  "pixelsOutsideHairBoundary": 0,
+  "grayscale": {
+    "maximumChannelSpread": 0,
+    "colouredPixels": 0,
+    "colouredFraction": 0
+  },
+  "status": "review-only",
+  "blockers": [
+    "male/female fit, tinting, and game-scale readability require approval"
+  ]
+}

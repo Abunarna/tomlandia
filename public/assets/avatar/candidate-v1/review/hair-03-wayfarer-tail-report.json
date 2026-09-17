@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "variant": "hair-03-wayfarer-tail",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "fitBox": {
+    "centerX": 192,
+    "centerY": 84,
+    "maxWidth": 72,
+    "maxHeight": 64
+  },
+  "input": "public/assets/avatar/candidate-v1/source/candidate-v1-hair-03-wayfarer-tail-grayscale-source.png",
+  "output": "public/assets/avatar/candidate-v1/review/hair-03-wayfarer-tail-grayscale.png",
+  "sourceSha256": "bd48a16217d19b42e7716a8c0ced16dda006ffe52c0ee0a738427107345970ed",
+  "outputSha256": "a375bb5e1a7cf0ad136d54b900df411faeec0c506a80d40bea70a9f07f02c25c",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "sourceBounds": {
+    "minX": 400,
+    "minY": 381,
+    "maxX": 873,
+    "maxY": 812
+  },
+  "targetBounds": {
+    "minX": 157,
+    "minY": 52,
+    "maxX": 226,
+    "maxY": 115
+  },
+  "scale": 0.148148,
+  "visiblePixels": 1818,
+  "pixelsOutsideHairBoundary": 0,
+  "grayscale": {
+    "maximumChannelSpread": 0,
+    "colouredPixels": 0,
+    "colouredFraction": 0
+  },
+  "status": "review-only",
+  "blockers": [
+    "male/female fit, tinting, and game-scale readability require approval"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "variant": "hair-04-warden-topknot",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "fitBox": {
+    "centerX": 192,
+    "centerY": 83,
+    "maxWidth": 66,
+    "maxHeight": 72
+  },
+  "input": "public/assets/avatar/candidate-v1/source/candidate-v1-hair-04-warden-topknot-grayscale-source.png",
+  "output": "public/assets/avatar/candidate-v1/review/hair-04-warden-topknot-grayscale.png",
+  "sourceSha256": "24aa1ec394445338790b855502a2290fe02c23777759782708b0117a6f6b4376",
+  "outputSha256": "eb43145efbaede481dc61deb706c6dbb4c61a646541a48f6cae4f13bb4cb9805",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "sourceBounds": {
+    "minX": 432,
+    "minY": 349,
+    "maxX": 818,
+    "maxY": 784
+  },
+  "targetBounds": {
+    "minX": 160,
+    "minY": 47,
+    "maxX": 223,
+    "maxY": 118
+  },
+  "scale": 0.165138,
+  "visiblePixels": 1972,
+  "pixelsOutsideHairBoundary": 0,
+  "grayscale": {
+    "maximumChannelSpread": 0,
+    "colouredPixels": 0,
+    "colouredFraction": 0
+  },
+  "status": "review-only",
+  "blockers": [
+    "male/female fit, tinting, and game-scale readability require approval"
+  ]
+}

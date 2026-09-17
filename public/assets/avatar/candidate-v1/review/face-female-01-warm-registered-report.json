@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "variant": "female-face-01-warm-registered",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "input": "public/assets/avatar/candidate-v1/source/candidate-v1-face-female-01-warm-registered-source.png",
+  "output": "public/assets/avatar/candidate-v1/review/face-female-01-warm-registered-combined.png",
+  "sourceSha256": "24750e89522591d46f3fc46b4c8e1bde7ec661c6d1ef06bb09f5b863cfa8cdb9",
+  "outputSha256": "504782c75b67d8109f214881c87d21771a33b7aa1e751d2359a236b9fe5598ce",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "targetBounds": {
+    "minX": 146,
+    "minY": 63,
+    "maxX": 238,
+    "maxY": 300
+  },
+  "silhouetteComparison": {
+    "changedPixels": 2832,
+    "intersectionOverUnion": 0.785373
+  },
+  "changedPixels": 13184,
+  "changedPixelsOutsideFaceBoundary": 10353,
+  "status": "rejected",
+  "blockers": [
+    "the authoritative body and clothing were redrawn outside the face boundary",
+    "the authoritative silhouette was not preserved"
+  ]
+}

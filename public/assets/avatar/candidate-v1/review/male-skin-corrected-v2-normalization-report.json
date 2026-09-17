@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "variant": "male-skin-master-corrected-v2",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "results": [
+    {
+      "model": "male",
+      "input": "public/assets/avatar/candidate-v1/source/body-male-grayscale-skin-corrected-v2-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/body-male-grayscale-skin-corrected-v2.png",
+      "sourceSha256": "df4e1cfb45d5cd9c8d4e5a780b534125c6b7676d888ad9cbc9254c7ce66ca5a0",
+      "outputSha256": "4fdf9df93cdc3addf982d57c682b89ecb466abab444c0b04a1dac857d76eb1b0",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 418,
+        "minY": 179,
+        "maxX": 835,
+        "maxY": 1074
+      },
+      "targetBounds": {
+        "minX": 137,
+        "minY": 63,
+        "maxX": 247,
+        "maxY": 300
+      },
+      "targetCenterX": 192,
+      "centerDeltaFromPivot": 0,
+      "scale": 0.265625,
+      "status": "rejected",
+      "silhouetteComparison": {
+        "whole": {
+          "changedPixels": 366,
+          "intersectionOverUnion": 0.973368
+        },
+        "head": {
+          "changedPixels": 20,
+          "intersectionOverUnion": 0.988802
+        },
+        "hands": {
+          "changedPixels": 171,
+          "intersectionOverUnion": 0.970614
+        },
+        "feet": {
+          "changedPixels": 70,
+          "intersectionOverUnion": 0.94811
+        }
+      },
+      "grayscale": {
+        "maximumChannelSpread": 0,
+        "colouredPixels": 0,
+        "colouredFraction": 0
+      },
+      "blockers": [
+        "whole-region silhouette changed beyond the acceptance threshold",
+        "head-region silhouette changed beyond the acceptance threshold",
+        "hand-region silhouette changed beyond the acceptance threshold",
+        "feet-region silhouette changed beyond the acceptance threshold",
+        "matching modesty overlay has not been derived"
+      ]
+    }
+  ]
+}

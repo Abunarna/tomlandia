@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "variant": "face-neutral",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "results": [
+    {
+      "model": "female",
+      "input": "public/assets/avatar/candidate-v1/source/body-female-face-neutral-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/body-female-face-neutral-combined.png",
+      "sourceSha256": "2877aa35ff42940481d5d5ddf5134c87c2e96bfc46bf5eee382a547aec96d08f",
+      "outputSha256": "1f59aa8ba190fe434a1d185cbb8125bd1609d46a282d89ecb6d7b4c6389eac2d",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 429,
+        "minY": 179,
+        "maxX": 823,
+        "maxY": 1073
+      },
+      "targetBounds": {
+        "minX": 140,
+        "minY": 63,
+        "maxX": 244,
+        "maxY": 300
+      },
+      "targetCenterX": 192,
+      "centerDeltaFromPivot": 0,
+      "scale": 0.265922,
+      "status": "review-only",
+      "silhouetteComparison": {
+        "whole": {
+          "changedPixels": 144,
+          "intersectionOverUnion": 0.988745
+        },
+        "head": {
+          "changedPixels": 28,
+          "intersectionOverUnion": 0.983203
+        },
+        "hands": {
+          "changedPixels": 57,
+          "intersectionOverUnion": 0.989391
+        },
+        "feet": {
+          "changedPixels": 30,
+          "intersectionOverUnion": 0.977324
+        }
+      },
+      "blockers": [
+        "skin and modesty clothing are not separate layers",
+        "male/female grip sockets require comparison"
+      ]
+    },
+    {
+      "model": "male",
+      "input": "public/assets/avatar/candidate-v1/source/body-male-face-neutral-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/body-male-face-neutral-combined.png",
+      "sourceSha256": "f5465b52cf3e5436811702aff93309cb79e8594d2900703b92bcecd8b5980e85",
+      "outputSha256": "14ef2794f107647fe329851a33b9430c86e7dab1023b0c0ba8d3394c03ddc7d6",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 418,
+        "minY": 180,
+        "maxX": 834,
+        "maxY": 1072
+      },
+      "targetBounds": {
+        "minX": 137,
+        "minY": 63,
+        "maxX": 247,
+        "maxY": 300
+      },
+      "targetCenterX": 192,
+      "centerDeltaFromPivot": 0,
+      "scale": 0.266517,
+      "status": "review-only",
+      "silhouetteComparison": {
+        "whole": {
+          "changedPixels": 56,
+          "intersectionOverUnion": 0.995898
+        },
+        "head": {
+          "changedPixels": 7,
+          "intersectionOverUnion": 0.996074
+        },
+        "hands": {
+          "changedPixels": 20,
+          "intersectionOverUnion": 0.996538
+        },
+        "feet": {
+          "changedPixels": 6,
+          "intersectionOverUnion": 0.995441
+        }
+      },
+      "blockers": [
+        "skin and modesty clothing are not separate layers",
+        "male/female grip sockets require comparison"
+      ]
+    }
+  ]
+}

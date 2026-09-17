@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "variant": "hair-09-sentinel-undercut",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "fitBox": {
+    "centerX": 192,
+    "centerY": 78,
+    "maxWidth": 60,
+    "maxHeight": 52
+  },
+  "input": "public/assets/avatar/candidate-v1/source/candidate-v1-hair-09-sentinel-undercut-grayscale-source.png",
+  "output": "public/assets/avatar/candidate-v1/review/hair-09-sentinel-undercut-grayscale.png",
+  "sourceSha256": "34b7837b64efea61432c492952aba0e2fe2ae14a228e4df48d1835ac9d1038c9",
+  "outputSha256": "b37419ada20dce9d5935c277348e550f0c7ed8ddd197931d91a486ac3dfb6b53",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "sourceBounds": {
+    "minX": 421,
+    "minY": 386,
+    "maxX": 832,
+    "maxY": 728
+  },
+  "targetBounds": {
+    "minX": 162,
+    "minY": 53,
+    "maxX": 221,
+    "maxY": 102
+  },
+  "scale": 0.145631,
+  "visiblePixels": 1408,
+  "pixelsOutsideHairBoundary": 0,
+  "grayscale": {
+    "maximumChannelSpread": 0,
+    "colouredPixels": 0,
+    "colouredFraction": 0
+  },
+  "status": "review-only",
+  "blockers": [
+    "male/female fit, tinting, and game-scale readability require approval"
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "variant": "female-fitted-faces",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "fitBox": {
+    "centerX": 192,
+    "centerY": 94,
+    "maxWidth": 32,
+    "maxHeight": 28
+  },
+  "results": [
+    {
+      "id": "female-face-01-warm-fitted",
+      "input": "public/assets/avatar/candidate-v1/source/candidate-v1-face-female-01-warm-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/female-face-01-warm-fitted.png",
+      "sourceSha256": "9e9b3a29cff48cbe886183ae85ba56a9584e38b2d2676003d4c16df1b1aa6b09",
+      "outputSha256": "991e395706003ba7209ee85b7a51326c7c50c77f36d1d075389116d46e6de7ab",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 509,
+        "minY": 423,
+        "maxX": 743,
+        "maxY": 614
+      },
+      "targetBounds": {
+        "minX": 176,
+        "minY": 81,
+        "maxX": 207,
+        "maxY": 106
+      },
+      "scale": 0.13617,
+      "visiblePixels": 198,
+      "pixelsOutsideFaceBoundary": 0,
+      "status": "review-only",
+      "blockers": [
+        "game-scale readability and visual identity require approval"
+      ]
+    },
+    {
+      "id": "female-face-02-resolute",
+      "input": "public/assets/avatar/candidate-v1/source/candidate-v1-face-female-02-resolute-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/female-face-02-resolute.png",
+      "sourceSha256": "181c7b16e61979a83a6669d6063893a7637edc5f7e3e7b30dbb209744b9c568f",
+      "outputSha256": "d7a1bab3fa23226e0db8e63ddd0e6a1381654827d4b5dba53a95b214888cf5f5",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 451,
+        "minY": 492,
+        "maxX": 801,
+        "maxY": 749
+      },
+      "targetBounds": {
+        "minX": 176,
+        "minY": 82,
+        "maxX": 207,
+        "maxY": 105
+      },
+      "scale": 0.091168,
+      "visiblePixels": 270,
+      "pixelsOutsideFaceBoundary": 0,
+      "status": "review-only",
+      "blockers": [
+        "game-scale readability and visual identity require approval"
+      ]
+    },
+    {
+      "id": "female-face-03-clever",
+      "input": "public/assets/avatar/candidate-v1/source/candidate-v1-face-female-03-clever-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/female-face-03-clever.png",
+      "sourceSha256": "ceb81f248202b3570862183b75b5d6ca91d9dc91350719f3eee92d07805c98b6",
+      "outputSha256": "e9f51cd843077627e77cd657bcb18fcad57affeb11807361ee8e46027f5747f3",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 469,
+        "minY": 513,
+        "maxX": 784,
+        "maxY": 767
+      },
+      "targetBounds": {
+        "minX": 176,
+        "minY": 81,
+        "maxX": 207,
+        "maxY": 106
+      },
+      "scale": 0.101266,
+      "visiblePixels": 266,
+      "pixelsOutsideFaceBoundary": 0,
+      "status": "review-only",
+      "blockers": [
+        "game-scale readability and visual identity require approval"
+      ]
+    },
+    {
+      "id": "female-face-04-serene",
+      "input": "public/assets/avatar/candidate-v1/source/candidate-v1-face-female-04-serene-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/female-face-04-serene.png",
+      "sourceSha256": "8d4aaa9faccf43000f14cb1e21d48964864eb733e2fbfc5071537c22e241a519",
+      "outputSha256": "c3683f9d449c000f36873246e0aca00692a745bfeabbdc8d9e301de680828ec2",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 434,
+        "minY": 471,
+        "maxX": 819,
+        "maxY": 783
+      },
+      "targetBounds": {
+        "minX": 176,
+        "minY": 81,
+        "maxX": 207,
+        "maxY": 106
+      },
+      "scale": 0.082902,
+      "visiblePixels": 262,
+      "pixelsOutsideFaceBoundary": 0,
+      "status": "review-only",
+      "blockers": [
+        "game-scale readability and visual identity require approval"
+      ]
+    }
+  ]
+}

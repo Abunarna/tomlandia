@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "variant": "original",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "results": [
+    {
+      "model": "female",
+      "input": "public/assets/avatar/candidate-v1/source/body-female-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/body-female-combined.png",
+      "sourceSha256": "1d13720948b560d2d8c19d38a343d83cd88d6282fc8e12e64f35c7cfab7e6e9d",
+      "outputSha256": "e1dc2663394a1a38efc7017a3dadbc830ca184045b5b60d73a439a28688951bf",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 429,
+        "minY": 179,
+        "maxX": 823,
+        "maxY": 1072
+      },
+      "targetBounds": {
+        "minX": 140,
+        "minY": 63,
+        "maxX": 244,
+        "maxY": 300
+      },
+      "targetCenterX": 192,
+      "centerDeltaFromPivot": 0,
+      "scale": 0.266219,
+      "status": "review-only",
+      "blockers": [
+        "face is baked into body source",
+        "skin and modesty clothing are not separate layers",
+        "male/female grip sockets require comparison"
+      ]
+    },
+    {
+      "model": "male",
+      "input": "public/assets/avatar/candidate-v1/source/body-male-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/body-male-combined.png",
+      "sourceSha256": "7341514a441c49b6785ace8e2a48ff322ba3239bb68ed80cd198550d72640967",
+      "outputSha256": "f4c83453f96bde9f0187a7c32c70a3f2c88293f73646b1f6737aa1cd85f752e9",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 418,
+        "minY": 180,
+        "maxX": 835,
+        "maxY": 1072
+      },
+      "targetBounds": {
+        "minX": 137,
+        "minY": 63,
+        "maxX": 247,
+        "maxY": 300
+      },
+      "targetCenterX": 192,
+      "centerDeltaFromPivot": 0,
+      "scale": 0.266517,
+      "status": "review-only",
+      "blockers": [
+        "face is baked into body source",
+        "skin and modesty clothing are not separate layers",
+        "male/female grip sockets require comparison"
+      ]
+    }
+  ]
+}

@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AvatarLabRouteImport } from './routes/avatar-lab'
+import { Route as CharacterCreationRouteImport } from './routes/character-creation'
+import { Route as CharacterTestRouteImport } from './routes/character-test'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
@@ -31,6 +34,21 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AvatarLabRoute = AvatarLabRouteImport.update({
+  id: '/avatar-lab',
+  path: '/avatar-lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CharacterCreationRoute = CharacterCreationRouteImport.update({
+  id: '/character-creation',
+  path: '/character-creation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CharacterTestRoute = CharacterTestRouteImport.update({
+  id: '/character-test',
+  path: '/character-test',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -70,6 +88,9 @@ const Char91DotmcpChar93InvokeToolToolRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/avatar-lab': typeof AvatarLabRoute
+  '/character-creation': typeof CharacterCreationRoute
+  '/character-test': typeof CharacterTestRoute
   '/mcp': typeof McpRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -80,6 +101,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/avatar-lab': typeof AvatarLabRoute
+  '/character-creation': typeof CharacterCreationRoute
+  '/character-test': typeof CharacterTestRoute
   '/mcp': typeof McpRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -92,6 +116,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/avatar-lab': typeof AvatarLabRoute
+  '/character-creation': typeof CharacterCreationRoute
+  '/character-test': typeof CharacterTestRoute
   '/mcp': typeof McpRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -104,6 +131,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/avatar-lab'
+    | '/character-creation'
+    | '/character-test'
     | '/mcp'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -114,6 +144,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/avatar-lab'
+    | '/character-creation'
+    | '/character-test'
     | '/mcp'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -125,6 +158,9 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/avatar-lab'
+    | '/character-creation'
+    | '/character-test'
     | '/mcp'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -137,6 +173,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  AvatarLabRoute: typeof AvatarLabRoute
+  CharacterCreationRoute: typeof CharacterCreationRoute
+  CharacterTestRoute: typeof CharacterTestRoute
   McpRoute: typeof McpRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -165,6 +204,27 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/avatar-lab': {
+      id: '/avatar-lab'
+      path: '/avatar-lab'
+      fullPath: '/avatar-lab'
+      preLoaderRoute: typeof AvatarLabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/character-creation': {
+      id: '/character-creation'
+      path: '/character-creation'
+      fullPath: '/character-creation'
+      preLoaderRoute: typeof CharacterCreationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/character-test': {
+      id: '/character-test'
+      path: '/character-test'
+      fullPath: '/character-test'
+      preLoaderRoute: typeof CharacterTestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -227,6 +287,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  AvatarLabRoute: AvatarLabRoute,
+  CharacterCreationRoute: CharacterCreationRoute,
+  CharacterTestRoute: CharacterTestRoute,
   McpRoute: McpRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:

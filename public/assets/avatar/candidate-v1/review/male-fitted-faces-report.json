@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "variant": "male-fitted-faces",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "fitBox": {
+    "centerX": 192,
+    "centerY": 94,
+    "maxWidth": 32,
+    "maxHeight": 28
+  },
+  "results": [
+    {
+      "id": "male-face-01-steadfast",
+      "input": "public/assets/avatar/candidate-v1/source/candidate-v1-face-male-01-steadfast-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/male-face-01-steadfast.png",
+      "sourceSha256": "1fb890b1407d7836e66734d804bd00b6664dbdec435ea9fb7bdf134c00932198",
+      "outputSha256": "8394fafdba0fa0f1ca3c94eac06538364fcf6020c1db881019d2b6d70955ce70",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 480,
+        "minY": 505,
+        "maxX": 772,
+        "maxY": 748
+      },
+      "targetBounds": {
+        "minX": 176,
+        "minY": 81,
+        "maxX": 207,
+        "maxY": 107
+      },
+      "scale": 0.109215,
+      "visiblePixels": 308,
+      "pixelsOutsideFaceBoundary": 0,
+      "status": "review-only",
+      "blockers": [
+        "game-scale readability and visual identity require approval"
+      ]
+    },
+    {
+      "id": "male-face-02-rugged",
+      "input": "public/assets/avatar/candidate-v1/source/candidate-v1-face-male-02-rugged-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/male-face-02-rugged.png",
+      "sourceSha256": "0110c586457cd73b6a7ab42fe33cfe23d331a7e5cf743ebfa949fdb64767ea4f",
+      "outputSha256": "28f38e37f605658f11c23e713a68dd53263b0e339154f45d2b72662a136f0706",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 454,
+        "minY": 482,
+        "maxX": 799,
+        "maxY": 769
+      },
+      "targetBounds": {
+        "minX": 176,
+        "minY": 81,
+        "maxX": 207,
+        "maxY": 107
+      },
+      "scale": 0.092486,
+      "visiblePixels": 330,
+      "pixelsOutsideFaceBoundary": 0,
+      "status": "review-only",
+      "blockers": [
+        "game-scale readability and visual identity require approval"
+      ]
+    },
+    {
+      "id": "male-face-03-shrewd",
+      "input": "public/assets/avatar/candidate-v1/source/candidate-v1-face-male-03-shrewd-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/male-face-03-shrewd.png",
+      "sourceSha256": "352fc8cf6e87bbde2300d4be5c438a0d6b709fd1f7325fa41c57f448a73345bc",
+      "outputSha256": "36dcdec318b336f5b290d8c2a5cefcd5631f562c76f003f8b0957d18b773c1b1",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 440,
+        "minY": 458,
+        "maxX": 813,
+        "maxY": 780
+      },
+      "targetBounds": {
+        "minX": 176,
+        "minY": 80,
+        "maxX": 207,
+        "maxY": 107
+      },
+      "scale": 0.085561,
+      "visiblePixels": 233,
+      "pixelsOutsideFaceBoundary": 0,
+      "status": "review-only",
+      "blockers": [
+        "game-scale readability and visual identity require approval"
+      ]
+    },
+    {
+      "id": "male-face-04-wise",
+      "input": "public/assets/avatar/candidate-v1/source/candidate-v1-face-male-04-wise-source.png",
+      "output": "public/assets/avatar/candidate-v1/review/male-face-04-wise.png",
+      "sourceSha256": "51eeec869f5d1d44e33f8669ce87b49ca18935e40f0e3b52d63a66753f7dddf1",
+      "outputSha256": "83f68fe3f4598becf937e2195437b8656c4078c513916093a8217c671a9999ec",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceBounds": {
+        "minX": 452,
+        "minY": 479,
+        "maxX": 800,
+        "maxY": 763
+      },
+      "targetBounds": {
+        "minX": 176,
+        "minY": 81,
+        "maxX": 207,
+        "maxY": 106
+      },
+      "scale": 0.091691,
+      "visiblePixels": 291,
+      "pixelsOutsideFaceBoundary": 0,
+      "status": "review-only",
+      "blockers": [
+        "game-scale readability and visual identity require approval"
+      ]
+    }
+  ]
+}

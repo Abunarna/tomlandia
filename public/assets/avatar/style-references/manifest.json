@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "references": [
+    {
+      "id": "style-dark-crusader",
+      "filename": "image_1.jpg",
+      "label": "Dark crusader",
+      "role": "armour",
+      "source": "User-provided style guide",
+      "notes": "Heavy plate, asymmetric shield, dark jewel palette and high-tier ceremonial detail"
+    },
+    {
+      "id": "style-desert-spearman",
+      "filename": "image_2.jpg",
+      "label": "Desert spearman",
+      "role": "armour",
+      "source": "User-provided style guide",
+      "notes": "Layered cloth and leather, readable straps, restrained low-tier silhouette"
+    },
+    {
+      "id": "style-adventurer",
+      "filename": "image_3.jpg",
+      "label": "Adventurer",
+      "role": "npc",
+      "source": "User-provided style guide",
+      "notes": "Tomlandia-friendly proportions, strong outline, compact detail and warm character palette"
+    },
+    {
+      "id": "style-glacial-wyrm",
+      "filename": "image_4.jpg",
+      "label": "Glacial wyrm",
+      "role": "armour",
+      "source": "User-provided style guide",
+      "notes": "Ice facets, pale blue value ladder, horn shapes and late-tier glacial material language"
+    }
+  ]
+}

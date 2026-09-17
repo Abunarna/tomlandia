@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "variant": "hair-02-ranger-layers",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "fitBox": {
+    "centerX": 192,
+    "centerY": 88,
+    "maxWidth": 66,
+    "maxHeight": 72
+  },
+  "input": "public/assets/avatar/candidate-v1/source/candidate-v1-hair-02-ranger-layers-grayscale-source.png",
+  "output": "public/assets/avatar/candidate-v1/review/hair-02-ranger-layers-grayscale.png",
+  "sourceSha256": "132a5b034d7ebc264977e38330d622827731c664f552c560a72349b9391463cb",
+  "outputSha256": "421a5b5e4540089a1714bc126a123ec24e5b902e7f81148f4fef96c5b31fdd84",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "sourceBounds": {
+    "minX": 345,
+    "minY": 328,
+    "maxX": 876,
+    "maxY": 876
+  },
+  "targetBounds": {
+    "minX": 159,
+    "minY": 54,
+    "maxX": 224,
+    "maxY": 121
+  },
+  "scale": 0.12406,
+  "visiblePixels": 2157,
+  "pixelsOutsideHairBoundary": 0,
+  "grayscale": {
+    "maximumChannelSpread": 0,
+    "colouredPixels": 0,
+    "colouredFraction": 0
+  },
+  "status": "review-only",
+  "blockers": [
+    "male/female fit, tinting, and game-scale readability require approval"
+  ]
+}

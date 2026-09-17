@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "variant": "hair-08-seafarer-waves",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "fitBox": {
+    "centerX": 192,
+    "centerY": 87,
+    "maxWidth": 76,
+    "maxHeight": 78
+  },
+  "input": "public/assets/avatar/candidate-v1/source/candidate-v1-hair-08-seafarer-waves-grayscale-source.png",
+  "output": "public/assets/avatar/candidate-v1/review/hair-08-seafarer-waves-grayscale.png",
+  "sourceSha256": "6ea3e57d2e51cef28f4d59ba86a9781a4511be657f642b5ff251ef03314e8b57",
+  "outputSha256": "f0bb2da76753fcd164dddaf92c9a12096292ad254b95ddeab49b696967c75c02",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "sourceBounds": {
+    "minX": 228,
+    "minY": 207,
+    "maxX": 1042,
+    "maxY": 980
+  },
+  "targetBounds": {
+    "minX": 154,
+    "minY": 51,
+    "maxX": 229,
+    "maxY": 122
+  },
+  "scale": 0.093252,
+  "visiblePixels": 2646,
+  "pixelsOutsideHairBoundary": 0,
+  "grayscale": {
+    "maximumChannelSpread": 0,
+    "colouredPixels": 0,
+    "colouredFraction": 0
+  },
+  "status": "review-only",
+  "blockers": [
+    "male/female fit, tinting, and game-scale readability require approval"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "variant": "hair-01-adventurer-crop",
+  "registration": {
+    "width": 384,
+    "height": 384,
+    "pivotX": 192,
+    "footY": 300
+  },
+  "fitBox": {
+    "centerX": 192,
+    "centerY": 78,
+    "maxWidth": 60,
+    "maxHeight": 50
+  },
+  "input": "public/assets/avatar/candidate-v1/source/candidate-v1-hair-01-adventurer-crop-grayscale-source.png",
+  "output": "public/assets/avatar/candidate-v1/review/hair-01-adventurer-crop-grayscale.png",
+  "sourceSha256": "dc09f4ba3eafbe07b15deeb4e3e1c42f1aa3a4e7a97491c99d11ae569e8ed43b",
+  "outputSha256": "1e6af2983034a0ae17330673a0666968e1d1d1e592d86659f2223135f836271c",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "sourceBounds": {
+    "minX": 429,
+    "minY": 437,
+    "maxX": 820,
+    "maxY": 752
+  },
+  "targetBounds": {
+    "minX": 162,
+    "minY": 54,
+    "maxX": 221,
+    "maxY": 101
+  },
+  "scale": 0.153061,
+  "visiblePixels": 1441,
+  "pixelsOutsideHairBoundary": 0,
+  "grayscale": {
+    "maximumChannelSpread": 0,
+    "colouredPixels": 0,
+    "colouredFraction": 0
+  },
+  "status": "review-only",
+  "blockers": [
+    "male/female fit, tinting, and game-scale readability require approval"
+  ]
+}
