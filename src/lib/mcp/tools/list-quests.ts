@@ -4,7 +4,7 @@ import { QUESTS } from "@/game/data";
 export default defineTool({
   name: "list_quests",
   title: "List quests",
-  description: "List every quest available in Tomlandia, with its objective and rewards.",
+  description: "List every quest available in Abunaria, with its objective and rewards.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: () => {

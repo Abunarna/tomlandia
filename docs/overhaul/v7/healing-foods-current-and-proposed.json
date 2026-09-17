@@ -1,0 +1,1058 @@
+{
+  "schema": "tomlandia.v7.healing-foods.current-and-proposed/1",
+  "derived_from": "content/v6/manifest.authoring.json",
+  "canonical_content_version": "v6",
+  "candidate_heal_curve": [
+    15,
+    45,
+    120,
+    135,
+    155,
+    180,
+    210,
+    245,
+    300,
+    340,
+    375,
+    445,
+    485,
+    525,
+    605,
+    645
+  ],
+  "candidate_value_rule": "round_up_to_5(max(current_value, ingredient_intrinsic_value * 1.25))",
+  "candidate_value_status": "provisional-pending-owner-decision",
+  "stable_fields": "id, name, recipe id, output id, inputs, quantities, cooking requirement, xp, time_s, output_qty, stackable, tradable, icon, colour, rarity, tier",
+  "foods": [
+    {
+      "tier_index": 1,
+      "level_requirement": 1,
+      "id": "honey_bun",
+      "name": "Honey Bun",
+      "icon_key": "honey_bun",
+      "colour": "#6f4932",
+      "rarity": "common",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 15,
+      "candidate_heal": 15,
+      "current_value": 12,
+      "ingredient_intrinsic_value": 16,
+      "candidate_value": 20,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_honey_bun",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 1,
+        "xp": 5,
+        "time_s": 1.61,
+        "output_item_id": "honey_bun",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "river_minnow",
+            "qty": 2
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 50,
+      "current_heal_pct_of_max_hp_at_level": 50
+    },
+    {
+      "tier_index": 2,
+      "level_requirement": 10,
+      "id": "berry_pie",
+      "name": "Berry Pie",
+      "icon_key": "berry_pie",
+      "colour": "#5f4632",
+      "rarity": "common",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 45,
+      "candidate_heal": 45,
+      "current_value": 34,
+      "ingredient_intrinsic_value": 50,
+      "candidate_value": 65,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_berry_pie",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 10,
+        "xp": 10,
+        "time_s": 1.74,
+        "output_item_id": "berry_pie",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "silver_trout",
+            "qty": 2
+          },
+          {
+            "item_id": "feather",
+            "qty": 1
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 53.6,
+      "current_heal_pct_of_max_hp_at_level": 53.6
+    },
+    {
+      "tier_index": 3,
+      "level_requirement": 20,
+      "id": "hearty_stew",
+      "name": "Hearty Stew",
+      "icon_key": "hearty_stew",
+      "colour": "#343943",
+      "rarity": "common",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 120,
+      "candidate_heal": 120,
+      "current_value": 90,
+      "ingredient_intrinsic_value": 144,
+      "candidate_value": 180,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_hearty_stew",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 20,
+        "xp": 27,
+        "time_s": 1.88,
+        "output_item_id": "hearty_stew",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "golden_koi",
+            "qty": 2
+          },
+          {
+            "item_id": "goblin_charm",
+            "qty": 1
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 83.3,
+      "current_heal_pct_of_max_hp_at_level": 83.3
+    },
+    {
+      "tier_index": 4,
+      "level_requirement": 30,
+      "id": "fishermans_stew",
+      "name": "Fisherman's Stew",
+      "icon_key": "fishermans_stew",
+      "colour": "#4e5968",
+      "rarity": "uncommon",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 135,
+      "candidate_heal": 135,
+      "current_value": 95,
+      "ingredient_intrinsic_value": 64,
+      "candidate_value": 95,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_fishermans_stew",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 30,
+        "xp": 66,
+        "time_s": 2.02,
+        "output_item_id": "fishermans_stew",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "silver_trout",
+            "qty": 2
+          },
+          {
+            "item_id": "forest_herbs",
+            "qty": 1
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 66.2,
+      "current_heal_pct_of_max_hp_at_level": 66.2
+    },
+    {
+      "tier_index": 5,
+      "level_requirement": 40,
+      "id": "golden_koi_feast",
+      "name": "Golden Koi Feast",
+      "icon_key": "golden_koi_feast",
+      "colour": "#263f5a",
+      "rarity": "uncommon",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 155,
+      "candidate_heal": 155,
+      "current_value": 100,
+      "ingredient_intrinsic_value": 146,
+      "candidate_value": 185,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_golden_koi_feast",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 40,
+        "xp": 171,
+        "time_s": 2.16,
+        "output_item_id": "golden_koi_feast",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "golden_koi",
+            "qty": 2
+          },
+          {
+            "item_id": "forest_herbs",
+            "qty": 1
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 58.7,
+      "current_heal_pct_of_max_hp_at_level": 58.7
+    },
+    {
+      "tier_index": 6,
+      "level_requirement": 50,
+      "id": "sunspiced_eel",
+      "name": "Sunspiced Eel",
+      "icon_key": "sunspiced_eel",
+      "colour": "#734319",
+      "rarity": "uncommon",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 180,
+      "candidate_heal": 180,
+      "current_value": 105,
+      "ingredient_intrinsic_value": 330,
+      "candidate_value": 415,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_sunspiced_eel",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 50,
+        "xp": 559,
+        "time_s": 2.3,
+        "output_item_id": "sunspiced_eel",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "deepwater_eel",
+            "qty": 2
+          },
+          {
+            "item_id": "desert_bloom",
+            "qty": 1
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 55.6,
+      "current_heal_pct_of_max_hp_at_level": 55.6
+    },
+    {
+      "tier_index": 7,
+      "level_requirement": 60,
+      "id": "runic_fish_stew",
+      "name": "Runic Fish Stew",
+      "icon_key": "runic_fish_stew",
+      "colour": "#4c1d24",
+      "rarity": "rare",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 210,
+      "candidate_heal": 210,
+      "current_value": 130,
+      "ingredient_intrinsic_value": 162,
+      "candidate_value": 205,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_runic_fish_stew",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 60,
+        "xp": 1008,
+        "time_s": 2.44,
+        "output_item_id": "runic_fish_stew",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "golden_koi",
+            "qty": 2
+          },
+          {
+            "item_id": "forest_herbs",
+            "qty": 2
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 54.7,
+      "current_heal_pct_of_max_hp_at_level": 54.7
+    },
+    {
+      "tier_index": 8,
+      "level_requirement": 70,
+      "id": "shadow_stew",
+      "name": "Shadow Stew",
+      "icon_key": "shadow_stew",
+      "colour": "#241a31",
+      "rarity": "rare",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 245,
+      "candidate_heal": 245,
+      "current_value": 140,
+      "ingredient_intrinsic_value": 358,
+      "candidate_value": 450,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_shadow_stew",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 70,
+        "xp": 1149,
+        "time_s": 2.58,
+        "output_item_id": "shadow_stew",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "deepwater_eel",
+            "qty": 2
+          },
+          {
+            "item_id": "gloomcap",
+            "qty": 1
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 55.2,
+      "current_heal_pct_of_max_hp_at_level": 55.2
+    },
+    {
+      "tier_index": 9,
+      "level_requirement": 80,
+      "id": "frost_tonic",
+      "name": "Frost Tonic",
+      "icon_key": "frost_tonic",
+      "colour": "#243e58",
+      "rarity": "rare",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 300,
+      "candidate_heal": 300,
+      "current_value": 180,
+      "ingredient_intrinsic_value": 378,
+      "candidate_value": 475,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_frost_tonic",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 80,
+        "xp": 1333,
+        "time_s": 2.72,
+        "output_item_id": "frost_tonic",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "deepwater_eel",
+            "qty": 2
+          },
+          {
+            "item_id": "thick_leather",
+            "qty": 1
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 59.5,
+      "current_heal_pct_of_max_hp_at_level": 59.5
+    },
+    {
+      "tier_index": 10,
+      "level_requirement": 90,
+      "id": "wyrm_feast",
+      "name": "Wyrm Feast",
+      "icon_key": "wyrm_feast",
+      "colour": "#3b5970",
+      "rarity": "epic",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 340,
+      "candidate_heal": 340,
+      "current_value": 210,
+      "ingredient_intrinsic_value": 698,
+      "candidate_value": 875,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_wyrm_feast",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 90,
+        "xp": 1514,
+        "time_s": 2.86,
+        "output_item_id": "wyrm_feast",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "starlight_salmon",
+            "qty": 2
+          },
+          {
+            "item_id": "gloomcap",
+            "qty": 1
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 60.3,
+      "current_heal_pct_of_max_hp_at_level": 60.3
+    },
+    {
+      "tier_index": 11,
+      "level_requirement": 100,
+      "id": "phoenix_fillet",
+      "name": "Phoenix Fillet",
+      "icon_key": "phoenix_fillet",
+      "colour": "#286a7b",
+      "rarity": "epic",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 650,
+      "candidate_heal": 375,
+      "current_value": 700,
+      "ingredient_intrinsic_value": 1100,
+      "candidate_value": 1375,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_phoenix_fillet",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 100,
+        "xp": 1700,
+        "time_s": 3,
+        "output_item_id": "phoenix_fillet",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "starlight_salmon",
+            "qty": 3
+          },
+          {
+            "item_id": "frost_pelt",
+            "qty": 1
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 60.1,
+      "current_heal_pct_of_max_hp_at_level": 104.2
+    },
+    {
+      "tier_index": 12,
+      "level_requirement": 110,
+      "id": "starsteel_feast",
+      "name": "Starsteel Feast",
+      "icon_key": "starsteel_feast",
+      "colour": "#171f4b",
+      "rarity": "epic",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 700,
+      "candidate_heal": 445,
+      "current_value": 705,
+      "ingredient_intrinsic_value": 735,
+      "candidate_value": 920,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_starsteel_feast",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 110,
+        "xp": 1890,
+        "time_s": 3.14,
+        "output_item_id": "starsteel_feast",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "starlight_salmon",
+            "qty": 2
+          },
+          {
+            "item_id": "frost_lichen",
+            "qty": 1
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 65.1,
+      "current_heal_pct_of_max_hp_at_level": 102.3
+    },
+    {
+      "tier_index": 13,
+      "level_requirement": 120,
+      "id": "void_feast",
+      "name": "Void Feast",
+      "icon_key": "void_feast",
+      "colour": "#130f22",
+      "rarity": "epic",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 755,
+      "candidate_heal": 485,
+      "current_value": 710,
+      "ingredient_intrinsic_value": 830,
+      "candidate_value": 1040,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_void_feast",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 120,
+        "xp": 2079,
+        "time_s": 3.28,
+        "output_item_id": "void_feast",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "starlight_salmon",
+            "qty": 2
+          },
+          {
+            "item_id": "frost_lichen",
+            "qty": 2
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 65.2,
+      "current_heal_pct_of_max_hp_at_level": 101.5
+    },
+    {
+      "tier_index": 14,
+      "level_requirement": 130,
+      "id": "wyrmforged_feast",
+      "name": "Wyrmforged Feast",
+      "icon_key": "wyrmforged_feast",
+      "colour": "#2d0d13",
+      "rarity": "legendary",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 815,
+      "candidate_heal": 525,
+      "current_value": 715,
+      "ingredient_intrinsic_value": 1150,
+      "candidate_value": 1440,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_wyrmforged_feast",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 130,
+        "xp": 2288,
+        "time_s": 3.42,
+        "output_item_id": "wyrmforged_feast",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "starlight_salmon",
+            "qty": 3
+          },
+          {
+            "item_id": "frost_lichen",
+            "qty": 2
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 65.3,
+      "current_heal_pct_of_max_hp_at_level": 101.4
+    },
+    {
+      "tier_index": 15,
+      "level_requirement": 140,
+      "id": "ancient_feast",
+      "name": "Ancient Feast",
+      "icon_key": "ancient_feast",
+      "colour": "#5c4c2d",
+      "rarity": "legendary",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 880,
+      "candidate_heal": 605,
+      "current_value": 720,
+      "ingredient_intrinsic_value": 1245,
+      "candidate_value": 1560,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_ancient_feast",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 140,
+        "xp": 2519,
+        "time_s": 3.56,
+        "output_item_id": "ancient_feast",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "starlight_salmon",
+            "qty": 3
+          },
+          {
+            "item_id": "frost_lichen",
+            "qty": 3
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 70,
+      "current_heal_pct_of_max_hp_at_level": 101.9
+    },
+    {
+      "tier_index": 16,
+      "level_requirement": 150,
+      "id": "ascendant_feast",
+      "name": "Ascendant Feast",
+      "icon_key": "ascendant_feast",
+      "colour": "#6f622e",
+      "rarity": "legendary",
+      "kind": "food",
+      "family": "food",
+      "stackable": true,
+      "tradable": true,
+      "active": true,
+      "current_heal": 950,
+      "candidate_heal": 645,
+      "current_value": 790,
+      "ingredient_intrinsic_value": 1565,
+      "candidate_value": 1960,
+      "candidate_value_frozen": false,
+      "recipe": {
+        "id": "cook_ascendant_feast",
+        "station": "cook",
+        "skill": "cooking",
+        "level_requirement": 150,
+        "xp": 2748,
+        "time_s": 3.7,
+        "output_item_id": "ascendant_feast",
+        "output_qty": 1,
+        "inputs": [
+          {
+            "item_id": "starlight_salmon",
+            "qty": 4
+          },
+          {
+            "item_id": "frost_lichen",
+            "qty": 3
+          }
+        ]
+      },
+      "heal_pct_of_max_hp_at_level": 69.8,
+      "current_heal_pct_of_max_hp_at_level": 102.8
+    }
+  ],
+  "ingredients": [
+    {
+      "id": "deepwater_eel",
+      "name": "Deepwater Eel",
+      "defined": true,
+      "active": true,
+      "value": 150,
+      "earliest_level": 40,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 50,
+      "routes": [
+        {
+          "kind": "fish",
+          "skill": "fishing",
+          "level": 40
+        }
+      ]
+    },
+    {
+      "id": "desert_bloom",
+      "name": "Desert Bloom",
+      "defined": true,
+      "active": true,
+      "value": 30,
+      "earliest_level": 17,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 50,
+      "routes": [
+        {
+          "kind": "node",
+          "skill": "gathering",
+          "node": "bloom",
+          "level": 42
+        },
+        {
+          "kind": "drop",
+          "monster": "bandit",
+          "level": 17,
+          "chance": 0.4
+        }
+      ]
+    },
+    {
+      "id": "feather",
+      "name": "Feather",
+      "defined": true,
+      "active": true,
+      "value": 2,
+      "earliest_level": 1,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 10,
+      "routes": [
+        {
+          "kind": "drop",
+          "monster": "chicken",
+          "level": 1,
+          "chance": 0.7
+        }
+      ]
+    },
+    {
+      "id": "forest_herbs",
+      "name": "Forest Herbs",
+      "defined": true,
+      "active": true,
+      "value": 16,
+      "earliest_level": 18,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 30,
+      "routes": [
+        {
+          "kind": "node",
+          "skill": "gathering",
+          "node": "herbs",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "id": "frost_lichen",
+      "name": "Frost Lichen",
+      "defined": true,
+      "active": true,
+      "value": 95,
+      "earliest_level": 98,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 110,
+      "routes": [
+        {
+          "kind": "node",
+          "skill": "gathering",
+          "node": "lichen",
+          "level": 98
+        }
+      ]
+    },
+    {
+      "id": "frost_pelt",
+      "name": "Frost Pelt",
+      "defined": true,
+      "active": true,
+      "value": 140,
+      "earliest_level": 55,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 100,
+      "routes": [
+        {
+          "kind": "drop",
+          "monster": "frost_wolf",
+          "level": 55,
+          "chance": 1
+        },
+        {
+          "kind": "drop",
+          "monster": "yeti",
+          "level": 73,
+          "chance": 0.55
+        },
+        {
+          "kind": "drop",
+          "monster": "yeti",
+          "level": 73,
+          "chance": 1
+        },
+        {
+          "kind": "drop",
+          "monster": "frost_troll",
+          "level": 80,
+          "chance": 1
+        },
+        {
+          "kind": "drop",
+          "monster": "ice_wraith",
+          "level": 88,
+          "chance": 1
+        },
+        {
+          "kind": "drop",
+          "monster": "frost_revenant",
+          "level": 90,
+          "chance": 1
+        },
+        {
+          "kind": "drop",
+          "monster": "frost_giant",
+          "level": 105,
+          "chance": 1
+        },
+        {
+          "kind": "drop",
+          "monster": "glacial_guardian",
+          "level": 110,
+          "chance": 1
+        },
+        {
+          "kind": "drop",
+          "monster": "void_wraith",
+          "level": 130,
+          "chance": 1
+        },
+        {
+          "kind": "drop",
+          "monster": "ancient_frost_wyrm",
+          "level": 146,
+          "chance": 1
+        }
+      ]
+    },
+    {
+      "id": "gloomcap",
+      "name": "Gloomcap",
+      "defined": true,
+      "active": true,
+      "value": 58,
+      "earliest_level": 32,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 70,
+      "routes": [
+        {
+          "kind": "node",
+          "skill": "gathering",
+          "node": "gloomcap",
+          "level": 68
+        },
+        {
+          "kind": "drop",
+          "monster": "wraith",
+          "level": 32,
+          "chance": 0.45
+        }
+      ]
+    },
+    {
+      "id": "goblin_charm",
+      "name": "Goblin Charm",
+      "defined": true,
+      "active": true,
+      "value": 14,
+      "earliest_level": 1,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 20,
+      "routes": [
+        {
+          "kind": "drop",
+          "monster": "goblin",
+          "level": 1,
+          "chance": 0.35
+        }
+      ]
+    },
+    {
+      "id": "golden_koi",
+      "name": "Golden Koi",
+      "defined": true,
+      "active": true,
+      "value": 65,
+      "earliest_level": 20,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 20,
+      "routes": [
+        {
+          "kind": "fish",
+          "skill": "fishing",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "id": "river_minnow",
+      "name": "River Minnow",
+      "defined": true,
+      "active": true,
+      "value": 8,
+      "earliest_level": 1,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 1,
+      "routes": [
+        {
+          "kind": "fish",
+          "skill": "fishing",
+          "level": 1
+        }
+      ]
+    },
+    {
+      "id": "silver_trout",
+      "name": "Silver Trout",
+      "defined": true,
+      "active": true,
+      "value": 24,
+      "earliest_level": 10,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 10,
+      "routes": [
+        {
+          "kind": "fish",
+          "skill": "fishing",
+          "level": 10
+        }
+      ]
+    },
+    {
+      "id": "starlight_salmon",
+      "name": "Starlight Salmon",
+      "defined": true,
+      "active": true,
+      "value": 320,
+      "earliest_level": 70,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 90,
+      "routes": [
+        {
+          "kind": "fish",
+          "skill": "fishing",
+          "level": 70
+        }
+      ]
+    },
+    {
+      "id": "thick_leather",
+      "name": "Thick Leather",
+      "defined": true,
+      "active": true,
+      "value": 78,
+      "earliest_level": 20,
+      "obtainable": true,
+      "circular": false,
+      "available_at_or_below_recipe_gate": true,
+      "earliest_recipe_gate_using_it": 80,
+      "routes": [
+        {
+          "kind": "recipe",
+          "recipe": "skin_thick_leather",
+          "skill": "skinning",
+          "level": 20,
+          "inputs": [
+            {
+              "id": "thick_hide",
+              "circular": false,
+              "earliest_level": 5,
+              "routes": [
+                {
+                  "kind": "drop",
+                  "monster": "forest_lynx",
+                  "level": 5,
+                  "chance": 1
+                },
+                {
+                  "kind": "drop",
+                  "monster": "bear",
+                  "level": 7,
+                  "chance": 0.5
+                },
+                {
+                  "kind": "drop",
+                  "monster": "bear",
+                  "level": 7,
+                  "chance": 1
+                },
+                {
+                  "kind": "drop",
+                  "monster": "dust_jackal",
+                  "level": 10,
+                  "chance": 1
+                },
+                {
+                  "kind": "drop",
+                  "monster": "ironback_boar",
+                  "level": 20,
+                  "chance": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ export default defineTool({
   name: "get_character",
   title: "Get character",
   description:
-    "Get the signed-in Tomlandia adventurer's character sheet: name, gold, health, equipment, skill levels and active quest.",
+    "Get the signed-in Abunaria adventurer's character sheet: name, gold, health, equipment, skill levels and active quest.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {

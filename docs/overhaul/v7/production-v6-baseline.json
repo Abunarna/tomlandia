@@ -1,0 +1,108 @@
+{
+  "schema": "tomlandia.v7.production-baseline/1",
+  "recorded_at_utc": "2026-09-07",
+  "release_receipt": {
+    "deployed_commit": "f7e7fb535f29f66898fcaaf5d619ca919fea37ea",
+    "content_hash": "d87267194b34a7eba300115adfa29600d1d63f52daad4e0e96b947414e673d9e",
+    "spawn_hash": "69a4276f9466c02eef28ff8b8d93804e9d103504c163c1e1aa630dd9aba0c163",
+    "expected_counts": {
+      "items": 173,
+      "strength_potions": 16,
+      "strength_potion_recipes": 16,
+      "healing_foods": 16,
+      "spawns": 730,
+      "nodes": 369,
+      "monsters": 361
+    },
+    "expected_state": {
+      "active_content_version": "v6",
+      "active_spawn_set_version": "v6",
+      "minimum_client_content_version": "v6",
+      "v5_status": "retired but retained",
+      "maintenance_mode": false
+    }
+  },
+  "reconciliation": {
+    "verdict": "content and database reconcile exactly; client publication is INCOMPLETE",
+    "control_row": {
+      "active_content_version": "v6",
+      "active_spawn_set_version": "v6",
+      "minimum_client_content_version": "v6",
+      "maintenance_mode": false
+    },
+    "version_status": {
+      "v2": "retired",
+      "v3": "retired",
+      "v4": "retired",
+      "v5": "retired (rows retained)",
+      "v6": "active"
+    },
+    "observed_hashes": {
+      "v6_manifest_hash": "d87267194b34a7eba300115adfa29600d1d63f52daad4e0e96b947414e673d9e",
+      "v6_spawn_hash": "69a4276f9466c02eef28ff8b8d93804e9d103504c163c1e1aa630dd9aba0c163",
+      "match_receipt": true
+    },
+    "observed_counts": {
+      "items": 173,
+      "active_potions": 16,
+      "active_alchemy_recipes": 16,
+      "active_foods": 16,
+      "active_cooking_recipes": 16,
+      "spawns": 730,
+      "world_nodes": 369,
+      "world_monsters": 361,
+      "match_receipt": true
+    },
+    "migration_ledger_tail": [
+      { "version": "20260902150724", "role": "pre-V6" },
+      { "version": "20260902152203", "role": "pre-V6" },
+      { "version": "20260905064323", "role": "V6 step 1 - stage content" },
+      { "version": "20260905065614", "role": "V6 step 2 - stage world" },
+      { "version": "20260905073552", "role": "V6 step 3 - activation" },
+      { "version": "20260907130100", "role": "post-V6 security fix" }
+    ],
+    "working_tree": "clean at commit 3a7af364ba7fdc796a70648855ed255486dc24a9 (equivalent tree to the release receipt commit plus the post-V6 security fix)"
+  },
+  "blocking_drift": {
+    "id": "V7-GATE0-001",
+    "severity": "blocking",
+    "title": "Deployed client world manifest is still pinned to V5",
+    "detail": "src/generated/world-manifest.ts declares SPAWN_SET_VERSION \"v5\" and WORLD_SPAWN_HASH 48680a9dbd5e045d7bb4709ac64ce83e8466fd852acd091710836919a65d2743, while production reports the V6 spawn hash 69a4276f9466c02eef28ff8b8d93804e9d103504c163c1e1aa630dd9aba0c163. src/game/world-runtime.ts resolveWorldRuntime() compares that constant with the server spawn hash and falls back to maintenance mode on mismatch, so the deployed V6 client cannot enter the uuid_v2 world path.",
+    "root_cause": "scripts/v6/build.mjs only writes src/generated/world-manifest.ts under --promote, and the V6 rollout promoted only src/generated/content-manifest.ts.",
+    "consistent_pins": {
+      "src/generated/content-manifest.ts": "v6 / d87267194b34a7eba300115adfa29600d1d63f52daad4e0e96b947414e673d9e",
+      "src/generated/release-catalog.ts": "v6"
+    },
+    "inconsistent_pins": {
+      "src/generated/world-manifest.ts": "v5 / 48680a9dbd5e045d7bb4709ac64ce83e8466fd852acd091710836919a65d2743"
+    },
+    "remedy_requires_owner_approval": "run scripts/v6/build.mjs --promote (world manifest only), verify, and republish the client; no database change is required",
+    "v7_prevention": "the V7 client identity gate must assert content manifest, world manifest, release catalogue, content catalogue and all three migrations agree on version and hash, and must fail the production build otherwise"
+  },
+  "post_v6_security_fix": {
+    "recorded_commit": "20260907130100 migration (platform commit 3a7af364ba7fdc796a70648855ed255486dc24a9)",
+    "changes": [
+      "public.game_runtime_items set to security_invoker = true so runtime item reads use caller permissions",
+      "public.pl_state(jsonb) given explicit SET search_path = public",
+      "public.slot_add(jsonb, integer, text, integer, integer, boolean) given explicit SET search_path = public",
+      "EXECUTE on public.game_runtime_status() and public.game_world_runtime_status() revoked from PUBLIC and anon; authenticated retained"
+    ],
+    "verification_status": "pending - automated privilege/contract tests for these four properties are scheduled as part of the V7 security-delta suite and are not yet written"
+  },
+  "remaining_scan_groups": [
+    {
+      "title": "RLS Enabled No Policy",
+      "severity": "INFO",
+      "count": 6,
+      "intersects_v7": false,
+      "note": "deny-all by design on internal tables; no food, Cooking, save, combat, inventory, market or release-control surface changes"
+    },
+    {
+      "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+      "severity": "WARN",
+      "count": 31,
+      "intersects_v7": true,
+      "note": "this group covers the intended public RPC surface, including consume_food and the combat entry points that V7 touches. Intersection is by design, but Gate 0 requires owner review before continuing."
+    }
+  ]
+}

@@ -11,7 +11,8 @@ const marketTool = await readFile(new URL("../../src/lib/mcp/tools/browse-market
 test("Gate 8 surfaces generated and unknown IDs without legacy substitution", () => {
   assert.match(display, /status: "generated"/);
   assert.match(display, /V2_ITEM_BY_ID/);
-  assert.match(catalog, /"name": "Bronze Dagger"/);
+  assert.match(catalog, /"name": "Bronze Sword"/);
+  assert.doesNotMatch(catalog, /"name": "Bronze Dagger"/);
   assert.match(catalog, /"name": "Ancient Frost Wyrm"/);
   assert.match(display, /status: "unknown"/);
   assert.match(display, /\[unknown content: \$\{id\}\]/);

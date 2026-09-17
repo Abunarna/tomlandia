@@ -736,28 +736,6 @@ export class GameEngine {
   private prevPx = 0;
   private prevPy = 0;
   private isMoving = false;
-  /** debug overrides — null means "follow the equipped item" */
-  debugArmorColor: string | null = null;
-  debugWeaponColor: string | null = null;
-  /** debug animation lock — null means "follow gameplay" */
-  debugAnim: KnightAnim | null = null;
-
-  setDebugColor(kind: "armor" | "weapon", color: string | null) {
-    if (kind === "armor") this.debugArmorColor = color;
-    else this.debugWeaponColor = color;
-  }
-
-  setDebugAnim(anim: KnightAnim | null) {
-    this.debugAnim = anim;
-    if (!anim) this.rig.frameOverride = null;
-  }
-
-  /** Debug frame stepper: null resumes normal playback. */
-  setDebugFrame(frame: number | null) {
-    this.rig.frameOverride = frame;
-  }
-
-
   skills = emptySkills();
   inv: (InvSlot | null)[] = new Array(INV_SIZE).fill(null);
   bank: { gold: number; items: (InvSlot | null)[] } = {
@@ -3532,6 +3510,43 @@ export class GameEngine {
 
   }
 
+  /**
+   * Dev tool: paint the whole world exactly as the gameplay view draws it
+   * (ground textures, water, roads, towns, bridges, landmarks), without any
+   * creatures, resource nodes, NPCs or the player. Returns a PNG data URL.
+   */
+  renderWorldSnapshot(scale = 0.5) {
+    const cv = document.createElement("canvas");
+    cv.width = Math.round(WORLD_W * scale);
+    cv.height = Math.round(WORLD_H * scale);
+    const ctx = cv.getContext("2d")!;
+    ctx.imageSmoothingEnabled = false;
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    const view = { x: 0, y: 0, w: WORLD_W, h: WORLD_H };
+
+    for (const b of BIOMES) this.drawBiome(ctx, b);
+    drawGroundDecals(ctx, view);
+    for (const l of LAKES) this.lake(ctx, l);
+    if (SHOW_PATHS) {
+      this.drawRoads(ctx, view);
+      this.drawStreets(ctx, view);
+    }
+    this.drawCity(ctx, view);
+    this.drawBarriers(ctx, view);
+    this.drawRiverFlow(ctx, view);
+    this.drawMoatFlow(ctx, view);
+    drawGroundDecals(ctx, view, OVER_WATER_DECALS);
+    this.drawBridges(ctx, view);
+
+    const drawables: { y: number; fn: () => void }[] = [];
+    for (const b of BUILDINGS) drawables.push({ y: b.y + b.h, fn: () => this.drawBuilding(ctx, b) });
+    for (const l of LANDMARKS) drawables.push({ y: l.y + l.h / 2, fn: () => drawLandmarkSprite(ctx, l) });
+    drawables.sort((a, b) => a.y - b.y);
+    for (const d of drawables) d.fn();
+
+    return cv.toDataURL("image/png");
+  }
+
   private inView(x: number, y: number, view: { x: number; y: number; w: number; h: number }) {
     return x > view.x - 120 && x < view.x + view.w + 120 && y > view.y - 160 && y < view.y + view.h + 160;
   }
@@ -5624,17 +5639,6 @@ export class GameEngine {
   /** Pick the animation the rig should be showing this frame. */
   private syncRig() {
     const rig = this.rig;
-    if (this.debugAnim) {
-      const a = this.debugAnim;
-      if (a === "idle" || a === "walk") {
-        rig.setLocomotion(a === "walk");
-        rig.release();
-      } else {
-        rig.play(a, { repeat: true });
-      }
-      rig.update(this.lastDt);
-      return;
-    }
     rig.setLocomotion(this.isMoving);
     if (this.activity.startsWith("Fighting")) rig.play("attack", { repeat: true });
     else if (this.actionLoop === "mining") rig.play("mine", { repeat: true });
@@ -5657,8 +5661,8 @@ export class GameEngine {
     this.shadow(ctx, x, y + 16, 16);
 
     this.syncRig();
-    const armorColor = this.debugArmorColor ?? (this.armor ? item(this.armor.id).color : undefined);
-    const weaponColor = this.debugWeaponColor ?? (this.weapon ? item(this.weapon.id).color : undefined);
+    const armorColor = this.armor ? item(this.armor.id).color : undefined;
+    const weaponColor = this.weapon ? item(this.weapon.id).color : undefined;
     if (this.rig.draw(ctx, x, y + 16, this.facing as 1 | -1, 72, armorColor, weaponColor)) {
       if (this.myEmote && this.myEmote.until > Date.now()) {
         this.drawEmoteBubble(ctx, x, y - 62, this.myEmote.e);

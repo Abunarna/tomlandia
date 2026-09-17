@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-/** Keep old published review links from landing on the obsolete animation screen. */
+/** Compatibility route: the reviewer now lives at /character-test. */
 export const Route = createFileRoute("/character-creation")({
   beforeLoad: () => {
     throw redirect({ to: "/character-test", replace: true });

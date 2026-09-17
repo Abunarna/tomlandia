@@ -14,9 +14,10 @@ export const CANONICAL_IDENTITY = Object.freeze({
   lovableProjectId: "10d00f6b-da27-43c4-a205-c0b7841a64fc",
   supabaseProjectRef: "fhelsfnbvrmnxuynyoqu",
   productionUrl: "https://tomlandia.lovable.app",
-  contentRelease: "v3",
-  contentManifestHash: "f8bc150f0edd4abfdec405dd7f58007d3e9da699100f2ec54cf2ecbd9fa03a0a",
-  worldSpawnHash: "38d2615e5ce144f70ffe8bf791603afae42b16b0c87fae1da0a1a886d7a8acba",
+  contentRelease: "v7",
+  contentManifestHash: "89789521c5b84948af1b954e86fdd9d6bea127d8315d3bb5b4f553d340a46935",
+  worldSpawnHash: "3c3602f8247d58655d4a004f4af1cf330f606a84d0f22509e8a5ab5cdc47577c",
+
 });
 
 async function read(relativePath) {

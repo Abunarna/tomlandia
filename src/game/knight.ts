@@ -82,25 +82,22 @@ const SCALE = KNIGHT_RENDER_SCALE;
 
 
 
-/** Overlay masks you still need to supply (served from /public). */
-export const OVERLAY_PATHS: Record<"armor" | "weapon", Record<KnightAnim, string>> = {
-  armor: {
-    idle: "/knight/idle_armor_strip.png",
-    walk: "/knight/walk_armor_strip.png",
-    attack: "/knight/attack_armor_strip.png",
-    mine: "/knight/mine_armor_strip.png",
-    chop: "/knight/chop_armor_strip.png",
-    loot: "/knight/loot_armor_strip.png",
-  },
+/**
+ * Optional recolourable overlay strips.
+ *
+ * Only overlays that ship as real bundled assets are registered here. Missing
+ * animations simply render the base sprite — no speculative `/knight/*`
+ * requests are made.
+ */
+export const OVERLAY_PATHS: Record<"armor" | "weapon", Partial<Record<KnightAnim, string>>> = {
+  armor: {},
   weapon: {
     idle: idleWeaponAsset.url,
     walk: walkWeaponAsset.url,
     attack: attackWeaponAsset.url,
-    mine: "/knight/mine_weapon_strip.png",
-    chop: "/knight/chop_weapon_strip.png",
-    loot: "/knight/loot_weapon_strip.png",
   },
 };
+
 
 type Layer = "base" | "armor" | "weapon";
 
@@ -123,19 +120,25 @@ function load(url: string): HTMLImageElement | null {
   return READY.has(url) ? img : null;
 }
 
-/** Kick off loading of every base strip (overlays are probed lazily). */
+/** Kick off loading of every base strip plus the registered overlays. */
 export function preloadKnight() {
   for (const a of Object.keys(KNIGHT_ANIMS) as KnightAnim[]) {
     load(KNIGHT_ANIMS[a].url);
-    load(OVERLAY_PATHS.armor[a]);
-    load(OVERLAY_PATHS.weapon[a]);
+    const armor = OVERLAY_PATHS.armor[a];
+    if (armor) load(armor);
+    const weapon = OVERLAY_PATHS.weapon[a];
+    if (weapon) load(weapon);
   }
 }
 
 /** True when at least one armour/weapon overlay strip has actually loaded. */
 export function overlaysAvailable(kind: "armor" | "weapon"): boolean {
-  return (Object.keys(KNIGHT_ANIMS) as KnightAnim[]).some((a) => READY.has(OVERLAY_PATHS[kind][a]));
+  return (Object.keys(KNIGHT_ANIMS) as KnightAnim[]).some((a) => {
+    const url = OVERLAY_PATHS[kind][a];
+    return !!url && READY.has(url);
+  });
 }
+
 
 /* ---------------- tinting ---------------- */
 
@@ -285,14 +288,17 @@ export class KnightRig {
       ctx.drawImage(src, sx, 0, FRAME_W, FRAME_H, dx, dy, d, d);
     };
     drawLayer(baseImg);
-    if (armorColor) {
-      const s = tintedStrip(OVERLAY_PATHS.armor[this.anim], armorColor);
+    const armorUrl = OVERLAY_PATHS.armor[this.anim];
+    if (armorColor && armorUrl) {
+      const s = tintedStrip(armorUrl, armorColor);
       if (s) drawLayer(s);
     }
-    if (weaponColor) {
-      const s = tintedStrip(OVERLAY_PATHS.weapon[this.anim], weaponColor);
+    const weaponUrl = OVERLAY_PATHS.weapon[this.anim];
+    if (weaponColor && weaponUrl) {
+      const s = tintedStrip(weaponUrl, weaponColor);
       if (s) drawLayer(s);
     }
+
     ctx.restore();
     ctx.imageSmoothingEnabled = prevSmooth;
     return true;

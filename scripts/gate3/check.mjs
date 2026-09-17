@@ -34,15 +34,31 @@ if (!/Math\.floor\(100 \* Math\.pow\(1\.15, level\)\)/.test(progressionSource)) 
 }
 
 const dataSource = read("src/game/data.ts");
-const monsterPattern = /^\s{2}([a-z_]+): \{ name: "[^"]+", hp: (\d+), attack: (\d+), defense: (\d+), xp: (\d+), gold: \[(\d+), (\d+)\]/gm;
-const liveMonsters = Object.fromEntries([...dataSource.matchAll(monsterPattern)].map((match) => [match[1], {
-  hp: Number(match[2]),
-  attack: Number(match[3]),
-  defense: Number(match[4]),
-  xp: Number(match[5]),
-  goldMin: Number(match[6]),
-  goldMax: Number(match[7]),
-}]));
+// Monsters are prettier-formatted across multiple lines, so match the block and
+// pull each numeric field out of it rather than assuming a single-line literal.
+const monsterPattern = /^ {2}([a-z_]+): \{\s*\n\s*name: "[^"]+",([\s\S]*?)\n {2}\},/gm;
+const num = (block, field) => {
+  const m = new RegExp(`\\b${field}:\\s*(\\d+)`).exec(block);
+  return m ? Number(m[1]) : undefined;
+};
+const liveMonsters = Object.fromEntries(
+  [...dataSource.matchAll(monsterPattern)].map((match) => {
+    const block = match[2];
+    const gold = /\bgold:\s*\[(\d+),\s*(\d+)\]/.exec(block);
+    return [
+      match[1],
+      {
+        hp: num(block, "hp"),
+        attack: num(block, "attack"),
+        defense: num(block, "defense"),
+        xp: num(block, "xp"),
+        goldMin: gold ? Number(gold[1]) : undefined,
+        goldMax: gold ? Number(gold[2]) : undefined,
+      },
+    ];
+  }),
+);
+
 for (const anchor of model.legacyMonsterAnchors) {
   const live = liveMonsters[anchor.source];
   if (!live) {
