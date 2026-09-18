@@ -84,6 +84,35 @@ const candidateSets = [
     report:
       "public/assets/avatar/candidate-v1/review/male-skin-corrected-v2-normalization-report.json",
   },
+  {
+    id: "male-skin-master-precision-v3",
+    compareTo: "face-neutral",
+    sources: [
+      {
+        model: "male",
+        input:
+          "public/assets/avatar/candidate-v1/source/body-male-grayscale-skin-precision-v3-source.png",
+      },
+    ],
+    sheet: "docs/images/avatar-candidate-v1-male-skin-precision-v3-comparison.png",
+    report:
+      "public/assets/avatar/candidate-v1/review/male-skin-precision-v3-normalization-report.json",
+  },
+  {
+    id: "male-skin-master-deterministic-v4",
+    compareTo: "face-neutral",
+    lockAlphaTo: "face-neutral",
+    sources: [
+      {
+        model: "male",
+        input:
+          "public/assets/avatar/candidate-v1/source/body-male-grayscale-skin-precision-v3-source.png",
+      },
+    ],
+    sheet: "docs/images/avatar-candidate-v1-male-skin-deterministic-v4-comparison.png",
+    report:
+      "public/assets/avatar/candidate-v1/review/male-skin-deterministic-v4-normalization-report.json",
+  },
 ];
 
 const crcTable = Array.from({ length: 256 }, (_, n) => {
@@ -279,6 +308,25 @@ const forceGrayscale = (pixels) => {
     pixels[index] = pixels[index + 1] = pixels[index + 2] = value;
   }
 };
+const lockAlphaGeometry = (pixels, authoritativePixels) => {
+  let restoredPixels = 0;
+  let removedPixels = 0;
+  for (let pixel = 0; pixel < SIZE * SIZE; pixel++) {
+    const index = pixel * 4;
+    const authoritativeAlpha = authoritativePixels[index + 3];
+    if (authoritativeAlpha === 0) {
+      if (pixels[index + 3] > 0) removedPixels++;
+      pixels.fill(0, index, index + 4);
+      continue;
+    }
+    if (pixels[index + 3] === 0) {
+      authoritativePixels.copy(pixels, index, index, index + 4);
+      restoredPixels++;
+    }
+    pixels[index + 3] = authoritativeAlpha;
+  }
+  return { restoredPixels, removedPixels };
+};
 for (const set of candidateSets) {
   const results = [];
   const reviewRasters = [];
@@ -292,6 +340,12 @@ for (const set of candidateSets) {
       scale: registered.scale,
       targetBounds: registered.targetBounds,
     });
+    const alphaAuthority = set.lockAlphaTo
+      ? registeredSets.get(`${set.lockAlphaTo}:${source.model}`)
+      : undefined;
+    const geometryLock = alphaAuthority
+      ? lockAlphaGeometry(registered.pixels, alphaAuthority)
+      : undefined;
     const isSkinMaster = set.id.includes("skin-master");
     if (isSkinMaster) forceGrayscale(registered.pixels);
     const suffix =
@@ -299,11 +353,15 @@ for (const set of candidateSets) {
         ? "combined"
         : set.id === "face-neutral"
           ? "face-neutral-combined"
-          : set.id.startsWith("male-skin-master-corrected")
-            ? set.id.endsWith("-v2")
-              ? "grayscale-skin-corrected-v2"
-              : "grayscale-skin-corrected"
-            : "grayscale-skin";
+          : set.id === "male-skin-master-precision-v3"
+            ? "grayscale-skin-precision-v3"
+            : set.id === "male-skin-master-deterministic-v4"
+              ? "grayscale-skin-deterministic-v4"
+              : set.id.startsWith("male-skin-master-corrected")
+                ? set.id.endsWith("-v2")
+                  ? "grayscale-skin-corrected-v2"
+                  : "grayscale-skin-corrected"
+                : "grayscale-skin";
     const output = `public/assets/avatar/candidate-v1/review/body-${source.model}-${suffix}.png`;
     mkdirSync(dirname(resolve(output)), { recursive: true });
     const outputBytes = encodeRgba(SIZE, SIZE, registered.pixels);
@@ -373,6 +431,9 @@ for (const set of candidateSets) {
       scale: Number(registered.scale.toFixed(6)),
       status: isRejectedSkinMaster ? "rejected" : "review-only",
       ...(silhouetteComparison ? { silhouetteComparison } : {}),
+      ...(geometryLock
+        ? { geometryLock: { authority: `${set.lockAlphaTo}:${source.model}`, ...geometryLock } }
+        : {}),
       ...(isSkinMaster ? { grayscale: grayscaleStats(registered.pixels) } : {}),
       blockers:
         set.id === "original"
@@ -425,6 +486,103 @@ for (const set of candidateSets) {
     `${JSON.stringify({ version: 1, variant: set.id, registration: { width: 384, height: 384, pivotX: 192, footY: 300 }, results }, null, 2)}\n`,
   );
 }
+
+const MODESTY_BOUNDS = { minX: 148, minY: 105, maxX: 235, maxY: 205 };
+const deriveModestyLayer = (combinedPixels, skinPixels) => {
+  const modestyPixels = Buffer.alloc(SIZE * SIZE * 4);
+  let visiblePixels = 0;
+  let discardedSourcePixelsOutsideSkin = 0;
+  for (let y = MODESTY_BOUNDS.minY; y <= MODESTY_BOUNDS.maxY; y++)
+    for (let x = MODESTY_BOUNDS.minX; x <= MODESTY_BOUNDS.maxX; x++) {
+      const index = (y * SIZE + x) * 4;
+      if (combinedPixels[index + 3] === 0) continue;
+      const maximum = Math.max(
+        combinedPixels[index],
+        combinedPixels[index + 1],
+        combinedPixels[index + 2],
+      );
+      const minimum = Math.min(
+        combinedPixels[index],
+        combinedPixels[index + 1],
+        combinedPixels[index + 2],
+      );
+      const isNeutralCloth = maximum - minimum < 100 || maximum < 64;
+      if (!isNeutralCloth) continue;
+      if (skinPixels[index + 3] === 0) {
+        discardedSourcePixelsOutsideSkin++;
+        continue;
+      }
+      combinedPixels.copy(modestyPixels, index, index, index + 4);
+      visiblePixels++;
+    }
+  return { pixels: modestyPixels, visiblePixels, discardedSourcePixelsOutsideSkin };
+};
+const compositeOpaqueLayer = (basePixels, overlayPixels) => {
+  const composite = Buffer.from(basePixels);
+  for (let pixel = 0; pixel < SIZE * SIZE; pixel++) {
+    const index = pixel * 4;
+    if (overlayPixels[index + 3] > 0) overlayPixels.copy(composite, index, index, index + 4);
+  }
+  return composite;
+};
+const modestyResults = [];
+const modestySheetRasters = [];
+for (const [model, skinSet] of [
+  ["female", "female-skin-master"],
+  ["male", "male-skin-master-deterministic-v4"],
+]) {
+  const combinedPixels = registeredSets.get(`face-neutral:${model}`);
+  const skinPixels = registeredSets.get(`${skinSet}:${model}`);
+  const modesty = deriveModestyLayer(combinedPixels, skinPixels);
+  const output = `public/assets/avatar/candidate-v1/review/body-${model}-modesty-deterministic.png`;
+  const outputBytes = encodeRgba(SIZE, SIZE, modesty.pixels);
+  writeFileSync(resolve(output), outputBytes);
+  const composite = compositeOpaqueLayer(skinPixels, modesty.pixels);
+  modestySheetRasters.push(combinedPixels, composite);
+  modestyResults.push({
+    model,
+    source: `face-neutral:${model}`,
+    skin: `${skinSet}:${model}`,
+    output,
+    outputSha256: createHash("sha256").update(outputBytes).digest("hex"),
+    extractionBounds: MODESTY_BOUNDS,
+    visiblePixels: modesty.visiblePixels,
+    discardedSourcePixelsOutsideSkin: modesty.discardedSourcePixelsOutsideSkin,
+    pixelsOutsideSkin: 0,
+    status: "review-only",
+    blockers: ["skin and modesty recomposition requires visual approval"],
+  });
+}
+const modestySheetGap = 16;
+const modestySheetWidth =
+  modestySheetRasters.length * SIZE + (modestySheetRasters.length - 1) * modestySheetGap;
+const modestySheet = Buffer.alloc(modestySheetWidth * SIZE * 4);
+for (let y = 0; y < SIZE; y++)
+  for (let x = 0; x < modestySheetWidth; x++) {
+    const index = (y * modestySheetWidth + x) * 4;
+    const shade = (Math.floor(x / 16) + Math.floor(y / 16)) % 2 ? 222 : 242;
+    modestySheet[index] = shade;
+    modestySheet[index + 1] = shade - 4;
+    modestySheet[index + 2] = shade + 2;
+    modestySheet[index + 3] = 255;
+  }
+modestySheetRasters.forEach((pixels, column) => {
+  const offsetX = column * (SIZE + modestySheetGap);
+  for (let y = 0; y < SIZE; y++)
+    for (let x = 0; x < SIZE; x++) {
+      const source = (y * SIZE + x) * 4;
+      if (pixels[source + 3] === 0) continue;
+      pixels.copy(modestySheet, (y * modestySheetWidth + offsetX + x) * 4, source, source + 4);
+    }
+});
+writeFileSync(
+  resolve("docs/images/avatar-candidate-v1-modesty-recomposition.png"),
+  encodeRgba(modestySheetWidth, SIZE, modestySheet),
+);
+writeFileSync(
+  resolve("public/assets/avatar/candidate-v1/review/modesty-split-report.json"),
+  `${JSON.stringify({ version: 1, extraction: "neutral-colour pixels inside locked garment bounds and body alpha", results: modestyResults }, null, 2)}\n`,
+);
 
 const faceSource =
   "public/assets/avatar/candidate-v1/source/candidate-v1-face-female-01-warm-source.png";

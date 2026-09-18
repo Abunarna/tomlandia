@@ -130,6 +130,31 @@ function Swatches({
 function CandidateAssetGallery() {
   const groups = [
     {
+      label: "Body-layer PNGs",
+      entries: [
+        {
+          id: "female-skin",
+          label: "Female skin",
+          url: characterTestAvatarManifest.bodies.female.skinUrl,
+        },
+        {
+          id: "female-modesty",
+          label: "Female modesty",
+          url: characterTestAvatarManifest.bodies.female.modestyUrl,
+        },
+        {
+          id: "male-skin",
+          label: "Male skin",
+          url: characterTestAvatarManifest.bodies.male.skinUrl,
+        },
+        {
+          id: "male-modesty",
+          label: "Male modesty",
+          url: characterTestAvatarManifest.bodies.male.modestyUrl,
+        },
+      ],
+    },
+    {
       label: "Male face PNGs",
       entries: characterTestAvatarManifest.faces.filter((face) => face.model === "male"),
     },
@@ -252,7 +277,7 @@ function CharacterCreator() {
             </div>
             <h1 className="text-3xl font-black sm:text-4xl">Candidate pixel-art test</h1>
             <p className="mt-1 text-sm font-semibold text-[#715f73]">
-              Review the checked-in face and hairstyle PNGs on the layered renderer.
+              Review the checked-in body, face, and hairstyle PNGs on the layered renderer.
             </p>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">

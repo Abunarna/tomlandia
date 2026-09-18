@@ -6,6 +6,9 @@ import femaleSkinReport from "../../public/assets/avatar/candidate-v1/review/fem
 import maleSkinReport from "../../public/assets/avatar/candidate-v1/review/male-skin-normalization-report.json";
 import correctedMaleSkinReport from "../../public/assets/avatar/candidate-v1/review/male-skin-corrected-normalization-report.json";
 import correctedMaleSkinV2Report from "../../public/assets/avatar/candidate-v1/review/male-skin-corrected-v2-normalization-report.json";
+import precisionMaleSkinV3Report from "../../public/assets/avatar/candidate-v1/review/male-skin-precision-v3-normalization-report.json";
+import deterministicMaleSkinV4Report from "../../public/assets/avatar/candidate-v1/review/male-skin-deterministic-v4-normalization-report.json";
+import modestySplitReport from "../../public/assets/avatar/candidate-v1/review/modesty-split-report.json";
 import femaleFaceOneReport from "../../public/assets/avatar/candidate-v1/review/face-female-01-warm-report.json";
 import registeredFemaleFaceOneReport from "../../public/assets/avatar/candidate-v1/review/face-female-01-warm-registered-report.json";
 import fittedFemaleFacesReport from "../../public/assets/avatar/candidate-v1/review/female-fitted-faces-report.json";
@@ -118,6 +121,67 @@ describe("normalized body candidates", () => {
     const image = inspectPng(await readFile(candidate.output));
     expect(image.colorType).toBe(6);
     expect(image.hasAlpha).toBe(true);
+  });
+
+  test("rejects precision male skin v3 when generation redraws protected geometry", async () => {
+    const [candidate] = precisionMaleSkinV3Report.results;
+    expect(candidate.status).toBe("rejected");
+    expect(candidate.sourceSha256).toBe(
+      "5d39d06eaaa19e9d4c03e67390182b9a91b7c692535bee64ba6447c041ba662d",
+    );
+    expect(candidate.targetCenterX).toBe(192);
+    expect(candidate.centerDeltaFromPivot).toBe(0);
+    for (const region of ["whole", "head", "hands", "feet"]) {
+      const threshold = region === "feet" ? 0.98 : 0.99;
+      expect(candidate.silhouetteComparison[region].intersectionOverUnion).toBeLessThan(threshold);
+    }
+    expect(candidate.grayscale.colouredFraction).toBe(0);
+    const image = inspectPng(await readFile(candidate.output));
+    expect(image.width).toBe(384);
+    expect(image.height).toBe(384);
+    expect(image.colorType).toBe(6);
+    expect(image.hasAlpha).toBe(true);
+  });
+
+  test("locks deterministic male skin v4 to the authoritative alpha geometry", async () => {
+    const [candidate] = deterministicMaleSkinV4Report.results;
+    expect(candidate.status).toBe("review-only");
+    expect(candidate.targetBounds).toEqual({ minX: 137, minY: 63, maxX: 247, maxY: 300 });
+    expect(candidate.targetCenterX).toBe(192);
+    expect(candidate.centerDeltaFromPivot).toBe(0);
+    expect(candidate.geometryLock).toEqual({
+      authority: "face-neutral:male",
+      restoredPixels: 302,
+      removedPixels: 139,
+    });
+    for (const region of ["whole", "head", "hands", "feet"]) {
+      expect(candidate.silhouetteComparison[region]).toEqual({
+        changedPixels: 0,
+        intersectionOverUnion: 1,
+      });
+    }
+    expect(candidate.grayscale.colouredFraction).toBe(0);
+    const image = inspectPng(await readFile(candidate.output));
+    expect(image.width).toBe(384);
+    expect(image.height).toBe(384);
+    expect(image.colorType).toBe(6);
+    expect(image.hasAlpha).toBe(true);
+  });
+
+  test("derives model-specific modesty layers without leaking outside either skin mask", async () => {
+    expect(modestySplitReport.results.map(({ model }) => model)).toEqual(["female", "male"]);
+    for (const candidate of modestySplitReport.results) {
+      expect(candidate.status).toBe("review-only");
+      expect(candidate.visiblePixels).toBeGreaterThan(0);
+      expect(candidate.pixelsOutsideSkin).toBe(0);
+      expect(candidate.outputSha256).toMatch(/^[0-9a-f]{64}$/);
+      const image = inspectPng(await readFile(candidate.output));
+      expect(image.width).toBe(384);
+      expect(image.height).toBe(384);
+      expect(image.colorType).toBe(6);
+      expect(image.visiblePixels).toBe(candidate.visiblePixels);
+      expect(image.transparentPixels).toBeGreaterThan(0);
+    }
   });
 
   test("rejects a face candidate placed outside the registered head region", async () => {

@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "extraction": "neutral-colour pixels inside locked garment bounds and body alpha",
+  "results": [
+    {
+      "model": "female",
+      "source": "face-neutral:female",
+      "skin": "female-skin-master:female",
+      "output": "public/assets/avatar/candidate-v1/review/body-female-modesty-deterministic.png",
+      "outputSha256": "3158769f63425a3f34753b18a9bae862476b109607af723bbe6ff20ad05f326f",
+      "extractionBounds": {
+        "minX": 148,
+        "minY": 105,
+        "maxX": 235,
+        "maxY": 205
+      },
+      "visiblePixels": 3743,
+      "discardedSourcePixelsOutsideSkin": 13,
+      "pixelsOutsideSkin": 0,
+      "status": "review-only",
+      "blockers": [
+        "skin and modesty recomposition requires visual approval"
+      ]
+    },
+    {
+      "model": "male",
+      "source": "face-neutral:male",
+      "skin": "male-skin-master-deterministic-v4:male",
+      "output": "public/assets/avatar/candidate-v1/review/body-male-modesty-deterministic.png",
+      "outputSha256": "854793dcfd5d0a0d2676c44030e8b898030bb9c639cf4c1abad09183c88cb3cd",
+      "extractionBounds": {
+        "minX": 148,
+        "minY": 105,
+        "maxX": 235,
+        "maxY": 205
+      },
+      "visiblePixels": 4790,
+      "discardedSourcePixelsOutsideSkin": 0,
+      "pixelsOutsideSkin": 0,
+      "status": "review-only",
+      "blockers": [
+        "skin and modesty recomposition requires visual approval"
+      ]
+    }
+  ]
+}
