@@ -8,6 +8,12 @@ import {
   AVATAR_CATALOGUE_EXPECTATION,
   referenceAvatarManifest,
 } from "@/game/avatar-reference-manifest";
+import { characterTestAvatarManifest } from "@/game/avatar-character-test-manifest";
+import {
+  deriveAvatarLabSelection,
+  firstCompatibleFaceId,
+  firstCompatibleHairId,
+} from "@/game/avatar-lab-selection";
 import { validateAvatarCatalogue } from "@/game/avatar-catalogue-validation";
 import { loadAvatarManifest } from "@/game/avatar-manifest-loader";
 import { AVATAR_REGISTRATION_MAP, type AvatarBoundary } from "@/game/avatar-registration";
@@ -329,20 +335,29 @@ function AvatarLabRoute() {
 }
 
 function AvatarLab() {
-  const [activeManifest, setActiveManifest] =
-    useState<AvatarAssetManifest>(referenceAvatarManifest);
+  const initialSelection = deriveAvatarLabSelection(characterTestAvatarManifest, {
+    model: "female",
+    armour: "copper_light_armor",
+    weapon: "copper_sword",
+    activity: "attack",
+  });
+  const [activeManifest, setActiveManifest] = useState<AvatarAssetManifest>(
+    characterTestAvatarManifest,
+  );
   const [manifestUrl, setManifestUrl] = useState("/assets/avatar/candidate/manifest.json");
-  const [manifestMessage, setManifestMessage] = useState("Using checked-in reference manifest");
+  const [manifestMessage, setManifestMessage] = useState(
+    "Using checked-in candidate body, face, and hairstyle manifest",
+  );
   const renderer = useMemo(() => new PlayerAvatarRenderer(activeManifest), [activeManifest]);
   const [refresh, setRefresh] = useState(0);
-  const [model, setModel] = useState<AvatarModel>("female");
-  const [face, setFace] = useState("female-face-1");
-  const [hair, setHair] = useState("hair-bob");
+  const [model, setModel] = useState<AvatarModel>(initialSelection.model);
+  const [face, setFace] = useState(initialSelection.face);
+  const [hair, setHair] = useState(initialSelection.hair);
   const [skinTone, setSkinTone] = useState("#d99a72");
   const [hairColor, setHairColor] = useState("#6f3f64");
-  const [armour, setArmour] = useState("copper_light_armor");
-  const [weapon, setWeapon] = useState("copper_sword");
-  const [activity, setActivity] = useState<PlayerActivity>("attack");
+  const [armour, setArmour] = useState(initialSelection.armour);
+  const [weapon, setWeapon] = useState(initialSelection.weapon);
+  const [activity, setActivity] = useState<PlayerActivity>(initialSelection.activity);
   const [background, setBackground] = useState<PreviewBackground>("checker");
   const [guides, setGuides] = useState(true);
   const [heatmap, setHeatmap] = useState(false);
@@ -381,17 +396,31 @@ function AvatarLab() {
   const changeModel = (next: string) => {
     const value = next as AvatarModel;
     setModel(value);
-    setFace(`${value}-face-1`);
+    setFace(firstCompatibleFaceId(activeManifest, value));
+    if (
+      !activeManifest.hairstyles.some((entry) => entry.id === hair && entry.models.includes(value))
+    ) {
+      setHair(firstCompatibleHairId(activeManifest, value));
+    }
   };
 
   const activateManifest = (manifest: AvatarAssetManifest, message: string) => {
+    const selection = deriveAvatarLabSelection(manifest, {
+      model,
+      face,
+      hair,
+      armour,
+      weapon,
+      activity,
+    });
     setActiveManifest(manifest);
     setManifestMessage(message);
-    setModel("female");
-    setFace(manifest.faces.find((entry) => entry.model === "female")?.id ?? "");
-    setHair(manifest.hairstyles.find((entry) => entry.models.includes("female"))?.id ?? "");
-    setArmour(manifest.armour[0]?.id ?? "");
-    setWeapon(manifest.weapons[0]?.id ?? "");
+    setModel(selection.model);
+    setFace(selection.face);
+    setHair(selection.hair);
+    setArmour(selection.armour);
+    setWeapon(selection.weapon);
+    setActivity(selection.activity);
   };
 
   const loadCandidate = async () => {
@@ -421,12 +450,12 @@ function AvatarLab() {
         <header className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-white/70 bg-[#fffaf0]/90 px-5 py-4 shadow-xl shadow-[#5b4662]/10 backdrop-blur sm:px-7">
           <div>
             <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-[#8a668b]">
-              <span className="h-2 w-2 rounded-full bg-[#dc7c55]" /> Stage 1 · Geometry proof
+              <span className="h-2 w-2 rounded-full bg-[#dc7c55]" /> Stage 2 · Candidate body review
             </div>
             <h1 className="mt-1 text-3xl font-extrabold sm:text-4xl">Tomlandia Avatar Lab</h1>
             <p className="mt-1 max-w-2xl text-sm font-semibold text-[#756377]">
-              Reference artwork only. Test registration, layering, tinting, catalogue mapping, and
-              sword occlusion before production art begins.
+              Candidate bodies, faces, and hairstyles. Test registration, layering, tinting,
+              catalogue mapping, and sword occlusion before production promotion.
             </p>
           </div>
           <Link
@@ -651,7 +680,14 @@ function AvatarLab() {
                 }
                 good={renderer.loadState === "ready"}
               />
-              <StatusCard label="Artwork" value="Reference only" good={false} neutral />
+              <StatusCard
+                label="Artwork"
+                value={
+                  activeManifest === referenceAvatarManifest ? "Reference only" : "Candidate review"
+                }
+                good={false}
+                neutral
+              />
             </div>
             <div className="rounded-2xl border border-white/70 bg-[#fffaf0]/95 p-4 shadow-lg shadow-[#5b4662]/10">
               <div className="flex flex-wrap items-center justify-between gap-2">
@@ -700,7 +736,12 @@ function AvatarLab() {
                     appearance: {
                       ...state.appearance,
                       bodyType: sheetModel,
-                      faceVariant: `${sheetModel}-face-1`,
+                      faceVariant: firstCompatibleFaceId(activeManifest, sheetModel),
+                      hairStyle: activeManifest.hairstyles.some(
+                        (entry) => entry.id === hair && entry.models.includes(sheetModel),
+                      )
+                        ? hair
+                        : firstCompatibleHairId(activeManifest, sheetModel),
                     },
                   };
                   return (
@@ -828,7 +869,7 @@ function TierContactSheet({
           {
             appearance: {
               bodyType: model,
-              faceVariant: `${model}-face-1`,
+              faceVariant: firstCompatibleFaceId(renderer.manifest, model),
               skinTone,
               hairStyle: hair,
               hairColor,

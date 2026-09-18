@@ -128,6 +128,90 @@ only pixels inside the clothing masks. This changes the workflow, not the avatar
 architecture, and guarantees that hands, fist holes, feet, head, centre, and
 registration cannot move.
 
+## Precision male grayscale skin-master v3 decision
+
+The precision-edit source is preserved at
+`public/assets/avatar/candidate-v1/source/body-male-grayscale-skin-precision-v3-source.png`.
+Its normalized comparison is
+[`images/avatar-candidate-v1-male-skin-precision-v3-comparison.png`](images/avatar-candidate-v1-male-skin-precision-v3-comparison.png),
+with measurements in
+`public/assets/avatar/candidate-v1/review/male-skin-precision-v3-normalization-report.json`.
+
+The candidate is correctly grayscale, centred at x=192, and registered to the
+y=300 foot line. It nevertheless fails every protected silhouette comparison:
+whole 0.967960, head 0.978127, hands/grips 0.963293, and feet 0.961510.
+
+**Rejected.** The generator produced a close visual recreation rather than a
+pixel-preserving interior edit. The shoulders, arms, hands and grip openings,
+head contour, inner legs, and feet all drift from the authoritative face-neutral
+male. This source remains audit evidence and must not enter a runtime manifest.
+Another generative correction should not be requested: the male skin master now
+requires a deterministic edit that locks the authoritative alpha silhouette and
+protected exterior pixels by construction.
+
+## Deterministic male grayscale skin-master v4 decision
+
+The v3 grayscale treatment has now been processed through a deterministic
+geometry lock rather than another generation pass. The lock uses the normalized
+face-neutral male as the alpha authority: it removes 139 pixels introduced by
+the generated revision and restores 302 authoritative pixels that the revision
+omitted. The resulting registered layer is
+`public/assets/avatar/candidate-v1/review/body-male-grayscale-skin-deterministic-v4.png`,
+and its comparison sheet is
+[`images/avatar-candidate-v1-male-skin-deterministic-v4-comparison.png`](images/avatar-candidate-v1-male-skin-deterministic-v4-comparison.png).
+
+The deterministic candidate is centred at x=192 on the y=300 foot line and is
+strictly grayscale. Its whole, head, hands/grips, and feet silhouette comparisons
+all have zero changed pixels and an intersection-over-union score of exactly
+1.000000.
+
+**Accepted through the automated silhouette gate as a review-only male skin-layer
+candidate.** This does not independently promote either body. The matching male
+modesty layer must still be derived and recomposed, grip parity with the female
+candidate must be approved, and the male/female body pair must pass the shared
+visual gate before either body enters a runtime manifest.
+
+## Deterministic modesty-layer split decision
+
+Model-specific modesty layers are now derived from the face-neutral combined
+bodies by retaining neutral clothing pixels only inside a locked garment region
+and the corresponding skin alpha mask. The derivation emits separate male and
+female 384×384 transparent PNGs and never expands either body silhouette. Thirteen
+female source pixels that fell outside the accepted female skin mask were
+discarded; both final modesty layers contain zero pixels outside their matching
+skin layers.
+
+The source/recomposition pairs are shown in
+[`images/avatar-candidate-v1-modesty-recomposition.png`](images/avatar-candidate-v1-modesty-recomposition.png),
+and the machine-readable counts and checksums are in
+`public/assets/avatar/candidate-v1/review/modesty-split-report.json`.
+
+**Accepted as review-only split proofs.** The layers are model-specific, preserve
+transparent canvas space, and do not protrude beyond their skin silhouettes. The
+pair still requires final visual approval of the neckline, armholes, waistband,
+short hems, grip openings, and game-scale tint composites before body-master
+promotion.
+
+## Character-test body-pair activation
+
+The review-only character-test manifest now uses the accepted female grayscale
+skin candidate, deterministic male v4 skin candidate, and their model-specific
+modesty layers. This activation is deliberately limited to `/character-test`:
+the production/reference manifest is unchanged, and the candidates remain
+subject to the shared body-pair visual gate.
+
+The route renders these body layers through the same `PlayerAvatarRenderer` used
+for the fitted faces, all ten hairstyles, and runtime skin and hair tinting. Its
+direct checked-in PNG gallery also exposes all four body-layer URLs so a generic
+or stale fallback cannot silently replace the reviewed artwork.
+
+The Avatar Lab now also defaults to this candidate manifest. Previously, its
+initial state explicitly loaded `referenceAvatarManifest`, so opening the Lab
+from Character Test showed the old boxy geometry proof even though the Character
+Test itself had the new body URLs. Model switching and comparison sheets now
+resolve registered face and compatible hairstyle IDs from the active manifest
+instead of reconstructing `${model}-face-1` names.
+
 ## Female face 01 warm decision
 
 The first isolated face submission was transformed with the exact same source
